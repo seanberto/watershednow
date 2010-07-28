@@ -1,0 +1,212 @@
+/**
+ * Script placeholder markup.
+ */
+.script-placeholder {
+  padding:100px 0px;
+  text-align:center;
+  }
+
+/**
+ * Browser
+ */
+div.context-editor div.context-block-browser div.category { display:none; }
+
+div.context-block-item,
+#admin-toolbar div.context-editor div.context-block-browser div.context-block-item {
+  font-weight:bold;
+  font-size:11px;
+  line-height:15px;
+
+  color:#fff;
+  background:#333;
+  padding:10px 10px 9px;
+  margin:0px 0px 1px;
+  overflow:hidden;
+  max-width:300px;
+
+  -moz-border-radius:5px;
+  -webkit-border-radius:5px;
+  -moz-user-select:none;
+  -webkit-user-select:none;
+  }
+
+  #admin-toolbar.horizontal div.context-editor div.context-block-browser div.context-block-item {
+    width:180px;
+    margin-right:1px;
+    padding-right:9px;
+    float:left;
+    }
+
+div.context-block-addable { cursor: move; }
+
+div.context-block-added { display:none; }
+
+/**
+ * Blocks wrappers.
+ */
+div.context-block-region div.handle { display:none; }
+
+/**
+ * Target div for empty regions.
+ */
+body.context-editing div.context-block-region-empty {
+  -moz-border-radius:5px;
+  -webkit-border-radius:5px;
+  background:#000;
+  color:#fff;
+  opacity:.20;
+  position:relative;
+  min-height:40px;
+  }
+
+div.context-block-region div.target {
+  position:absolute;
+  left:0px;
+  right:0px;
+  top:50%;
+
+  height:20px;
+  margin-top:-10px;
+  line-height:20px;
+  text-align:center;
+  font-size:18px;
+  display:none !important;
+  }
+
+  body.context-editing div.context-block-region-empty div.target { display:block !important; }
+
+/**
+ * Blocks in regions.
+ */
+body.context-editing div.context-block-region div.context-block { opacity:.25; }
+
+body.context-editing div.context-block-region div.draggable {
+  position:relative;
+  opacity:1;
+  }
+
+body.context-editing div.context-block-region div.draggable-placeholder {
+  -moz-border-radius:5px;
+  -webkit-border-radius:5px;
+
+  background:#fff;
+  border:3px dashed #000;
+  opacity:.2;
+  }
+
+body.context-editing div.context-block-region div.draggable:hover div.handle {
+  cursor:move;
+  display:block;
+  position:absolute;
+  left:0px;
+  right:0px;
+  top:0px;
+  bottom:0px;
+  z-index:5;
+  }
+
+  body.context-editing div.context-block-region div.context-block-handleonly:hover div.handle { bottom:auto; }
+
+body.context-editing div.context-block-region div.draggable div.handle label,
+body.context-editing div.context-block-region div.draggable div.handle a.remove {
+  background:#000;
+  color:#fff;
+  font-size:11px;
+  font-weight:bold;
+
+  margin-top:-30px;
+  height:30px;
+  line-height:30px;
+  text-align:center;
+  display:block;
+
+  position:absolute;
+  top:0%;
+  }
+
+body.context-editing div.context-block-region div.draggable div.handle label {
+  -moz-border-radius:5px;
+  -webkit-border-radius:5px;
+  cursor:move;
+  opacity:.75;
+  left:0px;
+  right:0px;
+  }
+
+body.context-editing div.context-block-region div.draggable div.handle a.remove {
+  -moz-border-radius:0px 5px 5px 0px;
+  -webkit-border-radius:0px 5px 5px 0px;
+  opacity:.8;
+  width:30px;
+  right:0%;
+  z-index:5;
+  }
+
+body.context-editing div.context-block-region div.draggable:hover div.handle { display:block; }
+
+div.block div.context-block-empty {
+  padding:10px;
+  opacity:.5;
+  background:#fff;
+  color:#666;
+  }
+
+/**
+ * Block visibility ===================================================
+ */
+#context-blockform div.context-blockform-selector {
+  height:20em;
+  overflow:auto;
+  }
+
+#context-blockform span.system-blocks { color:#999; }
+
+#context-blockform td.blocks,
+#context-blockform td.selector {
+  border:1px solid #ddd;
+  padding:10px;
+  width:50%;
+  }
+
+#context-blockform td.blocks div.label,
+#context-blockform td.blocks td,
+#context-blockform td.blocks th {
+  background:#fff;
+  padding:5px 5px 4px;
+  border:0px;
+  border-bottom:1px solid #ddd;
+  }
+
+  #context-blockform td.blocks div.label { background:#eee; }
+  #context-blockform td.blocks div.label a { float:right; }
+
+#context-blockform td.blocks div.form-item,
+#context-blockform td.blocks input.block-weight { display:none; }
+
+#context-ui-items #context-blockform {
+  font-size:11px;
+  line-height:15px;
+  }
+
+#context-ui-items #context-blockform div.form-checkboxes {
+  height:auto;
+  overflow:visible;
+  padding:0px;
+  margin:0px;
+  border:0px;
+  }
+
+#context-ui-items #context-blockform div.form-item { padding:0px; }
+
+#context-ui-items #context-blockform label {
+  background:#eee;
+  display:block;
+  padding:5px;
+  line-height:15px;
+  }
+
+#context-ui-items #context-blockform label.option {
+  background:#fff;
+  display:block;
+  border:0px;
+  }

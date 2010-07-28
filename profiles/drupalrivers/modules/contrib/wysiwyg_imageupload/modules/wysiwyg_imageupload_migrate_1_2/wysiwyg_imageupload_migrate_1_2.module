@@ -1,0 +1,102 @@
+<?php
+// $Id:$
+// Copyright (c) 2010 KontextWork GbR
+// Author: Eugen Mayer
+
+function wysiwyg_imageupload_migrate_1_2_menu() {
+  $items = array();
+  $items['admin/build/wysiwyg_imageupload/wysiwyg_imageuload_to_2'] = array (
+    'title' => 'Migrate from Version 1.x to 2-x',
+    'page callback' => '_wysiwyg_imageupload_migrate_1_2_iterate',
+    'access arguments' => array('administer site configuration'),
+    'type' => MENU_LOCAL_TASK,
+  );
+
+  return $items;
+}
+
+function _wysiwyg_imageupload_migrate_1_2_iterate() {
+  $result = db_query("SELECT * FROM {node_revisions} as nr WHERE nr.body LIKE '%<img%'");
+  $nodes = array();
+  while($row = db_fetch_object($result)) {
+    //$nodes[] = node_load($row->nid, $row->vid);
+    $nodes[] = $row;
+  }
+  $m = drupal_get_path('module','wysiwyg_imageupload_migrate_1_2');
+  require_once("$m/smartdomdocument.class.php");
+  foreach($nodes as $node) {
+    _wysiwyg_imageupload_migrate_1_2_migratenode($node);    
+  }
+  $c = count($nodes);
+  return t("Migration completed, overall $c nodes migrated");
+}
+
+function _wysiwyg_imageupload_migrate_1_2_migratenode($node) {
+  $body = _wysiwyg_imageupload_migrate_1_2_migrate($node,'body');
+  $teaser  = _wysiwyg_imageupload_migrate_1_2_migrate($node,'teaser');
+
+  $data = array(
+    'body' => $body,
+    'teaser' => $teaser,
+    'vid' => $node->vid,
+  );
+
+  drupal_write_record('node_revisions',$data,array('vid'));
+
+}
+
+function _wysiwyg_imageupload_migrate_1_2_migrate($node,$part = 'body') {
+  if($node->$part == '') {    
+    return '';
+  }
+
+  $doc = new SmartDOMDocument();
+  $doc->loadHTML($node->$part);
+  $xpath = new DOMXPath($doc);
+  $images = $xpath->query("//img", $doc);
+  foreach($images as $n) {
+      if(strstr($n->getAttribute('class'),'imgupload') == false) {
+        continue;
+      }
+
+      $path = $n->getAttribute('alt');
+      $title = $n->getAttribute('title');
+      $class = $n->getAttribute('class');
+
+      preg_match('@.*imagecache-([^\s]*).*@',$class,$matches);
+      $preset = $matches[1];
+      preg_match('@.*(imgupl_floating_[^\s]*).*@',$class,$matches);
+      $alignment = $matches[1];
+      preg_match('@.*(imgupl_styles[^\s]*).*@',$class,$matches);
+      $style = $matches[1];
+
+      $file = db_fetch_object(db_query('SELECT * from {files} where filepath="%s"',$path));
+      $m = drupal_get_path('module','wysiwyg_imageupload');
+      require_once("$m/wysiwyg_imageupload.module");
+      $iid = _wysiwyg_imageupload_create_inline_entity($file,false);
+      
+      $update = array(
+        'iid'
+      );
+      
+      $old = db_fetch_object(db_query('SELECT * FROM {wysiwyg_imageupload} WHERE fid=%d',$file->fid));
+      $record = array(
+        'style' => $style,
+        'imagecache' => $preset,
+        'alignment' => $alignment,
+        'title' => $title,
+        'nid' => $old->nid,
+        'cid' => $old->cid,
+        'iid' => $iid
+      );
+      drupal_write_record('wysiwyg_imageupload_entity',$record, $update);
+      _wysiwyg_imageupload_create_revision($iid, $node->vid);
+
+      $macro = _wysiwyg_imageupload_render_backend($iid, '');
+      $t = $doc->createTextNode($macro);
+      $n->parentNode->replaceChild($t,$n);
+  }
+
+  return $doc->saveHTMLExact();
+}
+

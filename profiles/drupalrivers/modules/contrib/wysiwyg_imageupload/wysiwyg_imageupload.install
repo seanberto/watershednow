@@ -1,0 +1,162 @@
+<?php
+// $Id:$
+// Copyright (c) 2010 KontextWork GbR
+// Author: Eugen Mayer
+
+/**
+ * Implementation of hook_install().
+ */
+function wysiwyg_imageupload_install() {
+  drupal_install_schema('wysiwyg_imageupload');
+  _wysiwyg_imageupload_install_styles_if_missing();
+}
+
+/**
+ * Implementation of hook_uninstall().
+ */
+function wysiwyg_imageupload_uninstall() {
+  // Remove tables.
+  drupal_uninstall_schema('wysiwyg_imageupload');
+  // Remove variables.
+  db_query("DELETE FROM {variable} WHERE name LIKE 'wysiwyg_imageupload_%%'");
+
+}
+
+function _wysiwyg_imageupload_install_styles_if_missing() {
+  $value = variable_get('wysiwyg_imageupload_imgstyles',FALSE);
+  if ($value == FALSE) {
+    variable_set('wysiwyg_imageupload_imgstyles','Spacing 20px Border=imgupl_styles_spacing_20_black_border\n\rBlack Border=imgupl_styles_black_border\n\rSpacing 5px=imgupl_styles_spacing_5\n\rSpacing 10px=imgupl_styles_spacing_10');
+  }
+}
+/**
+ * Implementation of hook_schema().
+ */
+function wysiwyg_imageupload_schema() {
+  $schema = array();
+  _wysiwyg_imageupload_inline_table($schema);
+  return $schema;
+}
+
+function _wysiwyg_imageupload_inline_table(&$schema) {
+  $schema['wysiwyg_imageupload_entity'] = array(
+    'description' => 'Stores the inline arguments for a specific image used inline',
+    'fields' => array(
+      'iid' => array(
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'description' => 'The inline ID of the field, defined by the database.',
+        'no export' => TRUE,
+      ),
+      'fid' => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'Primary Key: The {files}.fid.',
+      ),
+      'nid' => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'The {node}.nid associated with the uploaded file.',
+      ),
+      'cid' => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'Primary Key: The {comment}.cid associated with the uploaded file.',
+      ),
+      'temporary' => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'Is this file temporary.',
+      ),
+      'imagecache' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => 'Current selected imagecache preset',
+      ),
+      'style' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => 'Current selected style to show the image with.',
+      ),
+      'title' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => 'Image title.',
+      ),
+      'alignment' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => 'Defines the alignment of the image',
+      ),
+    ),
+    'primary key' => array('iid')
+  );
+
+$schema['wysiwyg_imageupload_entity_revision'] = array(
+    'description' => 'Stores the inline arguments for a specific image used inline',
+    'fields' => array(
+      'iid' => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'description' => 'The inline ID of the field, defined by the database.',
+        'no export' => TRUE,
+      ),
+      'vid' => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'Primary Key: The {node}.vid associated with the uploaded file.',
+      ),
+
+    ),
+    'primary key' => array('vid','iid'),
+    'indexes' => array(
+      'iid' => array('iid'),
+      'vid' => array('vid'),
+    ),
+  );
+}
+
+function wysiwyg_imageupload_update_6200() {
+  $schema = array();
+  _wysiwyg_imageupload_inline_table($schema);
+  $ret = array();
+  db_create_table($ret, 'wysiwyg_imageupload_entity', $schema['wysiwyg_imageupload_entity']);
+  db_create_table($ret, 'wysiwyg_imageupload_entity_revision', $schema['wysiwyg_imageupload_entity_revision']);
+  return $ret;
+}
+
+function wysiwyg_imageupload_update_6201() {
+   $value = variable_get('wysiwyg_imageupload_imgstyles',FALSE);
+  if ($value !== FALSE) {
+    variable_set('wysiwyg_imageupload_imgstyles',str_replace(';',"\r",$value));
+  }
+  return array();
+}
+
+function wysiwyg_imageupload_requirements($phase) {
+  $requirements = array();
+  if($phase == 'runtime') {
+    require_once('wysiwyg_imageupload.module');
+    _wysiwyg_imageupload_check_dependencies($requirements);
+  }
+  return $requirements;
+}

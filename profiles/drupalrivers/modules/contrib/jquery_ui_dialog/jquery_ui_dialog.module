@@ -1,0 +1,71 @@
+<?php
+// $Id: jquery_ui_dialog.module,v 1.1.2.16 2010/07/01 14:31:20 eugenmayer Exp $
+# Copyright (c) 2010 Impressive.media
+# Author: Eugen Mayer
+// Include the API methods
+require_once('jquery_ui_dialog.api.inc');
+
+/*
+ * Implementing hook_menu()
+ */
+function jquery_ui_dialog_menu() {
+  $items = array();
+
+  $items['admin/settings/jquery_ui_dialog'] = array (
+    'type' => MENU_NORMAL_ITEM,
+    'title' => 'JQuery UI Dialog',
+    'description' => 'Configuration options for the JQuery UI Dialog module',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('jquery_ui_dialog_admin_settings'),
+    'access arguments' => array('administer site configuration'),
+    'file' => 'jquery_ui_dialog.admin.inc',
+   );
+
+  return $items;
+}
+
+/*
+ * This helper makes it possible to force dialog iframe, so the child call,
+ * to use a different page.tpl.php, which does not include all those regions, headers
+ * But only the css / js files and a clean layout (no layout)
+ */
+function jquery_ui_dialog_theme_registry_alter(&$theme_registry) {
+  if (isset($theme_registry['page']) && isset($theme_registry['page']['theme paths'])) {
+    $module_path = drupal_get_path('module', 'jquery_ui_dialog');
+    array_unshift($theme_registry['page']['theme paths'], $module_path);
+    array_unshift($theme_registry['page']['preprocess functions'], 'jquery_ui_dialog_pre_preprocess_page');
+  }
+}
+
+/**
+ * Preprocess template variables for page.tpl.php - step 1.
+ *
+ * Performance enhancement: prevent template_preprocess_page() from generating
+ * sidebar blocks when a modal frame has been requested.
+ */
+function jquery_ui_dialog_pre_preprocess_page(&$variables) {
+  if (!empty($GLOBALS['jquery_ui_dialog_page_template'])) {
+    $variables['show_blocks'] = FALSE;
+  }
+}
+
+/**
+ * Preprocess template variables for page.tpl.php - step 2.
+ *
+ * Now that we have altered the registry entry for theme('page'), we can tell
+ * theme() to use a different template file name when we need to render a child
+ * window.
+ */
+function jquery_ui_dialog_preprocess_page(&$variables) {
+  if (!empty($GLOBALS['jquery_ui_dialog_page_template'])) {
+    if (!isset($variables['template_files'])) {
+      $variables['template_files'] = array();
+    }
+    array_unshift($variables['template_files'], 'jquery_ui_dialog-page');
+    
+    if(variable_get('jquery_ui_dialog_default_css', true)) {
+      $m = drupal_get_path('module','jquery_ui_dialog');
+      drupal_add_css($m.'/css/jquery_ui_dialog.default.css');
+    }
+  }
+}

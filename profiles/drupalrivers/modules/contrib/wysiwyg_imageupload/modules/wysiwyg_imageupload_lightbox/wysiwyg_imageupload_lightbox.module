@@ -1,0 +1,145 @@
+<?php
+// $Id:$
+// Copyright (c) 2010 KontextWork GbR
+// Author: Eugen Mayer
+
+/**
+ * Thats where we actually alter the form and add our extra meta data
+ * The loaded $img_obj hold your data dui to the hook_wysiwyg_imageupload_entity_load_alter
+ * We use the value to set our default value
+ */
+function wysiwyg_imageupload_lightbox_form_alter(&$form, &$state,$form_id) {
+  if ( $form_id == 'wysiwyg_imageupload_edit_form') {
+    // You always find the IID here
+    $iid = $form['image_upload_details']['iid']['#value'];
+    $img_obj = _wysiwyg_imageupload_load_inline_entity($iid);
+    
+    $default = variable_get('wysiwyg_imageupload_lightbox_default', 1);
+    // only use the defaul if nothing set yet
+    if($img_obj->lightbox > -1) {
+      $default = $img_obj->lightbox;
+    }
+
+    $form['image_upload_details']['extras']['lightbox'] = array(
+      '#title' => t('Popup'),
+      '#description' => t('Preview original-size picture on click'),
+      '#type' => 'checkbox',
+      '#default_value' => $default,
+    );
+  }
+  else if ($form_id == 'wysiwyg_imageupload_admin_settings') {
+    wysiwyg_imageupload_lightbox_admin_settings($form);
+  }
+}
+
+function wysiwyg_imageupload_lightbox_theme() {
+  return wysiwyg_imageupload_theme();
+}
+
+/**
+ * Implementation of hook_wysiwyg_imageupload_entity_save
+ */
+function wysiwyg_imageupload_lightbox_wysiwyg_imageupload_entity_save($post, $iid) {
+  // $post has the $form_state['values'], so we find our form element there (the value)
+  $update = array (
+    'iid',
+  );
+  
+  $record = array (
+    'lightbox' => $post['lightbox'],
+    'iid' => $post['iid'],
+  );
+  drupal_write_record('wysiwyg_imageupload_entity',$record,$update);
+}
+
+/************* Everything below is optional ********************************************** */
+
+/**
+ * Implementation of hook_wysiwyg_imageupload_entity_load_alter
+ * This is an example for how to load values if you stored the meta data in a different table
+ * them wysiwyg_imageupload_entity
+ * YOU DONT need to implement this if you actually store your meta data IN the wysiwyg_imageupload_entity
+ * table
+ */
+/*
+function wysiwyg_imageupload_lightbox_wysiwyg_imageupload_entity_load_alter($entity, $iid) {
+  $result = db_fetch_object(db_query('SELECT lightbox FROM {some_relation_table} WHERE iid=%d',$iid);
+  $entity->lightbox = $result->lightbox;  
+}*/
+
+/** 
+ * This is optional. We alter the wysiwyg_imageupload admin settings
+ * to provide some settings for our module. If you dont need those
+ * you dont need to implement thise
+ */
+function wysiwyg_imageupload_lightbox_admin_settings(&$form) {
+  $presets = imagecache_presets();
+  $styles = array();
+  foreach ($presets as $preset) {
+    // We can use the presetid here (http://drupal.org/node/694188).
+    $styles[$preset['presetname']] = t("!preset", array('!preset' => $preset['presetname']));
+  }
+
+  $form['wysiwyg_imageupload_lightbox_settings'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Lightbox settings'),
+    '#description' => t('Only the selected presets are allowed to be chosen in the dialog'),
+    '#collapsed' => true,
+    '#collapsible' => true,
+    '#weight' => 0,
+  );
+
+  $form['wysiwyg_imageupload_lightbox_settings']['wysiwyg_imageupload_lightbox_preset'] = array(
+    '#type' => 'select',
+    '#title' => t('What preset to use for the popup?'),
+    '#description' => t('This preset will be used to show the image in the lightbox'),
+    '#default_value' => variable_get('wysiwyg_imageupload_lightbox_preset', 'wysiwyg_imageupload_lightbox_preset'),
+    '#options' => $styles
+  );
+   $form['wysiwyg_imageupload_lightbox_settings']['wysiwyg_imageupload_lightbox_default'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Default value'),
+    '#description' => t('If checked, lightbox integration will be checked in the image detail form by default'),
+    '#default_value' => variable_get('wysiwyg_imageupload_lightbox_default', 1),    
+  );
+}
+
+function wysiwyg_imageupload_lightbox_wysiwyg_imageupload_rendered_image_alter(&$img,$img_obj) {
+  $default = variable_get('wysiwyg_imageupload_lightbox_default', 1);
+  // only use the defaul if nothing set yet
+  if($img_obj->lightbox > -1) {
+    $default = $img_obj->lightbox;
+  }
+
+  if($default != 0) {
+    $transformed_path = imagecache_create_url(variable_get('wysiwyg_imageupload_lightbox_preset', 'wysiwyg_imageupload_lightbox_preset'), $img_obj->filepath);
+    $link_attributes = array(
+      'rel' => 'lightbox[wysiwyg_imageupload_inline]',
+      'title' => $img_obj->title
+    );
+    $img = l($img,$transformed_path,array('html' => true,'attributes' => $link_attributes));
+  }
+}
+
+/**
+ *  Those presets are needed for the lightbox
+ */
+function wysiwyg_imageupload_lightbox_imagecache_default_presets() {
+  $presets = array();
+  $presets['wysiwyg_imageupload_lightbox_preset'] = array (
+    'presetname' => 'wysiwyg_imageupload_lightbox_preset',
+    'actions' => array (
+      0 => array (
+        'weight' => '0',
+        'module' => 'imagecache',
+        'action' => 'imagecache_scale',
+        'data' => array (
+          'height' => '768',
+          'width' => '1280',	  
+        ),
+      ),
+    )
+  );
+  
+  return $presets;
+}

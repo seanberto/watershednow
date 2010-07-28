@@ -1,0 +1,65 @@
+/* Yes, we all hate IE6 */
+
+div.admin .left, div.admin .right {
+	width:46%;  /* fix the admin page in IE6 */
+}
+
+/*
+ * Tabs CSS - IE 5 and 6 don't support PNGs with alpha transparency.
+ */
+
+ul.primary li a,
+ul.primary li a .tab,
+ul.secondary li a,
+ul.secondary li a .tab {
+  display: inline; /* Otherwise the blocks mistakenly get 100% width in IE5 */
+  display: inline-block; /* Otherwise the blocks mistakenly get 100% width in IE6 */
+}
+
+ul.primary,
+ul.secondary {
+  width: 100%; /* Otherwise IE5 treats the ul as floated */
+  width: auto; /* Reset to auto width for IE6 */
+}
+
+ul.primary li a {
+  background: url(images/tabs/tab-left-ie6.png) no-repeat left -38px;
+}
+
+ul.primary li a .tab {
+  background: url(images/tabs/tab-right-ie6.png) no-repeat right -38px;
+}
+
+ul.primary li a:hover {
+	cursor:pointer; /* Minor fix for primary and secondary tabs in IE */
+	color:#555;
+	text-decoration:none;
+  background: url(images/tabs/tab-left-ie6.png) no-repeat left -76px;
+}
+ul.secondary li a:hover{
+	cursor:pointer; /* Minor fix for primary and secondary tabs in IE */
+	color:#555;
+	text-decoration:none;
+}
+ul.primary li a:hover .tab {
+  background: url(images/tabs/tab-right-ie6.png) no-repeat right -76px;
+}
+
+ul.primary li.active a,
+ul.primary li.active a:hover {
+  background: url(images/tabs/tab-left-ie6.png) no-repeat left 0;
+}
+
+ul.primary li.active a .tab,
+ul.primary li.active a:hover .tab {
+  background: url(images/tabs/tab-right-ie6.png) no-repeat right 0;
+}
+
+/** Drupal admin tables **/
+
+#content tr.even th,
+#content tr.even td,
+#content tr.odd th,
+#content tr.odd td {
+  border-bottom: 1px solid #ccc; /* IE doesn't display borders on table rows */
+}

@@ -1,0 +1,136 @@
+<?php
+// $Id:$
+// Copyright (c) 2010 KontextWork GbR
+// Author: Eugen Mayer
+
+/**
+ * Implementation of hook_imagecache_default_presets
+ */
+function wysiwyg_imageupload_browser_imagecache_default_presets() {
+  $presets = array();
+  $presets['wysiwyg_imageupload_browser_preview'] = array (
+    'presetname' => 'wysiwyg_imageupload_browser_preview',
+    'actions' => array (
+      0 => array (
+      'weight' => '0',
+      'module' => 'imagecache',
+      'action' => 'imagecache_scale_and_crop',
+      'data' => array (
+        'width' => '120',
+        'height' => '120',
+        'upscale' => 1,
+      ),
+      ),
+    )
+  );
+  return $presets;
+}
+
+/**
+ * Implementation of hook_menu
+ */
+function wysiwyg_imageupload_browser_menu() {
+  $items = array();
+  $items['ajax/wysiwyg_imageupload_browser/%'] = array(
+    'page callback' => 'wysiwyg_imageupload_browser_browser',
+    'page arguments' => array(2),
+    'access callback' => 'user_access',
+    'access arguments' => array('use wysiwyg image upload'),
+    'type' => MENU_CALLBACK,
+  );
+  return $items;
+}
+
+/**
+ * Implementation of hook_form_alter
+ */
+function wysiwyg_imageupload_browser_form_alter(&$form, $form_state, $form_id){
+  if ($form_id == 'wysiwyg_imageupload_upload_form' ||  $form_id == 'wysiwyg_imageupload_edit_form') {
+    $tabs = array();
+    $tabs[] = '<a href="#">New Image</a>';
+    $tabs[] = l(t('Browser'), 'ajax/wysiwyg_imageupload_browser/'.$form["#parameters"][2], array('title' => t('Choose a new image out of all your already uploaded ones')));
+    $form['browse'] = array(
+      '#value' => _wysiwyg_imageupload_browser_tabs($tabs,0),
+      '#weight' => 0,
+      '#prefix' => '<div id="wysiwyg_imagepload_tabnav" class="clearfix">',
+      '#suffix' => '</div>',
+    );
+  }
+  if ($form_id == 'wysiwyg_imageupload_admin_settings') {
+    $form['browser'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Browser'),
+      '#description' => t('Only the selected presets are allowed to be chosen in the dialog'),
+      '#collapsed' => true,
+      '#collapsible' => true,
+      '#weight' => 0,
+    );
+    $form['browser']['wysiwyg_imageupload_browser_itemcount'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Max. Items Displayed'),
+      '#description' => t('Define how many Images should be displayed inside the Browser'),
+      '#default_value' => variable_get('wysiwyg_imageupload_browser_itemcount', 8),
+      '#weight' => 0,
+    );
+    $presets = imagecache_presets();
+    $styles = array();
+    foreach ($presets as $preset) {
+      // We can use the presetid here (http://drupal.org/node/694188).
+      $styles[$preset['presetname']] = t("!preset", array('!preset' => $preset['presetname']));
+    }
+
+    $form['browser']['wysiwyg_imageupload_browser_preset'] = array(
+      '#type' => 'select',
+      '#title' => t('Browser preview preset'),
+      '#default_value' => variable_get('wysiwyg_imageupload_browser_preset', 'wysiwyg_imageupload_browser_preview'),
+      '#options' => $styles
+    );
+  }
+}
+
+/**
+ * Generate the Browser
+ */
+function wysiwyg_imageupload_browser_browser($form_id){
+  global $user, $base_url;
+  jquery_ui_dialog_child_js();
+  module_invoke('admin_menu', 'suppress');
+
+  // Adding tabs.
+  $tabs = array();
+  $parent_build_id = arg(2);
+  $tabs[] = l(t('New Image'), 'wysiwy_imageupload/upload/'.$parent_build_id, array('title' => t('Go back to the upload form and upload a new image')));
+  $tabs[] = '<a href="#">'.t('Browser').'</a>';
+  $output .= _wysiwyg_imageupload_browser_tabs($tabs,1);
+
+  $images = wysiwyg_imageupload_get_images(variable_get('wysiwyg_imageupload_browser_itemcount', 8), $user->uid, 'f.fid');
+  
+  $output .= '<div id="wysiwyg_imageupload_browser_group" class="clearfix">';
+  $preset = variable_get('wysiwyg_imageupload_browser_preset', 'wysiwyg_imageupload_browser_preview');
+  foreach($images as $image){
+    $imageHTML = '<div class="browser_image">';
+    $imageHTML .= theme('imagecache', $preset, $image['filepath'], t('Insert this image'),t('Insert this image'), TRUE, FALSE);
+    $imageHTML .= '</div>';
+    $output .= l($imageHTML, 'wysiwyg_imageupload/reuse/'.$image['iid']."/$parent_build_id", array(
+      'title' => t('Insert this image'),
+      'html' => 'true',
+      'absolute' => TRUE
+    ));
+  }
+  $output .= '</div>';
+
+  return $output;
+}
+
+function _wysiwyg_imageupload_browser_tabs($tabs,$active){
+  $m = drupal_get_path('module', 'wysiwyg_imageupload_browser');
+  drupal_add_css($m.'/wysiwyg_imageupload_browser.css');
+
+  $output .= '<ul class="wysiwyg_imageupload_tabs clearfix">';
+  foreach($tabs as $index => $tab){
+    if($index == $active){$class = 'active';}else{$class = 'inactive';}
+    $output .= '<li class="wysiwyg_imageupload_tab wysiwyg_imageupload_tab_'.$class.'">'.$tab.'</li>';
+  }
+  $output .= '</ul>';
+  return $output;
+}

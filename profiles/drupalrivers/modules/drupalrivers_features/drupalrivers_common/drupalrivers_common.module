@@ -1,0 +1,3 @@
+<?php
+
+include_once('drupalrivers_common.features.inc');

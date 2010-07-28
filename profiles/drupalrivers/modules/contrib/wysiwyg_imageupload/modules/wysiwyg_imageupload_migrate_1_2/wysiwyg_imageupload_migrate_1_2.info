@@ -1,0 +1,15 @@
+; $Id:$
+name = Wysiwyg imageupload - Migrates WYSIWYG imageupload 1-x t 2.x
+dependencies[] = wysiwyg_imageupload
+dependencies[] = wysiwyg_imageupload_migration
+package = Drupal Wiki
+version = "6.x-1.0"
+core = "6.x"
+project = "wysiwyg_imageupload_migrate_1_2"
+
+; Information added by drupal.org packaging script on 2010-06-26
+version = "6.x-2.0"
+core = "6.x"
+project = "wysiwyg_imageupload"
+datestamp = "1277512256"
+

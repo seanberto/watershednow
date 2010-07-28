@@ -1,0 +1,115 @@
+<?php
+// $Id:$
+// Copyright (c) 2010 KontextWork GbR
+// Author: Eugen Mayer
+
+function wysiwyg_imageupload_migration_menu() {
+  $items = array();
+/*  $items['admin/build/wysiwyg_imageupload/img_assist'] = array (
+    'title' => 'Migrate from img_assist',
+    'page callback' => '_wysiwyg_imageupload_migration_imageassist',
+    'access arguments' => array('administer site configuration'),
+    'type' => MENU_LOCAL_TASK,
+  );*/
+
+  $items['admin/build/wysiwyg_imageupload'] = array (
+    'title' => 'Wysiwyg imageupload migration',
+    'page callback' => '_wysiwyg_imageupload_migration_dashboard',
+    'access arguments' => array('administer site configuration'),
+  );
+
+  $items['admin/build/wysiwyg_imageupload/dashboad'] = array(
+    'title' => 'Dashboard',
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'weight' => -10,
+  );
+  return $items;
+}
+
+function _wysiwyg_imageupload_migration_dashboard() {
+  return 'This is the migration dashboard. Please chose a migration in the local tasks';
+}
+
+function _wysiwyg_imageupload_migration_imageassist() {
+  if(!module_exists('img_assist')) {
+    drupal_set_message(t('You nee to have img_assist activated during migration'),'warning');
+    return '';
+  }
+  $result = db_query('select nid from {node}');
+  $nodes = array();
+  while($row = db_fetch_object($result)) {
+    $nodes[] = node_load($row->nid);
+  }
+  $images = 0;
+  foreach($nodes as $node) {
+    $images += _wysiwyg_imageupload_migraion_imgassist_migratenode($node);
+  }
+  return t("Migration completed, overall !images images migrated", array('!images' => $images));
+}
+
+function _wysiwyg_imageupload_migraion_imgassist_migratenode($node) {
+  require_once(drupal_get_path('module','img_assist').'/img_assist.module');
+  $text = $node->body;
+  init_theme();
+  $reg = theme_get_registry();
+  $reg['img_assist_inline']['function'] = '_wysiwyg_imageupload_migraion_render_imgassist_img';
+  _theme_set_registry($reg);
+
+  foreach (img_assist_get_macros($text) as $unexpanded_macro => $macro) {
+    $expanded_macro = img_assist_render_image($macro);
+    // get the file object which corresponds to this object and save it
+    // in our relation
+    $image_node = node_load($macro['nid']);
+    $file = wysiwyg_imageupload_get_file($image_node->images['_original']);
+    $file->new = 1;
+    $node->imgupload_images[$file->fid] = $file;
+
+    $text           = str_replace($unexpanded_macro, $expanded_macro, $text);
+    $processed      = TRUE;
+  }
+  $node->body = $text;
+
+  // teaser
+  $text = $node->teaser;
+  foreach (img_assist_get_macros($text) as $unexpanded_macro => $macro) {
+    $expanded_macro = img_assist_render_image($macro);
+    // get the file object which corresponds to this object and save it
+    // in our relation
+    $image_node = node_load($macro['nid']);
+    if($image_node->images['_original'] == "") {
+      drupal_set_message("empty origin of image node {$image_node->nid}");
+    }
+    $file = wysiwyg_imageupload_get_file($image_node->images['_original']);
+    $file->new = 1;
+    $node->imgupload_images[$file->fid] = $file;
+
+    $text           = str_replace($unexpanded_macro, $expanded_macro, $text);
+    $processed      = TRUE;
+  }
+  $node->teaser = $text;
+  // Save the relation.. question is, if the node api is called anyway...
+  // in that case we dont need to call the handler manually but could wait for
+  // hook_nodeapi.
+  $m = drupal_get_path('module','wysiwyg_imageupload');
+  require_once("$m/wysiwyg_imageupload.file.inc");
+  node_save($node);
+  $images = count($node->imgupload_images);
+  if($images) {
+	  drupal_set_message("migrated node: {$node->nid} ($images images)");
+  }
+  return $images;
+}
+
+function _wysiwyg_imageupload_migraion_render_imgassist_img($node, $size, $attributes) {
+  global $base_path;
+
+  if($size['width'] != '') {
+    $width = " width='{$size['width']}'";
+  }
+
+  if($size['height'] != '') {
+    $height = " height='{$size['height']}'";
+  }
+  $output = "<img{$width}{$height} src='$base_path{$node->images['_original']}' alt=\"{$node->images['_original']}\" title=\"{$attributes['title']}\" class=\"imgupload imagecache imgupl_floating_{$attributes['align']}\">";
+  return $output;
+}

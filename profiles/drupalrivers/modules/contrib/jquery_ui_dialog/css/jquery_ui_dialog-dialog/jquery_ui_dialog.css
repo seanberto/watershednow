@@ -1,0 +1,1458 @@
+.jquery_ui_dialog-dialog-wrapper .ui-helper-hidden-accessible {
+  left:-99999999px;
+  position:absolute;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-helper-reset {
+  border:0;
+  font-size:100%;
+  line-height:1.3;
+  list-style:none;
+  margin:0;
+  outline:0;
+  padding:0;
+  text-decoration:none;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-helper-clearfix:after {
+  clear:both;
+  content:".";
+  display:block;
+  height:0;
+  visibility:hidden;
+}
+
+* html .ui-helper-clearfix {
+height:1%;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-helper-zfix {
+  filter:Alpha(Opacity=0);
+  height:100%;
+  left:0;
+  opacity:0;
+  position:absolute;
+  top:0;
+  width:100%;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-state-disabled {
+  cursor:default!important;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon {
+  background-image:url(images/ui-icons_222222_256x240.png);
+  background-repeat:no-repeat;
+  display:block;
+  height:16px;
+  overflow:hidden;
+  text-indent:-99999px;
+  width:16px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-widget-overlay {
+  background:#aaa url(images/ui-bg_flat_0_aaaaaa_40x100.png) 50% 50% repeat-x;
+  filter:Alpha(Opacity=30);
+  height:100%;
+  left:0;
+  opacity:.30;
+  position:absolute;
+  top:0;
+  width:100%;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-widget {
+  font-family:Verdana,Arial,sans-serif;
+  font-size:1.1em;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-widget input,.jquery_ui_dialog-dialog-wrapper .ui-widget select,.jquery_ui_dialog-dialog-wrapper .ui-widget textarea,.jquery_ui_dialog-dialog-wrapper .ui-widget button {
+  font-family:Verdana,Arial,sans-serif;
+  font-size:1em;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-widget-content {
+  background:#fff url(images/ui-bg_flat_75_ffffff_40x100.png) 50% 50% repeat-x;
+  border:1px solid #aaa;
+  color:#222;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-widget-header {
+  background:#ccc url(images/ui-bg_highlight-soft_75_cccccc_1x100.png) 50% 50% repeat-x;
+  border:1px solid #aaa;
+  color:#222;
+  font-weight:700;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-state-default,.jquery_ui_dialog-dialog-wrapper .ui-widget-content .ui-state-default {
+  background:#e6e6e6 url(images/ui-bg_glass_75_e6e6e6_1x400.png) 50% 50% repeat-x;
+  border:1px solid #d3d3d3;
+  color:#555;
+  font-weight:400;
+  outline:none;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-state-default a,.jquery_ui_dialog-dialog-wrapper .ui-state-default a:link,.jquery_ui_dialog-dialog-wrapper .ui-state-default a:visited {
+  color:#555;
+  outline:none;
+  text-decoration:none;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-state-hover,.jquery_ui_dialog-dialog-wrapper .ui-widget-content .ui-state-hover,.jquery_ui_dialog-dialog-wrapper .ui-state-focus,.jquery_ui_dialog-dialog-wrapper .ui-widget-content .ui-state-focus {
+  background:#dadada url(images/ui-bg_glass_75_dadada_1x400.png) 50% 50% repeat-x;
+  border:1px solid #999;
+  color:#212121;
+  font-weight:400;
+  outline:none;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-state-hover a,.jquery_ui_dialog-dialog-wrapper .ui-state-hover a:hover {
+  color:#212121;
+  outline:none;
+  text-decoration:none;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-state-active,.jquery_ui_dialog-dialog-wrapper .ui-widget-content .ui-state-active {
+  background:#fff url(images/ui-bg_glass_65_ffffff_1x400.png) 50% 50% repeat-x;
+  border:1px solid #aaa;
+  color:#212121;
+  font-weight:400;
+  outline:none;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-state-active a,.jquery_ui_dialog-dialog-wrapper .ui-state-active a:link,.jquery_ui_dialog-dialog-wrapper .ui-state-active a:visited {
+  color:#212121;
+  outline:none;
+  text-decoration:none;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-state-highlight,.jquery_ui_dialog-dialog-wrapper .ui-widget-content .ui-state-highlight {
+  background:#fbf9ee url(images/ui-bg_glass_55_fbf9ee_1x400.png) 50% 50% repeat-x;
+  border:1px solid #fcefa1;
+  color:#363636;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-state-highlight a,.jquery_ui_dialog-dialog-wrapper .ui-widget-content .ui-state-highlight a {
+  color:#363636;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-state-error,.jquery_ui_dialog-dialog-wrapper .ui-widget-content .ui-state-error {
+  background:#fef1ec url(images/ui-bg_glass_95_fef1ec_1x400.png) 50% 50% repeat-x;
+  border:1px solid #cd0a0a;
+  color:#cd0a0a;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-state-disabled,.jquery_ui_dialog-dialog-wrapper .ui-widget-content .ui-state-disabled {
+  background-image:none;
+  filter:Alpha(Opacity=35);
+  opacity:.35;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-priority-primary,.jquery_ui_dialog-dialog-wrapper .ui-widget-content .ui-priority-primary {
+  font-weight:700;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-priority-secondary,.jquery_ui_dialog-dialog-wrapper .ui-widget-content .ui-priority-secondary {
+  filter:Alpha(Opacity=70);
+  font-weight:400;
+  opacity:.7;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-state-default .ui-icon {
+  background-image:url(images/ui-icons_888888_256x240.png);
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-state-highlight .ui-icon {
+  background-image:url(images/ui-icons_2e83ff_256x240.png);
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-state-error .ui-icon,.jquery_ui_dialog-dialog-wrapper .ui-state-error-text .ui-icon {
+  background-image:url(images/ui-icons_cd0a0a_256x240.png);
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-carat-1-n {
+  background-position:0 0;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-carat-1-ne {
+  background-position:-16px 0;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-carat-1-e {
+  background-position:-32px 0;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-carat-1-se {
+  background-position:-48px 0;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-carat-1-s {
+  background-position:-64px 0;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-carat-1-sw {
+  background-position:-80px 0;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-carat-1-w {
+  background-position:-96px 0;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-carat-1-nw {
+  background-position:-112px 0;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-carat-2-n-s {
+  background-position:-128px 0;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-carat-2-e-w {
+  background-position:-144px 0;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-triangle-1-n {
+  background-position:0 -16px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-triangle-1-ne {
+  background-position:-16px -16px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-triangle-1-e {
+  background-position:-32px -16px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-triangle-1-se {
+  background-position:-48px -16px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-triangle-1-s {
+  background-position:-64px -16px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-triangle-1-sw {
+  background-position:-80px -16px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-triangle-1-w {
+  background-position:-96px -16px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-triangle-1-nw {
+  background-position:-112px -16px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-triangle-2-n-s {
+  background-position:-128px -16px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-triangle-2-e-w {
+  background-position:-144px -16px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-arrow-1-n {
+  background-position:0 -32px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-arrow-1-ne {
+  background-position:-16px -32px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-arrow-1-e {
+  background-position:-32px -32px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-arrow-1-se {
+  background-position:-48px -32px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-arrow-1-s {
+  background-position:-64px -32px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-arrow-1-sw {
+  background-position:-80px -32px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-arrow-1-w {
+  background-position:-96px -32px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-arrow-1-nw {
+  background-position:-112px -32px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-arrow-2-n-s {
+  background-position:-128px -32px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-arrow-2-ne-sw {
+  background-position:-144px -32px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-arrow-2-e-w {
+  background-position:-160px -32px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-arrow-2-se-nw {
+  background-position:-176px -32px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-arrowstop-1-n {
+  background-position:-192px -32px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-arrowstop-1-e {
+  background-position:-208px -32px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-arrowstop-1-s {
+  background-position:-224px -32px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-arrowstop-1-w {
+  background-position:-240px -32px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-arrowthick-1-n {
+  background-position:0 -48px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-arrowthick-1-ne {
+  background-position:-16px -48px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-arrowthick-1-e {
+  background-position:-32px -48px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-arrowthick-1-se {
+  background-position:-48px -48px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-arrowthick-1-s {
+  background-position:-64px -48px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-arrowthick-1-sw {
+  background-position:-80px -48px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-arrowthick-1-w {
+  background-position:-96px -48px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-arrowthick-1-nw {
+  background-position:-112px -48px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-arrowthick-2-n-s {
+  background-position:-128px -48px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-arrowthick-2-ne-sw {
+  background-position:-144px -48px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-arrowthick-2-e-w {
+  background-position:-160px -48px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-arrowthick-2-se-nw {
+  background-position:-176px -48px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-arrowthickstop-1-n {
+  background-position:-192px -48px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-arrowthickstop-1-e {
+  background-position:-208px -48px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-arrowthickstop-1-s {
+  background-position:-224px -48px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-arrowthickstop-1-w {
+  background-position:-240px -48px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-arrowreturnthick-1-w {
+  background-position:0 -64px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-arrowreturnthick-1-n {
+  background-position:-16px -64px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-arrowreturnthick-1-e {
+  background-position:-32px -64px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-arrowreturnthick-1-s {
+  background-position:-48px -64px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-arrowreturn-1-w {
+  background-position:-64px -64px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-arrowreturn-1-n {
+  background-position:-80px -64px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-arrowreturn-1-e {
+  background-position:-96px -64px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-arrowreturn-1-s {
+  background-position:-112px -64px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-arrowrefresh-1-w {
+  background-position:-128px -64px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-arrowrefresh-1-n {
+  background-position:-144px -64px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-arrowrefresh-1-e {
+  background-position:-160px -64px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-arrowrefresh-1-s {
+  background-position:-176px -64px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-arrow-4 {
+  background-position:0 -80px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-arrow-4-diag {
+  background-position:-16px -80px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-extlink {
+  background-position:-32px -80px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-newwin {
+  background-position:-48px -80px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-refresh {
+  background-position:-64px -80px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-shuffle {
+  background-position:-80px -80px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-transfer-e-w {
+  background-position:-96px -80px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-transferthick-e-w {
+  background-position:-112px -80px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-folder-collapsed {
+  background-position:0 -96px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-folder-open {
+  background-position:-16px -96px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-document {
+  background-position:-32px -96px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-document-b {
+  background-position:-48px -96px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-note {
+  background-position:-64px -96px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-mail-closed {
+  background-position:-80px -96px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-mail-open {
+  background-position:-96px -96px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-suitcase {
+  background-position:-112px -96px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-comment {
+  background-position:-128px -96px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-person {
+  background-position:-144px -96px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-print {
+  background-position:-160px -96px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-trash {
+  background-position:-176px -96px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-locked {
+  background-position:-192px -96px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-unlocked {
+  background-position:-208px -96px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-bookmark {
+  background-position:-224px -96px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-tag {
+  background-position:-240px -96px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-home {
+  background-position:0 -112px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-flag {
+  background-position:-16px -112px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-calendar {
+  background-position:-32px -112px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-cart {
+  background-position:-48px -112px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-pencil {
+  background-position:-64px -112px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-clock {
+  background-position:-80px -112px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-disk {
+  background-position:-96px -112px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-calculator {
+  background-position:-112px -112px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-zoomin {
+  background-position:-128px -112px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-zoomout {
+  background-position:-144px -112px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-search {
+  background-position:-160px -112px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-wrench {
+  background-position:-176px -112px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-gear {
+  background-position:-192px -112px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-heart {
+  background-position:-208px -112px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-star {
+  background-position:-224px -112px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-link {
+  background-position:-240px -112px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-cancel {
+  background-position:0 -128px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-plus {
+  background-position:-16px -128px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-plusthick {
+  background-position:-32px -128px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-minus {
+  background-position:-48px -128px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-minusthick {
+  background-position:-64px -128px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-close {
+  background-position:-80px -128px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-closethick {
+  background-position:-96px -128px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-key {
+  background-position:-112px -128px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-lightbulb {
+  background-position:-128px -128px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-scissors {
+  background-position:-144px -128px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-clipboard {
+  background-position:-160px -128px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-copy {
+  background-position:-176px -128px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-contact {
+  background-position:-192px -128px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-image {
+  background-position:-208px -128px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-video {
+  background-position:-224px -128px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-script {
+  background-position:-240px -128px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-alert {
+  background-position:0 -144px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-info {
+  background-position:-16px -144px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-notice {
+  background-position:-32px -144px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-help {
+  background-position:-48px -144px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-check {
+  background-position:-64px -144px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-bullet {
+  background-position:-80px -144px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-radio-off {
+  background-position:-96px -144px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-radio-on {
+  background-position:-112px -144px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-pin-w {
+  background-position:-128px -144px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-pin-s {
+  background-position:-144px -144px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-play {
+  background-position:0 -160px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-pause {
+  background-position:-16px -160px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-seek-next {
+  background-position:-32px -160px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-seek-prev {
+  background-position:-48px -160px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-seek-end {
+  background-position:-64px -160px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-seek-first {
+  background-position:-80px -160px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-stop {
+  background-position:-96px -160px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-eject {
+  background-position:-112px -160px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-volume-off {
+  background-position:-128px -160px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-volume-on {
+  background-position:-144px -160px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-power {
+  background-position:0 -176px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-signal-diag {
+  background-position:-16px -176px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-signal {
+  background-position:-32px -176px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-battery-0 {
+  background-position:-48px -176px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-battery-1 {
+  background-position:-64px -176px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-battery-2 {
+  background-position:-80px -176px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-battery-3 {
+  background-position:-96px -176px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-circle-plus {
+  background-position:0 -192px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-circle-minus {
+  background-position:-16px -192px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-circle-close {
+  background-position:-32px -192px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-circle-triangle-e {
+  background-position:-48px -192px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-circle-triangle-s {
+  background-position:-64px -192px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-circle-triangle-w {
+  background-position:-80px -192px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-circle-triangle-n {
+  background-position:-96px -192px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-circle-arrow-e {
+  background-position:-112px -192px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-circle-arrow-s {
+  background-position:-128px -192px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-circle-arrow-w {
+  background-position:-144px -192px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-circle-arrow-n {
+  background-position:-160px -192px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-circle-zoomin {
+  background-position:-176px -192px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-circle-zoomout {
+  background-position:-192px -192px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-circle-check {
+  background-position:-208px -192px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-circlesmall-plus {
+  background-position:0 -208px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-circlesmall-minus {
+  background-position:-16px -208px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-circlesmall-close {
+  background-position:-32px -208px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-squaresmall-plus {
+  background-position:-48px -208px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-squaresmall-minus {
+  background-position:-64px -208px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-squaresmall-close {
+  background-position:-80px -208px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-grip-dotted-vertical {
+  background-position:0 -224px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-grip-dotted-horizontal {
+  background-position:-16px -224px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-grip-solid-vertical {
+  background-position:-32px -224px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-grip-solid-horizontal {
+  background-position:-48px -224px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-gripsmall-diagonal-se {
+  background-position:-64px -224px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-icon-grip-diagonal-se {
+  background-position:-80px -224px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-corner-tl {
+  -moz-border-radius-topleft:4px;
+  -webkit-border-top-left-radius:4px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-corner-tr {
+  -moz-border-radius-topright:4px;
+  -webkit-border-top-right-radius:4px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-corner-bl {
+  -moz-border-radius-bottomleft:4px;
+  -webkit-border-bottom-left-radius:4px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-corner-br {
+  -moz-border-radius-bottomright:4px;
+  -webkit-border-bottom-right-radius:4px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-corner-top {
+  -moz-border-radius-topleft:4px;
+  -moz-border-radius-topright:4px;
+  -webkit-border-top-left-radius:4px;
+  -webkit-border-top-right-radius:4px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-corner-bottom {
+  -moz-border-radius-bottomleft:4px;
+  -moz-border-radius-bottomright:4px;
+  -webkit-border-bottom-left-radius:4px;
+  -webkit-border-bottom-right-radius:4px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-corner-right {
+  -moz-border-radius-bottomright:4px;
+  -moz-border-radius-topright:4px;
+  -webkit-border-bottom-right-radius:4px;
+  -webkit-border-top-right-radius:4px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-corner-left {
+  -moz-border-radius-bottomleft:4px;
+  -moz-border-radius-topleft:4px;
+  -webkit-border-bottom-left-radius:4px;
+  -webkit-border-top-left-radius:4px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-corner-all {
+  -moz-border-radius:4px;
+  -webkit-border-radius:4px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-widget-shadow {
+  -moz-border-radius:8px;
+  -webkit-border-radius:8px;
+  background:#aaa url(images/ui-bg_flat_0_aaaaaa_40x100.png) 50% 50% repeat-x;
+  filter:Alpha(Opacity=30);
+  margin:-8px 0 0 -8px;
+  opacity:.30;
+  padding:8px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-accordion .ui-accordion-header {
+  cursor:pointer;
+  margin-top:1px;
+  position:relative;
+  zoom:1;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-accordion .ui-accordion-li-fix {
+  display:inline;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-accordion .ui-accordion-header-active {
+  border-bottom:0!important;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-accordion .ui-accordion-header a {
+  display:block;
+  font-size:1em;
+  padding:.5em .5em .5em 2.2em;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-accordion .ui-accordion-header .ui-icon {
+  left:.5em;
+  margin-top:-8px;
+  position:absolute;
+  top:50%;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-accordion .ui-accordion-content {
+  border-top:0;
+  display:none;
+  margin-bottom:2px;
+  margin-top:-2px;
+  overflow:auto;
+  padding:1em 2.2em;
+  position:relative;
+  top:1px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-datepicker {
+  padding:.2em .2em 0;
+  width:17em;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-datepicker .ui-datepicker-header {
+  padding:.2em 0;
+  position:relative;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-datepicker .ui-datepicker-prev,.jquery_ui_dialog-dialog-wrapper .ui-datepicker .ui-datepicker-next {
+  height:1.8em;
+  position:absolute;
+  top:2px;
+  width:1.8em;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-datepicker .ui-datepicker-prev-hover,.jquery_ui_dialog-dialog-wrapper .ui-datepicker .ui-datepicker-next-hover {
+  top:1px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-datepicker .ui-datepicker-prev {
+  left:2px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-datepicker .ui-datepicker-next {
+  right:2px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-datepicker .ui-datepicker-prev-hover {
+  left:1px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-datepicker .ui-datepicker-next-hover {
+  right:1px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-datepicker .ui-datepicker-prev span,.jquery_ui_dialog-dialog-wrapper .ui-datepicker .ui-datepicker-next span {
+  display:block;
+  left:50%;
+  margin-left:-8px;
+  margin-top:-8px;
+  position:absolute;
+  top:50%;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-datepicker .ui-datepicker-title {
+  line-height:1.8em;
+  margin:0 2.3em;
+  text-align:center;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-datepicker .ui-datepicker-title select {
+  float:left;
+  font-size:1em;
+  margin:1px 0;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-datepicker select.ui-datepicker-month-year {
+  width:100%;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-datepicker select.ui-datepicker-month,.jquery_ui_dialog-dialog-wrapper .ui-datepicker select.ui-datepicker-year {
+  width:49%;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-datepicker table {
+  border-collapse:collapse;
+  font-size:.9em;
+  margin:0 0 .4em;
+  width:100%;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-datepicker th {
+  border:0;
+  font-weight:700;
+  padding:.7em .3em;
+  text-align:center;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-datepicker td {
+  border:0;
+  padding:1px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-datepicker td span,.jquery_ui_dialog-dialog-wrapper .ui-datepicker td a {
+  display:block;
+  padding:.2em;
+  text-align:right;
+  text-decoration:none;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-datepicker .ui-datepicker-buttonpane {
+  background-image:none;
+  border-bottom:0;
+  border-left:0;
+  border-right:0;
+  margin:.7em 0 0;
+  padding:0 .2em;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-datepicker .ui-datepicker-buttonpane button {
+  cursor:pointer;
+  float:right;
+  margin:.5em .2em .4em;
+  overflow:visible;
+  padding:.2em .6em .3em;
+  width:auto;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-datepicker.ui-datepicker-multi {
+  width:auto;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-datepicker-multi .ui-datepicker-group table {
+  margin:0 auto .4em;
+  width:95%;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-datepicker-multi-2 .ui-datepicker-group {
+  width:50%;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-datepicker-multi-3 .ui-datepicker-group {
+  width:33.3%;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-datepicker-multi-4 .ui-datepicker-group {
+  width:25%;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-datepicker-multi .ui-datepicker-buttonpane {
+  clear:left;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-datepicker-row-break {
+  clear:both;
+  width:100%;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-datepicker-rtl {
+  direction:rtl;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-datepicker-rtl .ui-datepicker-prev {
+  left:auto;
+  right:2px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-datepicker-rtl .ui-datepicker-next {
+  left:2px;
+  right:auto;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-datepicker-rtl .ui-datepicker-prev:hover {
+  left:auto;
+  right:1px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-datepicker-rtl .ui-datepicker-next:hover {
+  left:1px;
+  right:auto;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-datepicker-rtl .ui-datepicker-buttonpane {
+  clear:right;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-datepicker-cover {
+  display:block;
+  filter:mask();
+  height:200px;
+  left:-4px;
+  position:absolute;
+  top:-4px;
+  width:200px;
+  z-index:-1;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-dialog {
+  padding:.2em;
+  position:relative;
+  width:300px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-dialog .ui-dialog-titlebar {
+  padding:.5em .3em .3em 1em;
+  position:relative;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-dialog .ui-dialog-title {
+  float:left;
+  margin:.1em 0 .2em;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-dialog .ui-dialog-titlebar-close {
+  height:18px;
+  margin:-10px 0 0;
+  padding:1px;
+  position:absolute;
+  right:.3em;
+  top:50%;
+  width:19px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-dialog .ui-dialog-titlebar-close span {
+  display:block;
+  margin:1px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-dialog .ui-dialog-titlebar-close:hover,.jquery_ui_dialog-dialog-wrapper .ui-dialog .ui-dialog-titlebar-close:focus {
+  padding:0;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-dialog .ui-dialog-content {
+  background:none;
+  border:0;
+  overflow:auto;
+  padding:.5em 1em;
+  zoom:1;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-dialog .ui-dialog-buttonpane {
+  background-image:none;
+  border-width:1px 0 0;
+  margin:.5em 0 0;
+  padding:.3em 1em .5em .4em;
+  text-align:left;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-dialog .ui-dialog-buttonpane button {
+  cursor:pointer;
+  float:right;
+  line-height:1.4em;
+  margin:.5em .4em .5em 0;
+  overflow:visible;
+  padding:.2em .6em .3em;
+  width:auto;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-dialog .ui-resizable-se {
+  bottom:3px;
+  height:14px;
+  right:3px;
+  width:14px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-draggable .ui-dialog-titlebar {
+  cursor:move;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-progressbar {
+  height:2em;
+  text-align:left;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-progressbar .ui-progressbar-value {
+  height:100%;
+  margin:-1px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-resizable {
+  position:relative;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-resizable-handle {
+  display:block;
+  font-size:.1px;
+  position:absolute;
+  z-index:99999;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-resizable-n {
+  cursor:n-resize;
+  height:7px;
+  left:0;
+  top:-5px;
+  width:100%;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-resizable-s {
+  bottom:-5px;
+  cursor:s-resize;
+  height:7px;
+  left:0;
+  width:100%;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-resizable-e {
+  cursor:e-resize;
+  height:100%;
+  right:-5px;
+  top:0;
+  width:7px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-resizable-w {
+  cursor:w-resize;
+  height:100%;
+  left:-5px;
+  top:0;
+  width:7px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-resizable-se {
+  bottom:1px;
+  cursor:se-resize;
+  height:12px;
+  right:1px;
+  width:12px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-resizable-sw {
+  bottom:-5px;
+  cursor:sw-resize;
+  height:9px;
+  left:-5px;
+  width:9px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-resizable-nw {
+  cursor:nw-resize;
+  height:9px;
+  left:-5px;
+  top:-5px;
+  width:9px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-resizable-ne {
+  cursor:ne-resize;
+  height:9px;
+  right:-5px;
+  top:-5px;
+  width:9px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-slider {
+  position:relative;
+  text-align:left;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-slider .ui-slider-handle {
+  cursor:default;
+  height:1.2em;
+  position:absolute;
+  width:1.2em;
+  z-index:2;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-slider .ui-slider-range {
+  border:0;
+  display:block;
+  font-size:.7em;
+  position:absolute;
+  z-index:1;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-slider-horizontal {
+  height:.8em;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-slider-horizontal .ui-slider-handle {
+  margin-left:-.6em;
+  top:-.3em;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-slider-horizontal .ui-slider-range {
+  height:100%;
+  top:0;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-slider-horizontal .ui-slider-range-min {
+  left:0;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-slider-horizontal .ui-slider-range-max {
+  right:0;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-slider-vertical {
+  height:100px;
+  width:.8em;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-slider-vertical .ui-slider-handle {
+  left:-.3em;
+  margin-bottom:-.6em;
+  margin-left:0;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-slider-vertical .ui-slider-range {
+  left:0;
+  width:100%;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-slider-vertical .ui-slider-range-min {
+  bottom:0;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-slider-vertical .ui-slider-range-max {
+  top:0;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-tabs {
+  padding:.2em;
+  zoom:1;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-tabs .ui-tabs-nav {
+  list-style:none;
+  padding:.2em .2em 0;
+  position:relative;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-tabs .ui-tabs-nav li {
+  border-bottom-width:0!important;
+  float:left;
+  margin:0 .2em -1px 0;
+  padding:0;
+  position:relative;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-tabs .ui-tabs-nav li a {
+  float:left;
+  padding:.5em 1em;
+  text-decoration:none;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-tabs .ui-tabs-nav li.ui-tabs-selected {
+  border-bottom-width:0;
+  padding-bottom:1px;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-tabs .ui-tabs-nav li.ui-tabs-selected a,.jquery_ui_dialog-dialog-wrapper .ui-tabs .ui-tabs-nav li.ui-state-disabled a,.jquery_ui_dialog-dialog-wrapper .ui-tabs .ui-tabs-nav li.ui-state-processing a {
+  cursor:text;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-tabs .ui-tabs-nav li a,.jquery_ui_dialog-dialog-wrapper .ui-tabs.ui-tabs-collapsible .ui-tabs-nav li.ui-tabs-selected a {
+  cursor:pointer;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-tabs .ui-tabs-panel {
+  background:none;
+  border-width:0;
+  display:block;
+  padding:1em 1.4em;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-tabs .ui-tabs-hide {
+  display:none!important;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-helper-hidden,.jquery_ui_dialog-dialog-wrapper .ui-resizable-disabled .ui-resizable-handle,.jquery_ui_dialog-dialog-wrapper .ui-resizable-autohide .ui-resizable-handle {
+  display:none;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-helper-clearfix,.jquery_ui_dialog-dialog-wrapper .ui-accordion .ui-accordion-content-active {
+  display:block;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-widget-content a,.jquery_ui_dialog-dialog-wrapper .ui-widget-header a {
+  color:#222;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-state-error a,.jquery_ui_dialog-dialog-wrapper .ui-widget-content .ui-state-error a,.jquery_ui_dialog-dialog-wrapper .ui-state-error-text,.jquery_ui_dialog-dialog-wrapper .ui-widget-content .ui-state-error-text {
+  color:#cd0a0a;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-widget-content .ui-icon,.jquery_ui_dialog-dialog-wrapper .ui-widget-header .ui-icon {
+  background-image:url(images/ui-icons_222222_256x240.png);
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-state-hover .ui-icon,.jquery_ui_dialog-dialog-wrapper .ui-state-focus .ui-icon,.jquery_ui_dialog-dialog-wrapper .ui-state-active .ui-icon {
+  background-image:url(images/ui-icons_454545_256x240.png);
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-datepicker .ui-datepicker-title select.ui-datepicker-year,.jquery_ui_dialog-dialog-wrapper .ui-datepicker-rtl .ui-datepicker-buttonpane button.ui-datepicker-current,.jquery_ui_dialog-dialog-wrapper .ui-datepicker-rtl .ui-datepicker-group {
+  float:right;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-datepicker .ui-datepicker-buttonpane button.ui-datepicker-current,.jquery_ui_dialog-dialog-wrapper .ui-datepicker-multi .ui-datepicker-group,.jquery_ui_dialog-dialog-wrapper .ui-datepicker-rtl .ui-datepicker-buttonpane button {
+  float:left;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-datepicker-multi .ui-datepicker-group-last .ui-datepicker-header,.jquery_ui_dialog-dialog-wrapper .ui-datepicker-multi .ui-datepicker-group-middle .ui-datepicker-header {
+  border-left-width:0;
+}
+
+.jquery_ui_dialog-dialog-wrapper .ui-datepicker-rtl .ui-datepicker-group-last .ui-datepicker-header,.jquery_ui_dialog-dialog-wrapper .ui-datepicker-rtl .ui-datepicker-group-middle .ui-datepicker-header {
+  border-left-width:1px;
+  border-right-width:0;
+}

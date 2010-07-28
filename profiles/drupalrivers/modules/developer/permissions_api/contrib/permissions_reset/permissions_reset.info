@@ -1,0 +1,19 @@
+; $Id$
+name = "Permissions Reset"
+description = "Add a helper widget above the user permission page to do mass resets of permissions by role and module."
+core = 6.x
+dependencies[] = permissions_api
+
+; Information added by drupal.org packaging script on 2010-03-09
+version = "6.x-2.6"
+core = "6.x"
+project = "permissions_api"
+datestamp = "1268145016"
+
+
+; Information added by drupal.org packaging script on 2010-05-18
+version = "6.x-2.9"
+core = "6.x"
+project = "permissions_api"
+datestamp = "1274197217"
+

@@ -1,0 +1,497 @@
+<?php
+// $Id:$
+// Copyright (c) 2010 KontextWork GbR
+// Author: Eugen Mayer
+
+require_once('wysiwyg_imageupload.file.inc');
+require_once('wysiwyg_imageupload.form.inc');
+require_once('wysiwyg_imageupload.ajax.inc');
+require_once('wysiwyg_imageupload.filter.inc');
+
+/**
+* Implementes hook_menu().
+*/
+function wysiwyg_imageupload_menu() {
+  $items = array();
+  $items['wysiwy_imageupload/upload/%'] = array(
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('wysiwyg_imageupload_upload_form', 2),
+    'access callback' => 'user_access',
+    'access arguments' => array('use wysiwyg image upload'),
+    'type' => MENU_CALLBACK,
+  );
+  // Render for WYSIWYG
+  $items['ajax/wysiwyg_imgupl/render_wysiwyg/%'] = array(
+    'page callback' => '_wysiwyg_imageupload_render_wysiwyg',
+    'page arguments' => array(3),
+    'access callback' => 'user_access',
+    'access arguments' => array('use wysiwyg image upload'),
+    'type' => MENU_CALLBACK,
+  );
+  // return multiple rendered images
+  $items['ajax/wysiwyg_imgupl/render_wysiwyg_images/%'] = array(
+    'page callback' => '_wysiwyg_imageupload_render_wysiwyg_images',
+    'page arguments' => array(3,4,5),
+    'access callback' => 'user_access',
+    'access arguments' => array('use wysiwyg image upload'),
+    'type' => MENU_CALLBACK,
+  );
+  // Form for editing an image
+  $items['wysiwyg_imageupload/edit/%'] = array(
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('wysiwyg_imageupload_edit_form',2,3),
+    'access callback' => 'user_access',
+    'access arguments' => array('use wysiwyg image upload'),
+    'type' => MENU_CALLBACK,
+  );
+  
+  // Form for editing an image
+  $items['wysiwyg_imageupload/reuse/%'] = array(
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('wysiwyg_imageupload_edit_form',2, 3,true),
+    'access callback' => 'user_access',
+    'access arguments' => array('use wysiwyg image upload'),
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['admin/settings/wysiwyg_imageupload'] = array (
+    'type' => MENU_NORMAL_ITEM,
+    'title' => 'WYSIWYG Image upload',
+    'description' => 'Configuration options for the WYSIWYG Image upload module',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('wysiwyg_imageupload_admin_settings'),
+    'access arguments' => array('administer site configuration'),
+    'file' => 'wysiwyg_imageupload.admin.inc'
+  );
+
+  return $items;
+}
+
+/**
+* Implementing the hook_wysiwyg_include_directory().
+* This is needed to register our WYSIWYG Plugin
+*/
+function wysiwyg_imageupload_wysiwyg_include_directory($type) {
+  switch ($type) {
+    case 'plugins':
+      return $type;
+  }
+}
+
+/**
+* Adding general styles like floating and default style
+*/
+function wysiwyg_imageupload_init() {
+  drupal_add_css(drupal_get_path('module','wysiwyg_imageupload').'/plugins/imgupload/imgupload.css');
+}
+
+/**
+* Implementation of hook_perm().
+*/
+function wysiwyg_imageupload_perm() {
+  return array('use wysiwyg image upload');
+}
+
+/**
+* Implementation of hook_nodeapi().
+*/
+function wysiwyg_imageupload_nodeapi(&$node, $op, $teaser) {
+  switch ($op) {
+    case 'load':
+      $output['imgupload_images'] = _wysiwyg_imageupload_load($node);
+      return $output;
+    break;
+    case 'insert':
+    case 'update':
+      if (user_access('use wysiwyg image upload')) {
+        _wysiwyg_imageupload_reset_filter_cache($node->format, $node->body);
+        _wysiwyg_imageupload_save($node);
+      }
+      break;
+    case 'delete':
+      _wysiwyg_imageupload_handle_node_delete($node->nid);
+    break;
+  }
+}
+
+/**
+* implementation of hook_comment().
+*/
+function wysiwyg_imageupload_comment(&$a1, $op) {
+  switch ($op) {
+    case 'insert':
+    case 'update':
+      $comment = $a1;
+      if (user_access('use wysiwyg image upload')) {
+        _wysiwyg_imageupload_save($comment);
+        _wysiwyg_imageupload_reset_filter_cache($comment->format, $comment->body);
+      }
+      break;
+  }
+}
+
+/**
+* Returns all the image styles to show in the selection
+*/
+function _wysiwyg_imageupload_get_image_styles() {
+  // Must have the format: Descriptive=css_style,Descriptive2=css_style2..
+  $settings = variable_get('wysiwyg_imageupload_imgstyles', '');
+  $styles = array();
+  if ($settings != '') {
+    $styles_lines = array();
+    $styles_lines = preg_split("/((\r(?!\n))|((?<!\r)\n)|(\r\n))/", $settings);
+    foreach ($styles_lines as $style) {
+      $style = explode('=',$style);
+      $styles[$style[1]] = t("!style",array('!style' => $style[0]));
+    }
+  }
+  drupal_alter('wysiwyg_imageupload_image_styles', $styles);
+  return $styles;
+}
+
+/**
+* API: returns the filepath of a file
+* @fid: the file id
+*/
+function wysiwyg_imageupload_get_imageurl($fid) {
+  return db_result(db_query('select filepath from {files} where fid=%d',$fid));
+}
+
+/**
+* API: loads a file-object using the path as key
+* @path: the path of the file
+*/
+function wysiwyg_imageupload_get_file($path) {
+  return db_fetch_object(db_query('select * from {files} where filepath="%s"',$path));
+}
+
+/**
+* API: Returns the file-object
+* @fid: the file-id
+*/
+function wysiwyg_imageupload_load_file($fid) {
+  return db_fetch_object(db_query('select * from {files} where fid="%d"',$fid));
+}
+
+/**
+* API: Use this method to get uploaded images as a 'list'.
+* Images are sorted by date (youngest first).
+* @limit: limit the result set to a specific number
+* @uid: Only images uploaded by that user are returned
+*/
+function wysiwyg_imageupload_get_images($limit = NULL, $uid = NULL, $group = null) {
+  if ($limit != NULL) {
+    $limit = " LIMIT $limit";
+  }
+  if ($group != NULL) {
+    $group = " GROUP BY $group";
+  }
+  if ($uid != NULL) {
+    $result = db_query('SELECT f.*,w.* as parent_nid FROM {files} as f RIGHT JOIN {wysiwyg_imageupload_entity} AS w on w.fid = f.fid WHERE f.uid = %d'.$group.' ORDER BY f.timestamp DESC'.$limit,$uid);
+  } else {
+    $result = db_query('SELECT f.*,w.* as parent_nid FROM {files} as f RIGHT JOIN {wysiwyg_imageupload_entity} AS w on w.fid = f.fid'.$group.' ORDER BY f.timestamp DESC'.$limit);
+  }
+  
+  if ($result != FALSE) {
+    $images = array();
+    while ($row = db_fetch_array($result)) {
+      $images[] = $row;
+    };
+    return $images;
+  }
+  // else
+  return array();
+}
+
+/**
+* Implementation of hook_theme
+* wysiwyg_imageupload_render_image: renders the image for the node view
+* wysiwyg_imageupload_render_image_wysiwyg: renders the view for the wysiwyg editor. DONT CHANGE THIS
+*/
+function wysiwyg_imageupload_theme() {
+  return array(
+    'wysiwyg_imageupload_render_image_entity' => array(
+      'arguments' => array(
+        'imgage_obj',
+        'arguments' => array(),
+      ),
+    ),
+    'wysiwyg_imageupload_render_image' => array(
+      'arguments' => array(
+        'imgage_obj',
+        'arguments' => array(),
+    ),
+    ),
+    'wysiwyg_imageupload_render_meta' => array(
+      'arguments' => array(
+        'imgage_obj',
+        'arguments' => array(),
+    ),
+    ),
+    'wysiwyg_imageupload_render_container' => array(
+      'arguments' => array(
+        'image',
+        'meta',
+        'imgage_obj',
+        'arguments' => array(),
+      ),
+    ),
+    'wysiwyg_imageupload_render_image_wysiwyg' => array(
+      'arguments' => array(
+        'imgage_obj',
+        'arguments' => array(),
+      ),
+    ),
+  );
+}
+
+/**
+* wysiwyg_imageupload_render_image: renders the image for the node view
+*/
+function theme_wysiwyg_imageupload_render_image_entity($img_obj, $arguments) {
+  $image = theme('wysiwyg_imageupload_render_image', $img_obj, $arguments);
+  $meta = theme('wysiwyg_imageupload_render_meta', $img_obj, $arguments);
+  return theme('wysiwyg_imageupload_render_container', $image, $meta, $img_obj, $arguments);
+}
+
+/**
+* wysiwyg_imageupload_render_image: renders the image for the node view
+*/
+function theme_wysiwyg_imageupload_render_image($img_obj, $arguments) {
+  // If the use set custom sizes
+  if($arguments['width'] != '') {
+    $width = " width='{$size['width']}'";
+  }
+  if($arguments['height'] != '') {
+    $height = " height='{$size['height']}'";
+  }
+  //$inline_args = join('|', array($img_obj->iid, $arguments['height'], $arguments['width']));
+  $inline_args = $img_obj->iid;
+  $attributes = array(
+    'class' => 'wysiwyg_imageupload '.$img_obj->style,
+    'style' => '',
+  );
+  drupal_alter('wysiwyg_imageupload_image_attribute',$attributes,$img_obj);
+
+  $output = '<div>'.theme('imagecache', $img_obj->imagecache, $img_obj->filepath, $inline_args, $img_obj->title, $attributes, TRUE, FALSE).'</div>';
+  drupal_alter('wysiwyg_imageupload_rendered_image', $output, $img_obj);
+  return $output;
+}
+
+
+/**
+* Renders the meta data of an image. By default only the title
+*/
+function theme_wysiwyg_imageupload_render_meta($img_obj,$arguments) {
+  $output = '';
+  if ($img_obj->title != '') {
+    $output .= "<div class='image_title'>{$img_obj->title}</div>";
+  }
+  return $output;
+}
+
+/**
+* Renders the meta container of an image.
+*/
+function theme_wysiwyg_imageupload_render_container($image,$meta,$img_obj,$arguments) {
+  return "<div class='wysiwyg_imageupload image {$img_obj->alignment} {$img_obj->style}'>$image <div class='image_meta'>$meta</div></div>";
+}
+
+/**
+* wysiwyg_imageupload_render_image_wysiwyg: renders the view for the wysiwyg editor. DONT CHANGE THIS
+*/
+function theme_wysiwyg_imageupload_render_image_wysiwyg($img_obj, $arguments = array()) {
+  // If the use set custom sizes
+  if ($arguments['width'] != '') {
+    $width = " width='{$size['width']}'";
+  }
+  if ($arguments['height'] != '') {
+    $height = " height='{$size['height']}'";
+  }
+  $inline_args = $img_obj->iid;
+  $attributes = array(
+    'class' => 'wysiwyg_imageupload '.$img_obj->alignment.' '.$img_obj->style,
+  );
+
+  $output = theme('imagecache', $img_obj->imagecache, $img_obj->filepath, $inline_args, $img_obj->title, $attributes, NULL, false);
+  return $output;
+}
+
+/**
+*  Those presets are needed for the browser and the details form
+*/
+function wysiwyg_imageupload_imagecache_default_presets() {
+  $presets = array();
+  $presets['wysiwyg_imageupload_preview'] = array (
+    'presetname' => 'wysiwyg_imageupload_preview',
+    'actions' => array (
+      0 => array (
+        'weight' => '0',
+        'module' => 'imagecache',
+        'action' => 'imagecache_scale',
+        'data' => array (
+          'height' => '150',
+          'width' => '220',
+          'upscale' => 1,
+        ),
+      ),
+    )
+  );
+
+  return $presets;
+}
+
+/**
+* Computes the array with all allowed presets
+*/
+function _wysiwyg_imagegupload_allowed_presets() {
+  $defaults = array();
+  $presets = imagecache_presets();
+  foreach ($presets as $preset) {
+    // We cant use the presetid here (http://drupal.org/node/694188).
+    $defaults[$preset['presetname']] = t("!preset",array('!preset' =>$preset['presetname']));
+  }
+  $presets_whitelist = variable_get('wysiwyg_imageupload_presets_whitelist', $defaults);
+  // Get all disabled keys (value === 0).
+  $disabled_presets = array_keys($presets_whitelist, 0, TRUE);
+
+  // Remove those keys from the result.
+  foreach($disabled_presets as $value) {
+    unset($presets_whitelist[$value]);
+  }
+
+  return $presets_whitelist;
+}
+
+/**
+* Checks if the current node has revisioning activated
+*/
+function _wysiwyg_imagegupload_revisions_activated($type) {
+  // Is this content even in moderatation?
+  $var = variable_get( "node_options_$type", array(0));
+  if (array_search('revision', $var)) {
+    return 1;
+  }
+  //else
+  return 0;
+}
+
+function _wysiwyg_imageupload_check_dependencies(&$requirements = null) {  
+  $error = false;
+   if (!is_array($requirements) && module_exists('devel_themer') && (user_access('access devel theme information') || user_access('access devel information'))) {
+    drupal_set_message(t('You cannot use wysiwyg_imageupload while the Theme Developer tool is enabled. It is highly recommended to <a href="!url">disable this module</a> unless it is actively being used.', array('!url' => url('admin/build/modules'))), 'error');
+  }
+  
+  if (module_exists('jquery_ui')) {
+    $jquiv = jquery_ui_get_version();
+    if (!preg_match('@1\.7\.\d+@',$jquiv)) {
+      $msg = 'Your jquery ui library version is to old to use wysiwyg_imageupload. You need at least 1.7.x and you are currently running '.$jquiv. ' Please read <a href="http://drupal.org/node/809812">this howto</a> on how to fix this.';
+      if (is_array($requirements)) {
+        $requirements['wyiwyg_imageupload_jquery_ui']['description'] = $msg;
+        $requirements['wyiwyg_imageupload_jquery_ui']['title'] = 'WYSIWYG imageupload: Jquery UI';
+        $requirements['wyiwyg_imageupload_jquery_ui']['severity'] = REQUIREMENT_ERROR;
+        $requirements['wyiwyg_imageupload_jquery_ui']['value'] = $jquiv;
+      }
+      else {
+        drupal_set_message($msg,'error', false);
+      }
+      $error = true;
+    }
+  }
+  else {
+    drupal_set_message('You dont have <a href="http://drupal.org/project/jquery_ui">jquery_ui</a> installed, so wysiwyg_imageupload wont work at all. You will also need at least 1.7.x of the jquery ui library . Check <a href="http://drupal.org/node/809812">this howto</a> on how to fix this.','error');
+    $error = true;   
+  }
+  
+  if (module_exists('jquery_update')) {
+    $jqv = jquery_update_get_version();
+    if (!preg_match('@1\.3\.\d+@',$jqv)) {
+      $msg = 'Your jquery version is to old to use wysiwyg_imageupload. Therefore you need to install <a href="http://drupal.org/project/jquery_update">jquery_update</a> 6.2.x, not jquery_update 6.1.x. Please read point 3 at <a href="http://drupal.org/node/808626">this howto</a> to fix this.';
+      if(is_array($requirements)) {
+        $requirements['wyiwyg_imageupload_jquery_update']['description'] = $msg;
+        $requirements['wyiwyg_imageupload_jquery_update']['title'] = 'WYSIWYG imageupload: JQuery Update';
+        $requirements['wyiwyg_imageupload_jquery_update']['severity'] = REQUIREMENT_ERROR;
+        $requirements['wyiwyg_imageupload_jquery_update']['value'] = $jqv;
+      }
+      else {
+        drupal_set_message($msg,'error', false);
+      }
+      $error = true;
+    }
+  }
+  else {
+    drupal_set_message('You dont have <a href="http://drupal.org/project/jquery_update">jquery_update</a> installed, so wysiwyg_imageupload wont work at all. You need to install <a href="http://drupal.org/project/jquery_update">jquery_update</a> 6.2.x, not jquery_update 6.1.x. Please read point 3 at <a href="http://drupal.org/node/808626">this howto</a> to fix this.','error');
+    $error = true;
+  }
+  
+  if(module_exists('imageapi')) {
+    $toolkits = imageapi_get_available_toolkits();
+    if(!array($toolkits) || count($toolkits) == 0) {
+      $msg = 'You need to have at least one ImageAPI library activated 6.2.x to use wysiwyg_imageupload. Please read point 4 at <a href="http://drupal.org/node/808626">this howto</a> on ho to fix this. Go to your '.l('modules page','admin/build/modules/list').' under section "imagecache"';
+      if(is_array($requirements)) {
+        $requirements['wyiwyg_imageupload_imageapi']['description'] = $msg;
+        $requirements['wyiwyg_imageupload_imageapi']['title'] = 'WYSIWYG imageupload: ImageAPI library';
+        $requirements['wyiwyg_imageupload_imageapi']['severity'] = REQUIREMENT_ERROR;
+        $requirements['wyiwyg_imageupload_imageapi']['value'] = 'None activated';
+      }
+      else {
+        drupal_set_message($msg,'error', false);
+      }
+      $error = true;
+    }
+  }
+  else {
+    drupal_set_message('You need to have installed <a href="http://drupal.org/project/imageapi">imageapi</a> to use to use wysiwyg_imageupload.','error');
+    $error = true;
+  }
+  
+  $roles = user_roles(false,'use wysiwyg image upload'); 
+  if(!array($roles) || count($roles) == 0) {
+    $msg = 'You did not give any role the "use wysiwyg image upload" permission, so nobody can use wysiwyg_imageupload. Please read point 8 at <a href="http://drupal.org/node/808626">this howto</a> on ho to fix this.';
+    if(is_array($requirements)) {
+      $requirements['wyiwyg_imageupload_user_permissions']['description'] = $msg;
+      $requirements['wyiwyg_imageupload_user_permissions']['title'] = 'WYSIWYG imageupload: User Permissions';
+      $requirements['wyiwyg_imageupload_user_permissions']['severity'] = REQUIREMENT_ERROR;
+      $requirements['wyiwyg_imageupload_user_permissions']['value'] = 'Not set';
+    }
+    else {
+      drupal_set_message($msg,'error', false);
+    }
+    $error = true;
+  }
+  return $error;
+}
+
+/**
+* Implementation of hook_help().
+*/
+function wysiwyg_imageupload_help($path, $arg) {
+  switch ($path) {
+    case 'admin/help#wysiwyg_imageupload':
+      $output = t('<p>An image upload dialog for most WYSIWYG Editors.<h2>Full Installation</h2>
+<ul>
+<li>You need to have a <a href="http://drupal.org/project/wysiwyg" target="_blank">WYSIWYG</a>-compatible editor enabled
+<li>Check the <a href="http://drupal.org/node/808626" target="_blank">Installation How-to</a>
+<li>Also refer to the <a href="http://drupal.org/project/wysiwyg_imageupload" target="_blank">WYSIWYG image upload</a> home page
+</ul></p>');
+      return $output;
+  }
+}
+
+function _wysiwyg_imageupload_reset_filter_cache($format, $text) {
+  $cid = $format .':'. md5($text);
+  cache_clear_all($cid,'cache_filter');
+}
+
+/**
+ * Converts a PHP variable into its Javascript equivalent.
+ * This function is used instead of drupal_to_js to avoid malformed unicode encoded data when using <, > or &.
+ */
+function _wysiwyg_imageupload_to_js($var) {
+  if (function_exists('json_encode')) {
+    return str_replace(array('<', '>', '&'), array('\u003c', '\u003e', '\u0026'), json_encode($var));
+  }
+  else {
+    return str_replace(array('\x3c', '\x3e', '\x26'), array('\u003c', '\u003e', '\u0026'), drupal_to_js($var));
+  }
+}

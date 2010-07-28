@@ -1,0 +1,42 @@
+/* Use this stylesheet for print styles only */
+
+.sidebar, 
+#navigation, 
+#header-region, 
+#search-theme-form,
+#footer,
+.breadcrumb,
+.tabs,
+.feed-icon,
+.links {
+	display: none;
+}
+
+#page {
+	width: 100%;
+}
+
+* {
+	background-color: transparent;
+}
+
+#content,
+#content #content-inner,
+.content,
+.title {
+	margin:20px 0;
+	width: auto;
+}
+
+a:hover, a:active, a:link, a:visited {
+	color: #000;
+}
+
+/*CSS2 selector to add visible href after links */
+#content a:link:after,
+#content a:visited:after
+{
+  content: " (" attr(href) ") ";
+  font-size: 0.8em;
+  font-weight: normal;
+}

@@ -1,0 +1,8 @@
+<?php
+
+/*
+ * This is a placeholder .module file for the Drupal Rivers Developer Feature.
+ * Simply enable this feature to enable handy development modules for this Drupal Distribution.
+ */
+ 
+include_once('drupalrivers_developer.features.inc');

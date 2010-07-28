@@ -1,0 +1,24 @@
+<?php
+// $Id: jquery_ui_dialog.install,v 1.1.2.8 2010/07/01 14:31:20 eugenmayer Exp $
+# Copyright (c) 2010 Impressive.media
+# Author: Eugen Mayer
+/**
+ * @file
+ * Installation file for jQuery UI dialog module.
+ */
+
+/**
+ * Implementation of hook_requirements().
+ */
+function jquery_ui_dialog_install() {
+  // use higher weights then jquery_ui
+  db_query("UPDATE {system} SET weight = 1 WHERE name = 'jquery_ui_dialog'");
+}
+
+function jquery_ui_dialog_update_6010() {
+  // just be sure that as we introduced "install" later, all other people get this weight update
+  db_query("UPDATE {system} SET weight = 1 WHERE name = 'jquery_ui_dialog'");
+  return array();
+}
+
+

@@ -1,0 +1,26 @@
+#jq-ui-dialog-iframe {
+	border:0 solid #000;
+	margin:0;
+	padding:0;
+}
+
+#jq-ui-dialog-iframe html {
+	height:100%;
+}
+
+.jquery_ui_dialog-dialog-wrapper {
+	z-index:10011;
+}
+
+.jquery_ui_dialog-dialog-wrapper .jquery_ui_dialog-dialog{
+  z-index:10011 !important;
+}
+
+.ui-widget-overlay {
+	position:absolute;
+	top:0;
+	left:0;
+	background:#aaa url(jquery_ui_dialog-dialog/images/ui-bg_flat_0_aaaaaa_40x100.png) 50% 50% repeat-x;
+	opacity:.30;
+	filter:Alpha(Opacity=30);
+}

@@ -1,0 +1,41 @@
+<?php
+
+function wysiwyg_imageupload_lightbox_install() {
+  db_query("UPDATE {system} SET weight = 10 WHERE name = 'wysiwyg_imageupload_lightbox'");
+  wysiwyg_imageupload_lightbox_add_field();
+}
+
+/**
+ * Implementation of hook_schema().
+ */
+function wysiwyg_imageupload_lightbox_add_field() {  
+  $ret = array();
+
+  $lightbox = array(
+    'type' => 'int',
+    'not null' => TRUE,
+    'default' => -1,
+    'description' => 'Use lightbox integration or not',    
+  );
+  db_add_field($ret, 'wysiwyg_imageupload_entity', 'lightbox', $lightbox);
+  return $ret;
+}
+
+function wysiwyg_imageupload_lightbox_schema_alter(&$schema) {
+  // Add field to existing schema.
+  $schema['wysiwyg_imageupload_entity']['fields']['lightbox'] = array(
+    'type' => int,    
+    'not null' => TRUE,
+    'default' => -1,
+    'description' => 'Use lightbox integration or not',    
+  );
+}
+/**
+ * Implementation of hook_uninstall().
+ */
+function wysiwyg_imageupload_lightbox_uninstall() {
+  // Remove tables.   
+  db_drop_field($ret, 'wysiwyg_imageupload_entity', 'lightbox');
+  // Remove variables.
+  db_query("DELETE FROM {variable} WHERE name LIKE 'wysiwyg_imageupload_lightbox_%%'");
+}

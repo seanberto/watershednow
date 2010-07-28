@@ -1,0 +1,145 @@
+/** ABOUT DEFAULT STYLES
+---------------------------------
+*  default.css is used to establish general rules, browser reset, or Admin User interface Styles
+
+   BROWSER RESET
+---------------------------------
+*  For a more complete reset, go to http://developer.yahoo.com/yui/reset/
+*/
+
+* { margin: 0; padding: 0; }
+
+/** Clear Floats Without Structural Markup: 
+---------------------------------
+*  http://www.positioniseverything.net/easyclearing.html
+*/
+
+.clearfix:after {
+  content: ".";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+}
+
+.clearfix { display: inline-block; }
+
+/* Hides from IE-mac \*/
+* html .clearfix { height: 1%; }
+.clearfix { display: block; }
+/* End hide from IE-mac */
+
+/* clear classes */
+
+.clearleft, .clearl, .cleft { clear: left; }
+.clearright, .clearr, .cright { clear: right; }
+.clear, .clearboth, .clearall{ clear: both; }
+
+/* Float classes */
+
+.floatleft, .fleft, .floatl { float: left; margin: 0 10px 5px 0; }
+.floatright, .fright, .floatr { float: right; margin: 0 0 5px 10px; }
+
+/** "Skip to Main Content" link
+---------------------------------
+*  This link useful for both visually impaired people and those with mobility impairments
+*  who cannot use a mouse. http://www.webaim.org/techniques/css/invisiblecontent/
+*/
+
+#skip a, #skip a:hover, #skip a:visited {
+  position: absolute;
+  left:-10000px;
+  top:auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+#skip a:active, #skip a:focus {
+  position: static;
+  width: auto;
+  height: auto;
+}
+
+/* bug fix with views 2 edit links */
+
+div.view div.views-admin-links {
+	width:auto;
+}
+
+/** Rollover edit links for blocks */
+
+div.block {
+  position: relative;
+}
+div.block .edit {
+  display: none;
+  position: absolute;
+  right: -20px;
+  top: -5px;
+  z-index: 40;
+  padding: 3px 8px 0;
+  font-size: 10px;
+  line-height:16px;
+  background-color: #fff;
+  border:1px solid #ccc;
+  /*let's get fancy !*/
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  -moz-box-shadow: 0 1px 3px #888;
+  -webkit-box-shadow: -1px 1px 2px #666;
+}
+div.block .edit a {
+  display:block;
+  border:0;
+  padding:0;
+  margin:0;
+}
+div.block:hover .edit {
+  display: block;
+}
+
+/** WIREFRAMES STYLE
+------------------------------------*/
+
+.wireframe-mode #header,
+.wireframe-mode #content-top,
+.wireframe-mode #content-top>*,
+.wireframe-mode #content-header,
+.wireframe-mode #content-header>*,
+.wireframe-mode #content-area,
+.wireframe-mode #content-area>*,
+.wireframe-mode #content-bottom,
+.wireframe-mode #content-bottom>*,
+.wireframe-mode #primary,
+.wireframe-mode #secondary,
+.wireframe-mode #sidebar-left-inner,
+.wireframe-mode #sidebar-right-inner,
+.wireframe-mode .block{
+  padding: 2px;
+  border: 1px solid #bbb;
+}
+.wireframe-mode .node {
+  border-bottom: 1px solid #bbb;
+  margin-bottom:10px;
+}
+.wireframe-mode .block {
+  margin-bottom:3px;
+}
+.wireframe-mode #content-top,
+.wireframe-mode #content-header,
+.wireframe-mode #content-area,
+.wireframe-mode #content-bottom {
+  margin:0 3px 3px;
+}
+.wireframe-mode #footer {
+  margin-top: 3px;
+  padding: 2px;
+  border: 1px solid #ccc;
+}
+.wireframe-mode.with-navigation #content, 
+.wireframe-mode.with-navigation .sidebar  {
+  margin-top:50px;
+}
+.wireframe-mode #navigation {
+  height:50px;
+}
