@@ -1,0 +1,44 @@
+<?php
+
+/**
+ * Implementation of Hook_enable().
+ *
+ * Checks to make sure that we have a taxonomy vocabulary for "Map point type". If not, creates
+ * this vocabulary and pre-populates it. Note: This is sorta hacky, but it's the best we can do w/o
+ * machine-readable taxonomy system in Drupal core.
+ *
+ */
+function drupalrivers_map_enable() {
+  $content_type = 'map_point';
+  $vocabulary = array( // Our default map point vocabulary w/ settings.
+    'name' => t('Map point types'),
+    'tags' => 0,
+    'multiple' => 0,
+    'required' => 0,
+    'module' => 'taxonomy',
+    'nodes' => array($content_type => 1),
+    'help' => 'Categorize this map point.',
+  );
+  $terms = array( // Our default terms within the map point type vocabulary.
+    'boat ramp',
+    'kayak launch',
+    'dock',
+  );
+  // First, check to see if vocabulary already exists.
+  $vid = db_result(db_query_range("SELECT vid FROM {vocabulary} WHERE name = '%s'", $vocabulary['name'], 0, 1));
+  // If vocabulary exists, make sure its assigned to map point content type, but that's only change.
+  if ($vid) {
+    $assigned_types = db_fetch_array(db_query("SELECT type FROM {vocabulary_node_types} WHERE vid = %s", $vid));
+    if (!in_array($content_type, $assigned_types)) {
+      db_query("INSERT INTO {vocabulary_node_types} (vid, type) VALUES (%d, '%s')", $vid, $content_type);
+    }
+  }
+  else { // If vocab doesn't exist, create it and get its VID. Then, add new terms.
+    taxonomy_save_vocabulary(&$vocabulary);
+    $vid = db_result(db_query_range("SELECT vid FROM {vocabulary} WHERE name = '%s'", $vocabulary['name'], 0, 1));
+    foreach ($terms as $term) {
+      $taxonomy = array('name' => $term, 'vid' => $vid);
+      taxonomy_save_term($taxonomy);
+    }
+  }
+}

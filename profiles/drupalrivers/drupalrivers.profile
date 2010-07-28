@@ -64,6 +64,7 @@ function drupalrivers_profile_modules() {
 		// Drupal Rivers features
 		'drupalrivers_common',
 		'drupalrivers_blog',
+		'drupalrivers_map',
   );
 
   return $modules;
@@ -103,6 +104,11 @@ function drupalrivers_profile_tasks(&$task, $url) {
 
   // Configure Input formats and WYSIWYG editor
   _drupalrivers_fiters_wysiwyg();
+  
+  // Setup basic contact form
+  $category = 'website feedback';
+  $recipients = 'admin@'. $_SERVER['HTTP_HOST'];
+  install_contact_add_category($category, $recipients, $reply = '', $weight = 0, $selected = 1);
 
 	// Borrowing from openatrium.profile to set default theme to watershed.
 	// Rebuild key tables/caches
