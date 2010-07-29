@@ -1,4 +1,4 @@
-http://drupalrivers.dev/<?php
+<?php
 // $Id: query.inc,v 1.50.2.4 2009/12/02 22:59:18 dww Exp $
 /**
  * @file query.inc
