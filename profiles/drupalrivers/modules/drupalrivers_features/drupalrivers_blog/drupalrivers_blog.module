@@ -1,3 +1,14 @@
 <?php
 
 include_once('drupalrivers_blog.features.inc');
+
+function drupalrivers_blog_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
+  switch ($op) {
+    case 'presave':
+      if ($node->type == 'update_feed') {
+        dpm($node);
+        $node->title = 'testing_again';
+      }
+      break;
+  }
+}

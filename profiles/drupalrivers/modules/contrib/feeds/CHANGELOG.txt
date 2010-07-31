@@ -1,4 +1,10 @@
-// $Id: CHANGELOG.txt,v 1.127 2010/07/19 02:54:36 alexb Exp $
+// $Id: CHANGELOG.txt,v 1.129 2010/07/25 22:09:36 alexb Exp $
+
+Feeds 6.x 1.0 Beta 4, 2010-07-25
+--------------------------------
+
+- #838018-12 Remove Formatted Number CCK mapper, cannot be properly tested, see
+  #857928.
 
 Feeds 6.x 1.0 Beta 3, 2010-07-18
 --------------------------------
