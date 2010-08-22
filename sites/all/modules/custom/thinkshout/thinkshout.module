@@ -1,0 +1,118 @@
+<?php
+
+/**
+ * Implementation of hook_menu().
+ */
+function thinkshout_menu() {
+  $items = array();
+
+  $items['admin/settings/dashboard'] = array(
+    'title' => 'DrupalRivers Dashboard',
+    'page callback' => '_thinkshout_dashboard',
+    'access arguments' => array('administer site configuration'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+
+  return $items;
+}
+
+function _thinkshout_dashboard() {
+  return 'Placeholder';
+}
+
+function thinkshout_paypal_form($form_state, $product_id) {
+
+  $vars = array(
+    'module' => 'thinkshout',
+    'type' => 'example type',
+    'custom' => $product_id,
+    'item_name' => 'Example payment',
+    'no_shipping' => TRUE,
+    'no_note' => TRUE,
+    'return' => url('', array('absolute' => TRUE)),
+  );
+ 
+  $form = simple_payments_paypal_payment_form($vars);
+  
+  $form['amount'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Donation amount'),
+    '#size' => 10,
+    '#maxlength' => 64,
+    '#description' => t('Please enter the dollar amount you wish to donate.'),
+  );
+  
+  $form['button'] = array(
+    '#type' => 'button',
+    '#value' => t('Pay with PayPal'),
+  );
+  return $form;
+}
+
+/**
+ * Implementation of hook_form_alter().
+ *
+ * Borrowing heavily from Development Seed.
+ */
+function thinkshout_form_alter(&$form, $form_state, $form_id) {
+  switch ($form_id) {
+    case 'system_site_information_settings':
+    // Allow for custom page title on site front page
+      $form['site_name']['#title'] = 'Website Name';
+      $form['site_name']['#description'] = 'The name of this website - Generally recommended to be your organization\'s name.';
+      $form['site_slogan']['#access'] = FALSE;
+      $form['site_mission']['#access'] = FALSE;
+      $form['site_footer']['#access'] = FALSE;
+      $form['anonymous']['#access'] = FALSE;
+      break;
+  }
+  if ($form['#id'] == 'node-form') {
+    // Hiding the ridiculous body splitting shiz
+    if (!empty($form['body_field'])) {
+      $form['body_field']['teaser_js']['#type'] = 'hidden';
+      $form['body_field']['teaser_include']['#type'] = 'hidden';
+      if (!empty($form['body_field']['body']['#rows']) && $form['body_field']['body']['#rows'] > 10) {
+        $form['body_field']['body']['#rows'] = 10;
+      }
+    }
+  }
+}
+
+/**
+ * Implementation of hook_form_FORM_ID_alter()
+ * Adds a checkbox to content type config form (admin/content/node-type/[name])
+ * When ticked, the content type can be used as a simple payments tool
+ * (Borrowed from pg_fundraising.module)
+ */
+function thinkshout_form_node_type_form_alter(&$form, $form_state){
+  //Add a checkbox to content type config form
+   $form['thinkshout_payments'] = array(
+    '#type'        => 'fieldset',
+    '#title'       => t('Fundraising settings'),
+    '#collapsible' => TRUE,
+    '#collapsed'   => TRUE,
+    '#weight'      => 15,
+  );
+  $form['thinkshout_payments']['thinkshout_payments_allowed'] = array(
+    '#type'          => 'checkbox',
+    '#title'         => t('Use this content type to set up donation pages'),
+    '#default_value' => variable_get('thinkshout_payments_allowed_'. $form['#node_type']->type, 0),
+  );
+}
+
+/**
+ * Implementation of hook_nodeapi().
+ */
+function thinkshout_nodeapi(&$node, $op, $teaser = NULL, $page = NULL) {
+  switch ($op) {
+    case 'view':
+      // If viewing a node of a content type enabled for donations, add simple payment form.
+      if (variable_get('thinkshout_payments_allowed_'. $node->type, 0)){
+        $node->content['fundraising_form'] = array(
+          '#value'  => drupal_get_form('thinkshout_paypal_form', $product_id),
+          '#weight' => 20,
+        );
+      }
+      break;
+  }
+}

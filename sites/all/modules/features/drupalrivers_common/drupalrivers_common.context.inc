@@ -10,7 +10,7 @@ function drupalrivers_common_context_default_contexts() {
   $context->api_version = 3;
   $context->name = 'homepage';
   $context->description = '';
-  $context->tag = 'section';
+  $context->tag = 'page';
   $context->conditions = array(
     'path' => array(
       'values' => array(

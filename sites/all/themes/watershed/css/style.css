@@ -167,9 +167,10 @@ input#edit-search-theme-form-1 {
 
 #secondary {
   text-align: right;
+  margin-top: -40px;
+  height: 40px;
 }
 
 #primary {
-  text-align: center;
   font-size: 1.2em;
 }

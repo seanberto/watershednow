@@ -49,3 +49,12 @@ function drupalrivers_blog_node_info() {
   );
   return $items;
 }
+
+/**
+ * Implementation of hook_views_api().
+ */
+function drupalrivers_blog_views_api() {
+  return array(
+    'api' => '2',
+  );
+}

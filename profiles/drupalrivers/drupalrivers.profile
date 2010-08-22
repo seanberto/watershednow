@@ -126,14 +126,17 @@ function drupalrivers_profile_tasks(&$task, $url) {
   $category = 'website feedback';
   $recipients = 'admin@'. $_SERVER['HTTP_HOST'];
   install_contact_add_category($category, $recipients, $reply = '', $weight = 0, $selected = 1);
+  // Add contact form to secondary links.
+  install_menu_create_menu_item('contact', 'Contact Us', 'Get in touch with us.', 'secondary_links');
 
   // Create a few placeholder nodes and add them to the menu structure.
-  // @TODO: Body field's filter format defaults to filtered HTML. Need more granular control.
+  // @TODO: Find the correct input filter. Right now, we rely on _drupalrivers_filters_wysiwyg() being called first..
   $pages = array();
   
   $page = new stdClass;
   $page->title = 'About Us';
   $page->body = 'This is a placeholder about us page. Here readers can learn more about this website and the orgaization behind it.';
+  $page->format = 2;
   $page->menu = 'secondary_links';
   $page->menuitem_description = 'Learn more about us';
   $pages['about'] = $page;
