@@ -7,16 +7,38 @@ function tao_theme() {
   $items = array();
 
   // Consolidate a variety of theme functions under a single template type.
-  $items['block'] =
-  $items['box'] =
-  $items['comment'] =
-  $items['fieldset'] =
-  $items['node'] = array(
+  $items['block'] = array(
+    'arguments' => array('block' => NULL),
     'template' => 'object',
     'path' => drupal_get_path('theme', 'tao') .'/templates',
   );
-  $items['fieldset']['arguments'] = array('element' => array());
-  $items['node']['template'] = 'node';
+  $items['box'] = array(
+    'arguments' => array('title' => NULL, 'content' => NULL, 'region' => 'main'),
+    'template' => 'object',
+    'path' => drupal_get_path('theme', 'tao') .'/templates',
+  );
+  $items['comment'] = array(
+    'arguments' => array('comment' => NULL, 'node' => NULL, 'links' => array()),
+    'template' => 'object',
+    'path' => drupal_get_path('theme', 'tao') .'/templates',
+  );
+  $items['node'] = array(
+    'arguments' => array('node' => NULL, 'teaser' => FALSE, 'page' => FALSE),
+    'template' => 'node',
+    'path' => drupal_get_path('theme', 'tao') .'/templates',
+  );
+  $items['fieldset'] = array(
+    'arguments' => array('element' => array()),
+    'template' => 'fieldset',
+    'path' => drupal_get_path('theme', 'tao') .'/templates',
+  );
+
+  // Use a template for form elements
+  $items['form_element'] = array(
+    'arguments' => array('element' => array(), 'value' => NULL),
+    'template' => 'form-item',
+    'path' => drupal_get_path('theme', 'tao') .'/templates',
+  );
 
   // Print friendly page headers.
   $items['print_header'] = array(
@@ -25,12 +47,22 @@ function tao_theme() {
     'path' => drupal_get_path('theme', 'tao') .'/templates',
   );
 
-  $items['pager_list'] = array();
+  // Split out pager list into separate theme function.
+  $items['pager_list'] = array('arguments' => array(
+    'tags' => array(),
+    'limit' => 10,
+    'element' => 0,
+    'parameters' => array(),
+    'quantity' => 9,
+  ));
 
   return $items;
 }
 
 /**
+ * DEPRECATED. CSS exclusion is better handled with positive (yet omitted)
+ * entries in your .info file.
+ *
  * Strips CSS files from a Drupal CSS array whose filenames start with
  * prefixes provided in the $match argument.
  */
@@ -38,6 +70,8 @@ function tao_css_stripped($match = array('modules/*'), $exceptions = NULL) {
   // Set default exceptions
   if (!is_array($exceptions)) {
     $exceptions = array(
+      'modules/color/color.css',
+      'modules/locale/locale.css',
       'modules/system/system.css',
       'modules/update/update.css',
       'modules/openid/openid.css',
@@ -125,7 +159,7 @@ function tao_preprocess_page(&$vars) {
   // Replace screen/all stylesheets with print
   // We want a minimal print representation here for full control.
   if (isset($_GET['print'])) {
-    $css = tao_css_stripped();
+    $css = drupal_add_css();
     unset($css['all']);
     unset($css['screen']);
     $css['all'] = $css['print'];
@@ -142,11 +176,6 @@ function tao_preprocess_page(&$vars) {
 
     // Suppress devel output
     $GLOBALS['devel_shutdown'] = FALSE;
-  }
-  // Get minimalized CSS. Add designkit styles back in if needed.
-  else {
-    $vars['styles'] = drupal_get_css(tao_css_stripped());
-    $vars['styles'] .= isset($vars['designkit']) ? $vars['designkit'] : '';
   }
 
   // Split primary and secondary local tasks
@@ -229,6 +258,7 @@ function tao_preprocess_fieldset(&$vars) {
   $attr = isset($element['#attributes']) ? $element['#attributes'] : array();
   $attr['class'] = !empty($attr['class']) ? $attr['class'] : '';
   $attr['class'] .= ' fieldset';
+  $attr['class'] .= !empty($element['#title']) ? ' titled' : '';
   $attr['class'] .= !empty($element['#collapsible']) ? ' collapsible' : '';
   $attr['class'] .= !empty($element['#collapsible']) && !empty($element['#collapsed']) ? ' collapsed' : '';
   $vars['attr'] = $attr;
@@ -239,9 +269,39 @@ function tao_preprocess_fieldset(&$vars) {
   $vars['content'] = $description . $children . $value;
   $vars['title'] = !empty($element['#title']) ? $element['#title'] : '';
   if (!empty($element['#collapsible'])) {
-    $vars['title'] = l($vars['title'], $_GET['q'], array('fragment' => 'fieldset'));
+    $vars['title'] = l(filter_xss_admin($vars['title']), $_GET['q'], array('fragment' => 'fieldset', 'html' => TRUE));
   }
   $vars['hook'] = 'fieldset';
+}
+
+/**
+ * Implementation of preprocess_form_element().
+ * Take a more sensitive/delineative approach toward theming form elements.
+ */
+function tao_preprocess_form_element(&$vars) {
+  $element = $vars['element'];
+
+  // Main item attributes.
+  $vars['attr'] = array();
+  $vars['attr']['class'] = 'form-item';
+  $vars['attr']['id'] = !empty($element['#id']) ? "{$element['#id']}-wrapper" : NULL;
+  if (!empty($element['#type']) && in_array($element['#type'], array('checkbox', 'radio'))) {
+    $vars['attr']['class'] .= ' form-option';
+  }
+  $vars['description'] = isset($element['#description']) ? $element['#description'] : '';
+
+  // Generate label markup
+  if (!empty($element['#title'])) {
+    $t = get_t();
+    $required_title = $t('This field is required.');
+    $required = !empty($element['#required']) ? "<span class='form-required' title='{$required_title}'>*</span>" : '';
+    $vars['label_title'] = $t('!title: !required', array('!title' => filter_xss_admin($element['#title']), '!required' => $required));
+    $vars['label_attr'] = array();
+    $vars['label_attr']['for'] = !empty($element['#id']) ? $element['#id'] : '';
+
+    // Indicate that this form item is labeled
+    $vars['attr']['class'] .= ' form-item-labeled';
+  }
 }
 
 /**
@@ -280,59 +340,6 @@ function tao_menu_local_tasks($type = '') {
     default:
       return $primary . $secondary;
   }
-}
-
-/**
- * Override of theme_form_element().
- * Take a more sensitive/delineative approach toward theming form elements.
- */
-function tao_form_element($element, $value) {
-  $output = '';
-
-  // This is also used in the installer, pre-database setup.
-  $t = get_t();
-
-  // Add a wrapper id
-  $attr = array('class' => '');
-  $attr['id'] = !empty($element['#id']) ? "{$element['#id']}-wrapper" : NULL;
-
-  // Type logic
-  $label_attr = array();
-  $label_attr['for'] = !empty($element['#id']) ? $element['#id'] : '';
-
-  if (!empty($element['#type']) && in_array($element['#type'], array('checkbox', 'radio'))) {
-    $label_type = 'label';
-    $attr['class'] .= ' form-item form-option';
-  }
-  else {
-    $label_type = 'label';
-    $attr['class'] .= ' form-item';
-  }
-
-  // Generate required markup
-  $required_title = $t('This field is required.');
-  $required = !empty($element['#required']) ? "<span class='form-required' title='{$required_title}'>*</span>" : '';
-
-  // Generate label markup
-  if (!empty($element['#title'])) {
-    $title = $t('!title: !required', array('!title' => filter_xss_admin($element['#title']), '!required' => $required));
-    $label_attr = drupal_attributes($label_attr);
-    $output .= "<{$label_type} {$label_attr}>{$title}</{$label_type}>";
-    $attr['class'] .= ' form-item-labeled';
-  }
-
-  // Add child values
-  $output .= "$value";
-
-  // Description markup
-  $output .= !empty($element['#description']) ? "<div class='description'>{$element['#description']}</div>" : '';
-
-  // Render the whole thing
-  $attr = drupal_attributes($attr);
-  $output = "<div {$attr}>{$output}</div>";
-
-  return $output;
-
 }
 
 /**

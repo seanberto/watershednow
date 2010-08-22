@@ -1,5 +1,5 @@
 <?php
-// $Id: emfield.cck.inc,v 1.1.2.31 2010/02/18 22:42:42 aaron Exp $
+// $Id: emfield.cck.inc,v 1.1.2.35 2010/07/20 13:52:06 aaron Exp $
 
 /**
  * @file
@@ -64,6 +64,17 @@ function _emfield_emfield_field($op, &$node, $field, &$items, $teaser, $page, $m
     case 'presave':
       foreach ($items as $delta => $item) {
         $items[$delta] = _emfield_field_submit_id($field, $item, $module);
+        // Remove empty fields
+        if (empty($item['embed'])) {
+          // Remove thumbnail files
+          if (module_exists('emthumb')) {
+            // see http://drupal.org/node/393490#comment-1328368
+            if (is_array($item) && !empty($item['emthumb']['emthumb']['emthumb']['emthumb']['file'])) {
+              _emthumb_file_delete($item['emthumb']['emthumb']['emthumb']['emthumb']['file'], $field['field_name']);
+            }
+          }
+          unset($items[$delta]);
+        }
       }
       break;
 
@@ -231,7 +242,11 @@ function _emfield_emfield_widget(&$form, &$form_state, $field, $items, $delta = 
   // Allow other modules, such as Embedded Media Thumbnail,
   // to add additional elements to the widget.
   foreach (module_implements('emfield_widget_extra') as $module_extra) {
-    $tree[$module_extra] = module_invoke($module_extra, 'emfield_widget_extra', $form, $form_state, $field, $items, $delta, $module);
+    // Use call_user_func_array() rather than module module_invoke() to
+    // correctly pass the arguments as references.
+    $function = $module_extra .'_emfield_widget_extra';
+    $args = array(&$form, &$form_state, $field, $items, $delta, $module);
+    $tree[$module_extra] = call_user_func_array($function, $args);
 
     // In Drupal 6, we need to build multipart/form-data forms manually.
     if (function_exists($module_extra. '_emfield_widget_extra_file_included')) {

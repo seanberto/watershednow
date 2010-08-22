@@ -141,11 +141,35 @@ div.status {
   border-color: #be7;
 }
 
-/** Region Colors
----------------------------------
-*  delete when starting a new theme */
+/* Header and navigation styles */
 
-#header, #footer { background-color: #efefef; }
-#sidebar-first {	background: #e7edff; }
-#sidebar-second { background: #ffd075; }
-#navigation { background-color: #feffa5; }
+#header, #main {
+  float: left;
+  width: 100%;
+}
+
+#logo-title {
+  float: left;
+}
+
+#name-and-slogan {
+  display: inline-block;
+  margin-left: 10px;
+}
+#search-theme-form {
+  float: right;
+}
+input#edit-search-theme-form-1 {
+  color: #777;
+  font-size: 0.7em;
+  width: 100px;
+}
+
+#secondary {
+  text-align: right;
+}
+
+#primary {
+  text-align: center;
+  font-size: 1.2em;
+}

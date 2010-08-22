@@ -1,5 +1,5 @@
 <?php
-// $Id: webform.module,v 1.196.2.41 2010/07/28 03:58:04 quicksketch Exp $
+// $Id: webform.module,v 1.196.2.47 2010/08/16 17:54:19 quicksketch Exp $
 
 /**
  * This module provides a simple way to create forms and questionnaires.
@@ -9,7 +9,6 @@
  * by Lullabot.
  *
  * @author Nathan Haug <nate@lullabot.com>
- * @author Pontus Ullgren <ullgren@user.sourceforge.net>
  */
 
 /**
@@ -1200,7 +1199,7 @@ function webform_node_view(&$node, $teaser, $page) {
   }
 
   // Render the form and generate the output.
-  $form = drupal_get_form('webform_client_form_' . $node->nid, $node, $submission, $is_draft);
+  $form = !empty($node->webform['components']) ? drupal_get_form('webform_client_form_' . $node->nid, $node, $submission, $is_draft) : '';
   $output = theme('webform_view', $node, $teaser, $page, $form, $enabled);
 
   // Remove the surrounding <form> tag if this is a preview.
@@ -1213,8 +1212,6 @@ function webform_node_view(&$node, $teaser, $page) {
     theme('webform_view_messages', $node, $teaser, $page, $submission_count, $limit_exceeded, $allowed_roles);
   }
 
-  // Add the output to the node.
-  $node = node_prepare($node, $teaser);
   if (isset($output)) {
     if (module_exists('content')) {
       $weight = content_extra_field_weight($node->type, 'webform');
@@ -1352,6 +1349,7 @@ function webform_client_form(&$form_state, $node, $submission, $is_draft = FALSE
 
   drupal_add_css(drupal_get_path('module', 'webform') . '/css/webform.css');
   drupal_add_js(drupal_get_path('module', 'webform') . '/js/webform.js');
+  module_load_include('inc', 'webform', 'includes/webform.components');
 
   // Bind arguments to $form to make them available in theming and form_alter.
   $form['#node'] = $node;
@@ -1968,6 +1966,7 @@ function webform_client_form_submit($form, &$form_state) {
 
         if (is_array($address)) {
           foreach ($address as $new_address) {
+            $new_address = trim($new_address);
             if (valid_email_address($new_address)) {
               $addresses_final[] = $new_address;
             }
@@ -2323,6 +2322,7 @@ function _webform_filter_values($string, $node = NULL, $submission = NULL, $emai
 
   // Submission replacements.
   if (isset($submission) && !isset($replacements['submission_set'])) {
+    module_load_include('inc', 'webform', 'includes/webform.components.inc');
     $replacements['submission_set'] = TRUE;
 
     foreach ($submission->data as $cid => $value) {
@@ -2596,7 +2596,11 @@ function webform_format_email_address($address, $name, $node = NULL, $submission
   }
   elseif (is_numeric($address) && isset($node->webform['components'][$address])) {
     if (isset($submission->data[$address]['value'])) {
-      $address = $submission->data[$address]['value'];
+      $values = $submission->data[$address]['value'];;
+      $address = array();
+      foreach ($values as $value) {
+        $address = array_merge($address, explode(',', $value));
+      }
     }
     else {
       $address = t('Value of "!component"', array('!component' => $node->webform['components'][$address]['name']));

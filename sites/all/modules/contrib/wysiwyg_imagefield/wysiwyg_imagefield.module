@@ -1,0 +1,108 @@
+<?php
+// $Id: wysiwyg_imagefield.module,v 1.1 2010/08/06 11:05:26 deciphered Exp $
+/**
+ * @file
+ * An ImageField based IMCE alternative.
+ */
+
+/**
+ * Implements hook_init().
+ */
+function wysiwyg_imagefield_init() {
+  foreach (module_list() as $module) {
+    if (file_exists($file = drupal_get_path('module', 'wysiwyg_imagefield') . "/modules/{$module}.inc")) {
+      require_once $file;
+    }
+  }
+}
+
+/**
+ * Implements hook_theme_registry_alter().
+ */
+function wysiwyg_imagefield_theme_registry_alter(&$theme_registry) {
+  drupal_alter('wysiwyg_imagefield_theme_registry', $theme_registry);
+}
+
+/**
+ * Implements hook_wysiwyg_include_directory().
+ */
+function wysiwyg_imagefield_wysiwyg_include_directory($type) {
+  switch ($type) {
+    case 'plugins':
+      return $type;
+  }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function wysiwyg_imagefield_form_alter(&$form, &$form_state, $form_id) {
+  // Add WYSIWYG ImageField settings to ImageField content field forms.
+  if ($form_id == 'content_field_edit_form' && $form['#field']['widget']['module'] == 'imagefield') {
+    $form['widget']['wysiwyg_imagefield'] = array(
+      '#title' => t('Use with WYSIWYG ImageField?'),
+      '#type' => 'checkbox',
+      '#default_value' => variable_get('wysiwyg_imagefield_' . $form['#field']['type_name'], NULL) == $form['#field']['field_name'],
+      '#description' =>
+        t('If checked, this ImageField will be used for the WYSIWYG ImageField module.') . '<br />' .
+        '<strong>' . t('Note') . ':</strong> ' . t('Only one ImageField can be used with WYSIWYG ImageField at any one time.')
+      ,
+    );
+    $form['#submit'][] = 'wysiwyg_imagefield_form_submit';
+    $form['#validate'][] = 'wysiwyg_imagefield_form_validate';
+  }
+
+  // Attach jQuery UI Dialog to node forms.
+  if (isset($form['type']['#value']) && $form_id == $form['type']['#value'] . '_node_form' && ($imagefield = variable_get('wysiwyg_imagefield_' . $form['type']['#value'], NULL)) !== NULL) {
+    $form['#after_build'][] = 'wysiwyg_imagefield_build_after';
+    $form['#wysiwyg_imagefield'] = array(
+      '#type' => 'value',
+      '#value' => $imagefield,
+    );
+  }
+}
+
+/**
+ * Submit handler for WYSIWYG ImageField settings on ImageField content field forms.
+ */
+function wysiwyg_imagefield_form_submit(&$form, &$form_state) {
+  if ($form_state['values']['wysiwyg_imagefield']) {
+    variable_set("wysiwyg_imagefield_{$form_state['values']['type_name']}", $form_state['values']['field_name']);
+  }
+
+  elseif (variable_get("wysiwyg_imagefield_{$form_state['values']['type_name']}", NULL)) {
+    variable_del("wysiwyg_imagefield_{$form_state['values']['type_name']}");
+  }
+}
+
+/**
+ * Validation for WYSIWYG ImageField settings on ImageField content field forms.
+ */
+function wysiwyg_imagefield_form_validate(&$form, &$form_state) {
+  // Insert is required on a WYSIWYG ImageField field.
+  if ($form_state['values']['wysiwyg_imagefield'] && !$form_state['values']['insert']) {
+    form_set_error('wysiwyg_imagefield', t('Insert is required to use this field with WYSIWYG ImageField.'));
+  }
+
+  // ImageField number of values must be set to 'Unlimited'.
+  if ($form_state['values']['wysiwyg_imagefield'] && $form_state['values']['multiple'] != 1) {
+    form_set_error('wysiwyg_imagefield', t("'Number of values' must be set 'Unlimited' to use this field with WYSIWYG ImageField."));
+  }
+}
+
+function wysiwyg_imagefield_build_after($form_element, &$form_state) {
+  $imagefield = $form_element['#wysiwyg_imagefield']['#value'];
+
+  // Add Javascript.
+  jquery_ui_add('ui.dialog');
+  drupal_add_js(array('WYSIWYGImageField' => $imagefield), 'setting');
+
+  // Add Stylesheets.
+  drupal_add_css(drupal_get_path('module', 'wysiwyg_imagefield') . '/wysiwyg_imagefield.css');
+
+  // Modify file handler element.
+  $form_element[$imagefield]['#prefix'] = "<div id='wysiwyg_imagefield-wrapper'>{$form_element[$imagefield]['#prefix']}";
+  $form_element[$imagefield]['#suffix'] = "{$form_element[$imagefield]['#suffix']}</div>";
+
+  return $form_element;
+}

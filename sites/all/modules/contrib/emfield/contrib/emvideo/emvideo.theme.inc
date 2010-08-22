@@ -1,5 +1,5 @@
 <?php
-// $Id: emvideo.theme.inc,v 1.1.2.38 2009/10/21 16:12:36 aaron Exp $
+// $Id: emvideo.theme.inc,v 1.1.2.39 2010/07/19 17:11:35 aaron Exp $
 
 /**
  * @file
@@ -403,7 +403,7 @@ function _emvideo_seconds_to_time($seconds) {
   }
 
   // Create a safe-for-output MM:SS.
-  $output .= check_plain(sprintf("%02d:%02d", $mm, $ss));
+  $output .= check_plain(sprintf($hh ? "%02d:%02d" : "%d:%02d", $mm, $ss));
 
   return $output;
 }

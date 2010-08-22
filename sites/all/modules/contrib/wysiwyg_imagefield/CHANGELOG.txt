@@ -1,0 +1,13 @@
+// $Id: CHANGELOG.txt,v 1.2 2010/08/08 03:18:59 deciphered Exp $
+
+WYSIWYG ImageField 6.x-1.1, 2010-08-08
+--------------------------------------
+
+- #875748: Added missing image.
+- Improved IE6 support.
+
+
+WYSIWYG ImageField 6.x-1.0, 2010-08-06
+--------------------------------------
+
+- Initial 6.x release.

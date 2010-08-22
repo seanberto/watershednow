@@ -1,0 +1,81 @@
+# German translation of cck (6.x-2.5)
+# Copyright (c) 2009 by the German translation team
+# Generated from files:
+#  optionwidgets.module,v 1.69.2.24 2009/08/03 20:40:26 markuspetrux
+#  optionwidgets.info,v 1.7 2008/04/23 18:02:24 dww
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: cck (6.x-2.5)\n"
+"POT-Creation-Date: 2009-10-21 17:52+0200\n"
+"PO-Revision-Date: 2009-03-18 11:10+0100\n"
+"Language-Team: German\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
+
+#: modules/optionwidgets/optionwidgets.module:421
+msgid "- None -"
+msgstr "- Keine -"
+
+#: modules/optionwidgets/optionwidgets.module:22
+msgid ""
+"For a 'single on/off checkbox' widget, define the 'off' value first, "
+"then the 'on' value in the <strong>Allowed values</strong> section. "
+"Note that the checkbox will be labeled with the label of the 'on' "
+"value."
+msgstr ""
+"Für ein einzelnes „an/aus“ Ankreuzfeld-Steuerelement sollte "
+"zuerst der ‚aus‘ Wert und dann der ‚an‘ Wert im Bereich der "
+"<strong>gültigen Werte</strong> angegeben werden. Das Ankreuzfeld "
+"wird mit der Beschriftung des ‚an‘ Wertes beschriftet."
+
+#: modules/optionwidgets/optionwidgets.module:25
+msgid ""
+"The 'checkboxes/radio buttons' widget will display checkboxes if the "
+"multiple values option is selected for this field, otherwise radios "
+"will be displayed."
+msgstr ""
+"Das ‚Ankreuzfeld/Auswahlknöpfe‘-Steuerelement wird Ankreuzfelder "
+"anzeigen, wenn die Option für mehrere Werte bei diesem Feld "
+"ausgewählt wurde, ansonsten werden Auswahlknöpfe anzeigt."
+
+#: modules/optionwidgets/optionwidgets.module:96
+msgid "Single on/off checkbox"
+msgstr "Einzelnes an/aus Ankreuzfeld"
+
+#: modules/optionwidgets/optionwidgets.module:417
+msgid "N/A"
+msgstr "k.A."
+
+#: modules/optionwidgets/optionwidgets.info:0
+msgid "Option Widgets"
+msgstr "Options-Steuerelemente"
+
+#: modules/optionwidgets/optionwidgets.info:0
+msgid ""
+"Defines selection, check box and radio button widgets for text and "
+"numeric fields."
+msgstr ""
+"Definiert Auswahlfeld-, Ankreuzfeld- und Auswahlknopf-Steuerelemente "
+"für Texte und numerische Felder."
+
+#: modules/optionwidgets/optionwidgets.module:19
+msgid ""
+"Create a list of options as a list in <strong>Allowed values "
+"list</strong> or as an array in PHP code. These values will be the "
+"same for %field in all content types."
+msgstr ""
+"Eine Liste von Optionen als Liste in der <strong>zulässigen "
+"Werteliste</strong> oder als ein Array in PHP-Code erstellen. Diese "
+"Werte werden für %field in allen Inhaltsstypen gleich sein."
+
+#: modules/optionwidgets/optionwidgets.module:37
+msgid "You need to specify the 'allowed values' for this field."
+msgstr "Für dieses Feld müssen die „zulässigen Werte“ angegeben werden."
+
+#: modules/optionwidgets/optionwidgets.module:332
+msgid "%name: this field cannot hold more that @count values."
+msgstr "%name: Dieses Feld kann nicht mehr als @count Werte enthalten."
+

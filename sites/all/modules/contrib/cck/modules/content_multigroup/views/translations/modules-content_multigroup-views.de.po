@@ -1,0 +1,33 @@
+# $Id$
+#
+# LANGUAGE translation of Drupal (modules-content_multigroup-views)
+# Copyright 2009 NAME <EMAIL@ADDRESS>
+# Generated from file: content_multigroup.views.inc,v 1.1.2.2 2009/08/10 03:53:05 markuspetrux
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2009-12-06 15:33+0100\n"
+"PO-Revision-Date: 2009-12-06 22:29+0100\n"
+"Last-Translator: Thomas Zahreddin <tz@it-arts.org>\n"
+"Language-Team: German\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-Language: German\n"
+"X-Poedit-Country: Germany\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+
+#: modules/content_multigroup/views/content_multigroup.views.inc:46
+msgid "@group_label multigroup in @type_label"
+msgstr "@group_label multigroup in @type_label"
+
+#: modules/content_multigroup/views/content_multigroup.views.inc:50
+msgid "@label-truncated in @type_label"
+msgstr "@label-truncated in @type_label"
+
+#: modules/content_multigroup/views/content_multigroup.views.inc:54
+msgid "Synchronize multiple values for fields in @group_label multigroup, @type_label type. Fields in this group: @fields."
+msgstr ""
+

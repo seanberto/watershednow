@@ -7,8 +7,11 @@
 function rubik_theme() {
   $items = array();
 
+  // theme('filter_form') for nicer filter forms.
+  $items['filter_form'] = array('arguments' => array('form' => array()));
+
   // theme('blocks') targeted override for content region.
-  $items['blocks_content'] = array();
+  $items['blocks_content'] = array('arguments' => array('doit' => FALSE));
 
   // Content theming.
   $items['help'] =
@@ -70,6 +73,7 @@ function rubik_theme() {
     'preprocess functions' => array(
       'rubik_preprocess_form_buttons',
       'rubik_preprocess_form_legacy',
+      'rubik_preprocess_form_filter',
     ),
   );
 
@@ -87,8 +91,9 @@ function rubik_theme() {
     'path' => drupal_get_path('theme', 'rubik') .'/templates',
     'template' => 'form-default',
     'preprocess functions' => array(
+      'rubik_preprocess_form_filter',
       'rubik_preprocess_form_buttons',
-      'rubik_preprocess_form_node'
+      'rubik_preprocess_form_node',
     ),
   );
 
@@ -125,7 +130,7 @@ function rubik_preprocess_page(&$vars) {
   $vars['user_links'] = _rubik_user_links();
 
   // Help text toggler link.
-  $vars['help_toggler'] = l(t('Help'), $_GET['q'], array('attributes' => array('id' => 'help-toggler', 'class' => 'toggler'), 'fragment' => 'help-text=1'));
+  $vars['help_toggler'] = l(t('Help'), $_GET['q'], array('attributes' => array('id' => 'help-toggler', 'class' => 'toggler'), 'fragment' => 'help-text'));
 
   // Clear out help text if empty.
   if (empty($vars['help']) || !(strip_tags($vars['help']))) {
@@ -159,8 +164,8 @@ function rubik_preprocess_form_legacy(&$vars) {
  * Preprocessor for handling form button for most forms.
  */
 function rubik_preprocess_form_buttons(&$vars) {
-  if (empty($vars['buttons'])) {
-    if (isset($vars['form']['buttons'])) {
+  if (empty($vars['buttons']) || !element_children($vars['buttons'])) {
+    if (isset($vars['form']['buttons']) && element_children($vars['form']['buttons'])) {
       $vars['buttons'] = $vars['form']['buttons'];
       unset($vars['form']['buttons']);
     }
@@ -197,18 +202,51 @@ function rubik_preprocess_form_confirm(&$vars) {
  * Preprocessor for theme('node_form').
  */
 function rubik_preprocess_form_node(&$vars) {
-  // @TODO: Figure out a better way here. drupal_alter() is preferable.
-  // Allow modules to insert form elements into the sidebar,
-  // defaults to showing taxonomy in that location.
-  if (empty($vars['sidebar'])) {
-    $vars['sidebar'] = array();
-    $sidebar_fields = module_invoke_all('node_form_sidebar', $vars['form'], $vars['form']['#node']) + array('taxonomy');
-    foreach ($sidebar_fields as $field) {
-      if (isset($vars['form'][$field])) {
-        $vars['sidebar'][$field] = $vars['form'][$field];
-        unset($vars['form'][$field]);
+  $vars['sidebar'] = isset($vars['sidebar']) ? $vars['sidebar'] : array();
+  // Support nodeformcols if present.
+  if (module_exists('nodeformcols')) {
+    $map = array(
+      'nodeformcols_region_right' => 'sidebar',
+      'nodeformcols_region_footer' => 'footer',
+      'nodeformcols_region_main' => NULL,
+    );
+    foreach ($map as $region => $target) {
+      if (isset($vars['form'][$region])) {
+        if (isset($vars['form'][$region]['#prefix'], $vars['form'][$region]['#suffix'])) {
+          unset($vars['form'][$region]['#prefix']);
+          unset($vars['form'][$region]['#suffix']);
+        }
+        if (isset($vars['form'][$region]['buttons'], $vars['form'][$region]['buttons'])) {
+          $vars['buttons'] = $vars['form'][$region]['buttons'];
+          unset($vars['form'][$region]['buttons']);
+        }
+        if (isset($target)) {
+          $vars[$target] = $vars['form'][$region];
+          unset($vars['form'][$region]);
+        }
       }
     }
+  }
+  // Default to showing taxonomy in sidebar if nodeformcols is not present.
+  elseif (isset($vars['form']['taxonomy'])) {
+    $vars['sidebar']['taxonomy'] = $vars['form']['taxonomy'];
+    unset($vars['form']['taxonomy']);
+  }
+}
+
+/**
+ * Preprocessor for formatting input filter forms.
+ */
+function rubik_preprocess_form_filter(&$vars) {
+  _rubik_filter_form_alter($vars['form']);
+}
+
+/**
+ * Preprocessor for theme('form_element').
+ */
+function rubik_preprocess_form_element(&$vars) {
+  if (!empty($vars['element']['#rubik_filter_form'])) {
+    $vars['attr']['class'] .= ' form-item-filter';
   }
 }
 
@@ -228,8 +266,12 @@ function rubik_preprocess_help(&$vars) {
     $vars['is_prose'] = TRUE;
     $vars['layout'] = TRUE;
     $vars['content'] = "<span class='icon'></span>" . $help;
-    $vars['links'] = '<label class="breadcrumb-label">'. t('Help text for') .'</label>';
-    $vars['links'] .= theme('breadcrumb', drupal_get_breadcrumb(), FALSE);
+
+    // Link to help section.
+    $item = menu_get_item('admin/help');
+    if ($item && $item['path'] === 'admin/help' && $item['access']) {
+      $vars['links'] = l(t('More help topics'), 'admin/help');
+    }
   }
 }
 
@@ -290,7 +332,12 @@ function rubik_preprocess_comment_wrapper(&$vars) {
   $vars['title'] = t('Comments');
 
   $vars['attr']['id'] = 'comments';
-  $vars['attr']['class'] .= ' clear-block';
+  if (!isset($vars['attr']['class'])) {
+    $vars['attr']['class'] = ' clear-block';
+  }
+  else {
+    $vars['attr']['class'] .= ' clear-block';
+  }
 }
 
 /**
@@ -378,7 +425,7 @@ function rubik_admin_block_content($content, $get_runstate = FALSE) {
   $output = '';
   if (!empty($content)) {
     foreach ($content as $k => $item) {
-      $content[$k]['title'] = "<span class='icon'></span>{$item['title']}";
+      $content[$k]['title'] = "<span class='icon'></span>" . filter_xss_admin($item['title']);
       $content[$k]['localized_options']['html'] = TRUE;
       if (!empty($content[$k]['localized_options']['attributes']['class'])) {
         $content[$k]['localized_options']['attributes']['class'] .= _rubik_icon_classes($item['href']);
@@ -416,6 +463,7 @@ function rubik_admin_menu_item_link($link) {
   $link['description'] = check_plain(truncate_utf8(strip_tags($link['description']), 150, TRUE, TRUE));
   $link['description'] = "<span class='icon'></span>" . $link['description'];
   $link['title'] .= !empty($link['description']) ? "<span class='menu-description'>{$link['description']}</span>" : '';
+  $link['title'] = filter_xss_admin($link['title']);
   return l($link['title'], $link['href'], $link['localized_options']);
 }
 
@@ -452,9 +500,33 @@ function rubik_node_submitted($node) {
  * Override of theme('comment_submitted').
  */
 function rubik_comment_submitted($comment) {
-  $vars = $comment;
-  $vars->created = $comment->timestamp;
+  $comment->created = $comment->timestamp;
   return _rubik_submitted($comment);
+}
+
+/**
+ * Override of theme('filter_tips_more_info').
+ */
+function rubik_filter_tips_more_info() {
+  return '<div class="filter-help">'. l(t('Formatting help'), 'filter/tips', array('attributes' => array('target' => '_blank'))) .'</div>';
+}
+
+/**
+ * Theme a filter form element
+ */
+function rubik_filter_form($form) {
+  if (isset($form['#title'])) {
+    unset($form['#title']);
+  }
+  $select = '';
+  foreach (element_children($form) as $key) {
+    if (isset($form[$key]['#type']) && $form[$key]['#type'] === 'radio') {
+      $select .= drupal_render($form[$key]);
+    }
+  }
+  $help = theme('filter_tips_more_info');
+  $output = "<div class='filter-options clear-block'>{$select}{$help}</div>";
+  return $output;
 }
 
 /**
@@ -492,10 +564,13 @@ function _rubik_user_links() {
   $user_links = array();
   if (empty($user->uid)) {
     $user_links['login'] = array('title' => t('Login'), 'href' => 'user');
-    $user_links['register'] = array('title' => t('Register'), 'href' => 'user/register');
+    // Do not display register link if registration is not allowed.
+    if (variable_get('user_register', 1)) {
+      $user_links['register'] = array('title' => t('Register'), 'href' => 'user/register');
+    }
   }
   else {
-    $user_links['account'] = array('title' => t('Hello !username', array('!username' => $user->name)), 'href' => 'user', 'html' => TRUE);
+    $user_links['account'] = array('title' => t('Hello @username', array('@username' => $user->name)), 'href' => 'user', 'html' => TRUE);
     $user_links['logout'] = array('title' => t('Logout'), 'href' => "logout");
   }
   return $user_links;
@@ -515,4 +590,43 @@ function _rubik_icon_classes($path) {
     return implode(' ', $classes);
   }
   return '';
+}
+
+/**
+ * Recurses through forms for input filter fieldsets and alters them.
+ */
+function _rubik_filter_form_alter(&$form) {
+  $found = FALSE;
+  foreach (element_children($form) as $id) {
+    // Filter form element found
+    if (
+      isset($form[$id]['#element_validate']) &&
+      is_array($form[$id]['#element_validate']) &&
+      in_array('filter_form_validate', $form[$id]['#element_validate'])
+    ) {
+      $form[$id]['#type'] = 'markup';
+      $form[$id]['#theme'] = 'filter_form';
+      $found = TRUE;
+    }
+    // Formatting guidelines element found
+    elseif ($id == 'format' && !empty($form[$id]['format']['guidelines'])) {
+      $form[$id]['#theme'] = 'filter_form';
+      $found = TRUE;
+    }
+    // Recurse down other elements
+    else {
+      _rubik_filter_form_alter($form[$id]);
+    }
+  }
+  // If filter elements found, adjust parent element.
+  if ($found) {
+    foreach (element_children($form) as $element) {
+      $form[$element]['#rubik_filter_form'] = TRUE;
+    }
+    $form = array(
+      '#type' => 'item',
+      '#weight' => isset($form['#weight']) ? $form['#weight'] : 0,
+      $form
+    );
+  }
 }

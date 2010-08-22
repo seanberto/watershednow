@@ -13,6 +13,7 @@ db_load_prod.sh
 db_dump_dev.sh
 nbproject*
 cc_key/uc_credit.key
-drupal/backup
-drupal/sites/default/files
+backup
+sites/default/files
+drupalrivers_dev.sql
 *.tmproj

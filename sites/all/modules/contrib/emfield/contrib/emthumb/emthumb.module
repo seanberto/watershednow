@@ -1,5 +1,5 @@
 <?php
-// $Id: emthumb.module,v 1.7.2.36 2009/12/07 19:41:52 aaron Exp $
+// $Id: emthumb.module,v 1.7.2.39 2010/07/19 15:12:47 aaron Exp $
 
 /**
  *  @file
@@ -24,7 +24,7 @@ function emthumb_emfield_field_extra($op, &$node, $field, &$items, $teaser, $pag
           if (isset($file['data']) && isset($file['data']['emthumb']) && is_array($file['data']['emthumb'])) {
             $existing_data = $file['data']['emthumb'];
           }
-          
+
           // Merge new file with existing data so we include alt tag data.
           $items[$delta]['data']['emthumb'] = array_merge($existing_data, _emthumb_file_load($file['data']['emthumb']['fid']));
         }
@@ -59,12 +59,12 @@ function emthumb_emfield_field_extra($op, &$node, $field, &$items, $teaser, $pag
           _emthumb_file_update($node, $items[$delta]['emthumb']['emthumb']['emthumb']['emthumb']['file'], $field, $items[$delta]['emthumb']['emthumb']['emthumb']['emthumb']['flags']['delete']);
           $items[$delta]['data']['emthumb'] = $items[$delta]['emthumb']['emthumb']['emthumb']['emthumb']['file'];
         }
-        
+
         if (empty($items[$delta]['data']['emthumb']) && $field['widget']['emthumb_store_local_thumbnail']) { // was: variable_get('emthumb_store_local_thumbnail', TRUE)) {
           // Fetch remote thumb because we don't have a custom one.
           $items[$delta]['data']['emthumb'] = emthumb_fetch_remote_thumbnail($items[$delta], $field);
         }
-        
+
         // Add alt text and alt title if necessary.
         if (!empty($items[$delta]['emthumb']['emthumb']['emthumb']['emthumb']['emthumb_alt'])) {
           $items[$delta]['data']['emthumb']['emthumb_alt'] = $items[$delta]['emthumb']['emthumb']['emthumb']['emthumb']['emthumb_alt'];
@@ -72,7 +72,7 @@ function emthumb_emfield_field_extra($op, &$node, $field, &$items, $teaser, $pag
         if (!empty($items[$delta]['emthumb']['emthumb']['emthumb']['emthumb']['emthumb_title'])) {
           $items[$delta]['data']['emthumb']['emthumb_title'] = $items[$delta]['emthumb']['emthumb']['emthumb']['emthumb']['emthumb_title'];
         }
-        
+
         if (isset($items[$delta]['emthumb'])) {
           // We're saving in the data property so delete emthumb
           unset($items[$delta]['emthumb']);
@@ -99,7 +99,7 @@ function emthumb_widget_element_process($element, $edit, &$form_state) {
   $delta = $element['#delta'];
   $upload_op = 'emthumb_'. $fieldname . '_' . $delta . '_upload';
   $filefield_name = $fieldname . '_' . $delta . '_file';
-  
+
   // Get our file
   $file = array();
   if ($form_state['values'] && $form_state['values']['nid'] && $node = node_load($form_state['values']['nid'])) {
@@ -124,14 +124,14 @@ function emthumb_widget_element_process($element, $edit, &$form_state) {
       '#tree' => FALSE,
       '#weight' => 9,
     );
-  
+
     $element['upload'] = array(
       '#type' => 'submit',
       '#value' => t('Upload'),
       '#name' => $upload_op,
       '#attributes' => array('id' => $fieldname .'-attach-button'),
       '#tree' => FALSE,
-      '#submit' => array('emthumb_widget_upload_button_submit'), 
+      '#submit' => array('emthumb_widget_upload_button_submit'),
       '#weight' => 10,
     );
   }
@@ -141,7 +141,7 @@ function emthumb_widget_element_process($element, $edit, &$form_state) {
     $element['emthumb'] = array(
       '#theme' => 'emthumb_edit_image_row',
     );
-    
+
     $element['emthumb']['flags']['delete'] = array(
       '#type' => 'checkbox',
       '#title' => t('Delete'),
@@ -193,7 +193,16 @@ function emthumb_widget_element_process($element, $edit, &$form_state) {
       '#value' => $field['widget']['emthumb'] ? t('If a new custom thumbnail is chosen, the current custom thumbnail will be replaced upon submitting the form.') : '',
     );
   }
-  
+  else if ($field['widget']['emthumb_store_local_thumbnail']) {
+    $element['emthumb']['no_current_thumb'] = array(
+      '#type' => 'markup',
+      '#value' => t('If possible, a remote thumbnail will be downloaded on the next save.'),
+    );
+    if ($field['widget']['emthumb']) {
+      $element['emthumb']['no_current_thumb']['#value'] .= ' ' . t("Alternatively, you may specify a custom thumbnail in this field.");
+    }
+  }
+
   if (isset($form_state['clicked_button']) && in_array('node_form_submit', $form_state['clicked_button']['#submit']) && isset($form_state['storage']['emthumb'])) {
     // Form is being submitted and we want to empty our storage
     // so we can redirect to wherever was specified
@@ -204,7 +213,7 @@ function emthumb_widget_element_process($element, $edit, &$form_state) {
       unset($form_state['storage']['emthumb']);
     }
   }
-  
+
   return $element;
 }
 
@@ -293,12 +302,12 @@ function emthumb_emfield_widget_extra_file_included() {
  *  building the widget on the node form. It creates a file upload element
  *  so the editor may upload a new thumbnail to replace the provider default.
  */
-function emthumb_emfield_widget_extra(&$form, &$form_state, $field, $items, $delta = 0, $module) {
+function emthumb_emfield_widget_extra($form, $form_state, $field, $items, $delta = 0, $module) {
   $element = array();
   // Construct the thumbnail fieldset with the custom label.
   // We do not want this fieldset if there are no items
   // and the editor can't upload a thumb
-  if ((!empty($items) && !empty($items[0]['value'])) || $field['widget']['emthumb']) {
+  if ((!empty($items) && !empty($items[0]['value']) && $field['widget']['emthumb_store_local_thumbnail']) || $field['widget']['emthumb']) {
     $emthumb_label = isset($field['widget']['emthumb_label']) ? $field['widget']['emthumb_label'] : (isset($field['widget']['label']) ? t('@field custom thumbnail', array('@field' => $field['widget']['label'])) : t('Custom thumbnail'));
     $element['emthumb'] = array(
       '#type' => 'fieldset',
@@ -539,10 +548,10 @@ function emthumb_fetch_remote_thumbnail($item, $field) {
       global $user;
 
       // Attempt to fetch the thumbnail from the provided URL.
-      $image = file_get_contents($thumbnail);
+      $request = drupal_http_request($thumbnail);
 
       // Only go forward if we actually have an image stream.
-      if ($image) {
+      if ($image = $request->data) {
 
         // Add in our check of the the file name length.
         $validators['file_validate_name_length'] = array();

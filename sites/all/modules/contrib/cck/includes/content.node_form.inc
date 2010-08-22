@@ -1,5 +1,5 @@
 <?php
-// $Id: content.node_form.inc,v 1.7.2.21 2009/07/18 00:40:20 markuspetrux Exp $
+// $Id: content.node_form.inc,v 1.7.2.19.2.6 2009/12/29 09:03:15 markuspetrux Exp $
 
 /**
  * @file
@@ -152,21 +152,23 @@ function content_multiple_value_form(&$form, &$form_state, $field, $items) {
 
   switch ($field['multiple']) {
     case 0:
+      $deltas = array(0);
       $max = 0;
       break;
-    case 1:
-      $filled_items = content_set_empty($field, $items);
-      $current_item_count = isset($form_state['item_count'][$field_name])
-                            ? $form_state['item_count'][$field_name]
-                            : count($items);
-      // We always want at least one empty icon for the user to fill in.
-      $max = ($current_item_count > count($filled_items))
-              ? $current_item_count - 1
-              : $current_item_count;
 
+    case 1:
+      $deltas = array_keys($items);
+      $current_item_count = max(1, (isset($form_state['item_count'][$field_name]) ? $form_state['item_count'][$field_name] : count($deltas)));
+      $max = (!empty($deltas) ? max($deltas) : -1);
+      while (count($deltas) < $current_item_count) {
+        $max++;
+        $deltas[] = $max;
+      }
       break;
+
     default:
       $max = $field['multiple'] - 1;
+      $deltas = range(0, $max);
       break;
   }
 
@@ -181,12 +183,12 @@ function content_multiple_value_form(&$form, &$form_state, $field, $items) {
   );
   $function = $field['widget']['module'] .'_widget';
 
-  for ($delta = 0; $delta <= $max; $delta++) {
+  foreach ($deltas as $delta) {
     if ($element = $function($form, $form_state, $field, $items, $delta)) {
       $defaults = array(
         '#title' => ($field['multiple'] >= 1) ? '' : $title,
         '#description' => ($field['multiple'] >= 1) ? '' : $description,
-        '#required' => $delta == 0 && $field['required'],
+        '#required' => ($field['multiple'] == 0 ? $field['required'] : FALSE),
         '#weight' => $delta,
         '#delta' => $delta,
         '#columns' => array_keys($field['columns']),
@@ -207,8 +209,26 @@ function content_multiple_value_form(&$form, &$form_state, $field, $items) {
         );
       }
 
+      // Add a checkbox to allow users remove a single delta item.
+      // See content_set_empty() and theme_content_multiple_values().
+      if ($field['multiple'] == 1) {
+        // We name the element '_remove' to avoid clashing with column names
+        // defined by field modules.
+        $element['_remove'] = array(
+          '#type' => 'checkbox',
+          '#attributes' => array('class' => 'content-multiple-remove-checkbox'),
+          '#default_value' => isset($items[$delta]['_remove']) ? $items[$delta]['_remove'] : 0,
+        );
+      }
+
       $form_element[$delta] = array_merge($element, $defaults);
     }
+  }
+
+  // Add an #after_build callback to prevent validation of fields that are
+  // flagged for removal and enforce field requirement settings.
+  if ($field['multiple'] >= 1) {
+    $form_element['#after_build'] = array('content_multiple_value_after_build_proxy');
   }
 
   // Add AHAH add more button, if not working with a programmed form.
@@ -243,9 +263,131 @@ function content_multiple_value_form(&$form, &$form_state, $field, $items) {
     $form_element['#prefix'] = '<div id="'. $field_name_css .'-items">';
     $form_element['#suffix'] = '</div>';
     $form_element[$field_name .'_add_more']['#prefix'] = '<div class="content-add-more clear-block">';
-    $form_element[$field_name .'_add_more']['#suffix'] =  '</div>';
+    $form_element[$field_name .'_add_more']['#suffix'] = '</div>';
   }
   return $form_element;
+}
+
+/**
+ * After build callback for multiple value fields.
+ */
+function content_multiple_value_after_build($elements, &$form_state) {
+  $items_map = array();
+
+  foreach (element_children($elements) as $delta) {
+    // Find delta items for this field when the form if being processed for validation.
+    if (isset($elements[$delta]) && $elements[$delta] && is_numeric($delta) && !empty($elements[$delta]['#needs_validation'])) {
+
+      // Find items that have been flagged for removal.
+      if (isset($elements[$delta]['_remove']) && !empty($elements[$delta]['_remove']['#value'])) {
+
+        // Update the value in the #post attribute of the elements.
+        $post = &$elements[$delta]['#post'];
+        foreach ($elements[$delta]['#parents'] as $name) {
+          $post = &$post[$name];
+        }
+        $post = array('_weight' => $elements[$delta]['_weight']['#value'], '_remove' => 1);
+
+        // Alter the value of this element and children recursively.
+        content_multiple_value_after_build_recursive($elements[$delta], $elements[$delta]['#post']);
+
+        $items_map[$delta] = TRUE;
+      }
+      else {
+        $items_map[$delta] = FALSE;
+      }
+    }
+  }
+
+  // If the multiple values field is required, then make sure there's at
+  // least one item not flagged for removal. This is necessary to point
+  // the user to the correct form element when the validation error is
+  // issued from content_multiple_value_nodeapi_validate().
+  $items_count = count($items_map);
+  if (!empty($elements['#required']) && $items_count > 0) {
+    // If the number of removed items is equal to the total number of
+    // items, then we'll reset the '_remove' flag of the first item, and
+    // that will be used to point the user when the required field error
+    // is issued by content_multiple_value_nodeapi_validate().
+    if ($items_count == count(array_filter($items_map))) {
+      $delta = key($items_map);
+      if (isset($elements[$delta]['_remove'])) {
+        $elements[$delta]['_remove']['#value'] = 0;
+      }
+    }
+  }
+
+  return $elements;
+}
+
+/**
+ * Helper function to deal with items flagged for removal recursively.
+ */
+function content_multiple_value_after_build_recursive(&$elements, $post) {
+  foreach (element_children($elements) as $key) {
+    if (isset($elements[$key]) && $elements[$key] && !in_array($key, array('_weight', '_remove', '_error_element'))) {
+      // Recurse through all children elements.
+      content_multiple_value_after_build_recursive($elements[$key], $post);
+    }
+  }
+
+  // Remove values for items flagged for removal.
+  if (isset($elements['#value'])) {
+    $elements['#value'] = NULL;
+    form_set_value($elements, NULL, $form_state);
+    $elements['#post'] = $post;
+  }
+}
+
+/**
+ * Implementation of nodeapi('validate') for multiple value fields
+ * managed by content module itself.
+ */
+function content_multiple_value_nodeapi_validate(&$node, $field, &$items, $form) {
+  $field_name = $field['field_name'];
+
+  // Getting the field structure from the form allows other modules alter
+  // field properties such as the required attribute.
+  $field = $form['#field_info'][$field_name];
+
+  // Get rid of the add more items element.
+  unset($items[$field_name .'_add_more']);
+
+  // Reorder items to account for drag-n-drop reordering.
+  $items = _content_sort_items($field, $items);
+
+  // Create a copy of the items before filtering those that are flagged
+  // for removal. We need this copy later to obtain the error element.
+  $items_copy = $items;
+
+  // Filter out items flagged for removal.
+  $items = content_set_empty($field, $items);
+
+  // Enforce field requirement settings.
+  if ($field['required'] && empty($node->_content_ignore_required_fields[$field_name]) && content_access('edit', $field, NULL, $node)) {
+    // Count non-empty items.
+    $count = 0;
+    $function = $field['module'] .'_content_is_empty';
+    foreach ($items as $item) {
+      if (!$function($item, $field)) {
+        $count++;
+      }
+    }
+    // The field is required so we expect at least one non-empty item.
+    if ($count == 0) {
+      // Try to guess the element path in the form from the first item that
+      // is not flagged for removal. Defaults to first item.
+      $error_element_index = 0;
+      foreach ($items_copy as $index => $item) {
+        if (empty($item['_remove'])) {
+          $error_element_index = $index;
+          break;
+        }
+      }
+      $error_element = isset($items_copy[$error_element_index]) && is_array($items_copy[$error_element_index]) && isset($items_copy[$error_element_index]['_error_element']) ? $items_copy[$error_element_index]['_error_element'] : '';
+      form_set_error($error_element, t('%name field is required.', array('%name' => t($field['widget']['label']))));
+    }
+  }
 }
 
 /**
@@ -264,7 +406,6 @@ function content_add_more_submit($form, &$form_state) {
     $form_state['item_count'][$field_name] = count($form_state['values'][$field_name]);
   }
 }
-
 
 /**
  * Menu callback for AHAH addition of new empty widgets.
@@ -314,11 +455,13 @@ function content_add_more_js($type_name_url, $field_name) {
   unset($form_state['values'][$field_name][$field['field_name'] .'_add_more']);
   foreach ($_POST[$field_name] as $delta => $item) {
     $form_state['values'][$field_name][$delta]['_weight'] = $item['_weight'];
+    $form_state['values'][$field_name][$delta]['_remove'] = isset($item['_remove']) ? $item['_remove'] : 0;
   }
   $form_state['values'][$field_name] = _content_sort_items($field, $form_state['values'][$field_name]);
   $_POST[$field_name] = _content_sort_items($field, $_POST[$field_name]);
 
   // Build our new form element for the whole field, asking for one more element.
+  $delta = max(array_keys($_POST[$field_name])) + 1;
   $form_state['item_count'] = array($field_name => count($_POST[$field_name]) + 1);
   $form_element = content_field_form($form, $form_state, $field);
   // Let other modules alter it.
@@ -338,7 +481,6 @@ function content_add_more_js($type_name_url, $field_name) {
 
   // Build the new form against the incoming $_POST values so that we can
   // render the new element.
-  $delta = max(array_keys($_POST[$field_name])) + 1;
   $_POST[$field_name][$delta]['_weight'] = $delta;
   $form_state = array('submitted' => FALSE);
   $form += array(

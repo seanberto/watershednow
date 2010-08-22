@@ -1,0 +1,33 @@
+# $Id$
+#
+# LANGUAGE translation of Drupal (modules-content_multigroup-views-handlers)
+# Copyright 2009 NAME <EMAIL@ADDRESS>
+# Generated from file: content_multigroup_handler_filter.inc,v 1.1.2.2 2009/10/31 20:31:09 markuspetrux
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2009-12-06 15:33+0100\n"
+"PO-Revision-Date: 2009-12-06 22:28+0100\n"
+"Last-Translator: Thomas Zahreddin <tz@it-arts.org>\n"
+"Language-Team: German <tz@it-arts.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-Language: German\n"
+"X-Poedit-Country: Germany\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+
+#: modules/content_multigroup/views/handlers/content_multigroup_handler_filter.inc:19
+msgid "+ delta"
+msgstr "+ delta"
+
+#: modules/content_multigroup/views/handlers/content_multigroup_handler_filter.inc:74
+msgid "Available fields in @group_label multigroup"
+msgstr ""
+
+#: modules/content_multigroup/views/handlers/content_multigroup_handler_filter.inc:78
+msgid "Select the field in this multigroup that will be used to build the primary join with the content table."
+msgstr ""
+

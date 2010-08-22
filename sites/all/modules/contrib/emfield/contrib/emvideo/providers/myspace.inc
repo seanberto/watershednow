@@ -1,5 +1,5 @@
 <?php
-// $Id: myspace.inc,v 1.1.2.12 2009/10/29 13:29:51 aaron Exp $
+// $Id: myspace.inc,v 1.1.2.13 2010/07/19 16:37:46 aaron Exp $
 
 /**
  * @file
@@ -113,16 +113,14 @@ function emvideo_myspace_duration($item) {
 function theme_emvideo_myspace_flash($embed, $width, $height) {
   static $count = 0;
   if ($embed) {
-    $output .= "    <object type=\"application/x-shockwave-flash\" height=\"$height\" width=\"$width\" data=\"http://lads.myspace.com/videos/vplayer.swf\" id=\"emfield-video-myspace-$count\" >
-      <param name=\"movie\" value=\"http://lads.myspace.com/videos/vplayer.swf\" />
-      <param name=\"allowScriptAcess\" value=\"sameDomain\"/>
-      <param name=\"quality\" value=\"best\"/>
-      <param name=\"bgcolor\" value=\"#FFFFFF\"/>
-      <param name=\"scale\" value=\"noScale\"/>
-      <param name=\"salign\" value=\"TL\"/>
-      <param name=\"FlashVars\" value=\"m=$embed&amp;type=video\" />
-      <param name=\"wmode\" value=\"transparent\" />
-    </object>\n";
+    $embed = check_plain($embed);
+    $width = (integer) $width;
+    $height = (integer) $height;
+    $output .= '<object height="'. $height .'px" width="'. $width .'px" >
+      <param name="allowFullScreen" value="true"/>
+      <param name="wmode" value="transparent"/>
+      <param name="movie" value="http://mediaservices.myspace.com/services/media/embed.aspx/m='. $embed .',t=1,mt=video" />
+      <embed src="http://mediaservices.myspace.com/services/media/embed.aspx/m='. $embed .',t=1,mt=video" width="'. $width .'" height="'. $height .'" allowFullScreen="true" type="application/x-shockwave-flash" wmode="transparent"></embed></object>';
   }
   $count++;
   return $output;

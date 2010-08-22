@@ -1,0 +1,73 @@
+/** $Id: wysiwyg_imagefield.css,v 1.2 2010/08/08 03:18:59 deciphered Exp $ **/
+
+#wysiwyg_imagefield-dialog {
+  -moz-border-radius: 10px;
+  -moz-box-shadow: 2px 2px 5px #999;
+  -webkit-border-radius: 10px;
+  -webkit-box-shadow: 2px 2px 5px #999;
+  background-color: #FFF;
+  border: 5px solid #000;
+  border-radius: 10px;
+  box-shadow: 2px 2px 5px #999;
+  overflow: inherit !important;
+  padding: 10px;
+}
+
+#wysiwyg_imagefield-dialog .ui-dialog-titlebar {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 1em;
+  position: relative;
+}
+
+#wysiwyg_imagefield-dialog .ui-dialog-titlebar-close {
+  background-image: url('images/close.png');
+  display: block;
+  height: 30px;
+  left: -28px;
+  position: absolute;
+  top: -28px;
+  width: 30px;
+}
+
+#wysiwyg_imagefield-dialog .ui-dialog-titlebar-close span {
+  display: none;
+}
+
+#wysiwyg_imagefield-dialog .filefield-sources-list {
+  position: absolute;
+  right: 0;
+  top: -2.5em;
+}
+
+.wysiwyg_imagefield-hidden {
+  display: none;
+}
+
+
+#wysiwyg_imagefield-wrapper {
+  display: none;
+}
+
+#wysiwyg_imagefield-wrapper .form-item {
+  margin-top: 0;
+  position: relative;
+}
+
+#wysiwyg_imagefield-wrapper .filefield-element {
+  margin: 0;
+}
+
+#wysiwyg_imagefield-wrapper .filefield-element .widget-edit .views-admin-links {
+  display: none;
+}
+
+#wysiwyg_imagefield-wrapper .filefield-element .widget-edit .widget-preview {
+  margin-bottom: 10px;
+}
+
+.mce_wysiwyg_imagefield .mceIcon {
+  height: 16px !important;
+  padding: 2px;
+  width: 16px !important;
+}

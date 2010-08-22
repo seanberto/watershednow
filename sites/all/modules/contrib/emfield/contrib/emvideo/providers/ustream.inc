@@ -1,5 +1,5 @@
 <?php
-// $Id: ustream.inc,v 1.1.2.3 2009/10/21 16:50:14 aaron Exp $
+// $Id: ustream.inc,v 1.1.2.4 2010/07/19 16:11:47 aaron Exp $
 
 define('EMVIDEO_USTREAM_MAIN_URL', 'http://www.ustream.tv/');
 define('EMVIDEO_USTREAM_API_INFO', 'http://developer.ustream.tv/');
@@ -187,7 +187,7 @@ function emvideo_ustream_thumbnail($field, $item, $formatter, $node, $width, $he
  *  @return
  *    the html of the embedded video
  */
-function emvideo_ustream_video($embed, $width, $height, $field, $item, $autoplay, $options = array()) {
+function emvideo_ustream_video($embed, $width, $height, $field, $item, $node, $autoplay, $options = array()) {
 // print_r($item);
   $output = theme('emvideo_ustream_flash', $embed, $width, $height, $autoplay, $options);
   return $output;
@@ -209,7 +209,7 @@ function emvideo_ustream_video($embed, $width, $height, $field, $item, $autoplay
  *  @return
  *    the html of the embedded video
  */
-function emvideo_ustream_preview($embed, $width, $height, $field, $item, $autoplay, $options = array()) {
+function emvideo_ustream_preview($embed, $width, $height, $field, $item, $node, $autoplay, $options = array()) {
   $output = theme('emvideo_ustream_flash', $embed, $width, $height, $autoplay, $options);
   return $output;
 }

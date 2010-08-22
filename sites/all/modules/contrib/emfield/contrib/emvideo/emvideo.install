@@ -1,5 +1,5 @@
 <?php
-// $Id: emvideo.install,v 1.1.2.31 2009/11/08 23:45:30 aaron Exp $
+// $Id: emvideo.install,v 1.1.2.33 2010/07/19 18:17:48 aaron Exp $
 
 /**
  * @file
@@ -425,6 +425,13 @@ function emvideo_update_6016() {
   cache_clear_all('*', content_cache_tablename(), TRUE);
   cache_clear_all('*', 'cache', TRUE);
   return $ret;
+}
+
+/**
+ * Rebuild the theme to accomodate optional Colorbox support.
+ */
+function emvideo_update_6018() {
+  return _emvideo_update_add_new_formatters();
 }
 
 /**

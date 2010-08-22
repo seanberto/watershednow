@@ -1,5 +1,5 @@
 <?php
-// $Id: voicethread.inc,v 1.1.2.1 2009/10/20 18:36:34 aaron Exp $
+// $Id: voicethread.inc,v 1.1.2.2 2010/07/19 16:11:47 aaron Exp $
 
 define('EMVIDEO_VOICETHREAD_MAIN_URL', 'http://www.voicethread.com/');
 
@@ -76,7 +76,7 @@ function emvideo_voicethread_embedded_link($book_id) {
 /**
  * the embedded flash displaying the voicethread
  */
-function theme_emvideo_voicethread_flash($embed, $width, $height, $autoplay) {
+function theme_emvideo_voicethread_flash($embed, $width, $height, $autoplay, $options = array()) {
   if ($embed) {
     if ($autoplay) {
       $autoplay_value = '&autoplay=1';
@@ -104,8 +104,8 @@ function theme_emvideo_voicethread_flash($embed, $width, $height, $autoplay) {
  *  @return
  *    the html of the embedded video
  */
-function emvideo_voicethread_video($embed, $width, $height, $field, $item, $autoplay) {
-  $output = theme('emvideo_voicethread_flash', $embed, $width, $height, $autoplay);
+function emvideo_voicethread_video($embed, $width, $height, $field, $item, $node, $autoplay, $options = array()) {
+  $output = theme('emvideo_voicethread_flash', $embed, $width, $height, $autoplay, $options);
   return $output;
 }
 
@@ -125,8 +125,8 @@ function emvideo_voicethread_video($embed, $width, $height, $field, $item, $auto
  *  @return
  *    the html of the embedded video
  */
-function emvideo_voicethread_preview($embed, $width, $height, $field, $item, $autoplay) {
-  $output = theme('emvideo_voicethread_flash', $embed, $width, $height, $autoplay);
+function emvideo_voicethread_preview($embed, $width, $height, $field, $item, $node, $autoplay, $options = array()) {
+  $output = theme('emvideo_voicethread_flash', $embed, $width, $height, $autoplay, $options);
   return $output;
 }
 

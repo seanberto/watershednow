@@ -1,5 +1,5 @@
 
-/* $Id: emvideo.custom-url.css,v 1.1.2.1 2010/05/18 16:42:33 aaron Exp $ */
+/* $Id: emvideo.custom-url.css,v 1.1.2.2 2010/05/18 21:37:15 aaron Exp $ */
 
 /**
  *  @file
@@ -16,8 +16,7 @@
 .emvideo-zzz_custom_url .flowplayer {
   position: relative;
   display: block;
-  /* width: 425px; */
-  /* height: 350px; */
+  cursor: pointer;
 }
 
 /* This is the overlay of a play button on the video thumbnail. */

@@ -1,5 +1,5 @@
 <?php
-// $Id: photobucket.inc,v 1.1.2.6 2009/09/29 19:52:05 aaron Exp $
+// $Id: photobucket.inc,v 1.1.2.7 2010/07/19 15:57:58 aaron Exp $
 
 /**
  * @file
@@ -132,3 +132,8 @@ function _emimage_photobucket_scrape_image_title($url) {
   $html = $rs->data;
   return $title[$url] = preg_match('@<span id="photoTitle">(.+?)</span>@is', $html, $matches)? $matches[1] : '';
 }
+
+function emimage_photobucket_thumbnail($field, $item, $formatter, $node, $width, $height) {
+  return emimage_photobucket_image_url($item['value'], $item['data']);
+}
+

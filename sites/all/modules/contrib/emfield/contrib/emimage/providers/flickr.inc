@@ -1,5 +1,5 @@
 <?php
-// $Id: flickr.inc,v 1.1.2.10 2009/09/29 19:52:05 aaron Exp $
+// $Id: flickr.inc,v 1.1.2.11 2010/07/19 15:57:58 aaron Exp $
 
 /**
  * @file
@@ -28,6 +28,7 @@ define('EMIMAGE_FLICKR_DATA_VERSION', 1);
 function emimage_flickr_info() {
   $name = t('Flickr');
   $features = array(
+    array(t('Thumbnails'), t('Yes'), ''),
     array(t('Import photosets'), t('Yes'), t('If you have the Embedded Media Import module activated, you may allow @name photosets to be imported into content.', array('@name' => $name))),
   );
   return array(
@@ -272,4 +273,8 @@ function _emimage_flickr_guess_size($width, $height) {
 
   // If we don't have width or height set, then get the original size.
   return '5';
+}
+
+function emimage_flickr_thumbnail($field, $item, $formatter, $node, $width, $height) {
+  return emimage_flickr_image_url($item['value'], $width, $height, $formatter, $field, $item, $node);
 }

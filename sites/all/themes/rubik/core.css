@@ -23,27 +23,27 @@ hr { display:none; }
 div.messages {
   padding:15px;
   color:#036;
-  background:#f8f8f8;
+  background-color:#f8f8f8;
   border:5px solid #fff;
   }
 
 table tr.warning th,
 div.warning {
   color:#a84;
-  background:#fff4c0;
+  background-color:#fff4c0;
   }
 
 table tr.error th,
 div.error {
   color:#965;
-  background:#ffe4e0;
+  background-color:#ffe4e0;
   }
 
 table tr.ok th,
 table tr.info th,
 div.status {
   color:#687;
-  background:#ecf8f4;
+  background-color:#ecf8f4;
   }
 
   div.error   { border-color:#fff8f4; }
@@ -124,6 +124,8 @@ table {
   border-style:solid;
   }
 
+  .fieldset table { margin:0px; }
+
 table td,
 table th {
   vertical-align:top;
@@ -151,10 +153,11 @@ table tr.selected td {
   border-color:#eeb;
   }
 
-.fieldset table { margin:0px; }
+/* Block administration */
+table tr.region td { background:#f8f8f8; }
 
-table td.module { font-weight:bold; }
-table td.permission { padding-left:19px; }
+/* Hide tabledrag markers */
+table tr.draggable span.tabledrag-changed { display:none; }
 
 /**
  * Forms ==============================================================
@@ -162,7 +165,6 @@ table td.permission { padding-left:19px; }
 .block,
 .item-list,
 .help-items ul,
-.fieldset,
 .form-item,
 form.confirmation ul,
 .admin-list,
@@ -197,7 +199,8 @@ table div.form-item {
   }
 
   .block .item-list,
-  .admin-panel .admin-list { padding:0px; }
+  .admin-panel .admin-list,
+  .form-item .form-item-filter { padding:0px; }
 
 .form-item label {
   margin:0px;
@@ -238,25 +241,25 @@ table div.form-item {
 
 .page-content .form-item div.description {
   position:absolute;
-  max-width:60%;
-  right:0px;
-  top:100%;
+  bottom:100%;
+  right:-15px;
   z-index:5;
 
   color:#687;
-  background:#e8f4f0;
-  border:5px solid #f0f8f4;
-  border-top:0px;
+  background:url(images/popup.png) 50% 100% no-repeat;
+  border-top:1px solid #d8e4e0;
 
-  margin:0px;
-  padding:10px;
+  width:240px;
+  margin:0px 0px -15px;
+  padding:9px 10px 20px;
   display:none;
   }
 
-  .page-content div.form-item:hover,
-  .page-content .fieldset div.form-item:hover { background-color:#f0f8f4; }
+  .page-content div.form-item:hover {
+    z-index:1;
+    height:auto; /* Fix for flicker in IE7 */
+    }
 
-  .page-content div.form-item:hover { z-index:1; }
   .page-content div.form-item:hover > div.description { display:block; }
 
 input.teaser-button,
@@ -286,14 +289,30 @@ input.form-submit {
     }
 
   /* Teaser splitter */
-  div.teaser-button-wrapper {
+  div.teaser-checkbox {
     position:relative;
     z-index:2;
-    padding:5px 5px 0px;
     }
 
-  input.teaser-button { font-size:11px; }
+  div.teaser-checkbox div { margin:5px 0px 0px; }
+
+  input.teaser-button {
+    padding:0px 5px;
+    font-size:11px;
+    }
+
   form input#edit-delete { color:#ccc; }
+
+/* Filter form */
+.filter-options .form-item,
+.filter-options .filter-help {
+  font-size:11px;
+  margin:10px 10px 0px 0px;
+  padding:0px;
+  float:left;
+  }
+
+  .filter-options div.form-item:hover > div.description { display:none; }
 
 input.form-autocomplete,
 input.form-text,
@@ -326,6 +345,8 @@ select.form-select {
     width:100%;
     }
 
+    table input.fluid { width:auto; }
+
   html.js input.form-autocomplete { background-position:100% 7px; }
   html.js input.throbbing { background-position:100% -13px; }
 
@@ -338,6 +359,31 @@ select.form-select {
 .fieldset-title,
 .fieldset-title a,
 .fieldset-content { display:block; }
+
+.fieldset { margin:0px 0px 10px; }
+
+.fieldset.titled {
+  display:block;
+  position:relative;
+  min-height:30px;
+  }
+
+.fieldset-title {
+  display:block;
+  position:absolute;
+  left:0px;
+  right:0px;
+  top:0px;
+  border-width:1px;
+  border-style:solid;
+  border-color:#ccc #ddd #eee;
+  }
+
+.container-inline .fieldset-title .fieldset-content,
+.fieldset.titled .fieldset-content {
+  display:block;
+  padding-top:40px;
+  }
 
 .item-list h3,
 .block .block-title,
@@ -352,12 +398,13 @@ select.form-select {
   background:#f4f4f4;
   }
 
+  .fieldset-title,
+  .collapsible .fieldset-title a { padding-bottom:4px; }
+
   /* Explicit height for IE */
   .collapsible .fieldset-title a { height:20px; }
 
   .admin-panel h3 { background:#eee; }
-
-  .collapsible .fieldset-title { position:relative; }
 
   .collapsible .fieldset-title span.icon {
     position:absolute;
@@ -367,6 +414,7 @@ select.form-select {
     width:20px;
     height:20px;
     display:block;
+    cursor:pointer;
     }
 
     html.js .collapsed .fieldset-title span.icon { background-position:0px 0px; }
@@ -388,10 +436,20 @@ select.form-select {
   .collapsed .fieldset-title a { padding-bottom:4px; }
 
 .block .block-content,
+.container-inline .fieldset-content,
 .fieldset-content {
   padding:10px 9px 9px;
   background:#fff;
   }
+
+  .container-inline .fieldset-content,
+  .fieldset-content {
+    border-width:1px;
+    border-style:solid;
+    border-color:#ccc #ddd #eee;
+    }
+
+  .titled .fieldset-content { border-width:0px 1px 1px; }
 
   html.js .collapsed .fieldset-content { display:none; }
 
@@ -415,6 +473,8 @@ div.column-side {
   }
 
   div.column-side div.column-wrapper { padding-left:10px; }
+
+div.column-footer { clear:both; }
 
 form div.buttons {
   background:#eee;
@@ -455,6 +515,7 @@ div.admin .left {
 
 div.admin .right,
 div.admin .left {
+  box-sizing:border-box;
   -moz-box-sizing:border-box;
   -webkit-box-sizing:border-box;
   width:50%;
@@ -511,9 +572,9 @@ div.help-items ul { margin:10px 5px; }
 /**
  * Admin toolbar ======================================================
  */
-body.rubik div#admin-toolbar span.menu-description { padding-left:50px; }
+body.rubik div#admin-toolbar a.menu-hover span.menu-description { padding-left:50px; }
 
-body.rubik div#admin-toolbar span.menu-description span.icon {
+body.rubik div#admin-toolbar a.menu-hover span.menu-description span.icon {
   position:absolute;
   left:10px;
   top:0px;
@@ -527,16 +588,31 @@ body.rubik div#admin-toolbar span.menu-description span.icon {
  * Some form elements are either too weirdly positioned or really benefit
  * from persistent descriptions. Reset for all of these.
  */
+.ctools-export-ui-row .form-item,
+.ctools-export-ui-row .form-item .description,
+.multiselect .form-item,
+.multiselect .form-item .description,
+.page-content table .form-item,
+.page-content table .form-item .description,
 .page-content .form-item .widget-edit .description,
 #upload-attachments .description,
 #views-ajax-pad .form-item,
 #views-ajax-pad .form-item .description {
-  background:transparent;
+  width:auto;
+  padding:0px;
+  margin:0px;
   border:0px;
+  background:transparent;
   position:static;
   display:block;
   }
 
+.ctools-export-ui-row .form-item:hover,
+.multiselect .form-item:hover,
+.page-content table .form-item:hover,
+#views-ajax-pad .form-item:hover { position:static; }
+
+.page-content table .form-item .description,
 #upload-attachments .description,
 #views-ajax-pad .form-item .description {
   padding:0px;
@@ -558,6 +634,8 @@ body.rubik div#admin-toolbar span.menu-description span.icon {
 
 .container-inline { margin:0px 0px 10px; }
 
+.buttons .container-inline { margin:0px; }
+
 /**
  * ORPHANED MARKUP ====================================================
  * The following selectors target markup generated by Drupal that have
@@ -575,7 +653,3 @@ div.compact-link a {
   color:#666;
   background:#fff;
   }
-
-/* This is to make up for very bad CSS in the update.module */
-.update table.version td { padding:5px; }
-.update table.version ul.links a { padding:0px 5px; }

@@ -1,5 +1,5 @@
 <?php
-// $Id: sevenload.inc,v 1.1.2.8 2009/10/29 13:29:51 aaron Exp $
+// $Id: sevenload.inc,v 1.1.2.9 2010/07/19 17:19:39 aaron Exp $
 
 /**
  * @file
@@ -80,11 +80,12 @@ function emvideo_sevenload_thumbnail($field, $item, $formatter, $node, $width, $
 }
 
 /**
- * the embedded flash displaying the Sevenload video
- */
+* the embedded flash displaying the Sevenload video
+*/
 function theme_emvideo_sevenload_flash($embed, $width, $height) {
   if ($embed) {
-    $output .= "<object height=\"$height\" width=\"$width\"><param name=\"FlashVars\" value=\"slxml=en.sevenload.com\" /><param name=\"movie\" value=\"http://en.sevenload.com/pl/$embed/options/swf\" /><embed src=\"http://de.sevenload.com/pl/$embed/options/swf\" type=\"application/x-shockwave-flash\" width=\"$width\" height=\"$height\" FlashVars=\"slxml=en.sevenload.com\"></embed></object>";
+    $embed = preg_replace("/\/.*/", "", $embed);
+    $output .= "<object width=\"$height\" height=\"$height\" type=\"application/x-shockwave-flash\" data=\"http://static.sevenload.net/swf/player/player.swf?v=142\" id=\"sevenloadPlayer_$embed\"><param name=\"allowScriptAccess\" value=\"always\"/><param name=\"allowFullscreen\" value=\"true\"/><param name=\"flashvars\" value=\"configPath=http%3A%2F%2Fflash.sevenload.com%2Fplayer%3FportalId%3Den%26autoplay%3D0%26mute%3D0%26itemId%3D$embed&amp;locale=en_US&amp;autoplay=0&amp;environment=\"/></object>";
   }
   return $output;
 }

@@ -1,5 +1,5 @@
 <?php
-// $Id: emthumb.install,v 1.1.2.1 2009/10/21 16:25:20 aaron Exp $
+// $Id: emthumb.install,v 1.1.2.2 2010/07/19 18:17:48 aaron Exp $
 
 /**
  * @file
@@ -9,7 +9,7 @@
 /**
  *  New formatters and theme functions.
  */
-function emthumb_update_6001() {
+function emthumb_update_6002() {
   drupal_rebuild_theme_registry();
   return _emthumb_update_reset_cache();
 }

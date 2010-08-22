@@ -7,11 +7,15 @@ Webform 2.x Changelog
 - Webform configuration moved to an entirely separate tab.
 - E-mail templates are now editable by administrators.
 - Conditional fields.
+- Submissions may be saved as a draft and resumed later.
 - Webform may now be attached to any content type.
-- Form builder integration for live previews and editing of forms.
 - Public API for allowing other modules to provide components.
 - Public API for interacting with submission save, insert, update, and delete.
 - New rendering capabilities for HTML presentation of submissions and e-mails.
+- Print module support.
+- Basic Views module support.
+- Popup calendar support on Date components (with Date Popup module).
+- New Mollom module integration.
 
 1.x to 2.0
 ----------
@@ -31,4 +35,4 @@ Webform 2.x Changelog
 - Component descriptions are textareas rather than textfields.
 - _webform_filtervalues() has been renamed to _webform_filter_values.
 
-$Id: CHANGELOG.txt,v 1.8 2010/02/07 02:48:48 quicksketch Exp $
+$Id: CHANGELOG.txt,v 1.8.2.2 2010/08/16 19:40:53 quicksketch Exp $

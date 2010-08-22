@@ -1,13 +1,11 @@
 <?php
-// $Id: webform.report.inc,v 1.16.2.6 2010/07/28 03:54:58 quicksketch Exp $
+// $Id: webform.report.inc,v 1.16.2.7 2010/08/14 21:11:42 quicksketch Exp $
 
 /**
  * @file
  * This file includes helper functions for creating reports for webform.module
  *
  * @author Nathan Haug <nate@lullabot.com>
- * @author Pontus Ullgren <ullgren@user.sourceforge.net>
- * @copyright Pontus Ullgren 2004
  */
 
 // All functions within this file need the webform.submissions.inc.

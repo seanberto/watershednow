@@ -30,41 +30,59 @@ function drupalrivers_profile_modules() {
 		'update',
     // Admin
     'admin',
-		// CCK (see drupalrivers features)
     // Views
     'views',
     // CTools
     'ctools',
     // Context
-    'context', 'context_layouts',
+    'context',
     // Features
     'features',
   	'strongarm',
     // Image
-    'imageapi', 'imageapi_gd', 'imagecache',
+    'imageapi',
+    'imageapi_gd',
+    'imagecache',
+    // CCK
+    'content',
+    'number',
+    'text',
+    'fieldgroup',
+    'content_multigroup',
+    'filefield',
+    'imagefield',
+    'emfield',
+    'emvideo',
     // Other
 		'advanced_help',
 		'boxes',
 		'logintoboggan',
+		'menu_block',
 		'pathauto',
 		'token',
 		'transliteration',
 		// User interface and WYSIWYG
 		'vertical_tabs',
 		'better_formats',
+		'insert',
 		'jquery_ui',
-		'jquery_ui_dialog',
-		'jquery_update',
+		'webform',
 		'wysiwyg',
-		'wysiwyg',
-		'wysiwyg_imageupload',
-		'wysiwyg_imageupload_browser',
+		'wysiwyg_imagefield',
 		// Installation and initial config
 		'install_profile_api',
 		// Drupal Rivers features
 		'drupalrivers_common',
 		'drupalrivers_blog',
 		'drupalrivers_map',
+		// Development (NOTE: Comment out for production installs.)
+		'devel',
+		'diff',
+		'context_ui',
+		'feeds_ui',
+		'imagecache_ui',
+		'views_ui',
+		'variable_dump',
   );
 
   return $modules;
@@ -109,6 +127,22 @@ function drupalrivers_profile_tasks(&$task, $url) {
   $category = 'website feedback';
   $recipients = 'admin@'. $_SERVER['HTTP_HOST'];
   install_contact_add_category($category, $recipients, $reply = '', $weight = 0, $selected = 1);
+
+  // Create a few placeholder nodes and add them to the menu structure.
+  // @TODO: Body field's filter format defaults to filtered HTML. Need more granular control.
+  $pages = array();
+  
+  $page = new stdClass;
+  $page->title = 'About Us';
+  $page->body = 'This is a placeholder about us page. Here readers can learn more about this website and the orgaization behind it.';
+  $page->menu = 'secondary_links';
+  $page->menuitem_description = 'Learn more about us';
+  $pages['about'] = $page;
+  
+  foreach ($pages as $node) {
+    $created_node = install_create_node($node->title, $node->body);
+    install_menu_create_menu_item('node/' . $created_node->nid, $created_node->title, $node->menuitem_description, $node->menu);    
+  }
 
 	// Borrowing from openatrium.profile to set default theme to watershed.
 	// Rebuild key tables/caches
@@ -281,6 +315,7 @@ function _drupalrivers_fiters_wysiwyg() {
   	(23,3,'filter',2,0)"
   );
   
+/*  
   // Setting up WYSIWYG profiles
   $wysiwyg_profiles = array();
   $wysiwyg_profiles['1'] = array(
@@ -303,7 +338,7 @@ function _drupalrivers_fiters_wysiwyg() {
   foreach ($wysiwyg_profiles as $profile) {
     db_query("INSERT INTO {wysiwyg} (`format`,`editor`,`settings`) VALUES (%d, '%s', '%s')", $profile['format'], $profile['editor'], $profile['settings']);
   };
-  
+*/
 }
 
 /**

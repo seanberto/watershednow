@@ -1,5 +1,5 @@
 <?php
-// $Id: eminline.module,v 1.1.4.4 2009/07/10 15:28:13 aaron Exp $
+// $Id: eminline.module,v 1.1.4.6 2010/07/19 17:00:20 aaron Exp $
 
 /**
  * Implemenation of hook_filter().
@@ -43,7 +43,7 @@ function eminline_filter_tips($delta, $format, $long = FALSE) {
   $output = '';
   switch ($delta) {
     case '0':
-      $providers = variable_get('eminline_providers_' . $format, array());
+      $providers = variable_get('eminline_providers_' . $format, array_keys(emfield_system_list('emvideo', NULL, FALSE)));
       $output .= t('You may embed videos from the following providers %providers. Just add the video URL to your textarea in the place where you would like the video to appear, i.e. http://www.youtube.com/watch?v=pw0jmvdh.', array('%providers' => implode(', ', array_filter($providers))));
   }
   return $output;
@@ -88,9 +88,9 @@ function _eminline_url_parse_full_links($format, $match) {
   $match[2] = check_url(decode_entities($match[2]));
 
   // Get our filter settings.
-  $video_default = variable_get('eminline_video_' . $format, array());
-  $preview_default = variable_get('eminline_preview_' . $format, array());
-  $tn_default = variable_get('eminline_tn_' . $format, array());
+  $video_default = variable_get('eminline_video_' . $format, _eminline_default_filter_settings('video'));
+  $preview_default = variable_get('eminline_preview_' . $format, _eminline_default_filter_settings('preview'));
+  $tn_default = variable_get('eminline_tn_' . $format, _eminline_default_filter_settings('tn'));
 
   // Build a fake field, remember that emfield is well a field.
   $field = array(
@@ -105,7 +105,7 @@ function _eminline_url_parse_full_links($format, $match) {
     'thumbnail_width' => $tn_default['thumbnail_width'],
     'thumbnail_height' => $tn_default['thumbnail_height'],
     'thumbnail_default_path' => $tn_default['thumbnail_default_path'],
-    'providers' =>  variable_get('eminline_providers_' . $format, array()),
+    'providers' =>  variable_get('eminline_providers_' . $format, array_keys(emfield_system_list('emvideo', NULL, FALSE))),
   );
 
   // Build our embed item.
@@ -120,7 +120,7 @@ function _eminline_url_parse_full_links($format, $match) {
   }
 
   // Get how the video should be displayed.
-  $display_format = variable_get('eminline_full_node_' . $format, '');
+  $display_format = variable_get('eminline_full_node_' . $format, 'video_video');
 
   // Change the options based on how the video should be displayed.
   if ($display_format == 'video_thumbnail') {
@@ -166,16 +166,16 @@ function _eminline_url_settings($format) {
   // Get the settings that are avaliable to the cck widget.
   $form['eminline_'. $format] = emvideo_widget_settings('form', array('type' => 'emvideo_textfields'));
 
-  $form['eminline_'. $format]['provider_list']['providers']['#default_value'] = variable_get('eminline_providers_' . $format, array());
-  $video_default = variable_get('eminline_video_' . $format, array());
+  $form['eminline_'. $format]['provider_list']['providers']['#default_value'] = variable_get('eminline_providers_' . $format, array_keys($form['eminline_'. $format]['provider_list']['providers']['#options']));
+  $video_default = variable_get('eminline_video_' . $format, _eminline_default_filter_settings('video'));
   foreach ($video_default as $key => $value) {
     $form['eminline_'. $format]['video'][$key]['#default_value'] = $value;
   }
-  $preview_default = variable_get('eminline_preview_' . $format, array());
+  $preview_default = variable_get('eminline_preview_' . $format, _eminline_default_filter_settings('preview'));
   foreach ($preview_default as $key => $value) {
     $form['eminline_'. $format]['preview'][$key]['#default_value'] = $value;
   }
-  $tn_default = variable_get('eminline_tn_' . $format, array());
+  $tn_default = variable_get('eminline_tn_' . $format, _eminline_default_filter_settings('tn'));
   foreach ($tn_default as $key => $value) {
     $form['eminline_'. $format]['tn'][$key]['#default_value'] = $value;
   }
@@ -184,7 +184,7 @@ function _eminline_url_settings($format) {
   $form['eminline_'. $format]['node_display'] = array(
     '#type' => 'select',
     '#title' => t('Video display in node view'),
-    '#default_value' =>  variable_get('eminline_full_node_' . $format, ''),
+    '#default_value' =>  variable_get('eminline_full_node_' . $format, 'video_video'),
     '#options' => array(
       'video_video' => t('Video'),
       'video_preview' => t('Preview'),
@@ -198,10 +198,24 @@ function _eminline_url_settings($format) {
   $form['eminline_'. $format]['#collapsible'] = TRUE;
   $form['eminline_'. $format]['#tree'] = TRUE;
 
-  // My submit && validator plz, kthxbi.
-  $form['#validate'] = array('_eminline_url_settings_form_validate');
-  $form['#submit'] = array('_eminline_url_settings_form_submit');
   return $form;
+}
+
+/**
+ * Implementation of hook_form_FORM_ID_alter().
+ *
+ * Because filter format forms are merged, any common keys need to be added in
+ * a form_alter. Otherwise, e.g. submit handlers added by one module would be
+ * overwritten by those of another module.
+ */
+function eminline_form_filter_admin_configure_alter(&$form, $form_state) {
+  if (isset($form['format']) && isset($form['eminline_' . $form['format']['#value']])) {
+    $form['#validate'][] = '_eminline_url_settings_form_validate';
+
+    // Add the submit callback to the beginning of the array because we need
+    // to prepare data for system_settings_form_submit().
+    array_unshift($form['#submit'], '_eminline_url_settings_form_submit');
+  }
 }
 
 /*
@@ -264,6 +278,17 @@ function _eminline_curry($func, $arity) {
         return call_user_func_array(\'$func\', \$a);
     ');
   ");
+}
+
+function _eminline_default_filter_settings($type = 'video') {
+  $return = array();
+  $widget = emvideo_widget_settings('form', array('type' => 'emvideo_textfields'));
+  if (is_array($widget[$type])) {
+    foreach(element_children($widget[$type]) as $key) {
+      $return[$key] = $widget[$type][$key][$default_value];
+    }
+  }
+  return $return;
 }
 
 /**

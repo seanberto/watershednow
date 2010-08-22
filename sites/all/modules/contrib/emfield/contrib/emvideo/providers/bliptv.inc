@@ -1,5 +1,5 @@
 <?php
-// $Id: bliptv.inc,v 1.1.2.19 2009/10/29 13:29:51 aaron Exp $
+// $Id: bliptv.inc,v 1.1.2.20 2010/07/19 17:24:15 aaron Exp $
 
 /**
  * @file
@@ -318,10 +318,20 @@ function theme_emvideo_bliptv_flash($code, $width, $height, $field, $item, $auto
       }
     }
 
-    // If you want strict html you may want to use the following  code instead of the one blip provides
-    // $output .= '<object type="application/x-shockwave-flash" data="'. $embed_file .'" width="'. $width .'" height="'. $height .'" allowfullscreen="true" id="'. $id .'"><param name="movie" value="'. $embed_file .'" /><param name="quality" value="best" /><embed src="'. $embed_file .'" quality="best" width="'. $width .'" height="'. $height .'" name="'. $id .'" type="application/x-shockwave-flash"></embed></object>';
-
-    $output .= '<embed src="http://blip.tv/play/'. $embed_code .'" type="application/x-shockwave-flash" width="'. $width .'" height="'. $height .'" allowscriptaccess="always" allowfullscreen="true"></embed>';
+    $output .= '<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,40,0" width="' . $width .'" height="'. $height .'">
+    <param name="movie" value="http://blip.tv/play/'. $embed_code . '" />
+    <param name="quality" value="high" />
+    <param name="bgcolor" value="#FFFFFF" />
+    <param name="wmode" value="transparent" />
+    <!--[if !IE]> <-->
+    <object data="http://blip.tv/play/'. $embed_code.'" width="'. $width .'" height="'. $height .'" type="application/x-shockwave-flash">
+    <param name="quality" value="high" />
+    <param name="bgcolor" value="#FFFFFF" />
+    <param name="pluginurl" value="http://www.adobe.com/go/getflashplayer" />
+    FAIL (the browser should render some flash content, not this).
+    </object>
+    <!--> <![endif]-->
+    </object>';
   }
 
   return $output;

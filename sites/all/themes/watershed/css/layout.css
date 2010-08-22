@@ -55,18 +55,18 @@
 
 .two-sidebars .center,
 .sidebar-left .center {
-  margin-left: 190px;     /* LEFT value */
+  margin-left: 220px;     /* LEFT value */
 }
 #sidebar-first {
-  width: 190px;           /* LEFT value */
-	margin-right: -190px;    /* negative LEFT value */
+  width: 220px;           /* LEFT value */
+	margin-right: -220px;    /* negative LEFT value */
 }
 .two-sidebars .center,
 .sidebar-right .center {
-  margin-right: 200px;    /* RIGHT value */
+  margin-right: 190px;    /* RIGHT value */
 }
 #sidebar-second {
-  width: 200px;           /* RIGHT value */
+  width: 190px;           /* RIGHT value */
 }
 
 /** Columns inner
@@ -98,5 +98,5 @@
   margin-top: 40px;        /* Navigation Height */
 }
 #navigation {
-  height: 40px;            /* Navigation Height */
+  /* height: 40px;            /* Navigation Height */
 }

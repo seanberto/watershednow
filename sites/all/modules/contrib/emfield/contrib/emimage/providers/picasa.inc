@@ -1,5 +1,5 @@
 <?php
-// $Id: picasa.inc,v 1.1.2.11 2009/09/29 19:52:05 aaron Exp $
+// $Id: picasa.inc,v 1.1.2.12 2010/07/19 15:57:58 aaron Exp $
 
 /**
  * @file
@@ -190,4 +190,8 @@ function _emimage_picasa_guess_size($width, $height) {
 
   // we would use the original size if we could, but we can't since google won't serve it
   return '800';
+}
+
+function emimage_picasa_thumbnail($field, $item, $formatter, $node, $width, $height) {
+  return emimage_picasa_image_url($item['value'], $width, $height, $formatter, $field, $item, $node);
 }

@@ -1,5 +1,5 @@
 <?php
-// $Id: select.inc,v 1.39.2.13 2010/04/10 22:02:09 quicksketch Exp $
+// $Id: select.inc,v 1.39.2.16 2010/08/16 15:39:39 quicksketch Exp $
 
 /**
  * @file
@@ -271,7 +271,7 @@ function _webform_render_select($component, $value = NULL, $filter = TRUE) {
     _webform_shuffle_options($options);
   }
 
-  if ($component['extra']['aslist'] && !$component['extra']['multiple'] && !($component['mandatory'] && !empty($component['value']))) {
+  if ($component['extra']['aslist'] && !$component['extra']['multiple'] && !($component['mandatory'] && $default_value !== '')) {
     $options = array('' => t('select...')) + $options;
   }
 
@@ -295,12 +295,15 @@ function _webform_render_select($component, $value = NULL, $filter = TRUE) {
       }
     }
   }
-  elseif ($default_value != '') {
+  elseif ($default_value !== '') {
     // Convert default value to a list if necessary.
     if ($component['extra']['multiple']) {
-      $varray = array_filter(explode(',', $default_value));
+      $varray = explode(',', $default_value);
       foreach ($varray as $key => $v) {
-        $element['#default_value'][] = trim($v);
+        $v = trim($v);
+        if ($v !== '') {
+          $element['#default_value'][] = $v;
+        }
       }
     }
     else {
@@ -378,12 +381,33 @@ function webform_expand_checkboxes($element) {
   foreach (element_children($element) as $key) {
     $element[$key]['#return_value'] = check_plain($element[$key]['#return_value']);
     $element[$key]['#name'] = $element['#name'] . '[' . $element[$key]['#return_value'] . ']';
+    $element[$key]['#value_callback'] = 'webform_checkbox_value';
   }
 
   foreach ($default_value as $key => $val) {
     $element[$key]['#default_value'] = $val;
   }
   return $element;
+}
+
+/**
+ * Helper function to determine the value for a checkbox form element.
+ *
+ * Drupal core cannot decern the difference between an unchecked checkbox and
+ * a checked checkbox that has a value of '0'. This value callback will return
+ * NULL instead of an integer 0 for checkboxes that are not checked.
+ *
+ * @see form_checkbox_value()
+ */
+function webform_checkbox_value($form, $edit = FALSE) {
+  if ($edit !== FALSE) {
+    if (empty($form['#disabled'])) {
+      return !empty($edit) ? $form['#return_value'] : NULL; // 0 in core.
+    }
+    else {
+      return $form['#default_value'];
+    }
+  }
 }
 
 /**
@@ -431,20 +455,21 @@ function _webform_submit_select($component, $value) {
   $return = NULL;
   if (is_array($value)) {
     $return = array();
-    foreach ($value as $key) {
+    foreach ($value as $key => $option_value) {
       // Handle options that are specified options.
-      if ($key !== '' && isset($options[$key])) {
-        // Checkboxes submit an *integer* value of 0 when not checked.
-        if ($key === 0 && $options[$key] !== '0' && !$component['extra']['aslist'] && $component['extra']['multiple']) {
-          unset($value[$key]);
+      if ($option_value !== '' && isset($options[$option_value])) {
+        // Checkboxes submit a value of FALSE when unchecked. A checkbox with
+        // a value of '0' is valid, so we can't use empty() here.
+        if ($option_value === FALSE && !$component['extra']['aslist'] && $component['extra']['multiple']) {
+          unset($value[$option_value]);
         }
         else {
-          $return[] = $key;
+          $return[] = $option_value;
         }
       }
       // Handle options that are added through the "other" field.
       elseif ($component['extra']['other_option'] && module_exists('select_or_other')) {
-        $return[] = $key;
+        $return[] = $option_value;
       }
     }
   }

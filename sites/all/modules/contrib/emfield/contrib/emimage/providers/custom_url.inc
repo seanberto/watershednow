@@ -1,5 +1,5 @@
 <?php
-// $Id: custom_url.inc,v 1.1.2.4 2009/09/21 20:54:47 aaron Exp $
+// $Id: custom_url.inc,v 1.1.2.5 2010/07/19 15:57:58 aaron Exp $
 
 /**
  * This hook of the emimage_PROVIDER_info() returns information relevant to
@@ -18,7 +18,7 @@
 function emimage_custom_url_info() {
   $name = t('Custom URL');
   $features = array(
-    array(t('Thumbnails'), t('No'), ''),
+    array(t('Thumbnails'), t('Yes'), ''),
     array(t('Autoplay'), t('Yes'), ''),
     array(t('RSS attachment'), t('No'), ''),
   );
@@ -57,6 +57,13 @@ function emimage_custom_url_data($field, $item) {
   }
 
   return $data;
+}
+
+/**
+ * Thumbnail support
+ */
+function emimage_custom_url_thumbnail($field, $item, $formatter, $node, $width, $height) {
+  return $item['value'];
 }
 
 function _emimage_custom_url_get_domain_server($url){

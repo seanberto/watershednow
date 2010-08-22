@@ -1,5 +1,5 @@
 <?php
-// $Id: imageshack.inc,v 1.1.2.5 2009/09/29 19:52:05 aaron Exp $
+// $Id: imageshack.inc,v 1.1.2.7 2010/07/19 15:57:58 aaron Exp $
 
 /**
  * @file
@@ -125,8 +125,14 @@ function _emimage_imageshack_scrape_image_url($url) {
     return $urls[$url];
   }
 
-  $html = file_get_contents($url);
-  if (preg_match('!<img id="thepic" .+? src="(.+?)"!is', $html, $matches)) {
-    return $urls[$url] = $matches[1];
+  $request = drupal_http_request($url);
+  if ($html = $request->data) {
+    if (preg_match('!<img id="thepic" .+? src="(.+?)"!is', $html, $matches)) {
+      return $urls[$url] = $matches[1];
+    }
   }
+}
+
+function emimage_imageshack_thumbnail($field, $item, $formatter, $node, $width, $height) {
+  return emimage_imageshack_image_url($item['value'], $item['data']);
 }

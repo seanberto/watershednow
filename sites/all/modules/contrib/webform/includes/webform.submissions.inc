@@ -1,5 +1,5 @@
 <?php
-// $Id: webform.submissions.inc,v 1.18.2.9 2010/07/28 04:07:00 quicksketch Exp $
+// $Id: webform.submissions.inc,v 1.18.2.10 2010/08/15 16:04:56 quicksketch Exp $
 
 /**
  * @file
@@ -260,6 +260,12 @@ function webform_get_submissions($filters = array(), $header = NULL, $pager_coun
 
   if (!is_array($filters)) {
     $filters = array('nid' => $filters);
+  }
+
+  // UID filters need to be against a specific table.
+  if (isset($filters['uid'])) {
+    $filters['u.uid'] = $filters['uid'];
+    unset($filters['uid']);
   }
 
   // No need to find SIDs if it was given to us.

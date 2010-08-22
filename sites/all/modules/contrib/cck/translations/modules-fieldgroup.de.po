@@ -1,0 +1,133 @@
+# German translation of cck (6.x-2.5)
+# Copyright (c) 2009 by the German translation team
+# Generated from files:
+#  fieldgroup.module,v 1.79.2.50 2009/07/12 20:50:31 markuspetrux
+#  fieldgroup.info,v 1.6.2.1 2008/09/22 18:25:21 karens
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: cck (6.x-2.5)\n"
+"POT-Creation-Date: 2009-10-21 17:52+0200\n"
+"PO-Revision-Date: 2009-03-18 10:53+0100\n"
+"Language-Team: German\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
+
+#: modules/fieldgroup/fieldgroup.module:205
+msgid "This action cannot be undone."
+msgstr "Dieser Vorgang kann nicht rückgängig gemacht werden."
+
+#: modules/fieldgroup/fieldgroup.module:132
+msgid "Style"
+msgstr "Design"
+
+#: modules/fieldgroup/fieldgroup.module:263
+msgid "none"
+msgstr "Keine"
+
+#: modules/fieldgroup/fieldgroup.module:127
+msgid "Form settings"
+msgstr "Formulareinstellungen"
+
+#: modules/fieldgroup/fieldgroup.module:128
+msgid "These settings apply to the group in the node editing form."
+msgstr ""
+"Diese Einstellungen gelten für die Gruppe im Bearbeitungsformular des "
+"Beitrages."
+
+#: modules/fieldgroup/fieldgroup.module:135
+msgid "always open"
+msgstr "Immer geöffnet"
+
+#: modules/fieldgroup/fieldgroup.module:136
+msgid "collapsible"
+msgstr "Zusammenklappbar"
+
+#: modules/fieldgroup/fieldgroup.module:137
+msgid "collapsed"
+msgstr "Zusammengeklappt"
+
+#: modules/fieldgroup/fieldgroup.module:145
+msgid "Instructions to present to the user on the editing form."
+msgstr ""
+"Eine Hilfestellung, die dem Benutzer im Bearbeitungsformular angezeigt "
+"wird."
+
+#: modules/fieldgroup/fieldgroup.module:150
+msgid "Display settings"
+msgstr "Anzeigeeinstellungen"
+
+#: modules/fieldgroup/fieldgroup.module:151
+msgid "These settings apply to the group on node display."
+msgstr "Diese Einstellungen gelten bei der Beitragsanzeige für die Gruppe."
+
+#: modules/fieldgroup/fieldgroup.module:158
+msgid "A description of the group."
+msgstr "Eine Beschreibung der Gruppe."
+
+#: modules/fieldgroup/fieldgroup.module:203
+msgid "Are you sure you want to remove the group %label?"
+msgstr "Soll die Gruppe %label wirklich gelöscht werden?"
+
+#: modules/fieldgroup/fieldgroup.module:214
+msgid "The group %group_name has been removed."
+msgstr "Die Gruppe %group_name wurde gelöscht."
+
+#: modules/fieldgroup/fieldgroup.module:45,52
+msgid "Edit group"
+msgstr "Gruppe bearbeiten"
+
+#: modules/fieldgroup/fieldgroup.info:0
+msgid "Fieldgroup"
+msgstr "Feldgruppe"
+
+#: modules/fieldgroup/fieldgroup.module:356
+msgid "You need to provide a label."
+msgstr "Eine Bezeichnung muss angegeben werden."
+
+#: modules/fieldgroup/fieldgroup.module:361
+msgid "You need to provide a group name."
+msgstr "Ein Gruppenname muss angegeben werden."
+
+#: modules/fieldgroup/fieldgroup.module:375
+msgid ""
+"The group name %group_name is invalid. The name must include only "
+"lowercase unaccentuated letters, numbers, and underscores."
+msgstr ""
+"Der Gruppenname %group_name ist ungültig. Der Name darf nur "
+"nicht-akzentuierte Kleinbuchstaben, Zahlen und Unterstriche enthalten."
+
+#: modules/fieldgroup/fieldgroup.module:378
+msgid ""
+"The group name %group_name is too long. The name is limited to 32 "
+"characters, including the 'group_' prefix."
+msgstr ""
+"Der Gruppenname %group_name ist zu lang. Der Name ist inklusive dem "
+"Präfix ‚group_‘ auf 32 Zeichen begrenzt."
+
+#: modules/fieldgroup/fieldgroup.module:384
+msgid "The group name %group_name already exists."
+msgstr "Der Gruppenname %group_name ist schon vorhanden."
+
+#: modules/fieldgroup/fieldgroup.module:403,406
+msgid "Add new group:"
+msgstr "Neue Gruppe hinzufügen:"
+
+#: modules/fieldgroup/fieldgroup.module:421
+msgid "Add new group: you need to provide a label."
+msgstr "Neue Gruppe hinzufügen: Eine Bezeichnung muss angegeben werden."
+
+#: modules/fieldgroup/fieldgroup.module:422
+msgid "Add new group: you need to provide a group name."
+msgstr "Neue Gruppe hinzufügen: Ein Gruppenname muss angegeben werden."
+
+#: modules/fieldgroup/fieldgroup.module:747
+msgid "Standard group"
+msgstr "Standard-Gruppe"
+
+#: modules/fieldgroup/fieldgroup.info:0
+msgid "Create display groups for CCK fields."
+msgstr "Anzeigegruppen für CCK-Felder erstellen."
+

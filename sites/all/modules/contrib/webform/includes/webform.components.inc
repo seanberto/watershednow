@@ -1,5 +1,5 @@
 <?php
-// $Id: webform.components.inc,v 1.25.2.16 2010/07/27 06:42:38 quicksketch Exp $
+// $Id: webform.components.inc,v 1.25.2.17 2010/08/14 21:02:25 quicksketch Exp $
 
 /**
  * @file
@@ -198,7 +198,7 @@ function theme_webform_components_form($form) {
         l(t('Delete'), 'node/' . $node->nid . '/webform/components/' . $cid . '/delete', array('query' => drupal_get_destination())),
       );
       $row_class = 'draggable';
-      if (!webform_component_feature($component['type'], 'group') && $component['type'] != 'pagebreak') {
+      if (!webform_component_feature($component['type'], 'group')) {
         $row_class .= ' tabledrag-leaf';
       }
       if ($component['type'] == 'pagebreak') {
