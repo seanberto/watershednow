@@ -1,5 +1,5 @@
 <?php
-// $Id: boxes_box.inc,v 1.1.2.3 2010/06/23 01:57:00 jmiccolis Exp $
+// $Id: boxes_box.inc,v 1.1.2.5 2010/08/04 14:38:02 yhahn Exp $
  
 /**
  * Abstract base class defining a box. A boxes content plugin provides a
@@ -23,7 +23,8 @@ abstract class boxes_box {
   public static function load($delta, $reset = false) {
     if (!isset(self::$boxes[$delta]) || $reset) {
       ctools_include('export');
-      if ($values = array_pop(ctools_export_load_object('box', 'names', array($delta)))) {
+      $box = ctools_export_load_object('box', 'names', array($delta));
+      if (!empty($box) && $values = array_pop($box)) {
         self::$boxes[$delta] = self::factory($values->plugin_key, $values);
         self::$boxes[$delta]->new = false;
       }
@@ -83,6 +84,7 @@ abstract class boxes_box {
    * boxes of the loaded box objects. We clear them both.
    */
   public static function reset() {
+    ctools_include('export');
     ctools_export_load_object_reset('box');
     self::$boxes = array();
   }

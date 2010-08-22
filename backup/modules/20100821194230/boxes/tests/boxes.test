@@ -1,0 +1,53 @@
+<?php
+// $Id: boxes.test,v 1.1.2.1 2010/06/01 17:22:19 jmiccolis Exp $
+
+class BoxesTestCase extends DrupalWebTestCase {
+  /**
+   * Implementation of getInfo().
+   */
+  public static function getInfo() {
+    return array(
+      'name' => t('Boxes functionality'),
+      'description' => t('Add and delete custom boxes.'),
+      'group' => t('Boxes'),
+    );
+  }
+
+  /**
+   * Implementation of setUp().
+   */
+  function setUp() {
+    parent::setUp('ctools', 'boxes');
+
+    // Create and login user
+    $admin_user = $this->drupalCreateUser(array('administer blocks'));
+    $this->drupalLogin($admin_user);
+  }
+
+  /**
+   * Test creating and deleting a box.
+   */
+  function testBoxes() {
+    // Add a new box by filling out the input form on the admin/build/block/add page.
+    $box = array();
+    $box['description'] = $this->randomName(8);
+    $box['title'] = $this->randomName(8);
+    $box['body'] = $this->randomName(32);
+    $box['delta'] = strtolower($this->randomName(16));
+    $this->drupalPost('admin/build/block/box-add/simple', $box, t('Save'));
+
+    // Confirm that the box has been created, and then query the created bid.
+    $this->assertText(
+      t('@description has been created.', array('@description' => $box['description'])),
+      t('Box successfully created.'));
+    $delta = db_result(db_query("select delta from {box} where delta = '%s'", array($box['delta'])));
+    $this->assertnotnull($delta, t('box found in database'));
+
+    // Delete the created box & verify that it's been deleted and no longer appearing on the page.
+    $this->drupalPost('admin/build/block/configure/boxes/'. $delta .'/delete/', array(), t('Delete'));
+    // TODO check confirmation message ...of course we'd need to show one first.
+    $delta = db_result(db_query("select delta from {box} where delta = '%s'", array($box['delta'])));
+    $this->assertFalse($delta, t('box not found in database'));
+  }
+
+}

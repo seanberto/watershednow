@@ -1,46 +1,37 @@
 <?php
 
 /**
- * Implementation of hook_default_box().
- */
-function drupalrivers_common_default_box() {
-  module_load_include('inc', 'drupalrivers_common', 'drupalrivers_common.defaults');
-  $args = func_get_args();
-  return call_user_func_array('_drupalrivers_common_default_box', $args);
-}
-
-/**
- * Implementation of hook_context_default_contexts().
- */
-function drupalrivers_common_context_default_contexts() {
-  module_load_include('inc', 'drupalrivers_common', 'drupalrivers_common.defaults');
-  $args = func_get_args();
-  return call_user_func_array('_drupalrivers_common_context_default_contexts', $args);
-}
-
-/**
  * Implementation of hook_ctools_plugin_api().
  */
 function drupalrivers_common_ctools_plugin_api() {
-  module_load_include('inc', 'drupalrivers_common', 'drupalrivers_common.defaults');
-  $args = func_get_args();
-  return call_user_func_array('_drupalrivers_common_ctools_plugin_api', $args);
+  list($module, $api) = func_get_args();
+  if ($module == "boxes" && $api == "box") {
+    return array("version" => 1);
+  }
+  elseif ($module == "context" && $api == "context") {
+    return array("version" => 3);
+  }
+  elseif ($module == "strongarm" && $api == "strongarm") {
+    return array("version" => 1);
+  }
 }
 
 /**
  * Implementation of hook_node_info().
  */
 function drupalrivers_common_node_info() {
-  module_load_include('inc', 'drupalrivers_common', 'drupalrivers_common.features.node');
-  $args = func_get_args();
-  return call_user_func_array('_drupalrivers_common_node_info', $args);
-}
-
-/**
- * Implementation of hook_strongarm().
- */
-function drupalrivers_common_strongarm() {
-  module_load_include('inc', 'drupalrivers_common', 'drupalrivers_common.defaults');
-  $args = func_get_args();
-  return call_user_func_array('_drupalrivers_common_strongarm', $args);
+  $items = array(
+    'page' => array(
+      'name' => t('Page'),
+      'module' => 'features',
+      'description' => t('A <em>page</em>, similar in form to a <em>story</em>, is a simple method for creating and displaying information that rarely changes, such as an "About us" section of a website. By default, a <em>page</em> entry does not allow visitor comments and is not featured on the site\'s initial home page.'),
+      'has_title' => '1',
+      'title_label' => t('Title'),
+      'has_body' => '1',
+      'body_label' => t('Body'),
+      'min_word_count' => '0',
+      'help' => '',
+    ),
+  );
+  return $items;
 }

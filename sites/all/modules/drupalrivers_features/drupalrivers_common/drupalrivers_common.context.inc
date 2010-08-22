@@ -1,0 +1,66 @@
+<?php
+
+/**
+ * Implementation of hook_context_default_contexts().
+ */
+function drupalrivers_common_context_default_contexts() {
+  $export = array();
+  $context = new stdClass;
+  $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
+  $context->api_version = 3;
+  $context->name = 'homepage';
+  $context->description = '';
+  $context->tag = 'section';
+  $context->conditions = array(
+    'path' => array(
+      'values' => array(
+        '<front>' => '<front>',
+      ),
+    ),
+  );
+  $context->reactions = array();
+  $context->condition_mode = 0;
+
+  // Translatables
+  // Included for use with string extractors like potx.
+  t('section');
+
+  $export['homepage'] = $context;
+  $context = new stdClass;
+  $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
+  $context->api_version = 3;
+  $context->name = 'page_add_edit';
+  $context->description = 'Instructions when creating or editing a page node.';
+  $context->tag = 'section';
+  $context->conditions = array(
+    'node' => array(
+      'values' => array(
+        'page' => 'page',
+      ),
+      'options' => array(
+        'node_form' => '2',
+      ),
+    ),
+  );
+  $context->reactions = array(
+    'block' => array(
+      'blocks' => array(
+        'boxes-page_add_edit' => array(
+          'module' => 'boxes',
+          'delta' => 'page_add_edit',
+          'region' => 'message_block',
+          'weight' => 0,
+        ),
+      ),
+    ),
+  );
+  $context->condition_mode = 0;
+
+  // Translatables
+  // Included for use with string extractors like potx.
+  t('Instructions when creating or editing a page node.');
+  t('section');
+
+  $export['page_add_edit'] = $context;
+  return $export;
+}

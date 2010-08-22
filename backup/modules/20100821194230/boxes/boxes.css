@@ -1,0 +1,14 @@
+.script-placeholder {
+  padding:100px 0px;
+  text-align:center;
+  }
+
+/* Default state */
+.boxes-box-form { display:none; }
+.boxes-box-controls .cancel { display:none; }
+
+/* Editing state */
+.boxes-box-editing .boxes-box-content { display:none; }
+.boxes-box-editing .boxes-box-form { display:block; }
+.boxes-box-editing .boxes-box-controls .edit { display:none; }
+.boxes-box-editing .boxes-box-controls .cancel { display:block; }

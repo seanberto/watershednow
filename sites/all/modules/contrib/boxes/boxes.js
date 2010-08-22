@@ -1,44 +1,71 @@
-// $Id: boxes.js,v 1.2 2010/02/19 19:21:52 yhahn Exp $
+// $Id: boxes.js,v 1.2.2.4 2010/08/05 20:16:28 yhahn Exp $
+
 Drupal.behaviors.boxes = function(context) {
-  // Unwrap the AHAH call contents as ahah.js replaces the *contents* of the
-  // wrapper, not the wrapper itself.
-  if ($(context).is('div') && $('div.block-boxes', context).size() > 0) {
-    $(context).replaceWith($('div.block-boxes', context).children());
-  }
+  Drupal.CTools.AJAX.commands.getBlock = function(data) {
+    $.ajax({
+      type: "GET",
+      url: data.url,
+      data: { 'boxes_delta': data.delta },
+      global: true,
+      success: Drupal.CTools.AJAX.respond,
+      error: function(xhr) {
+        Drupal.CTools.AJAX.handleErrors(xhr, url);
+      },
+      dataType: 'json'
+    });
+  };
   $('div.boxes-box-controls a:not(.boxes-processed)')
     .addClass('boxes-processed')
     .click(function() {
-      $(this).parents('.boxes-box-inline').toggleClass('boxes-box-editing');
+      var box = $(this).parents('.boxes-box');
+      if (box.is('.boxes-box-editing')) {
+        box.removeClass('boxes-box-editing').find('.box-editor').remove().end().find('.boxes-box-content').show();
+      }
+      else {
+        // Show editing form - the form itself gets loaded via CTools ajax..
+        box.find('.boxes-box-content').hide().end().addClass('boxes-box-editing').append('<div class="box-editor"><div class="swirly"></div></div>');
+      }
       return false;
     });
-  // AHAH processing for boxes forms.
-  $('input.boxes-box-submit:not(.boxes-processed), input.boxes-box-delete:not(.boxes-processed)')
-    .addClass('boxes-processed')
-    .each(function() {
-      var base = $(this).attr('id');
-      // Nothing to see here folks, it's been processed (or will be processed)
-      // properly by ahah.js.
-      if (Drupal.settings.ahah && Drupal.settings.ahah[base]) {
+  $('.boxes-ajax').click(function() {
+      if ($(this).hasClass('boxes-ajaxing')) {
         return false;
       }
-      // Train wreck. We need to wipe ahah.js's.
-      else {
-        var settings = {
-          button: {op: 'Save'},
-          effect: 'fade',
-          element: $(this),
-          event: 'mousedown',
-          keypress: true,
-          method: 'replace',
-          progress: {type: 'throbber'},
-          selector: '#' + $(this).attr('id'),
-          url: $(this).is('.boxes-box-submit') ? Drupal.settings.boxes.ajaxSubmit : Drupal.settings.boxes.ajaxDelete,
-          wrapper: $(this).parents('div.block').attr('id')
-        };
-        $(settings.selector).each(function() {
-          settings.element = this;
-          var ahah = new Drupal.ahah(base, settings);
-        });
+      // Put our button in.
+      this.form.clk = this;
+      var object = $(this), form = this.form, url = $(form).attr('action');
+      $(this).addClass('boxes-ajaxing').parents('.box-editor').html('<div class="swirly"></div>').end();
+      $(form).ajaxSubmit({
+        type: "POST",
+        url: url,
+        data: { 'js': 1, 'ctools_ajax': 1 },
+        global: true,
+        success: Drupal.CTools.AJAX.respond,
+        error: function(xhr) {
+          Drupal.CTools.AJAX.handleErrors(xhr, url);
+        },
+        complete: function() {
+          object.removeClass('boxes-ajaxing');
+        },
+        dataType: 'json'
+      });
+      return false;
+  });
+
+  Drupal.CTools.AJAX.commands.preReplaceContextBlock = function(data) {
+    Drupal.settings.boxes = Drupal.settings.boxes || {};
+    var e = $('#' + data.id + ' a.context-block:first').clone();
+    Drupal.settings.boxes[data.id] =  e;
+  };
+
+  Drupal.CTools.AJAX.commands.postReplaceContextBlock = function(data) {
+    $('#' + data.id).append(Drupal.settings.boxes[data.id]);
+    $('form.context-editor.context-editing').each(function() {
+      var id = $(this).attr('id');
+      if (Drupal.contextBlockEditor[id]) {
+        Drupal.contextBlockEditor[id].initBlocks($('#' + data.id));
       }
     });
+  };
 };
+

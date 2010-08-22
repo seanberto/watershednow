@@ -1,46 +1,37 @@
 <?php
 
 /**
- * Implementation of hook_default_box().
- */
-function drupalrivers_map_default_box() {
-  module_load_include('inc', 'drupalrivers_map', 'drupalrivers_map.defaults');
-  $args = func_get_args();
-  return call_user_func_array('_drupalrivers_map_default_box', $args);
-}
-
-/**
- * Implementation of hook_context_default_contexts().
- */
-function drupalrivers_map_context_default_contexts() {
-  module_load_include('inc', 'drupalrivers_map', 'drupalrivers_map.defaults');
-  $args = func_get_args();
-  return call_user_func_array('_drupalrivers_map_context_default_contexts', $args);
-}
-
-/**
  * Implementation of hook_ctools_plugin_api().
  */
 function drupalrivers_map_ctools_plugin_api() {
-  module_load_include('inc', 'drupalrivers_map', 'drupalrivers_map.defaults');
-  $args = func_get_args();
-  return call_user_func_array('_drupalrivers_map_ctools_plugin_api', $args);
+  list($module, $api) = func_get_args();
+  if ($module == "boxes" && $api == "box") {
+    return array("version" => 1);
+  }
+  elseif ($module == "context" && $api == "context") {
+    return array("version" => 3);
+  }
+  elseif ($module == "strongarm" && $api == "strongarm") {
+    return array("version" => 1);
+  }
 }
 
 /**
  * Implementation of hook_node_info().
  */
 function drupalrivers_map_node_info() {
-  module_load_include('inc', 'drupalrivers_map', 'drupalrivers_map.features.node');
-  $args = func_get_args();
-  return call_user_func_array('_drupalrivers_map_node_info', $args);
-}
-
-/**
- * Implementation of hook_strongarm().
- */
-function drupalrivers_map_strongarm() {
-  module_load_include('inc', 'drupalrivers_map', 'drupalrivers_map.defaults');
-  $args = func_get_args();
-  return call_user_func_array('_drupalrivers_map_strongarm', $args);
+  $items = array(
+    'map_point' => array(
+      'name' => t('Map point'),
+      'module' => 'features',
+      'description' => t('A map point represents a point of interest on a map of a watershed.'),
+      'has_title' => '1',
+      'title_label' => t('Title'),
+      'has_body' => '1',
+      'body_label' => t('Description'),
+      'min_word_count' => '0',
+      'help' => '',
+    ),
+  );
+  return $items;
 }

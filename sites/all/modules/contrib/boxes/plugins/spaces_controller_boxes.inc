@@ -1,5 +1,5 @@
 <?php
-// $Id: spaces_controller_boxes.inc,v 1.2.2.1 2010/06/21 19:30:07 jmiccolis Exp $
+// $Id: spaces_controller_boxes.inc,v 1.2.2.2 2010/08/05 15:13:24 jmiccolis Exp $
 
 /**
  * Spaces controller for boxes module.
@@ -13,7 +13,7 @@ class spaces_controller_boxes extends spaces_controller {
       if (!isset($id)) {
         $boxes = array();
         foreach (ctools_export_load_object('box') as $box) {
-          $boxes[$box->delta] = (array)$box;
+          $boxes[$box->delta] = $box;
         }
         $this->values['original'] = $boxes;
         $this->loaded_all['original'] = TRUE;
