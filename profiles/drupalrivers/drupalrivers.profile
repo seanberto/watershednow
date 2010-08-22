@@ -62,7 +62,6 @@ function drupalrivers_profile_modules() {
 		'token',
 		'transliteration',
 		// User interface and WYSIWYG
-		'vertical_tabs',
 		'better_formats',
 		'insert',
 		'jquery_ui',
