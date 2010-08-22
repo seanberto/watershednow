@@ -20,7 +20,7 @@ function feeds_views_data() {
   $data['feeds_source']['table'] = array(
     'group' => 'Feeds source',
     'base' => array(
-      'field' => array('feed_nid', 'id'),
+      'field' => 'fid',
       'title' => 'Feeds source',
       'help' => 'The source information for a feed, for example its URL',
     ),

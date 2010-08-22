@@ -244,7 +244,7 @@ function feeds_feeds_plugins() {
  */
 function feeds_nodeapi(&$node, $op, $form) {
 
-  // $node looses any changes after 'validate' stage (see node_form_validate()).
+  // $node loses any changes after 'validate' stage (see node_form_validate()).
   // Keep a copy of title and feeds array between 'validate' and subsequent
   // stages. This allows for automatically populating the title of the node form
   // and modifying the $form['feeds'] array on node validation just like on the

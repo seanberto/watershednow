@@ -492,3 +492,28 @@ function feeds_update_6009() {
   db_create_table($ret, 'feeds_push_subscriptions', $table);
   return $ret;
 }
+
+/**
+ * Drop primary key, add auto-increment field as new primary key.
+ * Required for views integration: http://drupal.org/node/654466.
+ */
+
+function feeds_update_6010() {
+  $ret = array();
+
+  db_drop_primary_key($ret, 'feeds_source');
+
+  // Add an auto-increment column and a primary key.
+  $spec = array(
+    'type' => 'serial',
+    'unsigned' => TRUE,
+    'not null' => TRUE,
+    'description' => 'Feed source unique id.',
+  );
+  $new_key = array(
+    'primary key' => array('fid'),
+  );
+  db_add_field($ret, 'feeds_source', 'fid', $spec, $new_key);
+
+  return $ret;
+}
