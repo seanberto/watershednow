@@ -1,5 +1,5 @@
 <?php
-// $Id: simple_payments.install,v 1.1 2009/11/17 03:48:49 jbrown Exp $
+// $Id: simple_payments.install,v 1.2 2010/08/08 20:43:26 jbrown Exp $
 
 
 /**
@@ -19,7 +19,7 @@ function simple_payments_schema() {
       'currency' => array('type' => 'char', 'length' => 3, 'not null' => TRUE),
       'amount' => array('type' => 'int', 'unsigned' => TRUE, 'not null' => TRUE),
       'timestamp' => array('type' => 'int', 'unsigned' => TRUE, 'not null' => TRUE),
-      'details' => array('type' => 'text', 'not null' => TRUE, 'serialized' => TRUE),
+      'details' => array('type' => 'text', 'not null' => TRUE, 'serialize' => TRUE),
       'processed' => array('type' => 'int', 'unsigned' => TRUE),
     ),
     'primary key' => array('payment_id'),
@@ -50,3 +50,18 @@ function simple_payments_uninstall() {
   drupal_uninstall_schema('simple_payments');
 }
 
+/**
+ * Rebuild schema cache 
+ */
+function simple_payments_update_6101() {
+  // rebuild the schema cache
+  $schema = drupal_get_schema('simple_payment', TRUE);
+  if ($schema) {
+    $ret[] = array('success' => TRUE, 'query' => "Rebuilt simple_payment schema."); 
+  }
+  else {
+    $ret['#abort'] = array('success' => FALSE, 'query' => "Rebuilt simple_payment schema failed."); 
+  }
+  
+  return $ret;
+}

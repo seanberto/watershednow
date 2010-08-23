@@ -20,35 +20,6 @@ function _thinkshout_dashboard() {
   return 'Placeholder';
 }
 
-function thinkshout_paypal_form($form_state, $product_id) {
-
-  $vars = array(
-    'module' => 'thinkshout',
-    'type' => 'example type',
-    'custom' => $product_id,
-    'item_name' => 'Example payment',
-    'no_shipping' => TRUE,
-    'no_note' => TRUE,
-    'return' => url('', array('absolute' => TRUE)),
-  );
- 
-  $form = simple_payments_paypal_payment_form($vars);
-  
-  $form['amount'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Donation amount'),
-    '#size' => 10,
-    '#maxlength' => 64,
-    '#description' => t('Please enter the dollar amount you wish to donate.'),
-  );
-  
-  $form['button'] = array(
-    '#type' => 'button',
-    '#value' => t('Pay with PayPal'),
-  );
-  return $form;
-}
-
 /**
  * Implementation of hook_form_alter().
  *
@@ -75,44 +46,5 @@ function thinkshout_form_alter(&$form, $form_state, $form_id) {
         $form['body_field']['body']['#rows'] = 10;
       }
     }
-  }
-}
-
-/**
- * Implementation of hook_form_FORM_ID_alter()
- * Adds a checkbox to content type config form (admin/content/node-type/[name])
- * When ticked, the content type can be used as a simple payments tool
- * (Borrowed from pg_fundraising.module)
- */
-function thinkshout_form_node_type_form_alter(&$form, $form_state){
-  //Add a checkbox to content type config form
-   $form['thinkshout_payments'] = array(
-    '#type'        => 'fieldset',
-    '#title'       => t('Fundraising settings'),
-    '#collapsible' => TRUE,
-    '#collapsed'   => TRUE,
-    '#weight'      => 15,
-  );
-  $form['thinkshout_payments']['thinkshout_payments_allowed'] = array(
-    '#type'          => 'checkbox',
-    '#title'         => t('Use this content type to set up donation pages'),
-    '#default_value' => variable_get('thinkshout_payments_allowed_'. $form['#node_type']->type, 0),
-  );
-}
-
-/**
- * Implementation of hook_nodeapi().
- */
-function thinkshout_nodeapi(&$node, $op, $teaser = NULL, $page = NULL) {
-  switch ($op) {
-    case 'view':
-      // If viewing a node of a content type enabled for donations, add simple payment form.
-      if (variable_get('thinkshout_payments_allowed_'. $node->type, 0)){
-        $node->content['fundraising_form'] = array(
-          '#value'  => drupal_get_form('thinkshout_paypal_form', $product_id),
-          '#weight' => 20,
-        );
-      }
-      break;
   }
 }

@@ -1,0 +1,10 @@
+; $Id: simple_donations.info,v 1.1 2010/08/22 seanberto Exp $
+
+core = "6.x"
+description = "PayPal implementation of the Simple Payments framework to create simple donation pages as nodes."
+name = "Simple donations"
+package = Simple payments
+dependencies[] = simple_payments
+dependencies[] = simple_payments_paypal
+core = "6.x"
+version = "6.x-1.0"

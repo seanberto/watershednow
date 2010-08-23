@@ -1,0 +1,118 @@
+<?php
+// ; $Id: simple_donations.module,v 1.1 2010/08/22 seanberto Exp $
+
+
+/**
+ * Generating the PayPal donation form via Simple Payments API.
+ */
+
+function simple_donations_paypal_form($form_state, $node, $uid, $donation_title, $donation_description, $donation_button) {
+
+  $vars = array(
+    'module' => 'simple_donations',
+    'type' => 'Donation',
+    'uid' => $uid,
+    'nid' => $node->nid,
+    'item_name' => $node->title,
+    'no_shipping' => TRUE,
+    'no_note' => TRUE,
+    'return' => url('', array('absolute' => TRUE)),
+  );
+ 
+  $form = simple_payments_paypal_payment_form($vars);
+  
+  $form['amount'] = array(
+    '#type' => 'textfield',
+    '#title' => t($donation_title),
+    '#size' => 10,
+    '#maxlength' => 10,
+    '#description' => t($donation_description),
+  );
+  
+  $form['button'] = array(
+    '#type' => 'button',
+    '#value' => t($donation_button),
+  );
+  
+  return $form;
+}
+
+/**
+ * Implementation of hook_form_FORM_ID_alter()
+ * Adds a checkbox to content type config form (admin/content/node-type/[name])
+ * When ticked, the content type can be used as a simple payments tool
+ * (Borrowed from pg_fundraising.module)
+ */
+function simple_donations_form_node_type_form_alter(&$form, $form_state){
+  
+  //Add a checkbox to content type config form
+   $form['simple_donations'] = array(
+    '#type'        => 'fieldset',
+    '#title'       => t('Donation settings'),
+    '#collapsible' => TRUE,
+    '#collapsed'   => TRUE,
+    '#weight'      => 15,
+  );
+  
+  $form['simple_donations']['simple_donations_allowed'] = array(
+    '#type'          => 'checkbox',
+    '#title'         => t('Use this content type to set up donation pages.'),
+    '#default_value' => variable_get('simple_donations_allowed_'. $form['#node_type']->type, 0),
+    );
+  
+  $form['simple_donations']['simple_donations_title'] = array(
+    '#type'          => 'textfield',
+    '#title'         => t('Title for donation form'),
+    '#default_value' => variable_get('simple_donations_title_'. $form['#node_type']->type, 'Donation Amount'),
+    );
+  
+  $form['simple_donations']['simple_donations_description'] = array(
+    '#type'          => 'textfield',
+    '#title'         => t('Help text for donation form'),
+    '#default_value' => variable_get('simple_donations_description_'. $form['#node_type']->type, 'Enter the amount you wish to donate.'),
+    );
+  
+  $form['simple_donations']['simple_donations_button'] = array(
+    '#type'          => 'textfield',
+    '#title'         => t('Donation submit button text'),
+    '#default_value' => variable_get('simple_donations_button_'. $form['#node_type']->type, 'Donate now!'),
+    );
+  
+  $form['simple_donations']['simple_donations_teaser'] = array(
+    '#type'          => 'checkbox',
+    '#title'         => t('Show this form on node teaser displays.'),
+    '#default_value' => variable_get('simple_donations_teaser_'. $form['#node_type']->type, 0),
+    );
+}
+
+/**
+ * Implementation of hook_nodeapi().
+ *
+ * Adding donation form to nodes of specified content types.
+ */
+function simple_donations_nodeapi(&$node, $op, $teaser = NULL, $page = NULL) {
+  switch ($op) {
+    
+    case 'view':
+      // If viewing a node of a content type enabled for donations, add simple payment form.
+      if (variable_get('simple_donations_allowed_'. $node->type, 0)){
+    
+        global $user; // Who's about to make a donation.
+    
+        // Grab some default form language.
+        $donation_title = variable_get('simple_donations_title_'. $node->type, 'Donation amount');
+        $donation_description = variable_get('simple_donations_description_'. $node->type, 'Enter the amount you wish to donate.');
+        $donation_button = variable_get('simple_donations_button_'. $node->type, 'Donate now!');
+    
+        // Check to see if we should show donation form on teaser display as well as node page display.
+        $show_on_teaser = variable_get('simple_donations_teaser_' . $node->type, 0);
+        if ((arg(1) == $node->nid) || ($show_on_teaser == 1)) {
+          $node->content['donations_form'] = array(
+            '#value'  => '<div class="simple-donations">' . drupal_get_form('simple_donations_paypal_form', $node, $user->uid, $donation_title, $donation_description, $donation_button) . '</div',
+            '#weight' => 20,
+          );
+        }
+      }
+      break;
+  }
+}

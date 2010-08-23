@@ -70,6 +70,10 @@ function drupalrivers_profile_modules() {
 		'wysiwyg_imagefield',
 		// Installation and initial config
 		'install_profile_api',
+		// Donation tools
+		'simple_payments',
+		'simple_payments_paypal',
+		'simple_donations',
 		// Drupal Rivers features
 		'drupalrivers_common',
 		'drupalrivers_blog',
@@ -140,6 +144,14 @@ function drupalrivers_profile_tasks(&$task, $url) {
   $page->menu = 'secondary_links';
   $page->menuitem_description = 'Learn more about us';
   $pages['about'] = $page;
+  
+  $page = new stdClass;
+  $page->title = 'Staff';
+  $page->body = 'This is a placeholder page about our staff';
+  $page->format = 2;
+  $page->menu = 'secondary_links';
+  $page->menuitem_description = 'Get to know our staff.';
+  $pages['staff'] = $page;
   
   foreach ($pages as $node) {
     $created_node = install_create_node($node->title, $node->body);

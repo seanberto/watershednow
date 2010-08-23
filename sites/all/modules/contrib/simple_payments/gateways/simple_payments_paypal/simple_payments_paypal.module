@@ -1,7 +1,8 @@
 <?php
-// $Id: simple_payments_paypal.module,v 1.1 2009/11/17 03:48:49 jbrown Exp $
+// $Id: simple_payments_paypal.module,v 1.2 2010/08/08 21:39:12 jbrown Exp $
 
 define('SIMPLE_PAYMENTS_PAYPAL_SUBMIT_URL', 'https://www.paypal.com/cgi-bin/webscr');
+define('SIMPLE_PAYMENTS_PAYPAL_SUBIT_URL_SANDBOX', 'https://www.sandbox.paypal.com/cgi-bin/webscr');
 define('SIMPLE_PAYMENTS_PAYPAL_IPN_PATH', 'system/simple_payments_paypal/ipn');
 
 
@@ -36,7 +37,7 @@ function simple_payments_paypal_payment_form($vars = array()) {
 
   $form = simple_payments_build_form($vars);
 	
-	$form['#action'] = SIMPLE_PAYMENTS_PAYPAL_SUBMIT_URL;
+	$form['#action'] = variable_get('simple_payments_paypal_sandbox', 0) ? SIMPLE_PAYMENTS_PAYPAL_SUBIT_URL_SANDBOX : SIMPLE_PAYMENTS_PAYPAL_SUBMIT_URL;
 
 	return $form;
 }
@@ -79,6 +80,14 @@ function simple_payments_paypal_admin_form($form_state) {
 		'#description' => '(email address)',
 	);
 
+  $form['simple_payments_paypal_sandbox'] = array(
+    '#type' => 'radios',
+    '#title' => t('Sandbox/development mode'),
+    '#description' => t('When in development mode, the payment gateway will point at sandbox.paypal.com for testing purposes.'),
+    '#options' => array(0 => t('Off'), t('On')),
+    '#default_value' => variable_get('simple_payments_paypal_sandbox', 0),
+  );
+
   return system_settings_form($form);
 }
 
@@ -95,6 +104,11 @@ function _simple_payments_paypal_post($data = array()) {
 
 
 function _simple_payments_paypal_ipn_verify($vars = array()) {
+
+  if (variable_get('simple_payments_paypal_sandbox', 0)) {
+    // PayPal sandbox requires login in order to even access, so for sandbox mode, simply return true.
+    return TRUE;
+  }
 
   $ch = curl_init(SIMPLE_PAYMENTS_PAYPAL_SUBMIT_URL);
 

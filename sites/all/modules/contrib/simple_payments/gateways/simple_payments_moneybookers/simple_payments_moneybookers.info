@@ -8,9 +8,9 @@ dependencies[] = simple_payments
 core = 6.x
 
 
-; Information added by drupal.org packaging script on 2009-11-20
-version = "6.x-1.0"
+; Information added by drupal.org packaging script on 2010-08-09
+version = "6.x-1.x-dev"
 core = "6.x"
 project = "simple_payments"
-datestamp = "1258692667"
+datestamp = "1281313069"
 
