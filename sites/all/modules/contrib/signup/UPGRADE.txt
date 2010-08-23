@@ -1,0 +1,52 @@
+$Id: UPGRADE.txt,v 1.2.4.1 2008/12/20 00:53:06 dww Exp $
+
+======================================================================
+This file contains specific instructions for upgrading your site's
+version of signup.module to a new release.  You should always check
+this file when you download a new version to see if there are any
+specific things you need to know about a certain upgrade.
+======================================================================
+
+* Upgrading to 6.x-1.0-rc3 (from any earlier version)
+  There is a new permission called "cancel signups" which is required
+to cancel other user's signups at the signup administration tab at
+node/N/signups.  There is no automatic upgrade path that adds this
+permission to roles which current can administer signups.  If you want
+any roles to be able to cancel other user's signups, you must visit
+admin/user/permissions and manually configure which roles should be
+allowed to cancel other user's signups.
+
+
+* Upgrading to 5.x-2.5 (from any earlier version)
+
+  The 5.x-2.5 release greatly improves themeability of this module, so
+be sure to search the code for "function theme_" to find all the
+things you can now override in your theme.
+
+  Furthermore, 5.x-2.5 adds new functionality regarding the list of
+users who have signed up for a given node.  There is now a default
+view for this listing (if your site is running the Views module from
+http://drupal.org/project/views).  Furthermore, there are some new
+advanced settings to control if and where you want the list of signed
+up users to appear.  See the new step #8 in the INSTALL.txt file.
+
+
+* Upgrading to 5.x-2.3 (from any earlier version)
+
+  The 5.x-2.3 release improves support for the Views module, by moving
+all of the hard-coded parts of the signup interface that can be
+implemented with views into a separate file (signup_no_views.inc).
+This file is only included if the Views module is not enabled on your
+site.  Now, you have full control to modify the "Current signups"
+block and the listing of current signups at user/[#]/signups using the
+Views administrative user interface (admin/build/views).
+
+  However, this means that if your site had the old "List of users
+current signups" block enabled, and you have the Views module
+installed (or install it at any point when running signup 5.x-2.3 or
+later), you will have to manually enable the "Current signups" block
+(which might also have the name "signup_current_signups") by visiting
+the admin/build/block page on your site.
+
+  NOTE: the default views that are defined by signup_views.inc work
+best with at least Views version 5.x-1.6 or later.

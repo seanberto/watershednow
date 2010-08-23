@@ -1,20 +1,21 @@
 /*
- * jQuery UI 1.7.3
+ * jQuery UI 1.6
  *
- * Copyright (c) 2009 AUTHORS.txt (http://jqueryui.com/about)
+ * Copyright (c) 2008 AUTHORS.txt (http://ui.jquery.com/about)
  * Dual licensed under the MIT (MIT-LICENSE.txt)
  * and GPL (GPL-LICENSE.txt) licenses.
  *
  * http://docs.jquery.com/UI
  */
-;jQuery.ui || (function($) {
+;(function($) {
 
 var _remove = $.fn.remove,
 	isFF2 = $.browser.mozilla && (parseFloat($.browser.version) < 1.9);
 
 //Helper functions and ui object
 $.ui = {
-	version: "1.7.3",
+
+	version: "1.6",
 
 	// $.ui.plugin is deprecated.  Use the proxy pattern instead.
 	plugin: {
@@ -27,7 +28,7 @@ $.ui = {
 		},
 		call: function(instance, name, args) {
 			var set = instance.plugins[name];
-			if(!set || !instance.element[0].parentNode) { return; }
+			if(!set) { return; }
 
 			for (var i = 0; i < set.length; i++) {
 				if (instance.options[set[i][0]]) {
@@ -38,9 +39,33 @@ $.ui = {
 	},
 
 	contains: function(a, b) {
-		return document.compareDocumentPosition
-			? a.compareDocumentPosition(b) & 16
-			: a !== b && a.contains(b);
+		var safari2 = $.browser.safari && $.browser.version < 522;
+	    if (a.contains && !safari2) {
+	        return a.contains(b);
+	    }
+	    if (a.compareDocumentPosition)
+	        return !!(a.compareDocumentPosition(b) & 16);
+	    while (b = b.parentNode)
+	          if (b == a) return true;
+	    return false;
+	},
+
+	cssCache: {},
+	css: function(name) {
+		if ($.ui.cssCache[name]) { return $.ui.cssCache[name]; }
+		var tmp = $('<div class="ui-gen">').addClass(name).css({position:'absolute', top:'-5000px', left:'-5000px', display:'block'}).appendTo('body');
+
+		//if (!$.browser.safari)
+			//tmp.appendTo('body');
+
+		//Opera and Safari set width and height to 0px instead of auto
+		//Safari returns rgba(0,0,0,0) when bgcolor is not set
+		$.ui.cssCache[name] = !!(
+			(!(/auto|default/).test(tmp.css('cursor')) || (/^[1-9]/).test(tmp.css('height')) || (/^[1-9]/).test(tmp.css('width')) ||
+			!(/none/).test(tmp.css('backgroundImage')) || !(/transparent|rgba\(0, 0, 0, 0\)/).test(tmp.css('backgroundColor')))
+		);
+		try { $('body').get(0).removeChild(tmp.get(0));	} catch(e){}
+		return $.ui.cssCache[name];
 	},
 
 	hasScroll: function(el, a) {
@@ -100,6 +125,7 @@ $.ui = {
 		TAB: 9,
 		UP: 38
 	}
+
 };
 
 // WAI-ARIA normalization
@@ -135,17 +161,14 @@ if (isFF2) {
 
 //jQuery plugins
 $.fn.extend({
-	remove: function(selector, keepData) {
-		return this.each(function() {
-			if ( !keepData ) {
-				if ( !selector || $.filter( selector, [ this ] ).length ) {
-					$( "*", this ).add( this ).each(function() {
-						$( this ).triggerHandler( "remove" );
-					});
-				}
-			}
-			return _remove.call( $(this), selector, keepData );
+
+	remove: function() {
+		// Safari has a native remove event which actually removes DOM elements,
+		// so we have to use triggerHandler instead of trigger (#3037).
+		$("*", this).add(this).each(function() {
+			$(this).triggerHandler("remove");
 		});
+		return _remove.apply(this, arguments );
 	},
 
 	enableSelection: function() {
@@ -163,6 +186,7 @@ $.fn.extend({
 	},
 
 	scrollParent: function() {
+
 		var scrollParent;
 		if(($.browser.msie && (/(static|relative)/).test(this.css('position'))) || (/absolute/).test(this.css('position'))) {
 			scrollParent = this.parents().filter(function() {
@@ -175,33 +199,48 @@ $.fn.extend({
 		}
 
 		return (/fixed/).test(this.css('position')) || !scrollParent.length ? $(document) : scrollParent;
+
+
 	}
+
 });
 
 
 //Additional selectors
 $.extend($.expr[':'], {
-	data: function(elem, i, match) {
-		return !!$.data(elem, match[3]);
+
+	data: function(a, i, m) {
+		return $.data(a, m[3]);
 	},
 
-	focusable: function(element) {
-		var nodeName = element.nodeName.toLowerCase(),
-			tabIndex = $.attr(element, 'tabindex');
-		return (/input|select|textarea|button|object/.test(nodeName)
-			? !element.disabled
-			: 'a' == nodeName || 'area' == nodeName
-				? element.href || !isNaN(tabIndex)
-				: !isNaN(tabIndex))
-			// the element and all of its ancestors must be visible
-			// the browser may report that the area is hidden
-			&& !$(element)['area' == nodeName ? 'parents' : 'closest'](':hidden').length;
-	},
+	// TODO: add support for object, area
+	tabbable: function(a, i, m) {
 
-	tabbable: function(element) {
-		var tabIndex = $.attr(element, 'tabindex');
-		return (isNaN(tabIndex) || tabIndex >= 0) && $(element).is(':focusable');
+		var nodeName = a.nodeName.toLowerCase();
+		function isVisible(element) {
+			return !($(element).is(':hidden') || $(element).parents(':hidden').length);
+		}
+
+		return (
+			// in tab order
+			a.tabIndex >= 0 &&
+
+			( // filter node types that participate in the tab order
+
+				// anchor tag
+				('a' == nodeName && a.href) ||
+
+				// enabled form element
+				(/input|select|textarea|button/.test(nodeName) &&
+					'hidden' != a.type && !a.disabled)
+			) &&
+
+			// visible on page
+			isVisible(a)
+		);
+
 	}
+
 });
 
 
@@ -247,7 +286,7 @@ $.widget = function(name, prototype) {
 
 			// constructor
 			(!instance && !isMethodCall &&
-				$.data(this, name, new $[namespace][name](this, options))._init());
+				$.data(this, name, new $[namespace][name](this, options)));
 
 			// method call
 			(instance && isMethodCall && $.isFunction(instance[options]) &&
@@ -260,7 +299,6 @@ $.widget = function(name, prototype) {
 	$[namespace][name] = function(element, options) {
 		var self = this;
 
-		this.namespace = namespace;
 		this.widgetName = name;
 		this.widgetEventPrefix = $[namespace][name].eventPrefix || name;
 		this.widgetBaseClass = namespace + '-' + name;
@@ -273,18 +311,16 @@ $.widget = function(name, prototype) {
 
 		this.element = $(element)
 			.bind('setData.' + name, function(event, key, value) {
-				if (event.target == element) {
-					return self._setData(key, value);
-				}
+				return self._setData(key, value);
 			})
 			.bind('getData.' + name, function(event, key) {
-				if (event.target == element) {
-					return self._getData(key);
-				}
+				return self._getData(key);
 			})
 			.bind('remove', function() {
 				return self.destroy();
 			});
+
+		this._init();
 	};
 
 	// add widget prototype
@@ -298,9 +334,7 @@ $.widget = function(name, prototype) {
 $.widget.prototype = {
 	_init: function() {},
 	destroy: function() {
-		this.element.removeData(this.widgetName)
-			.removeClass(this.widgetBaseClass + '-disabled' + ' ' + this.namespace + '-state-disabled')
-			.removeAttr('aria-disabled');
+		this.element.removeData(this.widgetName);
 	},
 
 	option: function(key, value) {
@@ -326,11 +360,8 @@ $.widget.prototype = {
 		this.options[key] = value;
 
 		if (key == 'disabled') {
-			this.element
-				[value ? 'addClass' : 'removeClass'](
-					this.widgetBaseClass + '-disabled' + ' ' +
-					this.namespace + '-state-disabled')
-				.attr("aria-disabled", value);
+			this.element[value ? 'addClass' : 'removeClass'](
+				this.widgetBaseClass + '-disabled');
 		}
 	},
 
@@ -342,27 +373,10 @@ $.widget.prototype = {
 	},
 
 	_trigger: function(type, event, data) {
-		var callback = this.options[type],
-			eventName = (type == this.widgetEventPrefix
-				? type : this.widgetEventPrefix + type);
-
-		event = $.Event(event);
-		event.type = eventName;
-
-		// copy original event properties over to the new event
-		// this would happen if we could call $.event.fix instead of $.Event
-		// but we don't have a way to force an event to be fixed multiple times
-		if (event.originalEvent) {
-			for (var i = $.event.props.length, prop; i;) {
-				prop = $.event.props[--i];
-				event[prop] = event.originalEvent[prop];
-			}
-		}
-
-		this.element.trigger(event, data);
-
-		return !($.isFunction(callback) && callback.call(this.element[0], event, data) === false
-			|| event.isDefaultPrevented());
+		var eventName = (type == this.widgetEventPrefix
+			? type : this.widgetEventPrefix + type);
+		event = event || $.event.fix({ type: eventName, target: this.element[0] });
+		return this.element.triggerHandler(eventName, [event, data], this.options[type]);
 	}
 };
 
@@ -384,7 +398,6 @@ $.ui.mouse = {
 			.bind('click.'+this.widgetName, function(event) {
 				if(self._preventClickEvent) {
 					self._preventClickEvent = false;
-					event.stopImmediatePropagation();
 					return false;
 				}
 			});
@@ -409,11 +422,6 @@ $.ui.mouse = {
 	},
 
 	_mouseDown: function(event) {
-		// don't let more than one widget handle mouseStart
-		// TODO: figure out why we have to use originalEvent
-		event.originalEvent = event.originalEvent || {};
-		if (event.originalEvent.mouseHandled) { return; }
-
 		// we may have missed mouseup (out of window)
 		(this._mouseStarted && this._mouseUp(event));
 
@@ -455,9 +463,7 @@ $.ui.mouse = {
 		// preventDefault() is used to prevent the selection of text here -
 		// however, in Safari, this causes select boxes not to be selectable
 		// anymore, so this fix is needed
-		($.browser.safari || event.preventDefault());
-
-		event.originalEvent.mouseHandled = true;
+		if(!$.browser.safari) event.preventDefault();
 		return true;
 	},
 
@@ -488,7 +494,7 @@ $.ui.mouse = {
 
 		if (this._mouseStarted) {
 			this._mouseStarted = false;
-			this._preventClickEvent = (event.target == this._mouseDownEvent.target);
+			this._preventClickEvent = true;
 			this._mouseStop(event);
 		}
 

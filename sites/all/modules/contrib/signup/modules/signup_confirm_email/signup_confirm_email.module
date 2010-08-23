@@ -1,0 +1,24 @@
+<?php
+// $Id: signup_confirm_email.module,v 1.1.2.2 2009/08/18 15:14:22 dww Exp $
+
+/**
+ * @file
+ * The Signup confirm e-mail module is an add-on for the Signup module to
+ * confirm a user's e-mail address when they sign up for content on the site.
+ * It adds an extra field on the signup form, prepopulated with the user's
+ * current e-mail address. If the user changes this field, and they confirm
+ * they want to modify their profile, their e-mail address in their user
+ * profile is updated accordingly.
+ */
+
+
+/**
+ * Implement hook_form_alter().
+ */
+function signup_confirm_email_form_alter(&$form, &$form_state, $form_id) {
+  if ($form_id == 'signup_form' || $form_id == 'signup_edit_form') {
+    module_load_include('inc', 'signup_confirm_email', 'signup_confirm_email');
+    signup_confirm_email_alter_signup_form($form, $form_state, $form_id);
+  }
+}
+

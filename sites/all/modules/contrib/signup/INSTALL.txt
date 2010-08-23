@@ -1,0 +1,143 @@
+$Id: INSTALL.txt,v 1.13.2.2 2009/01/22 19:00:54 dww Exp $
+
+It is assumed that you have Drupal up and running.  Be sure to check
+the http://drupal.org web site if you need assistance.  If you run
+into problems, you should always read the INSTALL.txt that comes with
+the Drupal package and read the online documentation.
+
+
+0. Always backup your database before you enable a new contributed module!
+
+
+1. Place the signup package into your Drupal modules/ directory.
+
+
+2. (Optional) Customize the form presented to users when signing up
+   for content on your site.  Unfortuantely, there is not yet a way to
+   do this from within your site, you must modify a theme function to
+   change this form.  See the comment above "theme_signup_user_form()"
+   in the theme/signup_form.inc file.  If you want to change the form,
+   you should define your own version of theme_signup_user_form() in
+   your site's theme (e.g. as phptemplate_signup_user_form()).
+
+
+3. Enable the signup module by navigating to:
+   Administer > Site building > Modules
+
+   Note: if you want support for automatic closing of events and
+   reminder emails you must also install and enable either the Event
+   module (http://drupal.org/project/event) or use the Date module
+   (http://drupal.org/project/date) and add at least one date field.
+
+   Click the 'Save configuration' button at the bottom to commit your
+   changes.
+
+
+4. For the final configuration of the module, navigate to:
+   Administer > Site configuration > Signup
+
+   Here you can configure the options for the module.
+
+
+5. Enable the node types that you wish to allow signups for under:
+   Administer > Content management > Content types
+
+   You may wish to create a new content type specifically for event
+   signups (which you can customize via the Content Construction Kit
+   from http://drupal.org/project/cck), or install the Event module
+   (http://drupal.org/project/event).
+
+
+6. Grant the proper access to user accounts under:
+   Administer > User management > Access control
+
+   'sign up for content':
+     Allows users to sign up for any content types that are signup-enabled.
+     NOTE: Enabling 'sign up for content' for the anonymous user will
+     allow anonymous users to sign up by entering an email address.
+
+   'cancel own signups':
+     Allows users to cancel their own signups. Without this permission,
+     only users with 'administer all signups' or 'administer signups for
+     own content' permission are allowed to cancel signups.
+     NOTE: Anonymous users aren't allowed cancel their signups even if
+     this permission is granted to the role 'anonymous user'.
+
+   'edit own signups':
+     Allows users to edit their own signups.  When viewing their own
+     signup information, users will be able to update the values.
+     NOTE: Anonymous users aren't allowed edit their signups even if
+     this permission is granted to the role 'anonymous user'.
+
+   'view all signups':
+     Allows users to view all of the users who have signed up for any
+     signup-enabled content on the site.
+
+   'email all signed up users':
+     Allows users to send an email to everyone who has signed up for
+     any signup-enabled content on the site.
+
+   'email users signed up for own content':
+     Allows a user to send an email to everyone who has signed up for
+     content owned by the user.
+
+   'admininister all signups':
+     Implies 'view all signups' and 'cancel own signups' permissions.
+     Allows users to view who has signed up for nodes, to cancel
+     signups of other users, to close signups for specific nodes, and
+     to configure system-wide settings related to this module.
+
+   'administer signups for own content':
+     Allows users to view who has signed up, to cancel signups of
+     other users, and to close signups for any nodes that the user owns.
+
+   'cancel signups':
+     Allows users that can administer signups for a given node to
+     cancel the signups of other users from the node/N/signups page. 
+
+   Viewing the signup report (Administer > Content management > Signup),
+   and configuring the module (Administer > Site configuration > Signup)
+   are restricted to users who have the 'access administration pages'
+   privilege.
+
+
+7. (Optional) If you have enabled the Views module on your site
+   (http://drupal.org/project/views), be sure you are running Views
+   version 5.x-1.6 or later.  Once you have everything installed and
+   working, you should consider customizing any of the signup-related
+   views to better suit the needs of your site.  For example, if you
+   are using the event module, you might want to add a filter to the
+   'current signups' view to restrict it to events that have not
+   started yet.
+
+8. (Optional) Configure if and how you want a list of users signed up
+   for each node to appear.  Under the 'Advanced settings' at
+   admin/settings/signup, if the signup form and related information
+   is being displayed on the node itself or on a separate tab, you
+   will find a setting to control how you want the list of signed up
+   users to appear.  You can either use the built-in listing, no
+   listing at all, or if you have enabled the Views module on your
+   site (see step #7 above), you can also embed a view for this.
+
+   There is a default view included called 'signup_user_list' which is
+   disabled by default.  If you enable this view to customize it at
+   all, you should be careful about two things:
+
+   A) Be sure to restrict access to this view to roles that have the
+      'view all signups' permission to avoid information disclosure.
+
+   B) If you continue to embed the view on the signup nodes, be sure
+      to disable the menu items for the view, so that you don't get a
+      duplicate tab with the same information.
+
+   Note that if you just use it in its default (disabled) form, it
+   will still work as an embedded view under the signup form, and you
+   do not need to worry about these two things.
+
+   Of course, instead of embedding the view under the signup form, you
+   can also disable the setting entirely, then enable the default
+   'signup_user_list' view to provide the information on a separate
+   tab or in a block.
+
+
+9. Start signing up!

@@ -7,9 +7,16 @@ description = "An ImageField based IMCE alternative"
 name = "WYSIWYG ImageField"
 project = "wysiwyg_imagefield"
 
-; Information added by drupal.org packaging script on 2010-08-08
-version = "6.x-1.1"
+; Information added by drupal.org packaging script on 2010-08-10
+version = "6.x-1.x-dev"
 core = "6.x"
 project = "wysiwyg_imagefield"
-datestamp = "1281237678"
+datestamp = "1281399918"
+
+
+; Information added by drupal.org packaging script on 2010-08-18
+version = "6.x-1.x-dev"
+core = "6.x"
+project = "wysiwyg_imagefield"
+datestamp = "1282134328"
 

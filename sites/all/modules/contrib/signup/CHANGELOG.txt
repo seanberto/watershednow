@@ -1,0 +1,742 @@
+$Id: CHANGELOG.txt,v 1.115.2.64 2009/09/24 06:45:26 dww Exp $
+
+------------------------
+6.x-1.0-rc6 (2009-09-23)
+------------------------
+Bugs fixed since 6.x-1.0-rc5:
+= #439294 by dww: Fixed bug where %user_signup_info was not being
+  replaced with an empty string on sites that do not define any extra
+  fields on the signup form.
+= #539052 by dww: Fixed jQuery bug when users edited their signups that
+  was causing most of the form elements to be enabled before pressing
+  the 'Edit' button (all form elements should be disabled at first).
+= #582626 by dww: Fixed bug in the visibility logic for the "Signup:
+  Node: Signup link" views field handler which used to think that if
+  signups were closed on a node that the node wasn't signup-enabled.
+  This would cause the Signup link fields to only appear on nodes where
+  signups were open.
+= #578278 by neil.brown, dww: Fixed bug where the signup_confirm_email
+  field was shown to administrators editing another user's signup.
+
+API and schema changes since 6.x-1.0-rc5:
+= #581734 by dww: Improved the Signup API by adding some much needed hooks:
+  - hook_signup_data_alter() to modify a $signup object before it's saved
+  - hook_signup_insert() invoked when a signup is inserted into the DB
+  - hook_signup_update() invoked when a signup is updated in the DB
+= #581652 by dww: Added a {signup_log}.count_towards_limit column and
+  adjusted the limit logic to only operate on the effective total (the
+  SUM() of {signup_log}.count_towards_limit) not the total # of signups.
+  Both signup_total and signup_effective_total are loaded into $node.
+
+Other changes since 6.x-1.0-rc5:
+= #578502 by dww: Moved signup-related settings from node/N/edit to a
+  new "Settings" subtab at node/N/signups/settings.
+= #578592 by dww: Cleaned up and fixed the "Signup summary" at the top
+  of the node/N/signups/admin. The UI also makes sense now for signups
+  that don't count towards the signup limit (#581652).
+= #578344 by dww: Added a "Signup" group on the module administration
+  page (admin/build/modules) for all the signup-related modules.
+
+
+------------------------
+6.x-1.0-rc5 (2009-08-23)
+------------------------
+Bugs fixed since 6.x-1.0-rc4:
+= #533970 by dww: Fixed bug that caused the "signups" tab on nodes to
+  generate an "Access denied" message unless the signup attendee list
+  was configured to appear as a tab (introduced in RC4 via #529478).
+= #534948 by dww: Fixed bugs where signup_confirm_email.module breaks
+  signup_status.module due to the unorthodox way it was trying to
+  hijack the signup form for the confirmation.  Now, confirmation is
+  handled via a checkbox (which is only shown if needed via JavaScript)
+  instead of trying to redirect to a separate confirmation form.
+= #536094 by dww: Fixed a UI bug when editing existing signups. If
+  there was a form validation error (e.g. a required field was left
+  blank), the form now reloads already in "edit" mode with all the
+  fields enabled and the submit button already converted to "Save."
+= #544882 by dereine: Fixed a few places that called node_load() so that
+  they can now make use of the node caching feature.
+
+New features since 6.x-1.0-rc4:
+= #549646 by dww: Exposed signup-related node and signup data to token.module.
+
+
+------------------------
+6.x-1.0-rc4 (2009-07-27)
+------------------------
+Bugs fixed since 6.x-1.0-rc3:
+= #370397 by ezra-g: Fixed critical data-loss bug where all anonymous
+  signups would be destroyed if any authenticated user was deleted.
+  This bug was introduced during the port to Drupal 6 core, due to an
+  undocumented API change between Drupal core versions 5 and 6.
+= #350548 by dww: Fixed logic bug in the support for Event module which
+  would close signups prematurely if you edited event nodes in the future.
+= #354944 by stBorchert: Fixed bug where changes to signup settings were
+  lost during node previews (in Drupal 6.x only).
+= #350872 by gargoyle and dww: Fixed bug where node type names were used
+  unquoted as table aliases in the SQL for the admin/content/signup page.
+  If you had a node type named after an SQL reserved word (e.g. 'match'),
+  you'd get SQL errors.  Now, node type names are properly quoted.
+= #181272 by dww: Fixed bug where the labels on the custom signup form
+  fields were not properly translatable when this data was displayed in
+  other places (when viewing your own signup info, etc).
+= #358787 by dww: Fixed bug with exposed filters in signup's embedded views.
+= #356968 by dww and elonen: Fixed bug where line endings were stripped
+  from signup-generated emails since drupal_html_to_text() was being
+  called even though the signup email templates only support plain text.
+= #367937 by dww: Fixed bug where any user who can edit their own signup
+  could record their own attendance at signup/edit/[sid].
+= #389952 by dww: Fixed a bunch of bugs in the "signup node link" views field.
+= #390000 by KarenS, dww: Ported signup to the Date 6.x-2.0 API for date
+  format strings that was introduced at #318008.
+= #375573 by dww: Fixed bug where the %user_signup_info token was not
+  being used in the signup_forwarding_email message (the "Send signups
+  to" field for notifications on new signups).
+= #367297 by dww: Changed the default signup views so that only the user
+  (and signup administrators) can view their own signups.
+= #471562 by dww: Fixed broken link to the signup broadcast tab on the
+  signup administration page at admin/content/signup (this bug was
+  introduced in version 6.x-1.0-rc3 via #349292).
+= #480278 by ezra-g: Removed a superfluous user_access() check inside
+  signup_sign_up_user() that can prevent proper programmatic signups.
+
+New features since 6.x-1.0-rc3:
+= #51226 by dww: Added the ability to edit existing signups.
+  - Added an "edit own signups" permission.
+  - The current signup information is now displayed via a form, not a table.
+    The form is disabled at first, but if the user has permission to
+    edit their signup, there's an "Edit" button that they can click
+    which enables all the form elements and renames itself "Save".
+  - Added an "User: Edit signup link" views field handler.  A column
+    of "Edit signup" links is now included in the default admin views.
+= #361446 by dww: Restored the ability to have the signup user list
+  embedded directly on each node, instead of forcing it into a subtab
+  at node/N/signups/list (#349292).  There are now extra options for
+  the "How to display the list of signed-up users" advanced setting,
+  and the signup user list is now a separate entry in each node's
+  content[] array so it can be ordered independently of the signup form.
+= #355152 by dww: Added the ability to create "user views" that include
+  signup data by exposing more JOIN and relationship info to views.
+= #352328 by dww: Added the ability to create "signup views" by exposing
+  {signup_log} as a valid base table for views.
+= #356390 by dww: Converted the "signup_user_list" default view into a
+  "signup view" instead of a "node view", since it's a view of signups.
+= #352328 by dww: Added support for Views Bulk Operations (VBO).
+  - Exposed some actions on signup objects (cancel, mark attendance, etc).
+  - Added a setting to embed a view for admin/N/signups/admin.
+  - Added a new default VBO view to embed when VBO is enabled.
+= #361073 by dww: Improved the UI for canceling your own signup:
+  - The cancel operation is now triggered by a text link, not a button.
+  - The link goes to the confirm form used for the cancel URL (#325237).
+  - The "Keep signup" link honors any destination set via the URL.
+= #363337 by dww: Improved the UI for the advanced settings by trimming
+  the description of views to embed if they get too long.
+= #341835 by dww: Added an exposed filter for the "Signup status" to the
+  default view of a user's current signups ("signup_current_signups").
+= #360009 by dww: Added a checkbox setting to disable printing the
+  signup information on user profile pages when Views is not enabled.
+= #529250 by dww: Added a separate module that injects an e-mail address
+  field on the signup form for authenticated users to verify the address
+  stored in their profile. If the user changes this field while signing up
+  (or editing an existing signup), they are presented with a confirmation
+  form. If they approve, the e-mail address in their profile is updated.
+
+API changes since 6.x-1.0-rc3:
+= #357655 by dww: Added a signup_send_broadcast() function that can be
+  shared, and renamed signup_get_email_addresses() to
+  signup_get_signups() to be more accurate and more easily reused.
+= #51226 by dww: API changes related to editing existing signups:
+  - Canceling your own signup is now handled via the "signup_edit_form"
+    instead of a separate "signup_cancel_form".
+  - Removed a bunch of deprecated theme functions since the signup is
+    now displayed via a form, not a table: theme_signup_current_signup(),
+    theme_signup_custom_data_table(), and theme_signup_custom_data_rows().
+  - Renamed theme_signup_email_token_anonymous_username() to be
+    theme_signup_anonymous_username() since it's now used for other things.
+= #424338 by rjl, ezra-g, dww: Changed the API in signup_sign_up_user()
+  to return the new signup ID (SID) for any successful signup.
+= #529478 by dww: Added a hook to alter access to the signup node tabs.
+= #481134 by ezra-g, dww: Made signup confirmation and cancellation
+  messages optional for programmatic signups, and added helper functions
+  to generate and send those messages: signup_send_confirmation_mail()
+  and signup_send_forwarding_mail().
+
+Other changes since 6.x-1.0-rc3:
+= #349727 by dww: Removed ancient DB update functions from before D5.
+= #363760 by dww: Ported to the new hook_views_bulk_operations_object_info()
+  API (#362534), but still supporting the old hook_object_info() API for now.
+= #359408 by dww: Documented all hooks invoked by Signup in signup.api.php.
+= #373260 by dww: Changed access logic so that users that can administer
+  signups on a given node can always view the signup attendees on that node.
+= #506324 by mlsamuelson: Made messages printed to the screen after a
+  successful signup more user-generic to work better for programmatic
+  signups and cases where administrators sign up other users.
+= #376330 by joostvdl: Added a Dutch (nl) translation.
+= #439784 by seals: Added Swedish (sv) translation.
+
+
+------------------------
+6.x-1.0-rc3 (2008-12-20)
+------------------------
+New features since 6.x-1.0-rc2:
+= #349292 by dww: Completely reorganized the signup node tabs.  All tabs
+  added by this module now appear as sub-tabs under the "Signups" tab at
+  node/N/signups.  If the signup form is configured as a tab, it is the
+  default task under 'Signups'.  The list of current signups (for those
+  with 'view all signups') is now at node/N/signups/list, and is the
+  default task if the signup form is still on the node itself.  The
+  "signup-broadcast" tab has been moved to node/N/signups/broadcast.
+  Finally, the admin form to add another user has been split off from
+  the administrative tab (what was node/N/signups) and is now a separate
+  tab at node/N/signups/add.
+= #348277 by dww, scottrigby and stBorchert: Added a view field handler
+  to provide links to any of the tabs under node/N/signups (#349292).
+= #55168 by dww: Added a way to track attendance at node/N/signups/admin,
+  including Views handlers to display, sort, and filter by attendance.
+= #348559 by dww: Added a new "cancel signups" permission so that a role
+  could be configured to view signups and record attendance, but not be
+  able to destroy signup data by canceling other people's signups.
+  There is no automatic upgrade that adds this new permission, so if
+  you want to give any roles the ability to cancel other users'
+  signups, you must visit admin/user/permissions and manually assign
+  this new permission to the appropriate roles.
+= #325237 by dww: Added support for a %cancel_signup_url email
+  placeholder which points to a new signup/cancel/%/% page so that any
+  users (even anonymous) with the 'cancel own signups' permission can
+  now securely cancel their own signups.
+
+Bugs fixed since 6.x-1.0-rc2:
+= #347234 by dww: Fixed fatal SQL error at admin/content/signup when
+  there are multiple node types using the same CCK date field.
+= #343789 by KarenS: Fixed undefined value when adding nodes with feeds.
+= #346810 by dww: Fixed invocation of hook_signup_cancel() so that the
+  record in the {signup_log} table still exists when the hook runs.
+
+API/Schema changes since 6.x-1.0-rc2:
+= #341382 by Sid_M and dww: Added a serial "Signup ID" (sid) field as
+  the primary key for the {signup_log} table.
+= #347601 by dww: Changed the API for signup_cancel_signup() so that
+  it either just takes the signup ID (sid) or a full object containing
+  all the fields from the {signup_log} table.
+= #347601 by dww: Changed the API for hook_signup_cancel() so that it
+  is now invoked with a $signup object with the full information about
+  the signup being canceled, and a fully loaded $node object.  See the
+  new signup.api.php file for full documentation on the hook.
+
+Other changes since 6.x-1.0-rc2:
+= #337614: Signup's optional Views integration now requires Views
+  version 6.x-2.2 or later.
+
+
+------------------------
+6.x-1.0-rc2 (2008-12-01)
+------------------------
+Bugs fixed since 6.x-1.0-rc1:
+= #336255 by KarenS and dww: Fixed numerous bugs in usage of DateAPI
+  that were breaking all time-based signup functionality for datestamp
+  fields and causing problems for certain configurations of date or
+  datetime fields depending on the timezone handling.  Using
+  6.x-2.0-rc5 of DateAPI and the CCK Date field, the one configuration
+  that doesn't fully work is a datestamp field that has no timezone
+  handling at all.  With that configuration, you must use the latest
+  Date code from the DRUPAL-6--2 branch (check the top of your copy of
+  date/date.module and make sure the revision is at least
+  "1.61.2.4.2.34" (2008-11-28) or newer).
+= #338850 by dww: Fixed critical SQL bug ("Not unique table/alias: 'e'")
+  on the signup administration page (admin/content/signup) for sites
+  that have more than one event.module node type that is signup-enabled.
+= #335190 by bkat and dww: Fixed bug where if you had a node enabled
+  for signups and edited it to disable signups, the node would remain
+  signup enabled.  The bug was introduced in 5.x-2.6 by #328822.
+= #336442 by dww: Fixed bugs with the views filters "Signup:
+  Enabled/Disabled" and "Signup: Confirmation: Enabled/Disabled".
+= #336461 by dww: The "Signup: Reminder: Enabled/Disabled" views
+  filter was broken since it was using the wrong filter handler.
+= #336450 by dww: Fixed the UI for signup's Views filters.
+= #336610 by dww: Fixed bug introduced in #329668 where node types that
+  have an underscore in their name had broken links in the warning
+  messages about CCK date fields being misconfigured.  Those warnings
+  also didn't appear at all in some cases.  The bug was caused by
+  core's bizarre handling of node_type vs. node-type in URLs.
+= #340377 by dww: Fixed bug where the default value in the database
+  for how many days in advance to send reminder emails did not match
+  what the rest of the code was written to expect.  Reminders would
+  not be sent until the admin/settings/signup page was saved.
+
+Other changes since 6.x-1.0-rc1:
+= #335563 by dww: Added support to control the relative ordering of
+  the signup information embedded on nodes.  If the content.module
+  (CCK) is enabled, "Signup information" is now exposed to the field
+  management page (where there is a drag-and-drop interface to reorder
+  everything) at admin/content/node-type/[node-type-name]/fields.  If
+  CCK is disabled, there is a variable to manually control the weight.
+  The variable is called "signup_info_node_weight_[node_type]" and can
+  be defined in the $conf array in settings.php.
+= #336129 by dww: Moved the signup node type settings out of the
+  "Workflow" fieldset into a separate "Signup settings" fieldset.
+= #341331 by dww: Improved database performance during cron runs by
+  using INNER JOIN instead of LEFT JOIN for finding nodes of a given
+  type that need to be auto-closed and/or have reminder emails sent.
+
+
+------------------------
+6.x-1.0-rc1 (2008-11-14)
+------------------------
+Changes since 6.x-1.0-beta1:
+= #330828 by dww: Split module code out into separate include files.
+
+
+-------------
+6.x-1.0-beta1
+-------------
+Contains all the features and bug fixes up to and including version
+5.x-2.6.  Changes since 5.x-2.6:
+= #222217 by dww: Initial port to the Druapl 6 core API.
+  Related issues: #330838, #330840, #332968, #333264.
+= #330820 by dww and duellj: Ported all views support to the views2 API.
+  This changes how the 'View to embed for the signup user list' setting
+  works, so any sites that are using a custom view for this will have to
+  revisit the signup settings page and select a new value under the
+  advanced settings fieldset.  signup_update_6000() removes the
+  deprecated variables from the database.
+= #330821 by dww: Fixed problems with the D6 CCK Date field support.
+= #330824 by dww: Ported the Panels integration to the D6 Panels API.
+= #330829 by dww: Split theme functions out into separate include files.
+= #333185 by dww: Removed deprecated signup_build_signup_data() function.
+
+
+-------
+5.x-2.7
+-------
+Bugs fixed since 5.x-2.6:
+= #336255 by KarenS and dww: Fixed numerous bugs in usage of DateAPI
+  that were breaking all time-based signup functionality for datestamp
+  fields and causing problems for certain configurations of date or
+  datetime fields depending on the timezone handling.  Using 5.x-2.4
+  of DateAPI and the CCK Date field, the one configuration that
+  doesn't fully work is a datestamp field that has no timezone
+  handling at all.  With that configuration, you must use the latest
+  Date code from the DRUPAL-5--2 branch (check the top of your copy of
+  date_api.module and make sure the revision is at least "1.39.2.50"
+  (2008-11-28) or newer).
+= #338850 by dww: Fixed critical SQL bug ("Not unique table/alias: 'e'")
+  on the signup administration page (admin/content/signup) for sites
+  that have more than one event.module node type that is signup-enabled.
+= #335190 by bkat and dww: Fixed bug where if you had a node enabled
+  for signups and edited it to disable signups, the node would remain
+  signup enabled.  The bug was introduced in 5.x-2.6 by #328822.
+= 336610 by dww: Fixed bug introduced in #329668 where node types that
+  have an underscore in their name had broken links in the warning
+  messages about CCK date fields being misconfigured.  Those warnings
+  also didn't appear at all in some cases.  The bug was caused by
+  core's bizarre handling of node_type vs. node-type in URLs.
+= #340377 by dww: Fixed bug where the default value in the database
+  for how many days in advance to send reminder emails did not match
+  what the rest of the code was written to expect.  Reminders would
+  not be sent until the admin/settings/signup page was saved.
+
+Other changes since 5.x-2.6:
+= #335563 by dww: Added a variable to specify the weight (to control
+  the relative ordering) of signup information embedded on nodes.  The
+  variable is called "signup_info_node_weight_[node_type]" and can be
+  defined in the $conf array in settings.php.
+= #336129 by dww: Moved the signup node type settings out of the
+  "Workflow" fieldset into a separate "Signup settings" fieldset.
+= #341331 by dww: Improved database performance during cron runs by
+  using INNER JOIN instead of LEFT JOIN for finding nodes of a given
+  type that need to be auto-closed and/or have reminder emails sent.
+
+
+-------
+5.x-2.6
+-------
+New features since 5.x-2.5:
+= #86462 by KarenS, dww, duellj, shane_jordan, and stBorchert: Added
+  support to use CCK date fields to control time-based functionality
+  (auto-closing signups and reminder emails).  Currently works with
+  date.module versions 5.x-1.* and 5.x-2.*.  Related issues:
+  #328181, #328647, #328756, #329668, #329708, #330121, and #330821.
+= #321531 by stBorchert and dww: Exposed the signup form as a panel pane.
+= #78707 by dww: Added a theme_signup_node_output_header() function to
+  customize HTML at the top of the signup-related output on nodes.
+  The default implementation adds a 'signup' anchor.
+= #333257 by dww: Improved the UI at the node/N/signups administration
+  page to use a column of checkboxes to cancel multiple signups at once.
+= #332443 by TheOnlyHarry and dww: theme_signup_user_form() is now
+  invoked with the $node object as context, so you can conditionally
+  add custom signup fields depending on the node or node type.
+
+Bugs fixed since 5.x-2.5:
+= #327417 by dww: Fixed bug where reminder emails always used
+  '[Untimed]' for the %time token with event 5.x-2.*.
+= #327417 by dww: Fixed bugs regarding timezones and other date logic
+  for auto-close and reminder emails with event 5.x-2.*.  Also cleaned
+  up the same date logic for the event 5.x-1.* support.
+= #329708 by dww: Fixed bug where reminder emails could be sent for
+  time-based content that already started.  This would be particularly
+  prominent if a site has content types that use CCK date fields which
+  are signup enabled, then upgraded to the latest version.  But, the
+  bug could have potentially hit sites using the Event module, too.
+= #328637 by dww: Fixed bug where error messages generated while
+  validating an anonymous user's email address weren't translatable.
+= #290734 by dww: Fixed a bug from the previous patch where the
+  %username token for anonymous users wasn't actually being replaced
+  inside theme_signup_email_token_anonymous_username().
+= #330281 by dww: Fixed broken link to the 'Signups' tab in the help
+  text for the signup settings on the node form when creating new nodes.
+= Fixed the help text on the signup broadcast page to use the
+  human-readable name of the content type, not the internal name.
+= #332968 by dww: Renamed _signup_admin_form to signup_node_settings_form
+  to be less confusing, and fixed PHP warnings from not knowing the node
+  type on the global signup settings configuration page.  Also, all help
+  text now consistently uses the human-readable node type name.
+= #334405 by dww: Fixed minor UI bug where the "Sign up another user"
+  fieldset on the node/N/signups administrative tab was expanded or
+  collapsed based on the setting to control the signup fieldset when
+  viewing nodes.  Now, the fieldset is always open on the admin tab.
+= #330840 by dww: Fixed a PHP warning when sending a copy of a signup
+  broadcast to yourself from _signup_get_email_tokens() inspecting an
+  element in the $signup object that doesn't always exist.
+
+Other changes since 5.x-2.5:
+= #327726 by dww: Reorganized the directory layout of the code.
+= #328647 by dww: Removed all mention of 'event' in the UI and code
+  unless it refers specifically to the event.module.  User-facing text
+  now uses the human-readable node type name, instead.
+= #328840 by dww: Renamed the default email tokens to use less
+  ambiguous names and to not refer to 'event' at all (#328647).
+= #333259 by dww: Renamed 'signup_admin_node_form' to
+  'signup_node_admin_summary_form' to help avoid confusion in the
+  code.  This does mean that sites which implemented their own theme
+  function for this form will have to modify the name of their
+  override function.
+= #327726: Removed dead 'contrib' code. signup_ecommerce is already
+  moved to another project and is referenced on the signup project
+  page.  signup_conflict hasn't been touched since 4.7.x (#326110).
+  If anyone wants it, they can checkout DRUPAL-4-7 and make a new
+  project for it.
+
+
+-----------
+5.x-2.5
+-----------
+Potential information disclosure bugs fixed with this release:
+= #219680 by dww: Fixed bug where the email address of users who signup
+  was being sent in the notification emails to event owners, which is an
+  inadvertent disclosure of personal information.  Now, only a link to
+  the user's profile is included.
+= #310307 by dww: Added a filter for published nodes to the default
+  views for the 'Signups' tab on user profile pages.
+
+New features since 5.x-2.4:
+= #243035 by dww, deviantintegral and stBorchert: Added a default view
+  for the users signed up for a node ('signup_user_list'), a theme
+  function for the hard-coded listing (theme_signup_user_list()), a
+  setting to control what user listing appears under the signup form
+  (the old hard-coded listing, an embedded view, or nothing at all),
+  and some jQuery to hide/reveal these advanced settings as needed.
+= #285626 by deviantintegral and dww: Added optional support for using
+  token.module tokens in the various email message templates.
+= #265222 by dww: Added support for an "%eventurl" token for all e-mail
+  messages which contains the full URL to the node in question.
+= #316276 by deviantintegral: Added an option to hide the signup form.
+= #275298 by dww: Made the table of signup details at node/N/signups
+  sortable by username or signup time.
+= #310677 by stBorchert and dww: Added the ability for the sender of a
+  broadcast message to send themselves a copy.
+= #132142 by dww: Added a setting to control which site-wide date
+  format string to use for rendering dates in the administrative UI
+  and in the email messages.
+= #273072 by dww: Added a theme function for the node/N/signups signup
+  administration tab (theme_signup_node_admin_page()), and changed the
+  default appearance of that page to be more visually consistent.
+= #47913 by dww and stBorchert: Added significantly more themeability
+  for what appears on signup-enabled nodes and for the the signup
+  administration overview page.
+
+Bug fixes since 5.x-2.4:
+= #321653 by shane_jordan: Fixed bug where if a signup administrator
+  canceled an anonymous signup on a given node, all of that anonymous
+  user's signups were also canceled.  This bug was from the original
+  implementation of anonymous signup support (#68497).
+= #233512 by dww and tcocca: Added code to cancel all signups of users
+  that are deleted from the site.
+= #259301 by dww: Fixed bug where the code assumes you want additional
+  fields in your signup form. Signup now handles an empty return value
+  from theme_signup_user_form().
+= #249155 by joshk: Added the $user object as another argument when
+  invoking hook_signup_sign_up().
+= #224162 by dww: Fixed bug where all broadcasts were sent as the site
+  owner.
+= #247618 by selmanj and dww: Fixed bug where "... or register ..." was
+  printed even on sites that have user registration disabled.
+= #321463 by dww: Fixed UI bug where the 'Please login or register to
+  signup' help text was printed even if regular authenticated users
+  couldn't signup.
+= #243051 by dww: Fixed bugs and simplified logic for deciding if the
+  "Signup settings" fieldset should be added to node forms or not.
+= #219678 by dww: Changed email notification to event owner to omit
+  "Date/Time: [Untimed]" if the event has no time.
+= #290740 by deviantintegral and dww: If 'site_mail' is undefined, 
+  use the 'sendmail_from' PHP ini setting as the fall-back value for
+  the From address in e-mails sent by this module.
+= #278739 by dww: Fixed incorrect start date on signup administration
+  page (admin/content/signup) when using event 5.x-2.*.
+= #213239 by dww: Fixed UI bug where event-specific features (e.g.
+  reminder email) were shown on nodes that don't have a start time.
+= #247573 by dww: Fixed UI bug where the form for administrators to
+  signup other users (#174715) was shown even if signups were closed
+  on that node.
+= #293157 by dww: Fixed bug where the '!login' placeholder was not
+  expanded in the help text for the e-mail field when anonymous users
+  can signup. This bug was introduced in version 5.x-2.4 via #174715.
+= #290734 by dww: Cleaned up, unified, and fixed handling of the
+  hard-coded signup email tokens.  In particular, %username is now
+  properly handled for anonymous signups by means of a new theme
+  function: theme_signup_email_token_anonymous_username().
+= #137609 by dww and stBorchert: Added a lot more themeability for how
+  the site-specific custom signup data is displayed for the signed up
+  user, the signup administrator, and in the email messages.  This also
+  fixes a bug (#178441) where the labels for the custom fields were not
+  included in the email messages.
+
+New theme functions (see the comments in the code for more info):
+= #47913: theme_signup_current_signup()
+= #47913: theme_signup_signups_closed()
+= #47913: theme_signup_anonymous_user_login_text()
+= #47913: theme_signup_admin_page()
+= #137609: theme_signup_custom_data()
+= #137609: theme_signup_custom_data_email()
+= #137609: theme_signup_custom_data_table()
+= #137609: theme_signup_custom_data_rows()
+= #137609: theme_signup_email_token_custom_data()
+= #290734: theme_signup_email_token_anonymous_username()
+= #243035: theme_signup_user_list()
+= #273072: theme_signup_node_admin_page()
+= #285626: theme_signup_token_help()
+= #310677: theme_signup_broadcast_sender_copy()
+
+Other changes since 5.x-2.4:
+= Removed the deprecated (4.7.x) signup_ecommerce code since it now
+  lives in a new project: http://drupal.org/project/signup_ecommerce
+= #309668 by slybud: Added a French (fr) translation.
+= #289326 by starbow and dww: Added two new functions to the event
+  backend API for knowing if a node type or a node has a start time.
+= #322528: Simplified the description of the signup_available_signups view.
+
+
+-----------
+5.x-2.4
+-----------
+Bug fixes since 5.x-2.3:
+= #193068 by bkat and dww: Fixed fatal bug during cron.php with event
+  5.x-2.* installed (event_include_files() was missing from a few places).
+= Fixed signup_install() not to force tables on MySQL to be MyISAM.
+= #199383 by deviantintegral and dww: Fixed bug that could cause signup
+  to invoke node_load() with invalid parameters on the node add form.
+= #79331: Fixed inconsistent UI: don't capitalize individual words
+  (for example, the UI now uses 'Current signups' and 'Cancel signups').
+= #107136: Added $uid parameter to _signup_cancel hook (so it can be
+  useful for something) and converted to use module_invoke_all().
+= #202913 by westwesterson: Fixed ambiguous SQL query on the
+  admin/content/signup page when using certain node access modules.
+= #212790 by dww: Fixed an SQL 'GROUP BY' bug on the admin/content/signup
+  page when PgSQL and the 5.x-1.* series of event.module are used.
+
+New features since 5.x-2.3:
+= #190553 by dww: Added a global setting to move the signup form from
+  a fieldset on the node to a separate "Sign up" tab.  This feature
+  was sponsored by esquaredworkshops.com.
+= #195276 by jrbeeman and dww: Enhanced per-node-type signup settings
+  to allow admins to completely disable signups on certain node types.
+  There are now 3 signup options on the content type settings page:
+  - "Disabled": completely prevents signups, even users with
+     'administer all signups' cannot signup-enable nodes of this type.
+  - "Allowed (off by default)": admins get a "Signup settings"
+     fieldset, but signups are disabled by default.
+  - "Enabled (on by default)": Signups are enabled by default, but
+     admins can disable signups on specific nodes of this type.
+= #174715 by dww: Signup administrators can now signup other users.
+= #145749 by schittli: Added German (de) translation.
+
+
+-----------
+5.x-2.3
+-----------
+Bug fixes since 5.x-2.2:
+= #169372 and #171363: Fixed bugs with redeclaring functions caused by
+  using include() instead of include_once().
+= #179540 by dragonwize and dww: Restored the login/register links for
+  anonymous users when viewing a signup-enabled node.
+= #181627 by stBorchert and dww: Removed an inappropriate WHERE clause
+  in the signup UID views argument handler that restricted the query to
+  nodes where signups where open. That should be handled via a filter.
+= #183417 by dww: Switched to a better method for conditionally
+  including views support code. This no longer uses signup_init(),
+  which wasn't necessary and made this module listed as incompatible
+  with aggressive caching for no good reason.
+
+New features since 5.x-2.2:
+= #137911 by dww: Added signup_no_views.inc, moved all hard-coded
+  UI functionality there, and provided a default view to list the
+  users's current signups (both at their profile and via a block).
+  This allows more flexibility for sites using views, since the
+  default views for these things can be customized without conflicting
+  with the non-views UI.
+= #48267 by dww: Added a default view of available signups (events
+  without a reply) which is a subtab at user/%uid/signups/available
+  and also provided as a block.
+= #180154 by KarenS and dww: Added a views filter for if the current
+  user is signed up.
+= #178021 by stBorchert: Added a new "cancel own signups" permission.
+  NOTE: After updating the module and running update.php, all roles
+  that previously had the "sign up for content" permission will have
+  "cancel own signups", too.
+= #180233 by stenjo: Added a Norwegian Bokmal translation.
+
+
+-----------
+5.x-2.2
+-----------
+Bug fixes since 5.x-2.1:
+= #163257 by dww: Anonymous users could cancel all anonymous signups
+  once the signup limit is reached or signups are otherwise closed.
+  This bug was introduced in version 5.x-2.1.
+= #160862 by adrinux and dww: Fixed paging on signup administration form
+  (admin/content/signup) due to missing count query.
+= #142402 by cpisto: Fixed SQL bug on PgSQL when event.module is enabled.
+= #147546 by stBorchert: Removed call to undefined _event_date() when
+  using signup broadcast if event.module is not installed.
+= #158688 by m3avrck: fixed JS to work with aggregator.
+= Code-style fixes (thanks to the coder.module).
+
+New features since 5.x-2.1:
+= #154580 by killes and dww: Refactored code to support different
+  event-related backend modules. Both event 5.x-1.x and event 5.x-2.x
+  are supported, and adding date.module support will now be easy.
+
+
+-------
+5.x-2.1
+-------
+There are 2 major changes since 5.x-2.0: a long-awaited new feature,
+and a critical bug fix for anonymous users:
+= #32482: Adding support for signup limits per node:
+  - New field on site-wide signup defaults and per-node edit form to
+    set or modify the signup limit.
+  - Signups auto-close when the limit is reached.
+  - Users can now cancel their own signup when signups are closed, and
+    if it's not an event-enabled node, or the event hasn't started
+    yet, signups automatically re-open.
+  - Cleanup of the node/N/signups UI.
+  - Even bigger cleanup of admin/content/signups UI.
+  - Views support updated to view and filter by signup limit.
+= #138401: Fixed a fatal PHP error on certain pages for anonymous
+  users when caching is enabled.
+
+
+-------
+5.x-2.0
+-------
+Initial official release of the 5.x-2.* new feature series.
+Enhancements since 5.x-1.0:
+= #106808: Initial views integration. At this time, all the fields
+  from all signup-related database tables are exported, and there are
+  a handful of filters, sorts, and arguments. There are no default
+  views yet.
+= #106891: Signup broadcast functionality -- sufficiently privileged
+  users now have the ability to send an email directly to all the
+  users who signed up for a given node on the site by using the
+  "signup-broadcast" tab.
+= #79332: Cleaned up the user interface for the signup administration
+  overview page. It used to be misusing tabs as a way to filter what
+  signup status (open, closed, or all) to view. Now there is a
+  drop-down selector where the administrator can choose what signup
+  status to filter the page with.
+= #134609: Added an advanced setting to control if the signup form is
+  collapsed or expanded by default.
+
+
+-------
+5.x-1.0
+-------
+The first official, stable release of the signup.module that is
+compatible with the 5.x core API. This release includes all of the bug
+fixes mentioned in the 4.7.x-1.1 release, so please see those release
+notes for more details. In particular, 5.x-1.0 includes the same
+database update from 4.7.x-1.1 that renames the permissions defined by
+the signup.module. Sites upgrading to 5.x-1.0 directly from 4.7.x-1.0
+should therefore be sure to run update.php.
+
+In addition to the changes required to function properly with the 5.x
+version of Drupal core, the 5.x-1.0 release includes the following changes:
+= #49007: The fix for all the UI bugs and weird behavior about
+  enabling and disabling signups per-node-type and per-node is
+  enhanced in the 5.x-1.0 release by including singup.js to implement
+  some additional UI enhancements when JavaScript is enabled. This
+  depends on the jQuery support that is only included in 5.x core. On
+  JS-enabled browsers, when users with signup administrator permission
+  are toggling if signups are enabled or not, the other signup
+  settings will be automatically hidden when signups are disabled.
+= #118648 by Darren Oh: Send reminders after signups are closed.
+= #128287: add hook_uninstall()
+= Use 'access administration pages' not 'administer site configuration'
+  permission to decide what the signup settings menu item should be called.
+
+
+---------
+4.7.x-1.1
+---------
+After many months of unfortunate neglect, the singup.module has
+recently gotten a round of major attention and improvements.  Mostly,
+the changes below are bug fixes, but in a few small cases, some new
+functionality was added, as well. This release includes a database
+update, which renames the permissions this module uses, so be sure to
+run update.php on your site, and then visit your 'access control' page
+(at /admin/access) to ensure the signup-related permissions are valid
+for the roles defined on your site.
+
+Major changes since 4.7.x-1.0:
+= #91284: signup.module doesn't respect privacy: db_rewrite_sql() missing
+= #91284: signup_conflicts.module doesn't respect privacy: db_rewrite_sql()
+  missing
+= Major permissions, UI and usability fixes (includes a DB update):
+  - #69367: Turn the "Users can view signups" setting into a permission.
+  - #69283: Rename all other permissions to be more clear, consistent, etc.
+= #49007: Fix all the UI bugs and weird behavior about enabling and
+  disabling signups per-node-type and per-node.
+= #102949: For consistency, allow the %info token in reminder emails, too.
+
+Other changes since 4.7.x-1.0:
+= #126942: Add "Reset to defaults" on settings page.
+= #104804 by hunmonk and dww: Fieldsets are now supported in the
+  customized signup form. The code should now handle nested values
+  regardless of depth.
+= #67067: Required fields and default values on signup form. Inspired by
+  a patch from pjdevries. Also cleans up the formatting of the $form
+  array in this function, vastly improves the doxygen comment, and
+  includes a step in the INSTALL.txt file about customizing this form.
+= #125705: Make comment in signup.theme about not touching the
+  definition of $form['signup_form_data']['#tree'] even more clear.
+= #123648: Fixing improper use of links in watchdog() messages
+= #78559: Fixing numerous bugs in signup translation:
+  - Incorrect use of format_plural()
+  - Badly formed t() strings with HTML and other goo inside wildly
+    stale (and sometimes missing) .pot files
+= #69372: Ported signup to use theme('username') for user links
+= In the (evil, hard-coded) HTML for displaying signup information on
+  user profile pages, we were leaving an H4 open by accident.
+= l() calls check_plain() for you, so we were double-escaping output.
+= #107154: Fix signup_sign_up_user() to prevent the same user from
+  signing up more than once for the same node.
+= #128021 by adrinux: Convert html br to xhtml and use strong instead of b
+
+
+---------
+4.7.x-1.0
+---------
+Initial official release from the stable 4.7.x-1.* series. There have
+been no changes in the signup module since August 2006, so this should
+be the same code as any of the signup-4.7.0.tar.gz files from
+2006-08-19 and later. Additional releases of this series will only fix
+bugs in the existing functionality.

@@ -1,5 +1,5 @@
 <?php
-// $Id: wysiwyg_imagefield.module,v 1.1 2010/08/06 11:05:26 deciphered Exp $
+// $Id: wysiwyg_imagefield.module,v 1.2 2010/08/10 04:51:03 deciphered Exp $
 /**
  * @file
  * An ImageField based IMCE alternative.
@@ -95,7 +95,7 @@ function wysiwyg_imagefield_build_after($form_element, &$form_state) {
 
   // Add Javascript.
   jquery_ui_add('ui.dialog');
-  drupal_add_js(array('WYSIWYGImageField' => $imagefield), 'setting');
+  drupal_add_js(array('WYSIWYGImageField' => array('field' => $imagefield, 'title' => $form_element[$imagefield]['#title'])), 'setting');
 
   // Add Stylesheets.
   drupal_add_css(drupal_get_path('module', 'wysiwyg_imagefield') . '/wysiwyg_imagefield.css');

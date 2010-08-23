@@ -1,0 +1,12 @@
+; $Id: filefield_sources.info,v 1.1 2009/04/17 00:20:12 quicksketch Exp $
+name = FileField Sources
+description = Extends FileField to allow referencing of existing files, remote files, and server files.
+dependencies[] = filefield
+package = CCK
+core = 6.x
+; Information added by drupal.org packaging script on 2010-08-11
+version = "6.x-1.2"
+core = "6.x"
+project = "filefield_sources"
+datestamp = "1281545492"
+

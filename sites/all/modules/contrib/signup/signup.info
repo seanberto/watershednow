@@ -1,0 +1,12 @@
+; $Id: signup.info,v 1.5.2.1 2009/09/19 09:18:32 dww Exp $
+name = Signup
+description = "Allow users to sign up for content (especially events)."
+package = Signup
+core = 6.x
+
+; Information added by drupal.org packaging script on 2009-09-24
+version = "6.x-1.0-rc6"
+core = "6.x"
+project = "signup"
+datestamp = "1253775361"
+

@@ -1,4 +1,4 @@
-/** $Id: wysiwyg_imagefield.css,v 1.2 2010/08/08 03:18:59 deciphered Exp $ **/
+/** $Id: wysiwyg_imagefield.css,v 1.3 2010/08/18 06:08:35 deciphered Exp $ **/
 
 #wysiwyg_imagefield-dialog {
   -moz-border-radius: 10px;
@@ -9,7 +9,6 @@
   border: 5px solid #000;
   border-radius: 10px;
   box-shadow: 2px 2px 5px #999;
-  overflow: inherit !important;
   padding: 10px;
 }
 

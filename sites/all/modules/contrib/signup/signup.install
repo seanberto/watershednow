@@ -1,0 +1,484 @@
+<?php
+// $Id: signup.install,v 1.24.2.4 2009/09/19 01:42:58 dww Exp $
+
+
+/**
+ * Implementation of hook_schema().
+ */
+function signup_schema() {
+  $schema['signup'] = array(
+    'description' => t('Signup module per-node settings.'),
+    'fields' => array(
+      'nid' => array(
+        'description' => t('Primary key: node ID'),
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'forwarding_email' => array(
+        'description' => t('Email address to send signup notifications to.'),
+        'type' => 'varchar',
+        'length' => 64,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'send_confirmation' => array(
+        'description' => t('Boolean indicating whether confirmation emails should be sent.'),
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'confirmation_email' => array(
+        'description' => t('Email template to send to users when they signup.'),
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => TRUE,
+      ),
+      'send_reminder' => array(
+        'description' => t('Boolean indicating whether reminder emails should be sent. This is set to 0 once the reminders are sent.'),
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'reminder_days_before' => array(
+        'description' => t('Number of days before the start of a time-based node when the reminder emails should be sent.'),
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'reminder_email' => array(
+        'description' => t('Email template to send to users to remind them about a signup.'),
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => TRUE,
+      ),
+      'close_in_advance_time' => array(
+        'description' => t('Number of hours before the start of a time-based node when signups should automatically be closed. This column is not currently used and the behavior is controlled by a site-wide setting.  See http://drupal.org/node/290249 for more information.'),
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'close_signup_limit' => array(
+        'description' => t('Maximum number of users who can signup before signups are closed. If set to 0, there is no limit.'),
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'status' => array(
+        'description' => t('Boolean indicating if signups are open (1) or closed (0) for the given node'),
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 1,
+      ),
+    ),
+    'primary key' => array('nid'),
+  );
+
+  $schema['signup_log'] = array(
+    'description' => t('Records information for each user who signs up for a node.'),
+    'fields' => array(
+      'sid' => array(
+        'description' => t('Primary key: signup ID'),
+        'type' => 'serial',
+        'size' => 'normal',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'uid' => array(
+        'description' => t('Key: the user ID of the user who signed up.'),
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'nid' => array(
+        'description' => t('Key: the node ID of the node the user signed up for.'),
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'anon_mail' => array(
+        'description' => t('The email address for an anonymous user who signed up, or an empty string for authenticated users.'),
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'signup_time' => array(
+        'description' => t('Integer timestamp of when the user signed up for the node.'),
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'form_data' => array(
+        'description' => t('Serialized string of additional signup form values.  See theme_signup_user_form() from theme/signup.theme for more information.'),
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => TRUE,
+      ),
+      'attended' => array(
+        'description' => t('Did this user actually attend the node they signed up for?'),
+        'type' => 'int',
+        'size' => 'tiny',
+      ),
+      'count_towards_limit' => array(
+        'description' => t('How many slots (if any) this signup should use towards the total signup limit for this node'),
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 1,
+      ),
+    ),
+    'primary key' => array('sid'),
+    'indexes' => array(
+      'uid' => array('uid'),
+      'nid' => array('nid'),
+    ),
+  );
+
+  return $schema;
+}
+
+/**
+ * Implementation of hook_install().
+ *
+ * This will automatically install the database tables for the Signup
+ * module for both the MySQL and PostgreSQL databases.
+ *
+ * If you are using another database, you will have to install the
+ * tables by hand, using the queries below as a reference.
+ *
+ * Note that the curly braces around table names are a drupal-specific
+ * feature to allow for automatic database table prefixing, and will
+ * need to be removed.
+ */
+function signup_install() {
+  // Create tables.
+  drupal_install_schema('signup');
+  signup_insert_default_signup_info();
+}
+
+function signup_uninstall() {
+  // Remove tables.
+  drupal_uninstall_schema('signup');
+
+  $variables = db_query("SELECT name FROM {variable} WHERE name LIKE 'signup%%'");
+  while ($variable = db_fetch_object($variables)) {
+    variable_del($variable->name);
+  }
+}
+
+/**
+ * Helper method to insert the default signup information into the
+ * {signup} table (stored in a row for nid 0).  These are the default
+ * settings for new signup-enabled nodes.
+ */
+function signup_insert_default_signup_info() {
+  return db_query("INSERT INTO {signup} (nid, forwarding_email,
+    send_confirmation, confirmation_email,
+    send_reminder, reminder_days_before, reminder_email,
+    close_in_advance_time, close_signup_limit, status) VALUES (0, '',
+    1, 'Enter your default confirmation email message here',
+    1, 1, 'Enter your default reminder email message here',
+    0, 0, 1)");
+}
+
+function signup_update_3() {
+  $ret = array();
+  switch ($GLOBALS['db_type']) {
+    case 'mysql':
+    case 'mysqli':
+      $ret[] = update_sql("ALTER TABLE {signup_log} ADD anon_mail VARCHAR( 255 ) NOT NULL default '' AFTER nid;");
+      $ret[] = update_sql("ALTER TABLE {signup_log} DROP INDEX uid_nid;");
+      $ret[] = update_sql("ALTER TABLE {signup_log} ADD INDEX (uid);");
+      $ret[] = update_sql("ALTER TABLE {signup_log} ADD INDEX (nid);");
+      break;
+
+    case 'pgsql':
+      db_add_column($ret, 'signup_log', 'anon_mail', 'text', array('not null' => TRUE, 'default' => "''"));
+      $ret[] = update_sql("DROP INDEX {signup_log}_uid_nid_idx;");
+      $ret[] = update_sql("CREATE INDEX {signup_log}_uid_idx ON {signup_log}(uid);");
+      $ret[] = update_sql("CREATE INDEX {signup_log}_nid_idx ON {signup_log}(nid);");
+      break;
+  }
+  return $ret;
+}
+
+/**
+ * Rename the signup permissions.
+ * See http://drupal.org/node/69283 for details.
+ * Also, remove the 'signup_user_view' setting in favor of a permission.
+ * See http://drupal.org/node/69367 for details.
+ */
+function signup_update_4() {
+  $ret = array();
+
+  // Setup arrays holding regexps to match and the corresponding
+  // strings to replace them with, for use with preg_replace().
+  $old_perms = array(
+    '/allow signups/',
+    '/admin signups/',
+    '/admin own signups/',
+  );
+  $new_perms = array(
+    'sign up for content',
+    'administer all signups',
+    'administer signups for own content',
+  );
+
+  // Now, loop over all the roles, and do the necessary transformations.
+  $query = db_query("SELECT rid, perm FROM {permission} ORDER BY rid");
+  while ($role = db_fetch_object($query)) {
+    $fixed_perm = preg_replace($old_perms, $new_perms, $role->perm);
+    if ($role->rid == 2 && variable_get('signup_user_view', 0)) {
+      // The setting is currently enabled, so add the new permission to
+      // the "authenticated user" role as a reasonable default.
+      if (!strpos($fixed_perm, 'view all signups')) {
+        $fixed_perm .= ', view all signups';
+        drupal_set_message(t('The old %signup_user_view setting was enabled on your site, so the %view_all_signups permission has been added to the %authenticated_user role. Please consider customizing what roles have this permission on the !access_control page.', array('%signup_user_view' => t('Users can view signups'), '%view_all_signups' => 'view all signups', '%authenticated_user' => 'Authenticated user', '!access_control' => l(t('Access control'), '/admin/user/access'))));
+      }
+    }
+    $ret[] = update_sql("UPDATE {permission} SET perm = '$fixed_perm' WHERE rid = $role->rid");
+  }
+
+  // Remove the stale setting from the {variable} table in the DB.
+  variable_del('signup_user_view');
+  drupal_set_message(t('The %signup_user_view setting has been removed.', array('%signup_user_view' => t('Users can view signups'))));
+
+  return $ret;
+}
+
+/**
+ * Convert the misnamed "completed" column to "status" (and swap all
+ * the values: 0 == closed, 1 == open).
+ */
+function signup_update_5200() {
+  $ret = array();
+  switch ($GLOBALS['db_type']) {
+    case 'mysql':
+    case 'mysqli':
+      $ret[] = update_sql("ALTER TABLE {signup} ADD status int NOT NULL default '1'");
+      break;
+
+    case 'pgsql':
+      db_add_column($ret, 'signup', 'status', 'integer', array('not null' => TRUE, 'default' => "'1'"));
+      break;
+  }
+  $ret[] = update_sql("UPDATE {signup} SET status = (1 - completed)");
+  $ret[] = update_sql("ALTER TABLE {signup} DROP completed");
+  return $ret;
+}
+
+/**
+ * Add the close_signup_limit field to the {signup} table to allow
+ * signup limits for sites that upgraded from 4.6.x.  The original
+ * signup.install for 4.7.x accidentally included this column in the
+ * DB, but it's never been used in the code until now.  However, sites
+ * that upgraded from 4.6.x need this column for the module to work,
+ * so just to be safe, we also add that here.
+ */
+function signup_update_5201() {
+  $ret = array();
+  switch ($GLOBALS['db_type']) {
+    case 'mysql':
+    case 'mysqli':
+      if (!db_column_exists('signup', 'close_signup_limit')) {
+        $ret[] = update_sql("ALTER TABLE {signup} ADD close_signup_limit int(10) unsigned NOT NULL default '0'");
+      }
+      break;
+
+    case 'pgsql':
+      if (!db_column_exists('signup', 'close_signup_limit')) {
+        db_add_column($ret, 'signup', 'close_signup_limit', 'integer', array('not null' => TRUE, 'default' => "'0'"));
+      }
+      break;
+  }
+  return $ret;
+}
+
+/**
+ * Add "cancel own signups" permission to all roles that have "sign up
+ * for content" permission.
+ */
+function signup_update_5202() {
+  $ret = array();
+  switch ($GLOBALS['db_type']) {
+    case 'mysql':
+    case 'mysqli':
+      $ret[] = update_sql("UPDATE {permission} SET perm = CONCAT(perm, ', cancel own signups') WHERE CONCAT(perm, ', ') LIKE '%%sign up for content, %%'");
+      break;
+
+    case 'pgsql':
+      $ret[] = update_sql("UPDATE {permission} SET perm = perm || ', cancel own signups' WHERE perm || ', ' LIKE '%%sign up for content, %%'");
+      break;
+  }
+  drupal_set_message(t("Added the 'cancel own signups' permission to all roles that have the 'sign up for content' permission.") .'<br />'. t('If you do not want your users to cancel their own signups, go to the <a href="@access_url">Access control</a> page and unset this permission.', array('@access_url' => url('/admin/user/access'))));
+  return $ret;
+}
+
+/**
+ * Migrate signup settings per content type so that signups can be disabled
+ * completely for a content type.
+ */
+function signup_update_5203() {
+  $old_prefix = 'signup_form_';
+  $result = db_query("SELECT name FROM {variable} WHERE name LIKE '$old_prefix%%'");
+  while ($row = db_fetch_object($result)) {
+    $old_name = $row->name;
+    $new_name = 'signup_node_default_state_'. substr($old_name, strlen($old_prefix));
+    $new_value = variable_get($old_name, 0) == 1 ? 'enabled_on' : 'disabled';
+    variable_del($old_name);
+    variable_set($new_name, $new_value);
+  }
+  drupal_set_message(t('Migrated signup settings per content type.'));
+  return array();
+}
+
+/**
+ * Rename all the tokens in existing email templates and the global settings.
+ */
+function signup_update_5204() {
+  $ret = array();
+
+  // Multi-part update.
+  if (!isset($_SESSION['signup_update_5204'])) {
+    // We need to start at nid 0 for the site-wide defaults, so
+    // initialize our variable to the value below that.
+    $_SESSION['signup_update_5204'] = -1;
+    $_SESSION['signup_update_5204_max'] = db_result(db_query("SELECT MAX(nid) FROM {signup}"));
+  }
+
+  // Array of replacements mapping old names to the new names.
+  // NOTE: To avoid trouble with db_query() trying to interpret the
+  // '%', we escape all of them as '%%' to get % literals.
+  $replacements = array(
+    '%%eventurl' => '%%node_url',
+    '%%event' => '%%node_title',
+    '%%time' => '%%node_start_time',
+    '%%username' => '%%user_name',
+    '%%useremail' => '%%user_mail',
+    '%%info' => '%%user_signup_info',
+  );
+
+  // Build up a nested REPLACE() fragment to have the DB do all the string
+  // conversions for us in a single query, instead of pulling the records out
+  // of the DB, doing the string manipulation in PHP, and writing back the
+  // values in a bunch of separate queries.  According to the docs, REPLACE()
+  // works the same way on both MySQL and PgSQL.
+  $reminder_replace = 'reminder_email';
+  $confirmation_replace = 'confirmation_email';
+  foreach ($replacements as $from => $to) {
+    $reminder_replace = "REPLACE($reminder_replace, '$from', '$to')";
+    $confirmation_replace = "REPLACE($confirmation_replace, '$from', '$to')";
+  }
+
+  // Do the next batch of the deed.
+  // Find the next N records to update, or do the final batch.
+  $next = min($_SESSION['signup_update_5204'] + 2000, $_SESSION['signup_update_5204_max']);
+  // Perform the UPDATE in our specified range of nid values.
+  db_query("UPDATE {signup} SET reminder_email = $reminder_replace, confirmation_email = $confirmation_replace WHERE nid > %d AND nid <= %d", $_SESSION['signup_update_5204'], $next);
+  // Remember where we left off.
+  $_SESSION['signup_update_5204'] = $next;
+
+  if ($_SESSION['signup_update_5204'] == $_SESSION['signup_update_5204_max']) {
+    // We're done, clear these out.
+    unset($_SESSION['signup_update_5204']);
+    unset($_SESSION['signup_update_5204_max']);
+
+    // Provide a human-readable explaination of what we did.
+    $tokens = array(
+      '%event' => '%event',
+      '%eventurl' => '%eventurl',
+      '%time' => '%time',
+      '%username' => '%username',
+      '%useremail' => '%useremail',
+      '%info' => '%info',
+      '%node_title' => '%node_title',
+      '%node_url' => '%node_url',
+      '%node_start_time' => '%node_start_time',
+      '%user_name' => '%user_name',
+      '%user_mail' => '%user_mail',
+      '%user_signup_info' => '%user_signup_info',
+      );
+    $ret[] = array('success' => TRUE, 'query' => t('Replaced %event, %eventurl, %time, %username, %useremail, and %info tokens with %node_title, %node_url, %node_start_time, %user_name, %user_mail, and %user_signup_info in the reminder and confirmation email templates.', $tokens));
+  }
+  else {
+    // Report how much is left to complete.
+    $ret['#finished'] = $_SESSION['signup_update_5204'] / $_SESSION['signup_update_5204_max'];
+  }
+  return $ret;
+}
+
+/**
+ * Migrate signup user list view display type to the new variable.
+ */
+function signup_update_6000() {
+  $ret = array();
+  variable_del('signup_user_list_view_name');
+  variable_del('signup_user_list_view_type');
+  $ret[] = array(
+    'success' => TRUE,
+    'query' => t('Removed the deprecated %old_view_name and %old_view_type variables. If you were using embedding a view on signup-enabled nodes, please visit the <a href="@signup_settings_url">Signup configuration page</a> and select a new value for the %setting_name setting (which is located under the Advanced settings).', array(
+      '%old_view_name' => 'signup_user_list_view_name',
+      '%old_view_type' => 'signup_user_list_view_type',
+      // NOTE: we can't use url() here because it would use 'update.php?q=...'
+      '@signup_settings_url' => base_path() .'?q=admin/settings/signup',
+      '%setting_name' => t('View to embed for the signup user list'),
+    )),
+  );
+  return $ret;
+}
+
+/**
+ * Add unique id column to signup_log as the primary key.
+ *
+ * http://drupal.org/node/341382 for more infomation.
+ */
+function signup_update_6001() {
+  $ret = array();
+  $field = array(
+    'type' => 'serial',
+    'size' => 'normal',
+    'unsigned' => TRUE,
+    'not null' => TRUE,
+  );
+  db_add_field($ret, 'signup_log', 'sid', $field, array('primary key' => array('sid')));
+  return $ret;	
+}
+
+/**
+ * Add an 'attended' field to the {signup_log} table.
+ *
+ * http://drupal.org/node/55168 for more infomation.
+ */
+function signup_update_6002() {
+  $ret = array();
+  $field = array(
+    'type' => 'int',
+    'size' => 'tiny',
+  );
+  db_add_field($ret, 'signup_log', 'attended', $field);
+  return $ret;	
+}
+
+/**
+ * Add the 'count_towards_limit' field to the {signup_log} table.
+ *
+ * http://drupal.org/node/581652 for more infomation.
+ */
+function signup_update_6003() {
+  $ret = array();
+  $field = array(
+    'type' => 'int',
+    'not null' => TRUE,
+    'default' => 1,
+  );
+  db_add_field($ret, 'signup_log', 'count_towards_limit', $field);
+  return $ret;
+}
+

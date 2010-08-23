@@ -1,0 +1,898 @@
+# $Id: fr.po,v 1.1 2008/11/06 10:20:48 dww Exp $
+#
+# French translation of Drupal (general)
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+# Generated from files:
+#  signup_event_5.x-1.inc,v 1.4 2008/02/07 02:35:21 dww
+#  signup_event_5.x-2.inc,v 1.3 2007/12/26 17:34:04 dww
+#  signup_event_none.inc,v 1.1 2007/07/31 00:08:31 dww
+#  signup_no_views.inc,v 1.4 2008/01/26 03:02:39 dww
+#  signup_views.inc,v 1.9 2007/10/16 19:39:30 dww
+#  signup.module,v 1.129 2008/01/26 03:02:39 dww
+#  signup.info,v 1.4 2007/06/13 19:35:49 dww
+#  signup.theme,v 1.12 2007/09/03 19:35:37 dww
+#  signup.install,v 1.16 2007/12/22 09:07:18 dww
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: French translation for drupal Signup module\n"
+"POT-Creation-Date: 2008-09-17 12:08+0200\n"
+"PO-Revision-Date: 2008-09-17 15:30+0100\n"
+"Last-Translator: Sylvain Moreau <sylvain.moreau@ows.fr>\n"
+"Language-Team: Sylvain Moreau, OWS <sylvain.moreau@ows.fr>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: French\n"
+"X-Poedit-Country: FRANCE\n"
+
+#: signup_event_5.x-1.inc:46
+#: signup_event_5.x-2.inc:49
+msgid "Start"
+msgstr "Début"
+
+#: signup_event_5.x-1.inc:84;105
+#: signup_event_5.x-2.inc:85
+#: signup_event_none.inc:27
+msgid "[Untimed]"
+msgstr "[Non daté]"
+
+#: signup_event_5.x-1.inc:95
+msgid "Start: "
+msgstr "Début : "
+
+#: signup_event_5.x-1.inc:97
+msgid "End: "
+msgstr "Fin : "
+
+#: signup_event_5.x-1.inc:101
+msgid "Timezone: "
+msgstr "Fuseau horaire : "
+
+#: signup_no_views.inc:29;38;57
+#: signup_views.inc:367;387
+msgid "Current signups"
+msgstr "Inscriptions en cours"
+
+#: signup_no_views.inc:39
+msgid "View signup schedule"
+msgstr "Voir l'agenda des inscriptions"
+
+#: signup_no_views.inc:57
+msgid "view signup schedule"
+msgstr "voir l'agenda des inscriptions"
+
+#: signup_no_views.inc:60
+msgid "Signup information"
+msgstr "Information sur les inscriptions"
+
+#: signup_no_views.inc:95
+msgid "Signups for @user"
+msgstr "Inscriptions de @user"
+
+#: signup_views.inc:34
+msgid "Signup: User: Name"
+msgstr "Inscription : Utilisateur : Nom"
+
+#: signup_views.inc:37
+msgid "Username of an authenticated user who signed up, or %anonymous for anonymous signups."
+msgstr "Nom d'utilisateur d'un utilisateur authentifié s'étant inscrit, ou %anonymous pour les inscriptions anonymes."
+
+#: signup_views.inc:37;84;295;299
+#: signup.module:1924
+msgid "Anonymous"
+msgstr "Anonyme"
+
+#: signup_views.inc:40
+msgid "Signup: User: Email Address"
+msgstr "Inscription : Utilisateur : Adresse Courriel"
+
+#: signup_views.inc:45
+msgid "Email address of a user (authenticated or anonymous) who signed up."
+msgstr "Adresse courriel de l'utilisateur (authentifié ou anonyme) qui s'est inscrit."
+
+#: signup_views.inc:45
+msgid "WARNING: only expose this data in a view that is restricted to users whom you can trust with such sensitive information."
+msgstr "ATTENTION : n'exposer ces données dans une vue dont l'accès est restreint aux seuls utilisateurs à qui vous pouvez faire confiance pour des données aussi sensibles."
+
+#: signup_views.inc:48;63;71
+msgid "Signup: User: Signup Time"
+msgstr "Inscription : Utilisateur : Heure d'Inscription"
+
+#: signup_views.inc:52
+msgid "Time when user signed up."
+msgstr "Heure à laquelle l'utilisateur s'est inscrit"
+
+#: signup_views.inc:55
+msgid "Signup: User: Additional Signup Info"
+msgstr "Inscription : Utilisateur : Informations d'Inscription Additionnelles"
+
+#: signup_views.inc:58
+msgid "Enter the additional field name (from signup.theme) in the Option column."
+msgstr "Saisissez les noms des champs additionels (provenant de signup.theme), dans la colonne Option."
+
+#: signup_views.inc:66
+msgid "Sorts by time of sign up."
+msgstr "Trie selon l'heure d'inscription."
+
+#: signup_views.inc:76
+msgid "Enter dates in the format: CCYY-MM-DD HH:MM:SS. Enter 'now' to use the current time. You may enter a delta (in seconds) to the option that will be added to the time; this is most useful when combined with now. If you have the jscalendar module from jstools installed, you can use a popup date picker here."
+msgstr "Saisissez des dates au format : CCYY-MM-DD HH:MM:SS. Saisissez'now' pour utiliser l'heure courant. Vous pouvez saisir un différentiel (en secondes) en option, qui sera ajouté à cette heure; ceci est le plus utile lorsque vous le combinez avec 'now'. Si le module jscalendar de jstools est installé, vous pouvez utiliser le popup de choix de date ici."
+
+#: signup_views.inc:79
+msgid "Signup: User: Anonymous/Authenticated"
+msgstr "Inscription : Utilisateur : Anonyme/Authentifié"
+
+#: signup_views.inc:81
+msgid "is"
+msgstr "est"
+
+#: signup_views.inc:84
+msgid "Authenticated"
+msgstr "Authentifié"
+
+#: signup_views.inc:87
+msgid "Filter on if a user who signed up is anonymous, or an authenticated user on the site."
+msgstr "Filtre selon le statut sur le site de l'utilisateur qui s'est inscrit : anonyme ou authentifié. "
+
+#: signup_views.inc:91
+msgid "Signup: User: Current User"
+msgstr "Inscription : Utilisateur : Utilisateur Courant"
+
+#: signup_views.inc:95
+msgid "This allows you to filter by whether or not the node was signed up by the logged in user of the view."
+msgstr "Ceci vous permet de filtrer selon le fait que l'utilisateur loggué de la vue se soit inscrit au noeud."
+
+#: signup_views.inc:112;162;168
+msgid "Signup: Node: Open/Closed"
+msgstr "Inscription : Noeud : Ouvert/fermé"
+
+#: signup_views.inc:115
+msgid "Are signups open or closed for this node?"
+msgstr "Les inscriptions sont-elles ouvertes ou fermées pour ce noeud"
+
+#: signup_views.inc:118;177
+msgid "Signup: Node: Signup Limit"
+msgstr "Inscription : Noeud : Limite d'inscriptions"
+
+#: signup_views.inc:120
+msgid "Maximum number of users who can sign up before signups are automatically closed (set to 0 for no limit)."
+msgstr "Nombre maximum d'utilisateurs pouvant s'inscrire avant que les inscriptions ne soient automatiquement fermées (réglez à 0 pour aucune limite)."
+
+#: signup_views.inc:123
+msgid "Signup: Notification: Email Address"
+msgstr "Inscription : Notification : Adresse courriel"
+
+#: signup_views.inc:124
+msgid "Address where notification emails are sent wenever a user signs up."
+msgstr "Adresse à laquelle les courriels de notification sont envoyés à chaque inscription utilisateur."
+
+#: signup_views.inc:128
+msgid "Signup: Confirmation: Enabled/Disabled"
+msgstr "Inscription : Confirmation : Activée/Desactivée"
+
+#: signup_views.inc:130
+msgid "Should confirmation email be sent to each user who signs up."
+msgstr "Le courriel de confirmation doit-il être envoyé à chaque utilisateur s'étant inscrit."
+
+#: signup_views.inc:133
+msgid "Signup: Confirmation: Message"
+msgstr "Inscription : Confirmation : Message"
+
+#: signup_views.inc:134
+msgid "The body of the optional confirmation email that can be sent whenever a user signs up."
+msgstr "Le corps du courriel optionnel de confirmation qui peut être envoyé à chaque fois qu'un utilisateur s'inscrit."
+
+#: signup_views.inc:137
+msgid "Signup: Reminder: Enabled/Disabled"
+msgstr "Inscription : Rappel : Activé:Désactivé"
+
+#: signup_views.inc:139
+msgid "Should a reminder email be automatically sent to all users who signed up. This will be false if either an administrator disabled the feature for a given event, or if the reminder was already sent."
+msgstr "Un courriel de rappel doit-il être automatiquement envoyé à tous les utilisateurs inscrits. Ceci sera faux, soit si un administrateur a désactivé cette fonctionnalité pour un événement donné, ou bien si le rappel a déjà été envoyé."
+
+#: signup_views.inc:142
+msgid "Signup: Reminder: Days Before Event for Email"
+msgstr "Inscription : Rappel : Jours Avant l'Evénement pour le Courriel"
+
+#: signup_views.inc:144
+msgid "How many days before an event will the reminder email be sent."
+msgstr "Le nombre de jours avant l'événement auquel sera envoyé le courriel de rappel."
+
+#: signup_views.inc:147
+msgid "Signup: Reminder: Message"
+msgstr "Inscription : Rappel : Message"
+
+#: signup_views.inc:148
+msgid "The body of the optional reminder email that can be sent a configurable time before an event begins."
+msgstr "Le corps du courriel optionnel de rappel qui peut être envoyé à un temps donné configurable avant le début de l'événement."
+
+#: signup_views.inc:163
+msgid "Sort by if signups are closed or open."
+msgstr "Trie selon le fait que les inscriptions sont fermées ou ouvertes."
+
+#: signup_views.inc:169;184
+msgid "are"
+msgstr "sont"
+
+#: signup_views.inc:172;234
+#: signup.module:941;1514
+msgid "Open"
+msgstr "Ouvert"
+
+#: signup_views.inc:172;234
+#: signup.module:942;1514
+msgid "Closed"
+msgstr "Fermé"
+
+#: signup_views.inc:174
+msgid "Filter on if signups are open or closed for each node."
+msgstr "Trie selon le fait que les inscriptions sont fermées ou ouvertes pour chaque noeud"
+
+#: signup_views.inc:179
+msgid "Filter by the maximum number of users who can sign up before signups are automatically closed (set to 0 for no limit)."
+msgstr "Filtre selon le nombre maximum d'utilisateurs pouvant s'inscrire avant que les inscriptions ne soient automatiquement fermées (réglé à 0 pour aucune limite)."
+
+#: signup_views.inc:182
+msgid "Signup: Node: Enabled/Disabled"
+msgstr "Inscription : Noeud : Activé/Desactivé"
+
+#: signup_views.inc:187
+#: signup.module:358;363;407
+msgid "Disabled"
+msgstr "Désactivé"
+
+#: signup_views.inc:187
+#: signup.module:401
+msgid "Enabled"
+msgstr "Activé"
+
+#: signup_views.inc:190
+msgid "Filter on if signups are enabled or disabled."
+msgstr "Filtre selon que les inscriptions soient activées ou desactivées"
+
+#: signup_views.inc:242
+msgid "Signup: User: UID Signup for Node"
+msgstr "Inscription : Utilisateur : UID s'est inscrit au Noeud"
+
+#: signup_views.inc:244
+msgid "Filter signups by signed up user."
+msgstr "Filtre les inscriptions par utilisateur inscrit"
+
+#: signup_views.inc:247
+msgid "Signed up"
+msgstr "Inscrit"
+
+#: signup_views.inc:247
+msgid "Not signed up"
+msgstr "Non inscrit"
+
+#: signup_views.inc:359
+msgid "A list of all signups for the current user"
+msgstr "Une liste de toutes les inscriptions pour l'utilisateur courant"
+
+#: signup_views.inc:372
+msgid "This user has not signed up for any content."
+msgstr "Cet utilisateur ne s'est encore inscrit à aucun contenu"
+
+#: signup_views.inc:379
+msgid "Current"
+msgstr "Courant"
+
+#: signup_views.inc:385
+#: signup.module:277;418;972
+msgid "Signups"
+msgstr "Inscriptions"
+
+#: signup_views.inc:442
+msgid "A view of all available signups (signup-enabled content the user has not replied to)."
+msgstr "Une vue de toutes les inscriptions disponibles (contenu autorisé à l'inscription auquel l'utilisateur n'a pas encore répondu)."
+
+#: signup_views.inc:450;470
+msgid "Available signups"
+msgstr "Inscriptions disponibles"
+
+#: signup_views.inc:455
+msgid "Congratulations, you have replied to all of the content on the site that is accepting signups."
+msgstr "Félicitations, vous avez répondu à tous les contenus du site qui sont ouverts à l'inscription."
+
+#: signup_views.inc:462
+msgid "Available"
+msgstr "Disponible"
+
+#: signup.module:63
+msgid "Event reminder: !event"
+msgstr "Rappel de l'événement : !event"
+
+#: signup.module:73;1376
+msgid "SIGNUP INFORMATION"
+msgstr "INFORMATIONS D'INSCRIPTION"
+
+#: signup.module:85
+msgid "Reminder for %event sent to %useremail."
+msgstr "Rappel pour %event envoyé à %useremail"
+
+#: signup.module:85;131;1167;1183;1933
+msgid "view"
+msgstr "voir"
+
+#: signup.module:131
+msgid "Signups closed for %event by cron."
+msgstr "Les incriptions à l'événement %event ont été fermées par le cron."
+
+#: signup.module:195
+msgid "Signup allows users to sign up (in other words, register) for content of any type. The most common use is for events, where users indicate they are planning to attend. This module includes options for sending a notification email to a selected email address upon a new user signup (good for notifying event coordinators, etc.) and a confirmation email to users who sign up. Each of these options are controlled per node. When used on event nodes (with event.module installed and regular cron runs), it can also send out reminder emails to all signups a configurable number of days before the start of the event (also controlled per node) and to automatically close event signups 1 hour before their start (general setting). Settings exist for resticting signups to selected roles and content types."
+msgstr "Inscription permet aux utilisateurs de s'inscrire (en d'autres termes, s'enregistrer) pour un contenu de n'importe quel type. L'utilisation la plus courante est pour les événements, où les utilisateurs indiquent qu'ils envisagent d'y assister. Ce module inclue les options d'envoi de courriel de notification à une adresse courriel sélectionnée à chaque nouvelle inscription d'un utilisateur (utile pour notifier les coordinateurs d'événement, etc...), et d'un courriel de confirmation aux utilisateurs s'étant inscrit. Chacune de ces options est contrôlée par noeud. Lorr d'une utilisation sur des noeuds de type événement (avec le module event.module installé et des exécutions de cron régulières), il peut aussi envoyer des courriels de rappel à tous les inscrits un nombre configurable de jours avant le début de l'événement (aussi controlé par noeud), et fermer automatiquement les inscriptions à l'événement une heure avant son début (configuration générale). Des réglages existent pour restreindre les inscriptions à des rôles et types de contenus définis."
+
+#: signup.module:197
+msgid "To use signup, you must enable which content types should allow signups in administer->settings->content types, and you must also grant the %sign_up_for_content permission to any user role that should be able to sign up in administer->access control. Each signup-enabled node will now have a place for users to sign up."
+msgstr "Pour utiliser l'inscription, vous devez définir quels types de contenus autorisent les inscriptions au menu administrer > Configuration du site > Types de contenu, et vous devez aussi donner la permission %sign_up_for_content à tous les rôles utilisateur autorisés à s'inscrire au menu Administrer > Contrôle d'Accès. Tout noeud ouvert à l'inscription possèdera alors un emplacement dédié à l'inscription des utilisateurs."
+
+#: signup.module:199
+msgid "There are two ways for a user to have administrative access to the signup information about a given node: either the user has the %administer_signups_for_own_content permission and they are viewing a node they created, or the user has the global %administer_all_signups permission. Administrative access allows a user to view all the users who have signed up for the node, along with whatever information they included when they signed up.  Signup administrators can also cancel other user's signups for the node, and can close signups on the node entirely (meaning no one else is allowed to sign up)."
+msgstr "Il y a deux moyens pour un utilisateur d'avoir un accès administrateur aux informations d'inscription pour un noeud donné : soit l'utilisateur possède la permission %administer_signups_for_own_content et il consulte un noeud qu'il a créé, soit l'utilisateur possède la permission %administer_all_signups permission. L'accès administrateur permet à l'utilisateur de voir tous les utilisateurs qui se sont inscrits à ce noeud, accompagnée de toutes les informations saisies lors de leur inscription. Les administrateurs d'inscription peuvent aussi annuler les inscriptions des autres utilisateurs au noeud, et peuvent fermer entièrement les inscriptions au noeud (ce qui signifie que plus personne ne peut s'inscrire)."
+
+#: signup.module:201
+msgid "Default settings for notification email address, reminder emails and confirmation emails are located in administer->settings->signup. These will be the default values used for a signup node unless otherwise specified (to configure these options per node, visit 'edit' for that node and make the adjustments in the 'Sign up settings' section)."
+msgstr "Configuration par défaut pour l'adresse courriel de notification, les courriels de rappel et de confirmation est accessible par administrer > Configuration du site > Inscription. Ces valeurs seront utilisées par défaut pour un noeud avec inscription, à mois que d'autres options soient spécifiées (pour configurer ces options par noeud, visitez la page 'Editer' pour ce noeud et faites vos ajustements dans la section 'Configuration des Inscriptions')."
+
+#: signup.module:203
+msgid "Signups can be manually closed for any node at the %signup_overview page, or on the 'signups' tab on each node."
+msgstr "Les inscriptions peuvent être fermées manuellement pour n'importe quel noeud depuis la page %signup_overview, ou depuis l'onglet 'inscriptions' sur chaque noeud."
+
+#: signup.module:203
+msgid "Signup overview"
+msgstr "Synthèse des inscriptions"
+
+#: signup.module:205
+msgid "The user signup form is fully themable -- form fields may be added or deleted. For more details see the instructions in signup.theme, where a sample user form is included."
+msgstr "Le formulaire d'inscription utilisateur est entièrement thèmable (des champs de formulaires peuvent être ajoutés ou supprimés). Pour plus de détails, voir les instructions dans le fichier signup.theme, où un exemple de formulaire utilisateur est inclus."
+
+#: signup.module:212
+msgid "This page allows you to send an email message to every user who signed up for this @node_type."
+msgstr "Cette page vous permet d'envoyer un message courriel à tous les utilisateurs s'étant inscrits pour ce(tte) @node_type."
+
+#: signup.module:228
+msgid "Configure settings for signups."
+msgstr "Configurer les options pour les inscriptions."
+
+#: signup.module:232
+#: signup.info:0
+msgid "Signup"
+msgstr "Inscription"
+
+#: signup.module:232;391
+msgid "Signup settings"
+msgstr "Configuration des Inscriptions"
+
+#: signup.module:237
+msgid "View all signup-enabled posts, and open or close signups on them."
+msgstr "Voir tous les posts pour lesquels l'inscription est autorisée, et ouvrir ou fermer les inscriptions pour ces contenus."
+
+#: signup.module:240
+msgid "Signup administration"
+msgstr "Administration des Inscriptions"
+
+#: signup.module:268;910;1218
+msgid "Sign up"
+msgstr "S'inscrire"
+
+#: signup.module:286;1014
+msgid "Signup broadcast"
+msgstr "Diffusion de l'Inscription"
+
+#: signup.module:356
+msgid "Signup options"
+msgstr "Options d'Inscription"
+
+#: signup.module:359;363
+msgid "Allowed (off by default)"
+msgstr "Autorisé (non par défaut)"
+
+#: signup.module:360;363
+msgid "Enabled (on by default)"
+msgstr "Activé (oui par défaut)"
+
+#: signup.module:363
+msgid "If %disabled is selected, signups will not be possible for this content type. If %allowed_off is selected, signups will be off by default, but users with the %admin_all_signups permission will be able to allow signups for specific posts of this content type. If %enabled_on is selected, users will be allowed to signup for this content type unless an administrator disbles signups on specific posts."
+msgstr "Si %disabled est sélectionnné, les inscriptions ne seront pas possibles pour ce type de contenu. Si %allowed_off est sélectionné, les inscriptions ne seront pas actives par défaut, mais les utilisateurs avec la permission %admin_all_signups pourront autoriser les inscriptions pour des posts spécifiques de ce type de contenu. Si  %enabled_on est sélectionné, les utilisateurs pourront s'inscrire à ce type de contenu, à moins que l'administrateur ne désactive les inscriptions sur des posts spécifiques."
+
+#: signup.module:363;326
+msgid "administer all signups"
+msgstr "administrer toutes les inscriptions"
+
+#: signup.module:403
+msgid "Disabled, but save existing signup information"
+msgstr "Désactivé, mais sauvegarder les données d'inscription existantes"
+
+#: signup.module:404
+msgid "Disabled, and remove all signup information"
+msgstr "Désactivé, et supprimer les données d'inscription existantes."
+
+#: signup.module:404
+msgid "This can not be undone, use with extreme caution!"
+msgstr "Cette action ne peut pas être annulée, utilisez avec une précaution extrême"
+
+#: signup.module:418
+msgid "If enabled, you can control whether users may sign up by visiting the !signups tab and toggling if signups are %open or %closed for this @node_type."
+msgstr "Si activé, vous pouvez choisir si les utilisateurs peuvent d'inscrire en visitant l'onglet !signups et basculer les inscriptions de %open à %closed pour ce(tte) @node_type."
+
+#: signup.module:418;1092
+msgid "open"
+msgstr "ouvert"
+
+#: signup.module:418;1095
+msgid "closed"
+msgstr "fermé"
+
+#: signup.module:428
+msgid "If disabled, all of the other signup settings will be ignored."
+msgstr "Si désactivé, toutes les autres options de configuration des inscriptions seront ignorées."
+
+#: signup.module:502
+msgid "User %username does not exist."
+msgstr "L'utilisateur %username n'existe pas;"
+
+#: signup.module:505
+msgid "User !user does not have permission to sign up."
+msgstr "L'utilisateur !user n'a pas la permission de s'inscrire."
+
+#: signup.module:509;1346
+msgid "User !user is already signed up for %title"
+msgstr "L'utilisateur !user s'est déjà inscrit à %title"
+
+#: signup.module:604
+msgid "Event start time is already past the signup close-in-advance time, signups now closed."
+msgstr "La date de début de l'événement est déjà supérieure à la date de fermeture programmée des incriptions, les inscriptions sont donc fermées maintenant."
+
+#: signup.module:707
+msgid "Signups closed for this event"
+msgstr "Les inscriptions sont fermées pour cet événement"
+
+#: signup.module:726
+msgid "login"
+msgstr "identifier"
+
+#: signup.module:727
+msgid "register"
+msgstr "enregistrer"
+
+#: signup.module:735
+msgid "Please !login or !register to sign up for this event."
+msgstr "Veuillez vous !login ou vous !register pour vous inscrire à cet événement."
+
+#: signup.module:765
+msgid "!users signed up"
+msgstr "!users se sont inscrits"
+
+#: signup.module:771
+msgid "!count anonymous"
+msgstr "!count anonymes"
+
+#: signup.module:807
+msgid "Your signup information"
+msgstr "Les données relatives à votre isncription"
+
+#: signup.module:856
+msgid "Sign up another user"
+msgstr "Inscrire un autre utilisateur"
+
+#: signup.module:859
+msgid "Sign up for @title"
+msgstr "S'inscrire à @title"
+
+#: signup.module:871
+msgid "Email"
+msgstr "Courriel"
+
+#: signup.module:872
+msgid "An e-mail address is required for users who are not registered at this site. If you are a registered user at this site, please !login to sign up for this event."
+msgstr "Une adresse courriel est obligatoire pour les utilisateurs non enregistrés sur ce site. Si vous êtes un utilisateur enregistré sur ce site, veuillez vous !login afin de vous inscrire à cet événement."
+
+#: signup.module:883
+msgid "Username"
+msgstr "Nom d'utilisateur"
+
+#: signup.module:923;1652
+msgid "Cancel signup"
+msgstr "Annuler l'inscription"
+
+#: signup.module:940
+msgid "All"
+msgstr "Tous"
+
+#: signup.module:949
+msgid "Filter by signup status"
+msgstr "Filtrer par le statut d'inscription"
+
+#: signup.module:953
+msgid "Filter"
+msgstr "Filtre"
+
+#: signup.module:971
+msgid "Title"
+msgstr "Titre"
+
+#: signup.module:973;1498
+msgid "Limit"
+msgstr "Limite"
+
+#: signup.module:974;1496
+msgid "Status"
+msgstr "État"
+
+#: signup.module:975;1440;1499
+msgid "Operations"
+msgstr "Opérations"
+
+#: signup.module:1011
+msgid "View signups"
+msgstr "Voir les inscriptions"
+
+#: signup.module:1014
+msgid "Send an email message to all users who signed up."
+msgstr "Envoyer un message courriel à tous les utilisateurs s'étant inscrits."
+
+#: signup.module:1025;1528
+msgid "Update"
+msgstr "Mise à jour"
+
+#: signup.module:1098
+msgid "enabled"
+msgstr "activé"
+
+#: signup.module:1101
+msgid "No content is currently !status for signups."
+msgstr "Aucun contenu n'es actuellement !status à l'inscription."
+
+#: signup.module:1151
+msgid "Signup to !title cancelled."
+msgstr "Inscription à !title annulée."
+
+#: signup.module:1167
+msgid "Signups closed for %title."
+msgstr "Les inscriptions à %title sont fermées."
+
+#: signup.module:1183
+msgid "Signups reopened for %title."
+msgstr "Les inscriptions à !title sont ré-ouvertes."
+
+#: signup.module:1192
+msgid "Close x hours before"
+msgstr "Fermer x heures avant"
+
+#: signup.module:1196
+msgid "The number of hours before the event which signups will no longer be allowed. Use negative numbers to close signups after the event start (example: -12)."
+msgstr "Le nombre d'heures avant l'événement à partir desquelles les inscriptions ne seront plus autorisées. Utilisez des nombre négatifs pour fermer les inscriptions après le début de l'événement (exemple : -12)."
+
+#: signup.module:1201
+msgid "Default signup information"
+msgstr "Information d'inscription par défaut"
+
+#: signup.module:1202
+msgid "New signup-enabled nodes will start with these settings."
+msgstr "Les noeuds qui viendront d'être autorisés à l'inscription commenceront avec cette configuration."
+
+#: signup.module:1209
+msgid "Advanced settings"
+msgstr "Configuration avancée"
+
+#: signup.module:1214
+msgid "Location of the signup form and related information"
+msgstr "Emplacement du formulaire d'inscription et des informations liées"
+
+#: signup.module:1217
+msgid "At the bottom of each node"
+msgstr "En bas de chaque noeud"
+
+#: signup.module:1218
+msgid "On a separate %sign_up tab"
+msgstr "Sur un onglet %sign_up séparé"
+
+#: signup.module:1221
+msgid ""
+"On every signup-enabled node, users with permission to\n"
+" sign up will be presented with a form. Additionally, users the %view_signups permission will see a list of all users who have signed up. This setting controls where this information should be displayed: either directly on the node itself, or on a separate tab."
+msgstr "Sur chaque noeud autorisé à l'inscription, les utilisateurs possédant la permission de s'inscrire verront un formulaire. De plus, les utilisateurs avec la permission %view_signups verront une liste de tous les utilisateurs s'étant inscrits. Cette option contrôle l'emplacement d'affichage de ces informations : soit directement sur le noeud, soit sur un onglet séparé."
+
+#: signup.module:1222;325
+msgid "view all signups"
+msgstr "voir toutes les inscriptions"
+
+#: signup.module:1225
+msgid "Default fieldset behavior for per-node signup form"
+msgstr "Comportement par défaut du groupe de champs pour le formulaire d'inscription par noeud."
+
+#: signup.module:1227
+msgid "Collapsed"
+msgstr "Replié"
+
+#: signup.module:1227
+msgid "Expanded"
+msgstr "Déplié"
+
+#: signup.module:1229
+msgid "If the signup form is included at the bottom of each node, the signup form will be encapsulated in a collapsible fieldset. This setting controls if that fieldset is expanded or collapsed by default."
+msgstr "Si le formulaire d'inscription est inclus en bas de chaque noeud, le formulaire d'inscription sera contenu dans un groupe de champs repliable. Ce paramètre contrôle si le groupe de champs est déplié ou replié par défaut."
+
+#: signup.module:1246
+msgid "Save configuration"
+msgstr "Enregistrer la configuration"
+
+#: signup.module:1335
+msgid "Anonymous user %email is already signed up for %title"
+msgstr "L'utilisateur anonyme %email est déjà inscrit à %title"
+
+#: signup.module:1364
+msgid "You will receive a confirmation email shortly which contains further event information."
+msgstr "Vous allez recevoir sous peu un courriel de confirmation qui contiendra plus de détails sur l'événement."
+
+#: signup.module:1365
+msgid "You will receive a reminder email !number !days before the event."
+msgstr "Vous recevrez un courriel de rappel !number !days avant l'événement."
+
+#: signup.module:1396
+msgid "Signup confirmation for event: !event"
+msgstr "Confirmation d'inscription à l'événement : !event"
+
+#: signup.module:1404
+msgid "New Event Signup"
+msgstr "Nouvelle Inscription à un Evénement"
+
+#: signup.module:1405
+msgid "Signup confirmation for event: !title"
+msgstr "Confirmation d'inscription à l'événement : !title"
+
+#: signup.module:1406
+msgid "The following information was submitted as a signup for !title"
+msgstr "Les informations suivantes ont été soumises en tant qu'inscription pour !title"
+
+#: signup.module:1407
+msgid "Date/Time: !time"
+msgstr "Date/Heure : !time"
+
+#: signup.module:1408
+msgid "Username:"
+msgstr "Nom d'utilisateur : "
+
+#: signup.module:1409
+msgid "Email:"
+msgstr "Courriel : "
+
+#: signup.module:1413
+msgid "Signup to !title confirmed."
+msgstr "Inscription à !title confirmée."
+
+#: signup.module:1433
+msgid "Signup summary"
+msgstr "Résumé de l'Inscription"
+
+#: signup.module:1436
+msgid "Signup details"
+msgstr "Détails de l'Inscription"
+
+#: signup.module:1438
+msgid "Name/Signup time"
+msgstr "Nom/Heure d'inscription"
+
+#: signup.module:1439
+msgid "Extra information"
+msgstr "Informations additionnelles"
+
+#: signup.module:1497
+msgid "Total"
+msgstr "Total"
+
+#: signup.module:1508
+msgid "Closed (limit reached)"
+msgstr "Fermé (limite atteinte)"
+
+#: signup.module:1552
+msgid "Signups opened for !title."
+msgstr "Les inscriptions à !title sont ouvertes"
+
+#: signup.module:1556
+msgid "Signups closed for !title."
+msgstr "Les inscriptions à !title sont fermées."
+
+#: signup.module:1589
+msgid "Signup limit reached for !title, signups closed."
+msgstr "Limite d'inscriptions atteinte pour !title, les inscriptions sont fermées."
+
+#: signup.module:1596
+msgid "Signup limit reached."
+msgstr "Limite d'inscriptions atteinte."
+
+#: signup.module:1604
+msgid "Signup limit increased for !title, signups re-opened."
+msgstr "Limite d'inscriptions augmentée pour !title, les inscriptions sont ré-ouvertes."
+
+#: signup.module:1607
+msgid "Total signups for !title now below limit, signups re-opened."
+msgstr "Le total d'inscriptions à !title est maintenant inférieur à la limite, les inscriptions sont ré-ouvertes."
+
+#: signup.module:1611
+msgid "Signup limit updated for !title."
+msgstr "Limite d'inscriptions mise à jour pour !title."
+
+#: signup.module:1619
+msgid "Signup limit removed for !title, signups now open."
+msgstr "Limite d'inscriptions supprimée pour !title, les inscriptions sont maintenant ouvertes."
+
+#: signup.module:1622
+msgid "Signup limit removed for !title."
+msgstr "Limite d'inscriptions supprimée pour !title"
+
+#: signup.module:1701
+msgid "Supported string substitutions: %event, %time, %username, %useremail, %info (user signup information)."
+msgstr "Substitutions de chaînes de caractères supportées : %event, %time, %username, %useremail, %info (information d'inscription de l'utilisateur)"
+
+#: signup.module:1717
+msgid "Send signups to"
+msgstr "Envoyer les inscriptions à"
+
+#: signup.module:1720
+msgid "Email address where notification of new signups will be sent. Leave blank for no notifications."
+msgstr "Adresse courriel à laquelle les notifications de nouvelles inscriptions seront envoyées. Laissez vide pour aucune notification."
+
+#: signup.module:1724
+msgid "Send confirmation"
+msgstr "Envoyer une confirmation"
+
+#: signup.module:1729
+msgid "Confirmation email"
+msgstr "Courriel de confirmation"
+
+#: signup.module:1732
+msgid "Email sent to user upon signup."
+msgstr "Courriel envoyé à l'utilisateur à l'inscription."
+
+#: signup.module:1742
+msgid "Send reminder"
+msgstr "Envoyer un rappel"
+
+#: signup.module:1753
+msgid "day(s) before event"
+msgstr "jour(s) avant l'événement"
+
+#: signup.module:1757
+msgid "Reminder email"
+msgstr "Courriel de rappel"
+
+#: signup.module:1760
+msgid "Email sent to user as an event reminder."
+msgstr "Courriel envoyé à l'utilisateur pour rappel de l'événement."
+
+#: signup.module:1764
+msgid "Signup limit"
+msgstr "Limite d'inscriptions"
+
+#: signup.module:1767
+msgid "Maximum number of users who can sign up before signups are automatically closed. If set to 0, there is no limit."
+msgstr "Le nombre maximum d'utilisateurs pouvant s'inscrire avant que les inscriptions ne soient automatiquement fermées. Si réglé à 0, il n'y a aucune limite."
+
+#: signup.module:1841
+msgid "No users have signup up for this @node_type."
+msgstr "Aucun utilisateur de n'est inscrit à ce(tte) @node_type."
+
+#: signup.module:1851
+msgid "Supported string substitutions: %tokens."
+msgstr "Substitutions de chaînes de caractères supportées : %tokens."
+
+#: signup.module:1855
+msgid "Subject"
+msgstr "Sujet"
+
+#: signup.module:1860
+msgid "Message body"
+msgstr "Corps du message"
+
+#: signup.module:1862
+msgid "Body of the email message you wish to send to all users who have signed up for this @node_type."
+msgstr "Corps du message de courriel que vous souhaitez envoyer à tous les utilisateurs s'étant inscits à ce(tte) @node_type."
+
+#: signup.module:1867
+msgid "Send"
+msgstr "Envoyer"
+
+#: signup.module:1878
+msgid "From"
+msgstr "De"
+
+#: signup.module:1886
+msgid "This message will be sent from: %from"
+msgstr "Ce message sera envoyé depuis : %from"
+
+#: signup.module:1933
+msgid "Broadcast email for %event sent to %email."
+msgstr "Courriel de diffusion pour %event envoyé à %email"
+
+#: signup.module:1936
+msgid "Message sent to all users who have signed up"
+msgstr "Message envoyé à tous les utilisateurs s'étant inscrits"
+
+#: signup.module:85;131;1167;1183;1933;0
+#: signup.theme:0
+msgid "signup"
+msgstr "inscription"
+
+#: signup.module:765
+msgid "1 individual"
+msgid_plural "@count individuals"
+msgstr[0] "1 personne"
+msgstr[1] "@count personnes"
+
+#: signup.module:1365
+msgid "day"
+msgid_plural "days"
+msgstr[0] "jour"
+msgstr[1] "jours"
+
+#: signup.module:323
+msgid "sign up for content"
+msgstr "s'inscrire à un contenu"
+
+#: signup.module:324
+msgid "cancel own signups"
+msgstr "annuler ses propres inscriptions"
+
+#: signup.module:327
+msgid "administer signups for own content"
+msgstr "administrer les inscriptions pour son propre contenu"
+
+#: signup.module:328
+msgid "email users signed up for own content"
+msgstr "envoyer un courriel à tous les utilisateurs inscrits à son propre contenu"
+
+#: signup.module:329
+msgid "email all signed up users"
+msgstr "envoyer un courriel à tous les utilisateurs inscrits"
+
+#: signup.theme:49
+msgid "Name"
+msgstr "Nom"
+
+#: signup.theme:55
+msgid "Phone"
+msgstr "Téléphone"
+
+#: signup.install:88
+msgid "Signup module installed successfully."
+msgstr "Le module Signup a été installé avec succès."
+
+#: signup.install:91
+msgid "Table installation for the Signup module was unsuccessful. The tables may need to be installed by hand. See the signup.install file for a list of the installation queries."
+msgstr "L'installation des tables pour le module Signup n'a pas fonctionné. Les tbales doivent peut-être être installées à la main. Voir le fichier signup.install pour une liste des requêtes d'instalation."
+
+#: signup.install:188
+msgid "The old %signup_user_view setting was enabled on your site, so the %view_all_signups permission has been added to the %authenticated_user role. Please consider customizing what roles have this permission on the !access_control page."
+msgstr "L'ancienne configuration %signup_user_view était activée sur votre site=, si bien que la permission %signup_user_view a été accordée au rôle %authenticated_user. Pensez à personnaliser les rôles qui ont cette permission sur la page !access_control."
+
+#: signup.install:188;196
+msgid "Users can view signups"
+msgstr "Les utilisateurs peuvent voir les inscriptions"
+
+#: signup.install:188
+msgid "Access control"
+msgstr "Contrôle d'accès"
+
+#: signup.install:196
+msgid "The %signup_user_view setting has been removed."
+msgstr "La configuration %signup_user_view a été supprimée."
+
+#: signup.install:264
+msgid "Added the 'cancel own signups' permission to all roles that have the 'sign up for content' permission."
+msgstr "La permission 'annuler ses propres inscriptions' a été accordée à tous les rôles possédant la permission 's'inscrire à un contenu'"
+
+#: signup.install:264
+msgid "If you do not want your users to cancel their own signups, go to the <a href=\"@access_url\">Access control</a> page and unset this permission."
+msgstr "Si vous nous souhaitez pas que les utilisateurs puissent annuler leurs propres inscriptions, allez à la page <a href=\"@access_url\">Contrôle d'accès</a> et désactivez cette permission."
+
+#: signup.install:282
+msgid "Migrated signup settings per content type."
+msgstr "La configuration des inscriptions par type de contenu a été migrée."
+
+#: signup.info:0
+msgid "Allow users to sign up for content (especially events)."
+msgstr "Permet aux utilisateurs de s'inscrire à un contenu donné (tout particulièrement les événements)."
+

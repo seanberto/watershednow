@@ -1,0 +1,401 @@
+<?php
+// $Id: filefield_sources.module,v 1.9 2010/08/09 04:11:54 quicksketch Exp $
+
+/**
+ * @file
+ * Extend FileField to allow files from multiple sources.
+ */
+
+/**
+ * Implementation of hook_menu().
+ */
+function filefield_sources_menu() {
+  $params = array();
+  return filefield_sources_invoke_all('menu', $params);
+}
+
+/**
+ * Implementation of hook_init().
+ */
+function filefield_sources_init() {
+  // Currently needed for IMCE to set a custom variable.
+  filefield_sources_includes();
+}
+
+/**
+ * Implementation of hook_elements().
+ */
+function filefield_sources_elements() {
+  $elements = array();
+
+  foreach (module_invoke_all('filefield_sources_widgets') as $widget) {
+    $elements[$widget]['#process'] = array('filefield_sources_process');
+    $elements[$widget]['#element_validate'] = array('filefield_sources_validate');
+    $elements[$widget]['#filefield_value_callback'] = array('filefield_sources_value');
+  }
+
+  return $elements;
+}
+
+/**
+ * Implementation of hook_theme().
+ */
+function filefield_sources_theme() {
+  $params = array();
+  $theme = filefield_sources_invoke_all('theme', $params);
+
+  $theme['filefield_sources_list'] = array(
+    'arguments' => array('sources' => NULL),
+  );
+
+  return $theme;
+}
+
+/**
+ * Implementation of hook_filefield_sources_widgets().
+ *
+ * This returns a list of widgets that are compatible with FileField Sources.
+ */
+function filefield_sources_filefield_sources_widgets() {
+  return array('filefield_widget', 'imagefield_widget');
+}
+
+/**
+ * Implementation of hook_widget_settings_alter().
+ */
+function filefield_sources_widget_settings_alter(&$settings, $op, $widget) {
+  // Only support modules that implement hook_insert_widgets().
+  $widget_type = isset($widget['widget_type']) ? $widget['widget_type'] : $widget['type'];
+  if (!in_array($widget_type, module_invoke_all('filefield_sources_widgets'))) {
+    return;
+  }
+
+  if ($op == 'form') {
+    $settings = array_merge($settings, filefield_sources_form($widget));
+  }
+
+  if ($op == 'save') {
+    $settings = array_merge($settings, filefield_sources_widget_settings($widget));
+  }
+}
+
+/**
+ * A list of settings needed by FileField Sources module on widgets.
+ */
+function filefield_sources_widget_settings($widget) {
+  $settings = array(
+    'filefield_sources',
+  );
+  $params = array('save', $widget);
+  $settings = array_merge($settings, filefield_sources_invoke_all('settings', $params));
+  return $settings;
+}
+
+/**
+ * Configuration form for editing FileField Sources settings for a widget.
+ */
+function filefield_sources_form($widget) {
+
+  $form['filefield_sources'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('File sources'),
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+    '#weight' => 15,
+  );
+
+  $sources = filefield_sources_list(FALSE);
+  $sources = array_intersect_key(array_merge((array) $widget['filefield_sources'], $sources), $sources);
+  $form['filefield_sources']['filefield_sources'] = array(
+    '#type' => 'checkboxes',
+    '#title' => t('Enabled sources'),
+    '#options' => $sources,
+    '#default_value' => (array) $widget['filefield_sources'],
+    '#description' => t('Select the available locations from which this widget may select files.'),
+  );
+
+  $params = array('form', $widget);
+  $form['filefield_sources'] = array_merge($form['filefield_sources'], filefield_sources_invoke_all('settings', $params));
+
+  return $form;
+}
+
+/**
+ * A #process callback to extend the filefield_widget element type.
+ *
+ * Add the central JavaScript and CSS files that allow switching between
+ * different sources. Third-party modules can also add to the list of sources
+ * by implementing hook_filefield_sources_info().
+ */
+function filefield_sources_process($element, $edit, &$form_state, $form) {
+  static $js_added;
+
+  // Do all processing as needed by each source.
+  $sources = filefield_sources_info();
+  $field = content_fields($element['#field_name'], $element['#type_name']);
+  $enabled_sources = (array) $field['widget']['filefield_sources'];
+  foreach ($sources as $source_name => $source) {
+    if (!$enabled_sources[$source_name]) {
+      unset($sources[$source_name]);
+    }
+    elseif (isset($source['process'])) {
+      $function = $source['process'];
+      $element = $function($element, $edit, $form_state, $form);
+    }
+  }
+
+  // Exit out if not adding any sources.
+  if (empty($sources)) {
+    return $element;
+  }
+
+  // Add basic JS and CSS.
+  $path = drupal_get_path('module', 'filefield_sources');
+  drupal_add_css($path .'/filefield_sources.css');
+  drupal_add_js($path .'/filefield_sources.js');
+
+  // Check the element for hint text that might need to be added.
+  foreach (element_children($element) as $key) {
+    if (isset($element[$key]['#filefield_sources_hint_text']) && !isset($js_added[$key])) {
+      $type = str_replace('filefield_', '', $key);
+      drupal_add_js(array('fileFieldSources' => array($type => array('hintText' => $element[$key]['#filefield_sources_hint_text']))), 'setting');
+      $js_added[$key] = TRUE;
+    }
+  }
+
+  // Add the list of sources to the element for toggling between sources.
+  if (empty($element['fid']['#value'])) {
+    $element['filefield_sources_list'] = array(
+      '#type' => 'markup',
+      '#value' => theme('filefield_sources_list', $element, $sources),
+      '#weight' => -1,
+    );
+  }
+
+  return $element;
+}
+
+/**
+ * An #element_validate function to run source validations.
+ */
+function filefield_sources_validate($element, &$form_state, $form) {
+  // Do all processing as needed by each source.
+  $sources = filefield_sources_info();
+  foreach ($sources as $source) {
+    if (isset($source['validate'])) {
+      $function = $source['validate'];
+      $function($element, $form_state, $form);
+    }
+  }
+}
+
+/**
+ * A #filefield_value_callback to run source value callbacks.
+ */
+function filefield_sources_value($element, &$item) {
+  // Do all processing as needed by each source.
+  $sources = filefield_sources_info();
+  foreach ($sources as $source) {
+    if (isset($source['value'])) {
+      $function = $source['value'];
+      $function($element, $item);
+    }
+  }
+}
+
+/**
+ * Call all FileField Source hooks stored in the available include files.
+ */
+function filefield_sources_invoke_all($method, &$params) {
+  $return = array();
+  foreach (filefield_sources_includes() as $source) {
+    $function = 'filefield_source_' . $source . '_' . $method;
+    if (function_exists($function)) {
+      $result = call_user_func_array($function, $params);
+      if (isset($result) && is_array($result)) {
+        $return = array_merge_recursive($return, $result);
+      }
+      else if (isset($result)) {
+        $return[] = $result;
+      }
+    }
+  }
+  return $return;
+}
+
+/**
+ * Load hook_filefield_sources_info() data from all modules.
+ */
+function filefield_sources_info() {
+  $info = module_invoke_all('filefield_sources_info');
+  drupal_alter('filefield_sources_info', $info);
+  uasort($info, '_filefield_sources_sort');
+  return $info;
+}
+
+/**
+ * Create a list of FileField Sources by name, suitable for a select list.
+ */
+function filefield_sources_list($include_default = TRUE) {
+  $info = filefield_sources_info();
+  $list = array();
+
+  if ($include_default) {
+    $list['upload'] = t('Upload');
+  }
+
+  foreach ($info as $key => $source) {
+    $list[$key] = $source['name'];
+  }
+
+  return $list;
+}
+
+/**
+ * Implementation of hook_filefield_sources_info().
+ */
+function filefield_sources_filefield_sources_info() {
+  $params = array();
+  return filefield_sources_invoke_all('info', $params);
+}
+
+/**
+ * Load all the potential sources.
+ */
+function filefield_sources_includes($include = TRUE, $enabled_only = TRUE) {
+  if ($enabled_only) {
+    $enabled_includes = variable_get('filefield_sources', filefield_sources_includes(FALSE, FALSE));
+  }
+
+  $includes = array();
+  $directory = drupal_get_path('module', 'filefield_sources') . '/sources';
+  foreach (file_scan_directory($directory, '.inc$') as $file) {
+    if (!$enabled_only || in_array($file->name, $enabled_includes)) {
+      $includes[] = $file->name;
+      if ($include) {
+        include_once($file->filename);
+      }
+    }
+  }
+  return $includes;
+}
+
+/**
+ * Clean up the file name, munging extensions and transliterating.
+ *
+ * @param $filepath
+ *   A string containing a file name or full path. Only the file name will
+ *   actually be modified.
+ * @return
+ *   A file path with a cleaned-up file name.
+ */
+function filefield_sources_clean_filename($filepath) {
+  global $user;
+
+  $filename = basename($filepath);
+
+  if (module_exists('transliteration')) {
+    module_load_include('inc', 'transliteration');
+
+    $langcode = NULL;
+    if (!empty($_POST['language'])) {
+      $languages = language_list();
+      $langcode = isset($languages[$_POST['language']]) ? $_POST['language'] : NULL;
+    }
+    $filename = transliteration_clean_filename($filename, $langcode);
+  }
+
+  // Because this transfer mechanism does not use file_save_upload(), we need
+  // to manually munge the filename to prevent dangerous extensions.
+  // See file_save_upload().
+  $extensions = '';
+  foreach ($user->roles as $rid => $name) {
+    $extensions .= ' '. variable_get("upload_extensions_$rid",
+    variable_get('upload_extensions_default', 'jpg jpeg gif png txt html doc xls pdf ppt pps odt ods odp'));
+  }
+  $filename = file_munge_filename($filename, $extensions);
+
+  $directory = dirname($filepath);
+  return ($directory ? $directory . '/' : $directory) . $filename;
+}
+
+/**
+ * Theme the display of the sources list.
+ */
+function theme_filefield_sources_list($element, $sources) {
+  $links = array();
+
+  // Add the default "Upload" since it's not in our list.
+  $default['upload'] = array(
+    'label' => t('Upload'),
+    'description' => t('Upload a file from your computer.'),
+  );
+  $sources = array_merge($default, $sources);
+
+  foreach ($sources as $name => $source) {
+    $links[] = '<a href="#" onclick="return false;" title="' . $source['description'] . '" id="' . $element['#id'] . '-' . $name . '-source" class="filefield-source filefield-source-' . $name . '">' . $source['label'] . '</a>';
+  }
+  return '<div class="filefield-sources-list">' . implode(' | ', $links) . '</div>';
+}
+
+/**
+ * Validate a file based on the $element['#upload_validators'] property.
+ */
+function filefield_sources_element_validate($element, $file) {
+  $validators = $element['#upload_validators'];
+  $errors = array();
+
+  // Since this frequently is used to reference existing files, check that
+  // they exist first in addition to the normal validations.
+  if (!file_exists($file->filepath)) {
+    $errors[] = t('The file does not exist.');
+  }
+  // Call the validation functions.
+  else {
+    foreach ($validators as $function => $args) {
+      // Add the $file variable to the list of arguments and pass it by
+      // reference (required for PHP 5.3 and higher).
+      array_unshift($args, NULL);
+      $args[0] = &$file;
+      $errors = array_merge($errors, call_user_func_array($function, $args));
+    }
+  }
+
+  // Check for validation errors.
+  if (!empty($errors)) {
+    $message = t('The selected file %name could not be referenced.', array('%name' => $file->filename));
+    if (count($errors) > 1) {
+      $message .= '<ul><li>'. implode('</li><li>', $errors) .'</li></ul>';
+    }
+    else {
+      $message .= ' '. array_pop($errors);
+    }
+    form_error($element, $message);
+    return 0;
+  }
+
+  return 1;
+}
+
+/**
+ * Generate help text based on the $element['#upload_validators'] property.
+ */
+function filefield_sources_element_validation_help($validators) {
+  $desc = array();
+  foreach ($validators as $callback => $arguments) {
+    $help_func = $callback .'_help';
+    if (function_exists($help_func)) {
+      $desc[] = call_user_func_array($help_func, $arguments);
+    }
+  }
+  return empty($desc) ? '' : implode('<br />', $desc);
+}
+
+/**
+ * Custom sort function for ordering sources.
+ */
+function _filefield_sources_sort($a, $b) {
+  $a = (array)$a + array('weight' => 0, 'label' => '');
+  $b = (array)$b + array('weight' => 0, 'label' => '');
+  return $a['weight'] < $b['weight'] ? -1 : ($a['weight'] > $b['weight'] ? 1 : strnatcasecmp($a['label'], $b['label']));
+}

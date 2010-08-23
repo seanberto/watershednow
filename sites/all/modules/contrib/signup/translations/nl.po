@@ -1,0 +1,1344 @@
+# $Id: nl.po,v 1.1.2.1 2009/03/18 16:42:55 dww Exp $
+#
+# LANGUAGE translation of Drupal (general)
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+# Generated from files:
+#  signup.module,v 1.205.2.6 2008/12/20 06:31:27 dww
+#  date.inc,v 1.16.2.2 2008/12/19 01:00:35 dww
+#  node_form.inc,v 1.4 2008/12/14 07:36:43 dww
+#  signup_handler_field_signup_send_confirmation.inc,v 1.1 2008/11/12 01:00:58 dww
+#  signup_handler_filter_signup_disabled.inc,v 1.4.2.2 2008/12/19 01:00:36 dww
+#  no_views.inc,v 1.15 2008/11/14 04:14:04 dww
+#  broadcast.inc,v 1.1.2.1 2008/12/20 04:28:56 dww
+#  cron.inc,v 1.1.2.1 2008/12/20 04:28:56 dww
+#  signup_form.inc,v 1.1.2.1 2008/12/20 06:31:27 dww
+#  signup_handler_filter_signup_user_authenticated.inc,v 1.3.2.2 2008/12/19 01:00:36 dww
+#  node_settings.inc,v 1.1.2.1 2008/12/20 04:28:56 dww
+#  admin.settings.inc,v 1.2.2.1 2008/12/20 06:31:27 dww
+#  signup.install,v 1.24.2.2 2008/12/19 01:00:35 dww
+#  signup.info,v 1.5 2008/11/06 10:20:48 dww
+#  signup.views.inc,v 1.4.2.3 2008/12/20 08:44:02 dww
+#  admin.signup_administration.inc,v 1.1 2008/11/15 02:03:50 dww
+#  node_admin_summary.inc,v 1.1 2008/11/15 02:03:50 dww
+#  signup_handler_field_signup_status.inc,v 1.1 2008/11/12 01:00:58 dww
+#  signup_handler_filter_signup_status.inc,v 1.2.2.2 2008/12/19 01:00:36 dww
+#  node.admin.inc,v 1.4.2.2 2008/12/20 06:31:27 dww
+#  node_admin.inc,v 1.1.2.3 2008/12/20 06:31:27 dww
+#  token_help.inc,v 1.1 2008/11/15 02:03:50 dww
+#  event.6x-2.inc,v 1.2 2008/11/25 17:54:05 dww
+#  scheduler.inc,v 1.4 2008/11/06 10:20:48 dww
+#  signup_form.inc,v 1.3 2008/11/19 18:35:11 dww
+#  signup_cancel.inc,v 1.1.2.2 2008/12/20 04:28:56 dww
+#  signup_cancel_form.inc,v 1.1.2.1 2008/12/19 01:00:35 dww
+#  admin.inc,v 1.1 2008/11/12 23:22:19 dww
+#  node_output.inc,v 1.1.2.2 2008/12/20 06:31:27 dww
+#  signup_form.inc,v 1.4 2008/11/15 02:03:50 dww
+#  email.inc,v 1.1 2008/11/12 23:22:19 dww
+#  no_views.inc,v 1.2 2008/11/19 18:30:07 dww
+#  signup_handler_filter_signup_user_attended.inc,v 1.2.2.2 2008/12/19 01:00:36 dww
+#  node.inc,v 1.1 2008/11/12 23:22:19 dww
+#  signup_plugin_argument_validate_signup_status.inc,v 1.1 2008/11/12 01:00:58 dww
+#  signup_handler_field_signup_node_link.inc,v 1.1 2008/12/20 08:43:28 dww
+#  signup_handler_field_signup_user_form_data.inc,v 1.1 2008/11/12 01:00:58 dww
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Signup 6.x-1.0-rc3\n"
+"POT-Creation-Date: 2008-12-20 00:45-0800\n"
+"PO-Revision-Date: 2009-03-18 16:52+0100\n"
+"Last-Translator: Joost van der Locht <joost@trisum.nl>\n"
+"Language-Team: Dutch translation <joost@trisum.nl>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Poedit-Language: Dutch\n"
+"X-Poedit-Country: NETHERLANDS\n"
+
+#: signup.module:280
+msgid "Signup allows users to sign up (in other words, register) for content of any type. The most common use is for events, where users indicate they are planning to attend. This module includes options for sending a notification email to a selected email address upon a new user signup (good for notifying event coordinators, etc.) and a confirmation email to users who sign up. Each of these options are controlled per node. When used on event nodes (with <a href=\"@event_url\">event.module</a> installed) or nodes that have a date field (with <a href=\"@date_url\">date.module</a>) and regular cron runs, it can also send out reminder emails to all signups a configurable number of days before the start of the event (also controlled per node) and to automatically close signups 1 hour before their start (general setting). Settings exist for resticting signups to selected roles and content types."
+msgstr "Inschrijvingen stelt gebruikers in staat om in te schrijven (in andere worden: te registreren) voor ieder type content. De meest gebruikte vorm is voor evenementen waar gebruikers kunnen aangeven dat ze van plan zijn om aanwezig te zijn. Deze module heeft de optie om berichtgevingse-mailberichten te sturen aan geslecteerde e-mailadressen wanner een nieuwe gebruiker inschrijft (voor het berichten van evenementcoördinatoren, etc.) en een bevestigingse-mail aan de gebruiker die heeft ingeschreven. Elk van deze opties is per node te beheren. Als deze module wordt gebruikt op de evenementen nodes (met de <a href=\"@event_url\">event.module</a> geïnstalleerd) of nodes met een datumveld (met <a href=\"@date_url\">date.module</a>) en crons draait, dan kunnen herinnerings e-mails worden verzonden aan alle ingeschreven gebruikers. Dit is instelbaar in het aantal dagen voor de start van een evenement (beheerd per node) en om automatisch inschrijvingen te sluiten 1 uur voor de start (generieke instellin). Instellingen zijn aanwezig om inschrijvingen te beperken voor geselecteerde rollen en content types."
+
+#: signup.module:282
+msgid "To use signup, you must enable which content types should allow signups in administer->settings->content types, and you must also grant the %sign_up_for_content permission to any user role that should be able to sign up in administer->access control. Each signup-enabled node will now have a place for users to sign up."
+msgstr "Om inschrijven te kunnen gebruiken moet u aangeven welke content types inschrijven toestaan in administer->settings->content types. U moet ook het %sign_up_for_content recht toekennen aan iedere gebruikersrol dat in staat moet zijn om in te schrijven in administer->access control. Elke node met inschrijvingsoptie zal n u een plek voor gebruikers hebben om in te schrijven."
+
+#: signup.module:284
+msgid "There are two ways for a user to have administrative access to the signup information about a given node: either the user has the %administer_signups_for_own_content permission and they are viewing a node they created, or the user has the global %administer_all_signups permission. Administrative access allows a user to view all the users who have signed up for the node, along with whatever information they included when they signed up.  Signup administrators can also cancel other user's signups for the node, and can close signups on the node entirely (meaning no one else is allowed to sign up)."
+msgstr "Er zijn twee manieren voor een gebruiker om beheerderstoegang tot inschrijvingsinformatie van een gegeven node te hebben: De gebruiker heeft het %administer_signups_for_own_content recht en ze bekijken de node die ze hebben gemaakt. Of de gebruiker heeft het  globale  %administer_all_signups recht. Beheerderstoegang stelt een gebruiker in staat om alle gebruikers die ingeschreven zijn voor een node te bekijken samen met de alle informatie die is toegevoegd op het moment van inschrijven. Inschrijvingsbeheerders kunnen ook inschrijvingen van andere gebruikers annuleren voor de node en kunnen inschrijvingen voor een node volledig sluiten (wat betekent dat niemand meer mag inschrijven)."
+
+#: signup.module:286
+msgid "Default settings for notification email address, reminder emails and confirmation emails are located in administer->settings->signup. These will be the default values used for a signup node unless otherwise specified (to configure these options per node, visit 'edit' for that node and make the adjustments in the 'Sign up settings' section)."
+msgstr "Standaard instellingen voor berichtgevingsemailadres, herinneringse-mails  en bevestigingse-mails zijn te vinden in administer->settings->signup. Dit zijn dan de standaard waardies die gebruikt worden in een inschrijvings node tenzij anders ingesteld (om deze opties per node in te stellen, bezoek de 'bewerk' voor deze node en maak de wijzigingen in de 'Inschrijvingen instellingen sectie)."
+
+#: signup.module:288
+msgid "Signups can be manually closed for any node at the %signup_overview page, or on the 'signups' tab on each node."
+msgstr "Inschrijvingen kunnen handmatig worden gesloten voor iedere node op de %signup_overview pagina of op de 'inschrijvingen' tab op iedere node."
+
+#: signup.module:288
+msgid "Signup overview"
+msgstr "Inschrijving overzicht"
+
+#: signup.module:290
+msgid "The user signup form is fully themable -- form fields may be added or deleted. For more details see the instructions in signup.theme, where a sample user form is included."
+msgstr "Het inschrijfformulier is volledige themable -- formuliervelden kunnen worden toegevoegd of verwijderd. Voor meer details bekijk de instructies in signup.theme. Een voorbeeld formulier is bijgevoegd."
+
+#: signup.module:298
+msgid "This page allows you to send an email message to every user who signed up for this %node_type."
+msgstr "Deze pagaina stelt u in staat om een e-mailbericht te sturen aan iedere gebruiker die is ingeschreven voor deze %node_type."
+
+#: signup.module:301
+msgid "This page allows you to sign up another user for this %node_type."
+msgstr "Deze pagina stelt u in staat om een andere gebruiker in te schrijven voor deze %node_type."
+
+#: signup.module:637
+#: includes/date.inc:106
+#: includes/node_form.inc:167
+msgid "Signup settings"
+msgstr "Inschrijving instellingen"
+
+#: signup.module:643
+msgid "Signup options"
+msgstr "Inschrijving opties"
+
+#: signup.module:645;650
+#: includes/node_form.inc:183
+#: views/handlers/signup_handler_field_signup_send_confirmation.inc:9
+#: views/handlers/signup_handler_filter_signup_disabled.inc:9
+msgid "Disabled"
+msgstr "Uitgeschakeld"
+
+#: signup.module:646;650
+msgid "Allowed (off by default)"
+msgstr "Toegestaan (standaard uitgeschakeld)"
+
+#: signup.module:647;650
+msgid "Enabled (on by default)"
+msgstr "Geactiveerd (standaard ingeschakeld)"
+
+#: signup.module:650
+msgid "If %disabled is selected, signups will not be possible for this content type. If %allowed_off is selected, signups will be off by default, but users with the %admin_all_signups permission will be able to allow signups for specific posts of this content type. If %enabled_on is selected, users will be allowed to signup for this content type unless an administrator disbles signups on specific posts."
+msgstr "Als %disabled is geselecteerd dan zijn inschrijvingen voor dit content type niet mogelijk. If %allowed_off is geselecteerd dan zijn schrijvingen standaard niet geactiveerd. Een gebruiker met de %admin_all_signups rechten kan inschrijvingen activeren voor specifieke postings van dit content type. Als %enabled_on is geselcteerd kunnen gebruikers zich inschrijven voor dit content type tenzij een beheerder inschrijvingen uitschakeld voor specifieke postings."
+
+#: signup.module:650;569
+msgid "administer all signups"
+msgstr "beheer alle inschrijvingen"
+
+#: signup.module:765
+#: includes/no_views.inc:66
+msgid "Signup information"
+msgstr "Inschrijving informatie"
+
+#: signup.module:766
+msgid "Signup form and other information."
+msgstr "Inschrijvingsformulier en andere informatie."
+
+#: signup.module:797
+msgid "Signup to !title cancelled."
+msgstr "Inschrijving voor !title geannuleerd."
+
+#: signup.module:831;847
+#: includes/broadcast.inc:134;152
+#: includes/cron.inc:69;123
+msgid "view"
+msgstr "toon"
+
+#: signup.module:897
+msgid "Anonymous user %email is already signed up for %title"
+msgstr "Anonieme gebruiker %email is reeds ingeschreven voor %title"
+
+#: signup.module:908
+#: includes/signup_form.inc:191
+msgid "User !user is already signed up for %title"
+msgstr "Gebruiker !user is al ingeschreven voor %title"
+
+#: signup.module:933
+msgid "You will receive a confirmation email shortly which contains further information about this %node_type."
+msgstr "U ontvangt zometeen een bevestigingse-mail met daarin meer informatie over %node_type."
+
+#: signup.module:934
+msgid "You will receive a reminder email !number !days before the %node_type."
+msgstr "U ontvangt een herinneringse-mail !number !days voor het %node_type."
+
+#: signup.module:957;990
+msgid "Signup confirmation for !node_type: !title"
+msgstr "Inschrijvingsbevestiging voor !node_type: !title"
+
+#: signup.module:972
+msgid "The following information was submitted as a signup for !title"
+msgstr "De volgende informatie is ingevoerd als een inschrijving voor !title"
+
+#: signup.module:974
+msgid "Date/Time: !time"
+msgstr "Datum/Tijd: !time"
+
+#: signup.module:977
+msgid "Username: !name"
+msgstr "Gebruikersnaam: !name"
+
+#: signup.module:977
+#: views/handlers/signup_handler_filter_signup_user_authenticated.inc:9
+msgid "Anonymous"
+msgstr "Anoniem"
+
+#: signup.module:980
+msgid "Profile page: !url"
+msgstr "Profiel pagina: !url"
+
+#: signup.module:984
+msgid "E-mail: !email"
+msgstr "E-mail: !email"
+
+#: signup.module:994
+msgid "New !node_type Signup"
+msgstr "Nieuwe !node_type Inschrijving"
+
+#: signup.module:1003
+msgid "Signup to !title confirmed."
+msgstr "Inschrijven voor !title bevestigd."
+
+#: signup.module:1043
+msgid "Signup limit reached for !title, signups closed."
+msgstr "Maximale inschrijvingen bereikt voor !title. Inschrijven gesloten."
+
+#: signup.module:1050
+msgid "Signup limit reached."
+msgstr "Maximale inschrijvingen bereikt."
+
+#: signup.module:1058
+msgid "Signup limit increased for !title, signups re-opened."
+msgstr "Maximale inschrijvingen voor !title verhoogd. Inschrijven geopend."
+
+#: signup.module:1061
+msgid "Total signups for !title now below limit, signups re-opened."
+msgstr "Totaal aantal inschrijvingen voor !title is nu onder het maximum. Inschrijvingen heropend."
+
+#: signup.module:1065
+msgid "Signup limit updated for !title."
+msgstr "Maximum inschrijven aangepast voor !title."
+
+#: signup.module:1073
+msgid "Signup limit removed for !title, signups now open."
+msgstr "Maximum inschrijvingen verwijderd voor !title. Inschrijven geopend."
+
+#: signup.module:1076
+msgid "Signup limit removed for !title."
+msgstr "Maximum inschrijvingen verwijderd voor !title."
+
+#: signup.module:831;847;0
+#: includes/broadcast.inc:134;152
+#: includes/cron.inc:69;123
+msgid "signup"
+msgstr "inschrijven"
+
+#: signup.module:934
+msgid "day"
+msgid_plural "days"
+msgstr[0] "dag"
+msgstr[1] "dagen"
+
+#: signup.module:565
+msgid "sign up for content"
+msgstr "inschrijven voor content"
+
+#: signup.module:566
+msgid "cancel signups"
+msgstr "annuleer inschrijvingen"
+
+#: signup.module:567
+#: includes/node_settings.inc:31;34
+msgid "cancel own signups"
+msgstr "annuleer eigen inschrijvingen"
+
+#: signup.module:568
+#: includes/admin.settings.inc:105
+msgid "view all signups"
+msgstr "bekijk alle inschrijvingen"
+
+#: signup.module:570
+msgid "administer signups for own content"
+msgstr "beheer inschrijvingen van eigen content"
+
+#: signup.module:571
+msgid "email users signed up for own content"
+msgstr "e-mail gebruikers ingeschreven op eigen content"
+
+#: signup.module:572
+msgid "email all signed up users"
+msgstr "e-mail alle ingeschreven gebruikers"
+
+#: signup.install:10
+msgid "Signup module per-node settings."
+msgstr "Signup module per-node instellingen."
+
+#: signup.install:13
+msgid "Primary key: node ID"
+msgstr "Primaire sleutel: node ID"
+
+#: signup.install:20
+msgid "Email address to send signup notifications to."
+msgstr "E-mailadres voor berichtgeving van inschrijving."
+
+#: signup.install:27
+msgid "Boolean indicating whether confirmation emails should be sent."
+msgstr "Boolean om aan te geven of een bevestigingsbericht verstuurd moet worden."
+
+#: signup.install:33
+msgid "Email template to send to users when they signup."
+msgstr "E-mail template om te versuten aan gebruikers als zij inschrijven."
+
+#: signup.install:39
+msgid "Boolean indicating whether reminder emails should be sent. This is set to 0 once the reminders are sent."
+msgstr "Boolean die aangeeft of herinneringse-mails moeten worden verstuurd. Deze waarde wordt op 0 gezet als de herinneringen zijn verstuurd."
+
+#: signup.install:45
+msgid "Number of days before the start of a time-based node when the reminder emails should be sent."
+msgstr "Aantal dagen voor de start van een tijdgebaseerde node wanneer de herinneringse-mail verstuurd moet worden."
+
+#: signup.install:52
+msgid "Email template to send to users to remind them about a signup."
+msgstr "E-mailtemplate om aan gebruikers te versturen om ze te herinneren aan een inschrijving."
+
+#: signup.install:58
+msgid "Number of hours before the start of a time-based node when signups should automatically be closed. This column is not currently used and the behavior is controlled by a site-wide setting.  See http://drupal.org/node/290249 for more information."
+msgstr "Aantal uren voor de start van een tijdgebaseerde node wanneer inschrijvingen automatisch gesloten moeten worden. Deze kolom is op dit moment niet gebruikt en dit gedrag wordt beheerd door de website instelling. Zie http://drupal.org/node/290249 voor meer informatie."
+
+#: signup.install:65
+msgid "Maximum number of users who can signup before signups are closed. If set to 0, there is no limit."
+msgstr "Maximum aantal gebruikers dat kan inschrijven voordat inschrijvingen gesloten wordt. Als deze op 0 staat dan is er geen maximum"
+
+#: signup.install:72
+msgid "Boolean indicating if signups are open (1) or closed (0) for the given node"
+msgstr "Boolean die aangeeft of inschrijven open (1) of gesloten (0) zijn voor de aangegeven node"
+
+#: signup.install:82
+msgid "Records information for each user who signs up for a node."
+msgstr "Slaat informatie op van iedere gebruiker die heeft ingeschreven voor een node."
+
+#: signup.install:85
+msgid "Primary key: signup ID"
+msgstr "Primaire sleutel: signup ID"
+
+#: signup.install:92
+msgid "Key: the user ID of the user who signed up."
+msgstr "Sleutel: de user ID van de gebruiker die zich heeft ingeschreven."
+
+#: signup.install:99
+msgid "Key: the node ID of the node the user signed up for."
+msgstr "Sleutel: de node ID van de gebruiker die zich heeft ingeschreven. "
+
+#: signup.install:106
+msgid "The email address for an anonymous user who signed up, or an empty string for authenticated users."
+msgstr "Het e-mailadres van een anonieme gebruiker die zich heeft ingeschreven, of leeg voor geverifieerde gebruikers "
+
+#: signup.install:113
+msgid "Integer timestamp of when the user signed up for the node."
+msgstr "Integer tijdswaarde van de tijd wanneer een gebruiker heeft ingeschreven voor de node."
+
+#: signup.install:120
+msgid "Serialized string of additional signup form values.  See theme_signup_user_form() from theme/signup.theme for more information."
+msgstr "Seriële string met extra inschrijvingsformulier waarden. Zie theme_signup_user_form() van theme/signup.theme voor meer informatie."
+
+#: signup.install:126
+msgid "Did this user actually attend the node they signed up for?"
+msgstr "Is de gebruiker ook echt aanwezig geweest waarvoor deze zich heeft ingeschreven?"
+
+#: signup.install:250
+msgid "The old %signup_user_view setting was enabled on your site, so the %view_all_signups permission has been added to the %authenticated_user role. Please consider customizing what roles have this permission on the !access_control page."
+msgstr "De oude %signup_user_view instelling was geactiveerd op uw website daarom is het %view_all_signups recht toegevoegd aan de  %authenticated_user rol. Overweeg om verder aan te passen welke rollen dit recht moeten hebben op de !access_control pagina."
+
+#: signup.install:250;258
+msgid "Users can view signups"
+msgstr "Gebruikers kunnen inschrijvingen bekijken"
+
+#: signup.install:250
+msgid "Access control"
+msgstr "Toegangscontrole"
+
+#: signup.install:258
+msgid "The %signup_user_view setting has been removed."
+msgstr "De %signup_server_view instelling is verwijderd."
+
+#: signup.install:327
+msgid "Added the 'cancel own signups' permission to all roles that have the 'sign up for content' permission."
+msgstr "De rechten 'annuleer eigen inschrijvingen' is toegevoegd aan alle rollen die het recht 'inschrijven voor content' hebben."
+
+#: signup.install:327
+msgid "If you do not want your users to cancel their own signups, go to the <a href=\"@access_url\">Access control</a> page and unset this permission."
+msgstr "Als u wilt voorkomen dat gebruikers hun inschrijvingen annuleren, ga dan naar de <a href=\"@access_url\">Rechten</a> pagina en verwider dit recht."
+
+#: signup.install:345
+msgid "Migrated signup settings per content type."
+msgstr "Inschrijvingsinstellingen gemigreerd per content type."
+
+#: signup.install:415
+msgid "Replaced %event, %eventurl, %time, %username, %useremail, and %info tokens with %node_title, %node_url, %node_start_time, %user_name, %user_mail, and %user_signup_info in the reminder and confirmation email templates."
+msgstr "Vervang %event, %eventurl, %time, %username, %useremail en %info tokens door %node_title, %node_url, %node_start_time, %user_name, %user_mail en %user_signup_info in de herinnerings- en bevestigingse-mail templates"
+
+#: signup.install:433
+msgid "Removed the deprecated %old_view_name and %old_view_type variables. If you were using embedding a view on signup-enabled nodes, please visit the <a href=\"@signup_settings_url\">Signup configuration page</a> and select a new value for the %setting_name setting (which is located under the Advanced settings)."
+msgstr "Verwijder de niet meer in gebruik zijnde  %old_view_name en %old_view_type variabelen. Als u gebruik maakt van het inbedden van een view op een node met inschrijvingsopties geactiveerd, bezoek de <a href=\"@signup_settings_url\">Inschrijving instellingen pagina</a> en selecteer de nieuwe waarde voor de %setting_name instellinge. (onder de Geavanceerde instellingen)."
+
+#: signup.install:438
+#: includes/admin.settings.inc:130
+msgid "View to embed for the signup user list"
+msgstr "View om in te bedden op de gebruikers inschrijvingslijst"
+
+#: signup.info:0
+#: views/signup.views.inc:19;151
+msgid "Signup"
+msgstr "Inschrijven"
+
+#: signup.info:0
+msgid "Allow users to sign up for content (especially events)."
+msgstr "Laat gebruikers inschrijven voor content (in het bijzonder evenementen)."
+
+#: signup.info:0
+msgid "6.x"
+msgstr "6.x"
+
+#: includes/admin.settings.inc:17
+msgid "Close x hours before"
+msgstr "Sluit x uren van te voren"
+
+#: includes/admin.settings.inc:21
+msgid "The number of hours before the event which signups will no longer be allowed. Use negative numbers to close signups after the event start (example: -12)."
+msgstr "Het aantal uren voordat inschrijvingen voor een evenement niet meer zijn toegestaan. Gebruik negatieve getallen om inschrijvingen te sluiten na het begin van een evenement (bijvoorbeeld: -12)."
+
+#: includes/admin.settings.inc:26
+msgid "Default signup information"
+msgstr "Standaard inschrijvingsinformatie"
+
+#: includes/admin.settings.inc:27
+msgid "New signup-enabled nodes will start with these settings."
+msgstr "Nieuwe nodes met inschrijving geactiverd zullen deze instellingen gebruiken."
+
+#: includes/admin.settings.inc:34
+msgid "Advanced settings"
+msgstr "Geavanceerde instellingen"
+
+#: includes/admin.settings.inc:39
+msgid "Format string for displaying signup-related dates"
+msgstr "Formaat string voor het tonen van inschrijvingsgerelateerde data."
+
+#: includes/admin.settings.inc:42
+msgid "Small"
+msgstr "Klein"
+
+#: includes/admin.settings.inc:43
+msgid "Medium"
+msgstr "Middel"
+
+#: includes/admin.settings.inc:44
+msgid "Large"
+msgstr "Groot"
+
+#: includes/admin.settings.inc:47
+msgid "Whenever this module needs to print a date (both in the administrative interface, and in the various e-mail messages it can send), this setting controls which date format string to use. The format strings are defined at the <a href=\"!settings_url\">Date and time settings page</a>."
+msgstr "Als deze module een datum moet tonen (in de beheersinterface en in diverse e-mailberichten die verstuurd kunnen worden) beheerd deze instelling het datumformaat dat gebruikt moet worden. De formaatstrings zijn gedefinieerd op de <a href=\"!settings_url\">Datum en tijd instellingen pagina</a>."
+
+#: includes/admin.settings.inc:50
+msgid "Location of the signup form"
+msgstr "Lokatie van het inschrijvingsformulier"
+
+#: includes/admin.settings.inc:53
+msgid "At the bottom of each node"
+msgstr "Aan de onderzijde van elke node"
+
+#: includes/admin.settings.inc:54
+msgid "Under the %signups tab"
+msgstr "Via de %signups tab"
+
+#: includes/admin.settings.inc:54
+#: includes/admin.signup_administration.inc:59
+#: includes/node_form.inc:194;194
+msgid "Signups"
+msgstr "Inschrijvingen"
+
+#: includes/admin.settings.inc:55
+msgid "Do not display signup form"
+msgstr "Verberg inschrijvingsformulier"
+
+#: includes/admin.settings.inc:58
+msgid ""
+"On every signup-enabled node, users with permission to\n"
+" sign up can be presented with a form. This setting controls where this form should be displayed: either directly on the node itself, on a separate tab, or not at all."
+msgstr ""
+"Op elke node met de inschrijvingsoptie geactiveerd, wordt aan gebruikers met de recht om\n"
+"in te schrijven een formulier getoond. Deze instelling beheerd waar dit formulier moet worden getoond. Direct in de node zelf, op een aparte tab of geheel niet."
+
+#: includes/admin.settings.inc:77
+msgid "Default fieldset behavior for per-node signup form"
+msgstr "Standaard fieldset gedrag voor het per-node inschrijvingsformulier"
+
+#: includes/admin.settings.inc:79
+msgid "Collapsed"
+msgstr "Ingeklapt"
+
+#: includes/admin.settings.inc:79
+msgid "Expanded"
+msgstr "Uitgeklapt"
+
+#: includes/admin.settings.inc:81
+msgid "If the signup form is included at the bottom of each node, the signup form will be encapsulated in a collapsible fieldset. This setting controls if that fieldset is expanded or collapsed by default."
+msgstr "Als het inschrijvingsformulier onderaan iedere node is toegevoegd, zal het formulier in een inklapbaar fieldset worden geplaatst. Deze instelling zet of de fieldset standaard in- of uitgeklapt is."
+
+#: includes/admin.settings.inc:89
+msgid "Use the built-in listing"
+msgstr "Gebruik ingebouwde lijst"
+
+#: includes/admin.settings.inc:92
+msgid "Embed a view"
+msgstr "Inbedden in een view"
+
+#: includes/admin.settings.inc:93
+msgid "If you choose to embed a view, you will be able to select which view you want to use below. The view you select will have a single argument passed in, the node id (nid) of the signup-enabled node being viewed. You can also use views to display this listing on its own tab or in a block if you disable this setting."
+msgstr "Als u er voor kiest om een view in te bedden, dan is het mogelijk om hieronder de view te selecteren die u wilt gebruiken. Aan de door u gekozen view wordt een enkel argument toegevoegd, de node id (nid) van de bekenen node met de inschrijvingsoptie geactiveerd. U kunt ook views gebruiken om deze lijst te tonen in een eigen tab of in een blok als u deze instelling uitschakelt."
+
+#: includes/admin.settings.inc:96
+msgid "If you enable the !views_url, you will be able to embed a view directly onto the page for this listing."
+msgstr "Als u de !views_url activeerd, dan is het mogelijk om een view direct in te bedden op de pagina voor deze lijst."
+
+#: includes/admin.settings.inc:96
+msgid "Views module"
+msgstr "Views module"
+
+#: includes/admin.settings.inc:98
+msgid "Do not display a listing at all"
+msgstr "Laat lijst niet zien"
+
+#: includes/admin.settings.inc:101
+msgid "How to display the list of signed-up users"
+msgstr "Hoe de lijst te tonen van ingeschreven gebruikers"
+
+#: includes/admin.settings.inc:105
+msgid "Users with the %view_signups permission can be presented with a list of all users who have signed up. This setting controls if and how that list should be generated. !views_help_text"
+msgstr "Gebruikers met de %view_signups rechten kunnen een lijst getoond krijgen met alle gebruikers die hebben ingeschreven. Deze instelling beheerd de mogelijkheid en hoe deze lijst moet worden gegenereerd. !views_help_text"
+
+#: includes/admin.settings.inc:134
+msgid "If the signup user list is being generated by embedding a view, this selects which view should be used. The view's name, description, and display(s) it defines are listed.  NOTE: if you enable or customize the view being used for this, you should strongly consider disabling the view's menu items to prevent a duplicate tab showing the same information."
+msgstr "Als deze inschrijvingslijst van gebruikers worg gegenereerd door het inbedden in een view, deze optie selecteert welke view gebruikt moet worden. De view's naam, omschrijving en display(s) die zijn gedefinieerd staan in de lijst. NOTE: als je de view die hiervoor wordt gebruikt, wijzigd of activeert, overweeg dat ten zeerste dat de views menu items uitgeschakeld worden om te voorkomen dat er een dubbele tab wordt getoond met dezelfde informatie."
+
+#: includes/admin.settings.inc:154
+msgid "Save configuration"
+msgstr "Bewaar instellingen"
+
+#: includes/admin.signup_administration.inc:25
+msgid "All"
+msgstr "Alles"
+
+#: includes/admin.signup_administration.inc:26
+#: includes/node_admin_summary.inc:22
+#: views/handlers/signup_handler_field_signup_status.inc:9
+#: views/handlers/signup_handler_filter_signup_status.inc:9
+msgid "Open"
+msgstr "Open"
+
+#: includes/admin.signup_administration.inc:27
+#: includes/node_admin_summary.inc:22
+#: views/handlers/signup_handler_field_signup_status.inc:9
+#: views/handlers/signup_handler_filter_signup_status.inc:9
+msgid "Closed"
+msgstr "Gesloten"
+
+#: includes/admin.signup_administration.inc:34
+msgid "Filter by signup status"
+msgstr "Filter op inschrijving status"
+
+#: includes/admin.signup_administration.inc:38
+msgid "Filter"
+msgstr "Filter"
+
+#: includes/admin.signup_administration.inc:58
+msgid "Title"
+msgstr "Titel"
+
+#: includes/admin.signup_administration.inc:60
+#: theme/node.admin.inc:54
+msgid "Limit"
+msgstr "Limiet"
+
+#: includes/admin.signup_administration.inc:61
+#: theme/node.admin.inc:52
+msgid "Status"
+msgstr "Status"
+
+#: includes/admin.signup_administration.inc:62
+#: theme/node.admin.inc:55
+msgid "Operations"
+msgstr "Verrichtingen"
+
+#: includes/admin.signup_administration.inc:100
+msgid "View signups"
+msgstr "Bekijk inschrijvingen"
+
+#: includes/admin.signup_administration.inc:103
+msgid "Send an email message to all users who signed up."
+msgstr "Stuur een e-mailbericht aan alle gebruikers die hebben ingeschreven."
+
+#: includes/admin.signup_administration.inc:104
+msgid "Signup broadcast"
+msgstr "Inschrijvingsbroadcast"
+
+#: includes/admin.signup_administration.inc:115
+#: includes/node_admin.inc:83
+#: includes/node_admin_summary.inc:36
+msgid "Update"
+msgstr "Update"
+
+#: includes/admin.signup_administration.inc:124;128
+msgid "Start"
+msgstr "Begin"
+
+#: includes/broadcast.inc:20
+msgid "No users have signup up for this %node_type."
+msgstr "Er zijn geen gebruikers ingeschreven voor dit %node_type."
+
+#: includes/broadcast.inc:25
+msgid "%cancel_signup_url (access to this link is denied to users without the \"cancel own signups\" permission)"
+msgstr "%cancel_signup_url (toegang tot deze link wordt geweigerd voor gebruikers zonder de \"annuleer eigen inschrijvingen\" rechten)"
+
+#: includes/broadcast.inc:30
+msgid "Supported string substitutions: %tokens, and any tokens in the %replacement_tokens list."
+msgstr "Ondersteunde string vervangingen: %tokes en alle tokens van de %replacement_tokens lijst."
+
+#: includes/broadcast.inc:30
+#: includes/node_settings.inc:31
+#: includes/token_help.inc:21
+msgid "Replacement tokens"
+msgstr "Vervangings tokens"
+
+#: includes/broadcast.inc:33
+msgid "Supported string substitutions: %tokens."
+msgstr "Ondersteunde tekst vervangingen: %tokens."
+
+#: includes/broadcast.inc:38
+msgid "Subject"
+msgstr "Onderwerp"
+
+#: includes/broadcast.inc:43
+msgid "Message body"
+msgstr "Bericht body"
+
+#: includes/broadcast.inc:45
+msgid "Body of the email message you wish to send to all users who have signed up for this %node_type. !token_description"
+msgstr "Body van e-mailbericht dat u wilt sturen aan alle gebruikers die hebben ingeschreven voor dit %node_type. !token_description"
+
+#: includes/broadcast.inc:56
+msgid "Send yourself a copy."
+msgstr "Verstuur een kopie naar u zelf."
+
+#: includes/broadcast.inc:61
+msgid "Send"
+msgstr "Verstuur"
+
+#: includes/broadcast.inc:72
+msgid "From"
+msgstr "Van"
+
+#: includes/broadcast.inc:80
+msgid "This message will be sent from: %from"
+msgstr "Dit bericht word verstuur van: %from"
+
+#: includes/broadcast.inc:153
+msgid "Sent a copy of this message to %email"
+msgstr "Stuur een kopie van dit bericht naar %email"
+
+#: includes/broadcast.inc:156
+msgid "Message sent to all users who have signed up"
+msgstr "Bericht verstuurd aan alle gebruikers die hebben ingeschreven"
+
+#: includes/cron.inc:51
+msgid "!node_type reminder: !title"
+msgstr "!node_type herinnering: !title"
+
+#: includes/date.inc:183;247
+msgid "Date field to use with signup"
+msgstr "Datumveld om te gebruiken bij inschrijving"
+
+#: includes/date.inc:186
+msgid "Select the date field of this content type to use for signup time-based functionality, such as automatically closing signups when the start time has passed and sending reminder emails. Select \"%none\" to not use a date field for signup functionality at all."
+msgstr "Selecteer het datumveld van dit content type om te gebruiken voor de tijdgebaseerde inschrijvingsfunctionaliteit zoals het automatisch sluiten van inschrijvingen wanneer de starttijd voorbij is en voor het versturen van herinneringse-mails. Selecteer \"%none\" om geen datumveld voor de inschrijvingsfunctionaliteit te gebruiken"
+
+#: includes/date.inc:186
+msgid "None"
+msgstr "Geen"
+
+#: includes/date.inc:250
+msgid "<none>"
+msgstr "<geen>"
+
+#: includes/date.inc:256
+msgid "You have enabled the %node_type content type for signups, and have added one or more date fields, but have not selected a date field for use with signup. You can modify the %signup_date_field setting at the <a href=\"@type_admin_url\">%node_type configuration page</a> to select a date field to use, or disable this warning by selecting %none."
+msgstr "U heeft inschrijvingen voor de %node_type geactiveerd en heeft een of meer datumvelden toegevoegd zonder te selecteren welk datumveld gebruikt moet worden voor de inschrijving. U kunt dit de %signup_date_field instelling wijzigingen op de <a href=\"@type_admin_url\">%node_type instellingen pagina</a>. Selecteer daar wel datumveld te gebruiken of schakel deze waarschuwing uit door %none te selecteren."
+
+#: includes/date.inc:261
+msgid "You have enabled the %node_type content type for signups but have not added a date field. You can either <a href=\"@type_add_field_url\">add a date field</a>, or disable this warning by selecting %none for the %signup_date_field setting at the <a href=\"@type_admin_url\">%node_type configuration page</a>."
+msgstr "U heeft het %node_type geactiveerd voor inschrijvingen maar geen datumveld toegevoegd. U kunt <a href=\"@type_add_field_url\">een datumveld toevoegen</a> of deze waarschuwing uitschakelen door %none te selecteren voor de %signup_date_field instelling op de <a href=\"@type_admin_url\">%node_type instellingen pagina</a>."
+
+#: includes/date.inc:282
+msgid "<Not specified>"
+msgstr "<Niet gespecificeerd>"
+
+#: includes/date.inc:287
+msgid "<None>"
+msgstr "<Geen>"
+
+#: includes/date.inc:542
+msgid " to "
+msgstr "aan"
+
+#: includes/event.6x-2.inc:90
+#: includes/scheduler.inc:110
+msgid "[Untimed]"
+msgstr "[Zonder tijd]"
+
+#: includes/no_views.inc:33;42;71
+msgid "Current signups"
+msgstr "Huidige inschrijvingen"
+
+#: includes/no_views.inc:43
+msgid "View signup schedule"
+msgstr "Bekijk inschrijvingsschema"
+
+#: includes/no_views.inc:78
+msgid "Signup schedule"
+msgstr "Inschrijvingsschema"
+
+#: includes/no_views.inc:79
+msgid "View full signup schedule"
+msgstr "Bekijk volledige inschrijvingsschema"
+
+#: includes/no_views.inc:110
+msgid "Signups for @user"
+msgstr "Inschrijvingen voor @user"
+
+#: includes/node_admin.inc:33
+#: theme/signup_form.inc:55
+msgid "Name"
+msgstr "Naam"
+
+#: includes/node_admin.inc:34
+#: views/signup.views.inc:198
+msgid "Signup time"
+msgstr "Inschrijvingstijd"
+
+#: includes/node_admin.inc:35
+msgid "Extra information"
+msgstr "Extra informatie"
+
+#: includes/node_admin.inc:36
+msgid "Attendance"
+msgstr "Opkomst"
+
+#: includes/node_admin.inc:62
+msgid "No users have signed up for this %node_type."
+msgstr "Er zijn geen gebruikers ingeschreven voor dit %node_type."
+
+#: includes/node_admin.inc:73
+msgid "Mark as attended"
+msgstr "Markeer als aanwezig geweest"
+
+#: includes/node_admin.inc:74
+msgid "Mark as did not attend"
+msgstr "Markeer als niet aanwezig geweest"
+
+#: includes/node_admin.inc:78
+#: includes/signup_cancel.inc:39
+#: includes/signup_cancel_form.inc:32
+msgid "Cancel signup"
+msgstr "Annuleer inschrijving"
+
+#: includes/node_admin.inc:98
+msgid "No users selected."
+msgstr "Geen gebruikers geselecteerd"
+
+#: includes/node_admin.inc:120;189
+msgid "You do not have permission to cancel signups."
+msgstr "U heeft geen rechten om de inschrijvingen te annuleren."
+
+#: includes/node_admin.inc:159
+msgid "Anonymous signup: %anon_mail"
+msgstr "Anonieme inschrijving: %anon_mail"
+
+#: includes/node_admin.inc:171
+msgid "Are you sure you want to cancel signups for these users?"
+msgstr "Weet u zeker dat u de inschrijvingen van deze gebruikers wilt annuleren?"
+
+#: includes/node_admin.inc:173
+#: includes/signup_cancel.inc:38
+msgid "This action cannot be undone."
+msgstr "Deze actie kan niet ongedaan gemaakt worden."
+
+#: includes/node_admin.inc:174
+msgid "Cancel signups"
+msgstr "Annuleer inschrijvingen"
+
+#: includes/node_admin.inc:174
+msgid "Keep signups"
+msgstr "Behoud inschrijvingen"
+
+#: includes/node_admin_summary.inc:16
+msgid "Closed (limit reached)"
+msgstr "Gesloten (maximum bereikt)"
+
+#: includes/node_admin_summary.inc:61
+msgid "Signups opened for !title."
+msgstr "Inschijven geopend voor !title."
+
+#: includes/node_admin_summary.inc:65
+msgid "Signups closed for !title."
+msgstr "Inschrijven gesloten voor !title."
+
+#: includes/node_form.inc:108
+msgid "%node_type start time is already past the signup close-in-advance time, signups now closed."
+msgstr "%node_type starttijd is al voorbij de inschrijving sluit-vooraf tijd. Inschrijvingen zijn gesloten."
+
+#: includes/node_form.inc:177
+#: views/handlers/signup_handler_field_signup_send_confirmation.inc:9
+#: views/handlers/signup_handler_filter_signup_disabled.inc:9
+msgid "Enabled"
+msgstr "Geactiveerd"
+
+#: includes/node_form.inc:179
+msgid "Disabled, but save existing signup information"
+msgstr "Uitgeschakeld, maar bewaar bestaande inschrijvingsinformatie"
+
+#: includes/node_form.inc:180
+msgid "Disabled, and remove all signup information"
+msgstr "Uitgeschakeld en verwijder alle inschrijvingsinformatie"
+
+#: includes/node_form.inc:180
+msgid "This can not be undone, use with extreme caution!"
+msgstr "Dit kan niet ongedaan gemaakt worden. Gebruik met uiterste voorzichtigheid!"
+
+#: includes/node_form.inc:194
+msgid "If enabled, you can control whether users may sign up by visiting the !signups tab and toggling if signups are %open or %closed for this %node_type."
+msgstr "Indien geactiveerd kunt u beheren of gebruikers mogen inschrijven door de !signups tab te bezoeken en instellen of inschrijvingen %open of %closed zijn voor dit %node_type."
+
+#: includes/node_form.inc:194
+#: theme/admin.inc:42
+msgid "open"
+msgstr "open"
+
+#: includes/node_form.inc:194
+#: theme/admin.inc:46
+msgid "closed"
+msgstr "gesloten"
+
+#: includes/node_form.inc:204
+msgid "If disabled, all of the other signup settings will be ignored."
+msgstr "Indien uitgeschakeld worden alle andere inschrijvingsinstellingen genegeerd."
+
+#: includes/node_output.inc:76
+#: includes/signup_form.inc:55
+msgid "login"
+msgstr "login"
+
+#: includes/node_output.inc:77
+msgid "register"
+msgstr "registreer"
+
+#: includes/node_output.inc:81
+msgid "Please !login to sign up for this %node_type."
+msgstr "!login om in te schrijven voor dit %node_type."
+
+#: includes/node_output.inc:84
+msgid "Please !login or !register to sign up for this %node_type."
+msgstr "!login of !register om in te schrijven voor dit %node_type."
+
+#: includes/node_settings.inc:31
+msgid "Supported string substitutions: %node_title, %node_url, %node_start_time, %user_name, %user_mail, %user_signup_info (additional information from the signup form), %cancel_signup_url (access to this link is denied to users without the \"%cancel_own_signups\" permission), and any tokens in the %replacement_tokens list."
+msgstr "Ondersteunde string vervangingen: %node_title, %node_url, %node_start_time, %user_name, %user_mail, %user_signup_info (extra informatie van het inschrijvingsformulier), %cancel_signup_url (toegang tot deze link wordt geweigerd voor gebruikers zonder het \"%cancel_own_signups\" recht) en alle tokens van de %replacement_tokens lijst."
+
+#: includes/node_settings.inc:34
+msgid "Supported string substitutions: %node_title, %node_url, %node_start_time, %user_name, %user_mail, %user_signup_info (additional information from the signup form), and %cancel_signup_url (access to this link is denied to users without the \"%cancel_own_signups\" permission)."
+msgstr "Ondersteunde string vervangingen: %node_title, %node_url, %node_start_time, %user_name, %user_mail, %user_signup_info (extra informatie van het inschrijvingsformulier) en %cancel_signup_url (toegang tot deze link wordt geweigerd voor gebruikers zonder het \"%cancel_own_signups\" recht)"
+
+#: includes/node_settings.inc:51
+msgid "Send signups to"
+msgstr "Verstuur inschrijvingen naar"
+
+#: includes/node_settings.inc:54
+msgid "Email address where notification of new signups will be sent. Leave blank for no notifications."
+msgstr "E-mailadres waar berichten van nieuwe inschrijvingen naar toegestuurd moeten worden. Laat leeg voor geen berichten."
+
+#: includes/node_settings.inc:58
+#: views/signup.views.inc:86
+msgid "Send confirmation"
+msgstr "Verstuur bevestiging"
+
+#: includes/node_settings.inc:63
+msgid "Confirmation email"
+msgstr "Bevestigingse-mail"
+
+#: includes/node_settings.inc:66
+msgid "Email sent to user upon signup. !token_description"
+msgstr "E-mail verstuurd aan gebruiker na inschrijving. !token_description"
+
+#: includes/node_settings.inc:82
+#: views/signup.views.inc:110
+msgid "Send reminder"
+msgstr "Verstuur herinnering"
+
+#: includes/node_settings.inc:94
+msgid "day(s) before this %node_type"
+msgstr "dag(en) voor dit %node_type"
+
+#: includes/node_settings.inc:94
+msgid "day(s) before start time"
+msgstr "dag(en) voor starttijd"
+
+#: includes/node_settings.inc:98
+msgid "Reminder email"
+msgstr "Herinneringse-mail"
+
+#: includes/node_settings.inc:101
+msgid "Email sent to user as a reminder before the %node_type starts. !token_description"
+msgstr "E-mail verstuurd aan gebruikers als herinnering voor de start van %node_type. !token_description"
+
+#: includes/node_settings.inc:101
+msgid "Email sent to user as a reminder before the start time. !token_description"
+msgstr "E-mail verstuurd aan gebruiker als herinnering voor de starttijd. !token_description"
+
+#: includes/node_settings.inc:111
+msgid "Signup limit"
+msgstr "Inschrijvingsmaximum"
+
+#: includes/node_settings.inc:114
+msgid "Maximum number of users who can sign up before signups are automatically closed. If set to 0, there is no limit."
+msgstr "Maximum aantal gebruikers die kunnen inschrijven voordat de inschrijving automatisch word gesloten. Indien op 0 gezet dan is er geen maximum."
+
+#: includes/signup_cancel.inc:14
+msgid "Invalid link to cancel a signup."
+msgstr "Ongeldige link om inschrijving te annuleren."
+
+#: includes/signup_cancel.inc:36
+msgid "Are you sure you want to cancel the signup to %node_title?"
+msgstr "Weet u zeker dat u uw inschrijving voor %node_title wilt annuleren?"
+
+#: includes/signup_cancel.inc:39
+msgid "Keep signup"
+msgstr "Behoud inschrijving"
+
+#: includes/signup_form.inc:37
+msgid "Sign up another user"
+msgstr "Schrijf een andere gebruiker in"
+
+#: includes/signup_form.inc:42
+msgid "Sign up for @title"
+msgstr "Inschrijving voor @title"
+
+#: includes/signup_form.inc:54
+msgid "Email"
+msgstr "E-mail"
+
+#: includes/signup_form.inc:55
+msgid "An e-mail address is required for users who are not registered at this site. If you are a registered user at this site, please !login to sign up for this %node_type."
+msgstr "Een e-mailadres is vereist voor gebruikers die niet zijn geregistreerd op deze website. Als u een geregistreerde gebruiker van de deze website bent, !login om in te schrijven voor dit %node_type."
+
+#: includes/signup_form.inc:66
+msgid "Username"
+msgstr "Gebruikersnaam"
+
+#: includes/signup_form.inc:93
+msgid "Sign up"
+msgstr "Inschrijven"
+
+#: includes/signup_form.inc:146
+msgid "Invalid email address entered for signup."
+msgstr "Ongeldig e-mailadres ingevoerd voor inschrijving."
+
+#: includes/signup_form.inc:149
+msgid "The email address entered belongs to a registered user."
+msgstr "Het ingevoerde e-mailadres is van een geregistreerde gebruiker."
+
+#: includes/signup_form.inc:153
+msgid "The email address entered has already been used to sign up for this %node_type."
+msgstr "Het ingevoerde e-mailaders is al gebruikt voor een inschrijving voor dit %node_type."
+
+#: includes/signup_form.inc:184
+msgid "User %user_name does not exist."
+msgstr "Gebruiker %user_name bestaat niet."
+
+#: includes/signup_form.inc:187
+msgid "User !user does not have permission to sign up."
+msgstr "Gebruiker !user heeft geen rechten om in te schrijven."
+
+#: panels/content_types/signup_form.inc:10;27
+msgid "Signup form"
+msgstr "Inschrijvingsformulier"
+
+#: panels/content_types/signup_form.inc:30
+msgid "Signup form."
+msgstr "Inschrijvingsformulier."
+
+#: panels/content_types/signup_form.inc:31
+msgid "Node"
+msgstr "Node"
+
+#: panels/content_types/signup_form.inc:32
+msgid "Contributed modules"
+msgstr "Bijgedragen modules"
+
+#: panels/content_types/signup_form.inc:75
+msgid "\"@s\" @type"
+msgstr "\"@s\" @type"
+
+#: theme/admin.inc:50
+msgid "enabled"
+msgstr "geactiveerd"
+
+#: theme/admin.inc:53
+msgid "No content is currently !status for signups."
+msgstr "Op dit moment is er geen content !status voor inschrijving."
+
+#: theme/email.inc:20
+msgid "SIGNUP INFORMATION"
+msgstr "INSCHRIJVINGSINFORMATIE"
+
+#: theme/email.inc:66
+msgid "This is a copy of the signup broadcast you just sent."
+msgstr "Dit is een kopie van de inschrijvingsbroadcast die u zojuist heeft verstuurd."
+
+#: theme/email.inc:67
+msgid "Here is the original text you entered, with none of the tokens replaced:"
+msgstr "Dit is de orginele tekst die u heeft ingevoerd zonder dat de tokens zijn vervangen:"
+
+#: theme/email.inc:71
+msgid "Here is how the message that was sent to each user looked, with all of the tokens replaced (using your account for the user-related tokens):"
+msgstr "Dit is zoals het bericht was verstuurd aan alle gebruikers met alle tokens vervangen (gebruikmakend van de gebruikersgerelateerde tokens van uw account):"
+
+#: theme/no_views.inc:21
+msgid "!users signed up"
+msgstr "!users ingeschreven"
+
+#: theme/no_views.inc:27
+msgid "!count anonymous"
+msgstr "!count anoniem"
+
+#: theme/no_views.inc:21
+msgid "1 individual"
+msgid_plural "@count individuals"
+msgstr[0] "1 perspoon"
+msgstr[1] "@count personen"
+
+#: theme/node.admin.inc:53
+msgid "Total"
+msgstr "Totaal"
+
+#: theme/node.admin.inc:58
+msgid "Signup summary"
+msgstr "Samenvatting inschrijving"
+
+#: theme/node.admin.inc:68
+msgid "Signup details"
+msgstr "Details inschrijving"
+
+#: theme/node.admin.inc:134
+#: views/handlers/signup_handler_filter_signup_user_attended.inc:9
+msgid "Did not attend"
+msgstr "Is niet aanwezig geweest"
+
+#: theme/node.admin.inc:137
+#: views/handlers/signup_handler_filter_signup_user_attended.inc:9
+msgid "Attended"
+msgstr "Aanwezig geweest"
+
+#: theme/node.inc:26
+msgid "Signups closed for this %node_type"
+msgstr "Inschrijvingen gesloten voor dit %node_type"
+
+#: theme/node.inc:95
+msgid "Your signup information"
+msgstr "Uw inschrijvingsinformatie"
+
+#: theme/signup_form.inc:61
+msgid "Phone"
+msgstr "Telefoon"
+
+#: views/signup.views.inc:29
+msgid "Status: Open/Closed"
+msgstr "Status: Open/Gesloten"
+
+#: views/signup.views.inc:30
+msgid "Are signups open or closed for this node?"
+msgstr "Zijn inschrijvingen voor deze node geopend of gesloten"
+
+#: views/signup.views.inc:39
+msgid "Filter on if signups are open or closed for each node."
+msgstr "Filter inschrivingen op geopend of gesloten voor iedere node."
+
+#: views/signup.views.inc:45
+msgid "Sort by if signups are closed or open."
+msgstr "Sorteer op inschrijvingen die zijn geopend of gesloten"
+
+#: views/signup.views.inc:50
+msgid "Signup Limit"
+msgstr "Inschrijvingsmaximum"
+
+#: views/signup.views.inc:51
+msgid "Maximum number of users who can sign up before signups are automatically closed (set to 0 for no limit)."
+msgstr "Maximum aantal gebruikers dat kan inschrijven voordat inschrijvingen automatisch gesloten wordt (zet op 0 voor geen maximum)."
+
+#: views/signup.views.inc:60
+msgid "Filter by the maximum number of users who can sign up before signups are automatically closed (set to 0 for no limit)."
+msgstr "Filter op het maximum aantal gebruikers dat kan inschrijven voordat inschrijvingen automatisch gesloten wordt (zet op 0 voor geen maximum)."
+
+#: views/signup.views.inc:66
+msgid "Notification: Email Address"
+msgstr "Berichtgeving: E-mailadres"
+
+#: views/signup.views.inc:67
+msgid "Address where notification emails are sent wenever a user signs up."
+msgstr "E-mailadres waar berichtgevingen naar toe gestuurd moeten worden als een gebruiker zich inschrijft."
+
+#: views/signup.views.inc:75
+msgid "Send Confirmation"
+msgstr "Verstuur bevestiging"
+
+#: views/signup.views.inc:76
+msgid "Should confirmation email be sent to each user who signs up."
+msgstr "Moeten bevestigingensberichten worden verstuurd aan iedere gebruiker die zicht inschrijft."
+
+#: views/signup.views.inc:85
+msgid "Filter on if signup confirmation is enabled or disabled."
+msgstr "Filter op inschrijvings bevestiging is geactiveerd of uitgeschakeld."
+
+#: views/signup.views.inc:91
+msgid "Confirmation: Message"
+msgstr "Bevestiging: Bericht"
+
+#: views/signup.views.inc:92
+msgid "The body of the optional confirmation email that can be sent whenever a user signs up."
+msgstr "De body van het optionele bevestigingse-mail dat verstuurd kan worden als een gebruikers zich inschrijft."
+
+#: views/signup.views.inc:100
+msgid "Send Reminder"
+msgstr "Verstuur herinnering"
+
+#: views/signup.views.inc:101
+msgid "Should a reminder email be automatically sent to all users who signed up. This will be false if either an administrator disabled the feature for a given event, or if the reminder was already sent."
+msgstr "Moet een herinneringse-mail automatisch worden verstuurd aan alle gebruikers die hebben ingeschreven. Dit is niet zo als de herinnering al is verstuurd of de beheerder deze functie heeft uitgeschakeld voor een bepaald evenement."
+
+#: views/signup.views.inc:109
+msgid "Filter on if a signup reminder email will be sent."
+msgstr "Filter op het versturen van een herinneringse-mail."
+
+#: views/signup.views.inc:115
+msgid "Reminder: Days Before Event for Email"
+msgstr "Herinnering: Aantal dagen voor het evenement om e-mail te versturen"
+
+#: views/signup.views.inc:116
+msgid "How many days before an event will the reminder email be sent."
+msgstr "Hoevel dagen voor een evenement moet de herinneringse-mail verstuurd worden."
+
+#: views/signup.views.inc:125
+msgid "Reminder: Message"
+msgstr "Herinnering: Bericht"
+
+#: views/signup.views.inc:126
+msgid "The body of the optional reminder email that can be sent a configurable time before an event begins."
+msgstr "De body van de optionele herinneringse-mail kan verstuurd worden op een instelbare tijd voordat een evenement begint."
+
+#: views/signup.views.inc:134
+msgid "Enabled/Disabled"
+msgstr "Geactiveerd/Uitgeschakeld"
+
+#: views/signup.views.inc:137
+msgid "Filter on if signups are enabled or disabled."
+msgstr "Filter op inschrivingen die zijn geactiveerd of uitgeschakeld"
+
+#: views/signup.views.inc:143
+msgid "Node: Signup link"
+msgstr "Node: Inschrijvingslink"
+
+#: views/signup.views.inc:146
+msgid "Link to one of the signup-related tabs on each node."
+msgstr "Link naar de inschrijvingsgerelateerde tabs op iedere node."
+
+#: views/signup.views.inc:161
+msgid "User"
+msgstr "Gebruiker"
+
+#: views/signup.views.inc:162
+msgid "The user who signed up."
+msgstr "De gebruiker die is ingeschreven."
+
+#: views/signup.views.inc:166;239
+msgid "Signup user"
+msgstr "Inschrijven gebruiker"
+
+#: views/signup.views.inc:171
+msgid "User available signups"
+msgstr "Gebruiker beschikbare inschrijvingen"
+
+#: views/signup.views.inc:172
+msgid "Displays nodes the given user has not signed up for. Note that this argument will not work properly if you add the %signup_user relationship to the view."
+msgstr "Laat nodes zien waarde gebruiker niet voor is ingeschreven. Dit argument werkt niet goed als u de %signup_user relatie aan het overzicht hebt toegevoegd."
+
+#: views/signup.views.inc:172
+msgid "Signup: User"
+msgstr "Inschrijven: Gebruiker"
+
+#: views/signup.views.inc:180
+msgid "User: Email Address"
+msgstr "Gebruiker: E-mailadres"
+
+#: views/signup.views.inc:184
+msgid "Email address of a user (authenticated or anonymous) who signed up."
+msgstr "E-mailadres van een gebruiker (geverifieerd of anoniem) die zich heeft ingeschreven."
+
+#: views/signup.views.inc:184
+msgid "WARNING: only expose this data in a view that is restricted to users whom you can trust with such sensitive information."
+msgstr "WAARSCHUWING: laat alleen deze dat in een view zien aan gebruikers die vertrouwd kunnen worden met deze vertrouwelijke informatie."
+
+#: views/signup.views.inc:189
+msgid "User: Signup Time"
+msgstr "Gebruiker: Inschrijftijd"
+
+#: views/signup.views.inc:190
+msgid "Time when user signed up."
+msgstr "Tijd wanneer gebruik inschreef."
+
+#: views/signup.views.inc:197
+msgid "Time when the user signed up."
+msgstr "Tijdstip waarop de gebruiker heeft ingeschreven"
+
+#: views/signup.views.inc:202
+msgid "Sort by time of sign up."
+msgstr "Sorteer op tijd van inschrijving."
+
+#: views/signup.views.inc:207
+msgid "User: Attended"
+msgstr "Gebruiker: Aanwezig geweest"
+
+#: views/signup.views.inc:208
+msgid "Did the user attend or not?"
+msgstr "Is de gebruiker aanwezig geweest of niet?"
+
+#: views/signup.views.inc:215
+msgid "Filter on users who attended or not."
+msgstr "Filter op gebruikers die niet aanwezig zijn geweest."
+
+#: views/signup.views.inc:220
+msgid "Sort by if the user attended or not."
+msgstr "Sorteer op aanwezigheid van gebruiker"
+
+#: views/signup.views.inc:225
+msgid "User: Additional Signup Info"
+msgstr "Gebruiker: Aanvullende inschrijvingsinformatie"
+
+#: views/signup.views.inc:226
+msgid "Enter the additional field name (from signup.theme) in the Option column."
+msgstr "Voer de extra veldnaam (van signup,theme) in de Optie kolom in. "
+
+#: views/signup.views.inc:234
+msgid "User: Anonymous/Authenticated"
+msgstr "Gebruiker: Anoniem/Geverifieerd"
+
+#: views/signup.views.inc:238
+msgid "Filter on if a user who signed up is anonymous, or an authenticated user on the site."
+msgstr "Filter of ingeschreven gebruiker anoniem of geverifieerd is op deze website."
+
+#: views/signup.views.inc:244
+msgid "User: Current User"
+msgstr "Gebruiker: Huidige gebruiker"
+
+#: views/signup.views.inc:248
+msgid "This allows you to filter by whether or not the node was signed up by the logged in user of the view."
+msgstr "Hiermee kunt u filteren of een ingelogd gebruiker was ingeschreven op een node of niet."
+
+#: views/signup.views.inc:311
+#: views/plugins/signup_plugin_argument_validate_signup_status.inc:15
+msgid "Signup status"
+msgstr "Inschrijvingsstatus"
+
+#: views/handlers/signup_handler_field_signup_node_link.inc:17
+msgid "Signup tab to link to"
+msgstr "Inschrijvingstab om naar te linken"
+
+#: views/handlers/signup_handler_field_signup_node_link.inc:19
+msgid "Signup current user form"
+msgstr "Inschrijvingsformulier huidige gebruiker"
+
+#: views/handlers/signup_handler_field_signup_node_link.inc:20
+msgid "Signup user list"
+msgstr "Inschrijvingslijst gebruikers"
+
+#: views/handlers/signup_handler_field_signup_node_link.inc:21
+msgid "Administer signups"
+msgstr "Beheer inschrijvingen"
+
+#: views/handlers/signup_handler_field_signup_node_link.inc:22
+msgid "Form to sign up other users"
+msgstr "Formulier om andere gebruikers in te schrijven"
+
+#: views/handlers/signup_handler_field_signup_node_link.inc:23
+msgid "Signup broadcast form"
+msgstr "Inschrijvingsbroadcast formulier"
+
+#: views/handlers/signup_handler_field_signup_node_link.inc:29
+msgid "Set view as return destination"
+msgstr "Zet view als terugkeerbestemming"
+
+#: views/handlers/signup_handler_field_signup_node_link.inc:30
+msgid "After submitting a form, do you want to be redirected back to this view, or stay at the other page?"
+msgstr "Wilt u na het invoeren van het formulier terugkeren naar deze view of op de andere pagina blijven?"
+
+#: views/handlers/signup_handler_field_signup_node_link.inc:58
+msgid "signup form"
+msgstr "inschrijvingsformulier"
+
+#: views/handlers/signup_handler_field_signup_node_link.inc:61
+msgid "signup list"
+msgstr "inschrijvingslijst"
+
+#: views/handlers/signup_handler_field_signup_node_link.inc:64
+msgid "administer signups"
+msgstr "beheer inschrijvingen"
+
+#: views/handlers/signup_handler_field_signup_node_link.inc:67
+msgid "signup other users"
+msgstr "schrijf andere gebruikers in"
+
+#: views/handlers/signup_handler_field_signup_node_link.inc:70
+msgid "signup broadcast"
+msgstr "inschrijvingsbroadcast"
+
+#: views/handlers/signup_handler_field_signup_user_form_data.inc:12
+msgid " Field Name"
+msgstr "Veldnaam"
+
+#: views/handlers/signup_handler_field_signup_user_form_data.inc:13
+msgid "If you want to display a single field from signup.theme, enter its name here, otherwise, all fields will be displayed."
+msgstr "Als u een enkel veld wilt tonen van het signup.them, voer hier de naam in. Anders worden alle velden getoond."
+
+#: views/handlers/signup_handler_filter_signup_user_authenticated.inc:9
+msgid "Authenticated"
+msgstr "Geverifieerd"
+
+#: views/plugins/signup_plugin_argument_validate_signup_status.inc:17
+msgid "Signups enabled (either open or closed)"
+msgstr "Inschrijvingen geactiveerd (open en gesloten)"
+
+#: views/plugins/signup_plugin_argument_validate_signup_status.inc:18
+msgid "Signups open"
+msgstr "Geopende inschrijvingen "
+
+#: views/plugins/signup_plugin_argument_validate_signup_status.inc:19
+msgid "Signups closed"
+msgstr "Gesloten inschrijvingen"
+
+#: views/plugins/signup_plugin_argument_validate_signup_status.inc:20
+msgid "Signups disabled"
+msgstr "Uitgeschakelde inschrijvingen"
+
+#: views/plugins/signup_plugin_argument_validate_signup_status.inc:22
+msgid "Validate if the current node is signup-enabled and if signups are open or closed"
+msgstr "Valideer of de huide node is geactiveerd voor inschrijvingen en of inschrijvingen zijn geopend of gesloten"
+
+#: views/plugins/signup_plugin_argument_validate_signup_status.inc:30
+msgid "Validate user has access to the node"
+msgstr "Valideer gebruiker voor toegang tot de node"
+

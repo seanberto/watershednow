@@ -1,0 +1,1422 @@
+# $Id: sv.po,v 1.1.2.1 2009/04/21 00:48:21 seals Exp $
+#
+# Swedish translation of Drupal (signup)
+# Generated from files:
+#  signup.api.php,v 1.1 2008/12/19 18:05:12 dww
+#  signup.module,v 1.205.2.6 2008/12/20 06:31:27 dww
+#  date.inc,v 1.16.2.2 2008/12/19 01:00:35 dww
+#  node_form.inc,v 1.4 2008/12/14 07:36:43 dww
+#  signup_handler_field_signup_send_confirmation.inc,v 1.1 2008/11/12 01:00:58 dww
+#  signup_handler_filter_signup_disabled.inc,v 1.4.2.2 2008/12/19 01:00:36 dww
+#  no_views.inc,v 1.15 2008/11/14 04:14:04 dww
+#  broadcast.inc,v 1.1.2.1 2008/12/20 04:28:56 dww
+#  cron.inc,v 1.1.2.1 2008/12/20 04:28:56 dww
+#  signup_form.inc,v 1.1.2.1 2008/12/20 06:31:27 dww
+#  signup_handler_filter_signup_user_authenticated.inc,v 1.3.2.2 2008/12/19 01:00:36 dww
+#  node_settings.inc,v 1.1.2.1 2008/12/20 04:28:56 dww
+#  admin.settings.inc,v 1.2.2.1 2008/12/20 06:31:27 dww
+#  admin.signup_administration.inc,v 1.1 2008/11/15 02:03:50 dww
+#  signup.install,v 1.24.2.2 2008/12/19 01:00:35 dww
+#  signup.info,v 1.5 2008/11/06 10:20:48 dww
+#  signup.views.inc,v 1.4.2.3 2008/12/20 08:44:02 dww
+#  node_admin_summary.inc,v 1.1 2008/11/15 02:03:50 dww
+#  signup_handler_field_signup_status.inc,v 1.1 2008/11/12 01:00:58 dww
+#  signup_handler_filter_signup_status.inc,v 1.2.2.2 2008/12/19 01:00:36 dww
+#  node.admin.inc,v 1.4.2.2 2008/12/20 06:31:27 dww
+#  node_admin.inc,v 1.1.2.3 2008/12/20 06:31:27 dww
+#  token_help.inc,v 1.1 2008/11/15 02:03:50 dww
+#  event.6x-2.inc,v 1.2 2008/11/25 17:54:05 dww
+#  scheduler.inc,v 1.4 2008/11/06 10:20:48 dww
+#  signup_form.inc,v 1.3 2008/11/19 18:35:11 dww
+#  signup_cancel.inc,v 1.1.2.2 2008/12/20 04:28:56 dww
+#  signup_cancel_form.inc,v 1.1.2.1 2008/12/19 01:00:35 dww
+#  admin.inc,v 1.1 2008/11/12 23:22:19 dww
+#  node_output.inc,v 1.1.2.2 2008/12/20 06:31:27 dww
+#  signup_form.inc,v 1.4 2008/11/15 02:03:50 dww
+#  email.inc,v 1.1 2008/11/12 23:22:19 dww
+#  no_views.inc,v 1.2 2008/11/19 18:30:07 dww
+#  signup_handler_filter_signup_user_attended.inc,v 1.2.2.2 2008/12/19 01:00:36 dww
+#  node.inc,v 1.1 2008/11/12 23:22:19 dww
+#  signup_plugin_argument_validate_signup_status.inc,v 1.1 2008/11/12 01:00:58 dww
+#  signup_handler_field_signup_node_link.inc,v 1.1 2008/12/20 08:43:28 dww
+#  signup_handler_field_signup_user_form_data.inc,v 1.1 2008/11/12 01:00:58 dww
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Signup 6.x\n"
+"POT-Creation-Date: 2009-04-20 15:34+0200\n"
+"PO-Revision-Date: 2009-04-21 02:42+0100\n"
+"Last-Translator: Magnus Gunnarsson <seals@passagen.se>\n"
+"Language-Team: drupalsverige.se\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
+"X-Poedit-Language: Swedish\n"
+"X-Poedit-Country: SWEDEN\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#: signup.api.php:27
+msgid "Signup ID: @sid"
+msgstr "ID för anmälan: @sid"
+
+#: signup.api.php:28
+msgid "Node ID: @nid"
+msgstr "ID för nod: @nid"
+
+#: signup.api.php:29
+msgid "User ID: @uid"
+msgstr "ID för användare: @uid"
+
+#: signup.api.php:30
+msgid "Email address for anonymous signup: @anon_mail"
+msgstr "E-postadress för gäst som anmält sig: @anon_mail"
+
+#: signup.api.php:31
+msgid "Date/time when the signup was created: @signup_time"
+msgstr "Datum/tid för när anmälan skapades: @signup_time"
+
+#: signup.api.php:33
+msgid "Custom signup form data: %signup_form_data"
+msgstr "Anpassad data för anmälningsformulär: %signup_form_data"
+
+#: signup.api.php:34
+msgid "Attendance record: %attended"
+msgstr "Deltagarlista: %attended"
+
+#: signup.api.php:36
+msgid "Signup canceled for %node_title"
+msgstr "Anmälan avbruten för %node_titel"
+
+#: signup.module:280
+msgid "Signup allows users to sign up (in other words, register) for content of any type. The most common use is for events, where users indicate they are planning to attend. This module includes options for sending a notification email to a selected email address upon a new user signup (good for notifying event coordinators, etc.) and a confirmation email to users who sign up. Each of these options are controlled per node. When used on event nodes (with <a href=\"@event_url\">event.module</a> installed) or nodes that have a date field (with <a href=\"@date_url\">date.module</a>) and regular cron runs, it can also send out reminder emails to all signups a configurable number of days before the start of the event (also controlled per node) and to automatically close signups 1 hour before their start (general setting). Settings exist for resticting signups to selected roles and content types."
+msgstr "Anmälan låter användare anmäla sig (med andra ord, registrera) för innehåll av vilken typ som helst. Det mest förekommande är händelser, där användare visar att de planerar att deltaga. Denna modul inkluderar alternativ för att skicka ett meddelande via e-post till en vald e-postadress när nya användare anmält sig (bra för att meddela händelsens ansvariga till exempel) och ett konfirmationsmeddelande via e-post till användare som anmält sig. Var och en av dessa alternativ kontrolleras för varje nod. När de används för noder av typen händelse (med <a href=\"@event_url\">modulen Event</a> installerad) eller noder som har ett datumfält (med <a href=\"@date_url\">modulen Date</a>) och att schemalagda aktiviteter körs regelbundet, kan det också skicka ut en påminnelse via e-post till alla anmälda ett konfigurerbart antal dagar innan händelsen inträffar (också kontrollerad per nod) och också automatiskt stänga anmälningar 1 timme innan dess start (generell inställning). Det finns inställningar för att begränsa anmälningar till valda roller och innehållstyper."
+
+#: signup.module:282
+msgid "To use signup, you must enable which content types should allow signups in administer->settings->content types, and you must also grant the %sign_up_for_content permission to any user role that should be able to sign up in administer->access control. Each signup-enabled node will now have a place for users to sign up."
+msgstr "För att använda anmälan måste du aktivera vilka innehållstyper som skall tillåta anmälan under Administrera ->Inställningar->Innehållstyper, och du måste också ge rättigheten %sign_up_for_content permission för användarroller som skall kunna anmäla sig under Administrera->Användare->Rättigheter. Varje anmälningsaktiverad nod kommer nu att ha en plats för användare att anmäla sig."
+
+#: signup.module:284
+msgid "There are two ways for a user to have administrative access to the signup information about a given node: either the user has the %administer_signups_for_own_content permission and they are viewing a node they created, or the user has the global %administer_all_signups permission. Administrative access allows a user to view all the users who have signed up for the node, along with whatever information they included when they signed up.  Signup administrators can also cancel other user's signups for the node, and can close signups on the node entirely (meaning no one else is allowed to sign up)."
+msgstr "Det finns två sätt för en användare att ha administrationsåtkomst för anmälningsinformationen för en given nod: antingen har användaren rättigheten %administer_signups_for_own_content permission och de visar en nod som de har skapat, eller så har användaren den globala rättigheten %administer_all_signups. Administrativ åtkomst låter användare visa alla användare som har anmält sig för noden, tillsammans med den information de inkluderade när de anmälde sig. Anmälningsadministratörer kan också avbryta anda användares anmälningar för noden, och helt och hållet stänga anmälningar för noden (med det menas att inga andra tillåts att anmäla sig)."
+
+#: signup.module:286
+msgid "Default settings for notification email address, reminder emails and confirmation emails are located in administer->settings->signup. These will be the default values used for a signup node unless otherwise specified (to configure these options per node, visit 'edit' for that node and make the adjustments in the 'Sign up settings' section)."
+msgstr "Förvalda inställningar för e-postadress vid meddelande, e-post för påminnelse och bekräftelse finns under Administrera->Inställningar->Anmälan. Detta kommer att vara det förvalda värdet som används för en anmälningsnod om inget annat anges (för att konfigurera dessa alternativ, besök \"redigera\" för den noden och gör ändringarna i avsnittet \"Inställningar för anmälan\")."
+
+#: signup.module:288
+msgid "Signups can be manually closed for any node at the %signup_overview page, or on the 'signups' tab on each node."
+msgstr "Anmälningar kan stängas manuellt för en nod på sidan %signup_overview, eller på fliken \"anmälningar\" för varje nod."
+
+#: signup.module:288
+msgid "Signup overview"
+msgstr "Översikt över anmälda"
+
+#: signup.module:290
+msgid "The user signup form is fully themable -- form fields may be added or deleted. For more details see the instructions in signup.theme, where a sample user form is included."
+msgstr "Formuläret för användares anmälan är helt och hållet anpassningsbar för tema -- formulärfält kan läggas till och raderas. För mer detaljer, se instruktioner i signup.theme, där ett exempel på användarformulär är inkluderat."
+
+#: signup.module:298
+msgid "This page allows you to send an email message to every user who signed up for this %node_type."
+msgstr "Denna sida låter dig skicka ett e-postmeddelande till varje användare som anmält sig till denna %node_type."
+
+#: signup.module:301
+msgid "This page allows you to sign up another user for this %node_type."
+msgstr "Denna sida låter dig anmäla andra användare för denna %node_type."
+
+#: signup.module:637
+#: includes/date.inc:106
+#: includes/node_form.inc:167
+msgid "Signup settings"
+msgstr "Inställningar för anmälan"
+
+#: signup.module:643
+msgid "Signup options"
+msgstr "Alternativ för anmälan"
+
+#: signup.module:645;650
+#: includes/node_form.inc:183
+#: views/handlers/signup_handler_field_signup_send_confirmation.inc:9
+#: views/handlers/signup_handler_filter_signup_disabled.inc:9
+msgid "Disabled"
+msgstr "Ej aktiverad"
+
+#: signup.module:646;650
+msgid "Allowed (off by default)"
+msgstr "Tillåten (av som standard)"
+
+#: signup.module:647;650
+msgid "Enabled (on by default)"
+msgstr "Aktiverad (på som standard)"
+
+#: signup.module:650
+msgid "If %disabled is selected, signups will not be possible for this content type. If %allowed_off is selected, signups will be off by default, but users with the %admin_all_signups permission will be able to allow signups for specific posts of this content type. If %enabled_on is selected, users will be allowed to signup for this content type unless an administrator disbles signups on specific posts."
+msgstr "Om %disabled är vald kommer inte anmälning att vara möjlig för denna innehållstyp. Om %allowed_off är vald kommer anmälning att vara avslagen som standard, men användare med rättigheten %admin_all_signups kommer att kunna tillåta anmälning för specifika inlägg för denna innehållstyp. Om %enabled_on är vald kommer användare att tillåtas anmäla sig för denna innehållstyp såvida inte en administratör avaktiverar anmälan på specifika inlägg."
+
+#: signup.module:650;569
+msgid "administer all signups"
+msgstr "administrera alla anmälningar"
+
+#: signup.module:765
+#: includes/no_views.inc:66
+msgid "Signup information"
+msgstr "Information om anmälan"
+
+#: signup.module:766
+msgid "Signup form and other information."
+msgstr "Formulär för anmälan och annan information."
+
+#: signup.module:797
+msgid "Signup to !title cancelled."
+msgstr "Anmälan till !title avbruten."
+
+#: signup.module:831;847
+#: includes/broadcast.inc:134;152
+#: includes/cron.inc:69;123
+msgid "view"
+msgstr "visa"
+
+#: signup.module:897
+msgid "Anonymous user %email is already signed up for %title"
+msgstr "Gäst %email är redan anmäld för %title"
+
+#: signup.module:908
+#: includes/signup_form.inc:191
+msgid "User !user is already signed up for %title"
+msgstr "Användare !user är redan anmäld för%title"
+
+#: signup.module:933
+msgid "You will receive a confirmation email shortly which contains further information about this %node_type."
+msgstr "Du kommer att få ett e-postmeddelande för bekräftelse inom kort som innehåller mer information om denna %node_type."
+
+#: signup.module:934
+msgid "You will receive a reminder email !number !days before the %node_type."
+msgstr "Du kommer att få ett e-postmeddelande för påminnelse !numer !days innan %node_type."
+
+#: signup.module:957;990
+msgid "Signup confirmation for !node_type: !title"
+msgstr "Bekräftelse på anmälan för !node_type: !title"
+
+#: signup.module:972
+msgid "The following information was submitted as a signup for !title"
+msgstr "Följande information skickades med som anmälan för !title"
+
+#: signup.module:974
+msgid "Date/Time: !time"
+msgstr "Datum/Tid: !time"
+
+#: signup.module:977
+msgid "Username: !name"
+msgstr "Användarnamn: !name"
+
+#: signup.module:977
+#: views/handlers/signup_handler_filter_signup_user_authenticated.inc:9
+msgid "Anonymous"
+msgstr "Gäst"
+
+#: signup.module:980
+msgid "Profile page: !url"
+msgstr "Profilsida: !url"
+
+#: signup.module:984
+msgid "E-mail: !email"
+msgstr "E-post: !email"
+
+#: signup.module:994
+msgid "New !node_type Signup"
+msgstr "Ny anmälan för !node_typ"
+
+#: signup.module:1003
+msgid "Signup to !title confirmed."
+msgstr "Anmälan till !title bekräftad."
+
+#: signup.module:1043
+msgid "Signup limit reached for !title, signups closed."
+msgstr "Begränsning av anmälan nådd för !title, anmälning stängd."
+
+#: signup.module:1050
+msgid "Signup limit reached."
+msgstr "Begränsning av anmälan nådd."
+
+#: signup.module:1058
+msgid "Signup limit increased for !title, signups re-opened."
+msgstr "Begränsning av anmälan ökad för !title, anmälning är åter öppnad."
+
+#: signup.module:1061
+msgid "Total signups for !title now below limit, signups re-opened."
+msgstr "Totalt antal anmälningar för !title är nu nedanför gränsen, anmälning är åter öppnad."
+
+#: signup.module:1065
+msgid "Signup limit updated for !title."
+msgstr "Begränsning av anmälan uppdaterad för !title."
+
+#: signup.module:1073
+msgid "Signup limit removed for !title, signups now open."
+msgstr "Begränsning av anmälan borttagen för !title, anmälan är nu öppen."
+
+#: signup.module:1076
+msgid "Signup limit removed for !title."
+msgstr "Begränsning av anmälan borttagen för !title."
+
+#: signup.module:831;847;0
+#: includes/broadcast.inc:134;152
+#: includes/cron.inc:69;123
+msgid "signup"
+msgstr "anmälan"
+
+#: signup.module:831
+msgid "Signups closed for %title."
+msgstr "Anmälan stängd för %title."
+
+#: signup.module:847
+msgid "Signups reopened for %title."
+msgstr "Anmälan åter öppnad för %title."
+
+#: signup.module:934
+msgid "day"
+msgid_plural "days"
+msgstr[0] "dag"
+msgstr[1] "dagar"
+
+#: signup.module:565
+msgid "sign up for content"
+msgstr "anmäl för innehåll"
+
+#: signup.module:566
+msgid "cancel signups"
+msgstr "avbryt anmälningar"
+
+#: signup.module:567
+#: includes/node_settings.inc:31;34
+msgid "cancel own signups"
+msgstr "avbryt egna anmälningar"
+
+#: signup.module:568
+#: includes/admin.settings.inc:105
+msgid "view all signups"
+msgstr "visa alla anmälningar"
+
+#: signup.module:570
+msgid "administer signups for own content"
+msgstr "administrera anmälningar för eget innehåll"
+
+#: signup.module:571
+msgid "email users signed up for own content"
+msgstr "skicka e-post till användare som anmält sig till eget innehåll"
+
+#: signup.module:572
+msgid "email all signed up users"
+msgstr "skicka e-post till alla anmälda användare"
+
+#: signup.module:333
+msgid "Configure settings for signups."
+msgstr "Konfigurera inställningar för anmälan."
+
+#: signup.module:343;353
+msgid "View all signup-enabled posts, and open or close signups on them."
+msgstr "Visa alla, möjliga anmälningsaktiverade inlägg, och öppna eller stäng anmälan för dem."
+
+#: signup.module:356
+msgid "Signup administration"
+msgstr "Administration för anmälan"
+
+#: signup.module:363
+#: includes/admin.settings.inc:54
+#: includes/admin.signup_administration.inc:59
+#: includes/node_form.inc:194;194
+msgid "Signups"
+msgstr "Anmälda"
+
+#: signup.module:372
+#: includes/signup_form.inc:93
+msgid "Sign up"
+msgstr "Anmäl"
+
+#: signup.module:379
+msgid "List"
+msgstr "Lista"
+
+#: signup.module:390
+msgid "Administer"
+msgstr "Administrera"
+
+#: signup.module:410
+msgid "Add"
+msgstr "Lägg till"
+
+#: signup.module:421
+#: includes/admin.signup_administration.inc:104
+msgid "Signup broadcast"
+msgstr "Spridning av anmälan"
+
+#: signup.install:10
+msgid "Signup module per-node settings."
+msgstr "Inställningar per nod för modulen Signup."
+
+#: signup.install:13
+msgid "Primary key: node ID"
+msgstr "Primärnyckel: ID för noden"
+
+#: signup.install:20
+msgid "Email address to send signup notifications to."
+msgstr "E-postadress att skicka meddelande om anmälan till."
+
+#: signup.install:27
+msgid "Boolean indicating whether confirmation emails should be sent."
+msgstr "Boolesk indikering huruvida e-postmeddelande om bekräftelse skall skickas."
+
+#: signup.install:33
+msgid "Email template to send to users when they signup."
+msgstr "E-postmall att skicka till användare när de anmäler sig."
+
+#: signup.install:39
+msgid "Boolean indicating whether reminder emails should be sent. This is set to 0 once the reminders are sent."
+msgstr "Boolesk indikering huruvida e-post om påminnelse skall skickas. Detta är satt till 0 när påminnelserna är sända."
+
+#: signup.install:45
+msgid "Number of days before the start of a time-based node when the reminder emails should be sent."
+msgstr "Antal dagar innan starten för en tidsbaserad nod när e-postmeddelandet för påminnelse skall skickas."
+
+#: signup.install:52
+msgid "Email template to send to users to remind them about a signup."
+msgstr "E-postmall att skicka till användare för att påminna dem om en anmälan."
+
+#: signup.install:58
+msgid "Number of hours before the start of a time-based node when signups should automatically be closed. This column is not currently used and the behavior is controlled by a site-wide setting.  See http://drupal.org/node/290249 for more information."
+msgstr "Antal timmar innan starten för en tidsbaserad nod när anmälan automatiskt skall stängas. Denna kolumn används för närvarande inte och uppförandet kontrolleras av en generell inställning för webbplatsen. Se http://drupal.org/node/290249 för mer information."
+
+#: signup.install:65
+msgid "Maximum number of users who can signup before signups are closed. If set to 0, there is no limit."
+msgstr "Maximalt antal användare som kan anmäla sig innan anmälan är stängd. Om satt till 0, finns det ingen gräns."
+
+#: signup.install:72
+msgid "Boolean indicating if signups are open (1) or closed (0) for the given node"
+msgstr "Boolesk indikering på om anmälan är öppen (1) eller stängd (0) för den givna noden"
+
+#: signup.install:82
+msgid "Records information for each user who signs up for a node."
+msgstr "Lista på information för varje användare som anmält sig för en nod."
+
+#: signup.install:85
+msgid "Primary key: signup ID"
+msgstr "Primärnyckel: ID för anmälan"
+
+#: signup.install:92
+msgid "Key: the user ID of the user who signed up."
+msgstr "Nyckel: ID för användaren som anmälde sig."
+
+#: signup.install:99
+msgid "Key: the node ID of the node the user signed up for."
+msgstr "Nyckel: ID för noden som användaren anmälde sig till."
+
+#: signup.install:106
+msgid "The email address for an anonymous user who signed up, or an empty string for authenticated users."
+msgstr "E-postadress för en gäst som anmälde sig, eller en tom sträng för inloggade användare."
+
+#: signup.install:113
+msgid "Integer timestamp of when the user signed up for the node."
+msgstr "Tidsstämpel av typen Integer för när användaren anmälde sig till noden."
+
+#: signup.install:120
+msgid "Serialized string of additional signup form values.  See theme_signup_user_form() from theme/signup.theme for more information."
+msgstr "Seriell sträng av ytterligare formulärvärden. Se theme_signup_user_form() från theme/signup.theme för mer information."
+
+#: signup.install:126
+msgid "Did this user actually attend the node they signed up for?"
+msgstr "Deltog verkligen denna användare till noden de anmält sig till?"
+
+#: signup.install:250
+msgid "The old %signup_user_view setting was enabled on your site, so the %view_all_signups permission has been added to the %authenticated_user role. Please consider customizing what roles have this permission on the !access_control page."
+msgstr "Den gamla inställningen %signup_user_view var aktiverad på din webbplats, så rättigheten %view_all_signups har lagts till rollen %authenticated_user. Var vänlig överväg att anpassa vilka roller som skall ha denna rättighet på sidan !access_control."
+
+#: signup.install:250;258
+msgid "Users can view signups"
+msgstr "Användare kan visa anmälda"
+
+#: signup.install:250
+msgid "Access control"
+msgstr "Åtkomst"
+
+#: signup.install:258
+msgid "The %signup_user_view setting has been removed."
+msgstr "Inställningen %signup_user_view har tagits bort."
+
+#: signup.install:327
+msgid "Added the 'cancel own signups' permission to all roles that have the 'sign up for content' permission."
+msgstr "Lade till rättigheten \"avbryt egna anmälningar\" till alla roller som har rättigheten \"anmäl till innehåll\"."
+
+#: signup.install:327
+msgid "If you do not want your users to cancel their own signups, go to the <a href=\"@access_url\">Access control</a> page and unset this permission."
+msgstr "Om du inte vill att dina användare skall kunna avbryta sina egna anmälningar, gå till <a href=\"@access_url\">Rättigheter</a> och kryssa bort denna rättighet."
+
+#: signup.install:345
+msgid "Migrated signup settings per content type."
+msgstr "Migrerade inställningar för anmälan per innehållstyp."
+
+#: signup.install:415
+msgid "Replaced %event, %eventurl, %time, %username, %useremail, and %info tokens with %node_title, %node_url, %node_start_time, %user_name, %user_mail, and %user_signup_info in the reminder and confirmation email templates."
+msgstr "Bytte ut mönstren %event, %eventurl, %time, %username, %useremail, och %info med %node_title, %node_url, %node_start_time, %user_name, %user_mail, och %user_signup_info i e-postmallarna för påminnelse och bekräftelse."
+
+#: signup.install:433
+msgid "Removed the deprecated %old_view_name and %old_view_type variables. If you were using embedding a view on signup-enabled nodes, please visit the <a href=\"@signup_settings_url\">Signup configuration page</a> and select a new value for the %setting_name setting (which is located under the Advanced settings)."
+msgstr "Tog bort de ogillade variablerna %old_view_name och %old_view_type. Om du använde en inbäddad vy på anmälningsaktiverade noder, var vänlig gå till <a href=\"@signup_settings_url\">Inställningssidan för anmälan</a> och välj ett nytt värde för inställningen %setting_name (som finns under Utökade inställningar)."
+
+#: signup.install:438
+#: includes/admin.settings.inc:130
+msgid "View to embed for the signup user list"
+msgstr "Vy att bädda in för listan över anmälda användare"
+
+#: signup.info:0
+#: views/signup.views.inc:19;151
+msgid "Signup"
+msgstr "Anmälan"
+
+#: signup.info:0
+msgid "Allow users to sign up for content (especially events)."
+msgstr "Låter användare anmäla sig till innehåll (framför allt händelser)."
+
+#: includes/admin.settings.inc:17
+msgid "Close x hours before"
+msgstr "Stäng x timmar innan"
+
+#: includes/admin.settings.inc:21
+msgid "The number of hours before the event which signups will no longer be allowed. Use negative numbers to close signups after the event start (example: -12)."
+msgstr "Antalet timmar innan en händelse när anmälan inte längre kommer att vara tillåten. Använd negativa nummer för att stänga anmälan efter händelsen startat (exempel: -12)."
+
+#: includes/admin.settings.inc:26
+msgid "Default signup information"
+msgstr "Förvald information för anmälan"
+
+#: includes/admin.settings.inc:27
+msgid "New signup-enabled nodes will start with these settings."
+msgstr "Nya anmälningsaktiverade noder kommer att starta med dessa inställningar."
+
+#: includes/admin.settings.inc:34
+msgid "Advanced settings"
+msgstr "Utökade inställningar"
+
+#: includes/admin.settings.inc:39
+msgid "Format string for displaying signup-related dates"
+msgstr "Strängformat för att visa anmälningsrelaterade datum."
+
+#: includes/admin.settings.inc:42
+msgid "Small"
+msgstr "Liten"
+
+#: includes/admin.settings.inc:43
+msgid "Medium"
+msgstr "Mellan"
+
+#: includes/admin.settings.inc:44
+msgid "Large"
+msgstr "Stor"
+
+#: includes/admin.settings.inc:47
+msgid "Whenever this module needs to print a date (both in the administrative interface, and in the various e-mail messages it can send), this setting controls which date format string to use. The format strings are defined at the <a href=\"!settings_url\">Date and time settings page</a>."
+msgstr "När denna modul behöver skriva ut ett datum (både i det administrativa gränssnittet, och i olika e-postmeddelanden som kan skickas) kan denna inställning kontrollera vilken sträng för datumformat som skall användas. Strängformatet är definierad på sidan <a href=\"!settings_url\">Inställning för datum och tid</a>."
+
+#: includes/admin.settings.inc:50
+msgid "Location of the signup form"
+msgstr "Placering av anmälningsformuläret"
+
+#: includes/admin.settings.inc:53
+msgid "At the bottom of each node"
+msgstr "I slutet av varje nod"
+
+#: includes/admin.settings.inc:54
+msgid "Under the %signups tab"
+msgstr "Under fliken %signups"
+
+#: includes/admin.settings.inc:55
+msgid "Do not display signup form"
+msgstr "Visa inte anmälningsformulär"
+
+#: includes/admin.settings.inc:58
+msgid ""
+"On every signup-enabled node, users with permission to\n"
+" sign up can be presented with a form. This setting controls where this form should be displayed: either directly on the node itself, on a separate tab, or not at all."
+msgstr "För varje anmälningsaktiverad nod där användare med rättigheten att anmäla sig kan visas ett formulär. Denna inställning kontrollerar var detta formulär skall visas: antingen direkt på noden, på en separat flik, eller inte alls."
+
+#: includes/admin.settings.inc:77
+msgid "Default fieldset behavior for per-node signup form"
+msgstr "Förvald fältuppsättnings uppträdande för varje nods anmälningsformulär"
+
+#: includes/admin.settings.inc:79
+msgid "Collapsed"
+msgstr "Hopfälld"
+
+#: includes/admin.settings.inc:79
+msgid "Expanded"
+msgstr "Utfällt"
+
+#: includes/admin.settings.inc:81
+msgid "If the signup form is included at the bottom of each node, the signup form will be encapsulated in a collapsible fieldset. This setting controls if that fieldset is expanded or collapsed by default."
+msgstr "Om anmälningsformuläret inkluderas i slutet av varje nod kommer anmälningsformuläret att bäddas in i en hoppfälld fältuppsättning. Denna inställning kontrollerar om denna fältuppsättning är hopfälld som standard."
+
+#: includes/admin.settings.inc:89
+msgid "Use the built-in listing"
+msgstr "Använd den inbyggda listningen"
+
+#: includes/admin.settings.inc:92
+msgid "Embed a view"
+msgstr "Bädda in en vy"
+
+#: includes/admin.settings.inc:93
+msgid "If you choose to embed a view, you will be able to select which view you want to use below. The view you select will have a single argument passed in, the node id (nid) of the signup-enabled node being viewed. You can also use views to display this listing on its own tab or in a block if you disable this setting."
+msgstr "Om du väljer att bädda in en vy, kommer du att kunna välja vilken vy du vill använda nedan. Den vy du väljer kommer att ha ett enda argument vidarebefordrat i, ID för noden (nid) för anmälningsaktiverad nod som visas. Du kan också använda Vyer för att visa denna lista på sin egen flik eller i ett block om du inaktiverar denna inställning."
+
+#: includes/admin.settings.inc:96
+msgid "If you enable the !views_url, you will be able to embed a view directly onto the page for this listing."
+msgstr "Om du aktiverar !views_url kommer du att kunna bädda in en vy direkt på sidan för denna listning."
+
+#: includes/admin.settings.inc:96
+msgid "Views module"
+msgstr "Modulen Views"
+
+#: includes/admin.settings.inc:98
+msgid "Do not display a listing at all"
+msgstr "Visa inte en lista över huvud taget"
+
+#: includes/admin.settings.inc:101
+msgid "How to display the list of signed-up users"
+msgstr "Hur visningen skall listas för anmälda användare"
+
+#: includes/admin.settings.inc:105
+msgid "Users with the %view_signups permission can be presented with a list of all users who have signed up. This setting controls if and how that list should be generated. !views_help_text"
+msgstr "Användare med rättigheten %view_signups kan presenteras med en lista av alla användare som har anmält sig. Denna inställning kontrollerar om och hur denna lista skall genereras. !views_help_text"
+
+#: includes/admin.settings.inc:134
+msgid "If the signup user list is being generated by embedding a view, this selects which view should be used. The view's name, description, and display(s) it defines are listed.  NOTE: if you enable or customize the view being used for this, you should strongly consider disabling the view's menu items to prevent a duplicate tab showing the same information."
+msgstr "Detta väljer vilken vy som skall användas om listan för anmälda användare genereras av en inbäddad vy. Vyns namn, beskrivning och visning(ar) den definierar är listade. OBSERVERA: om du aktiverar eller anpassar vyn som används för detta, bör du kraftigt överväga att inaktivera vyns menyval för att förhindra dubbla flikar som visar samma information."
+
+#: includes/admin.settings.inc:154
+msgid "Save configuration"
+msgstr "Spara inställningar"
+
+#: includes/admin.signup_administration.inc:25
+msgid "All"
+msgstr "Alla"
+
+#: includes/admin.signup_administration.inc:26
+#: includes/node_admin_summary.inc:22
+#: views/handlers/signup_handler_field_signup_status.inc:9
+#: views/handlers/signup_handler_filter_signup_status.inc:9
+msgid "Open"
+msgstr "Öppen"
+
+#: includes/admin.signup_administration.inc:27
+#: includes/node_admin_summary.inc:22
+#: views/handlers/signup_handler_field_signup_status.inc:9
+#: views/handlers/signup_handler_filter_signup_status.inc:9
+msgid "Closed"
+msgstr "Avslutad"
+
+#: includes/admin.signup_administration.inc:34
+msgid "Filter by signup status"
+msgstr "Filtrera per status för anmälan"
+
+#: includes/admin.signup_administration.inc:38
+msgid "Filter"
+msgstr "Filtrera"
+
+#: includes/admin.signup_administration.inc:58
+msgid "Title"
+msgstr "Titel"
+
+#: includes/admin.signup_administration.inc:60
+#: theme/node.admin.inc:54
+msgid "Limit"
+msgstr "Begränsa"
+
+#: includes/admin.signup_administration.inc:61
+#: theme/node.admin.inc:52
+msgid "Status"
+msgstr "Status"
+
+#: includes/admin.signup_administration.inc:62
+#: theme/node.admin.inc:55
+msgid "Operations"
+msgstr "Funktioner"
+
+#: includes/admin.signup_administration.inc:100
+msgid "View signups"
+msgstr "Visa anmälda"
+
+#: includes/admin.signup_administration.inc:103
+msgid "Send an email message to all users who signed up."
+msgstr "Skicka ett e-postmeddelande till alla användare som anmält sig."
+
+#: includes/admin.signup_administration.inc:115
+#: includes/node_admin.inc:83
+#: includes/node_admin_summary.inc:36
+msgid "Update"
+msgstr "Uppdatera"
+
+#: includes/admin.signup_administration.inc:124;128
+msgid "Start"
+msgstr "Start"
+
+#: includes/broadcast.inc:20
+msgid "No users have signup up for this %node_type."
+msgstr "Inga användare har anmält sig för denna %node_type."
+
+#: includes/broadcast.inc:25
+msgid "%cancel_signup_url (access to this link is denied to users without the \"cancel own signups\" permission)"
+msgstr "%cancel_signup_url (åtkomst till denna länk nekas för användare med rättigheten \"avbryt egna anmälningar\")"
+
+#: includes/broadcast.inc:30
+msgid "Supported string substitutions: %tokens, and any tokens in the %replacement_tokens list."
+msgstr "Stödda ersättningar av strängar: %tokens, och alla tecken i listan %replacement_tokens."
+
+#: includes/broadcast.inc:30
+#: includes/node_settings.inc:31
+#: includes/token_help.inc:21
+msgid "Replacement tokens"
+msgstr "Ersättningstecken"
+
+#: includes/broadcast.inc:33
+msgid "Supported string substitutions: %tokens."
+msgstr "Stödda ersättningar av strängar: %tokens."
+
+#: includes/broadcast.inc:38
+msgid "Subject"
+msgstr "Ämne"
+
+#: includes/broadcast.inc:43
+msgid "Message body"
+msgstr "Meddelandets brödtext"
+
+#: includes/broadcast.inc:45
+msgid "Body of the email message you wish to send to all users who have signed up for this %node_type. !token_description"
+msgstr "Brödtext för e-postmeddelande som du vill skicka till alla användare som har anmält sig till denna %node_type. !token_description"
+
+#: includes/broadcast.inc:56
+msgid "Send yourself a copy."
+msgstr "Skicka en kopia till dig själv."
+
+#: includes/broadcast.inc:61
+msgid "Send"
+msgstr "Skicka"
+
+#: includes/broadcast.inc:72
+msgid "From"
+msgstr "Från"
+
+#: includes/broadcast.inc:80
+msgid "This message will be sent from: %from"
+msgstr "Detta meddelande kommer att skicka ifrån: %from"
+
+#: includes/broadcast.inc:153
+msgid "Sent a copy of this message to %email"
+msgstr "Skickade en kopia på detta meddelande till %email"
+
+#: includes/broadcast.inc:156
+msgid "Message sent to all users who have signed up"
+msgstr "Meddelande skickat till alla användare som har anmält sig"
+
+#: includes/broadcast.inc:134
+msgid "Broadcast email for %title sent to %email."
+msgstr "E-postmeddelande för spridning %title skickat till %email."
+
+#: includes/broadcast.inc:152
+msgid "Broadcast email copy for %title sent to %email."
+msgstr "Kopia på e-postmeddelande för spridning %title skickat till %email."
+
+#: includes/cron.inc:51
+msgid "!node_type reminder: !title"
+msgstr "påminnelse om !node_type : !title"
+
+#: includes/cron.inc:69
+msgid "Reminder for %title sent to %user_mail."
+msgstr "Påminnelse om %title skickat till %user_mail."
+
+#: includes/cron.inc:123
+msgid "Signups closed for %title by cron."
+msgstr "Anmälan stängd för %title genom schemalagda aktiviteter."
+
+#: includes/date.inc:183;247
+msgid "Date field to use with signup"
+msgstr "Datumfält att använda med anmälan"
+
+#: includes/date.inc:186
+msgid "Select the date field of this content type to use for signup time-based functionality, such as automatically closing signups when the start time has passed and sending reminder emails. Select \"%none\" to not use a date field for signup functionality at all."
+msgstr "Välj datumfält för detta innehåll att använda för funktioner som är tidsbaserade anmälningar, såsom automatiskt stängning av anmälan när starttiden har passerat och skickande av e-postmeddelande för påminnelse. Välj \"%none\" för att inte använda ett datumfält för funktionen att anmäla över huvud taget."
+
+#: includes/date.inc:186
+msgid "None"
+msgstr "Inga"
+
+#: includes/date.inc:250
+msgid "<none>"
+msgstr "<inget>"
+
+#: includes/date.inc:256
+msgid "You have enabled the %node_type content type for signups, and have added one or more date fields, but have not selected a date field for use with signup. You can modify the %signup_date_field setting at the <a href=\"@type_admin_url\">%node_type configuration page</a> to select a date field to use, or disable this warning by selecting %none."
+msgstr "Du har aktiverat innehållstypen %node_type för anmälan, och har lagt till ett eller flera datumfält, men du har inte valt datumfält att använda med anmälan. Du kan modifiera inställningen %signup_date_field på sidan <a href=\"@type_admin_url\">inställning för %node_type</a> för att välja ett datumfält att använda, eller ta bort denna varning genom att välja %none."
+
+#: includes/date.inc:261
+msgid "You have enabled the %node_type content type for signups but have not added a date field. You can either <a href=\"@type_add_field_url\">add a date field</a>, or disable this warning by selecting %none for the %signup_date_field setting at the <a href=\"@type_admin_url\">%node_type configuration page</a>."
+msgstr "Du har aktiverat innehållstypen %node_type för anmälan, men har inte lagt till ett eller flera datumfält. Antingen kan du <a href=\"@type_add_field_url\">lägga till ett datumfält</a>, eller ta bort denna varning genom att välja %none för inställningen %signup_date_field på sidan <a href=\"@type_admin_url\">inställning för %node_type</a>."
+
+#: includes/date.inc:282
+msgid "<Not specified>"
+msgstr "<Ej specificerad>"
+
+#: includes/date.inc:287
+msgid "<None>"
+msgstr "<Inget>"
+
+#: includes/date.inc:542
+msgid " to "
+msgstr "till"
+
+#: includes/event.6x-2.inc:90
+#: includes/scheduler.inc:110
+msgid "[Untimed]"
+msgstr "[Ej tidsangiven]"
+
+#: includes/no_views.inc:33;42;71
+msgid "Current signups"
+msgstr "Nuvarande anmälningar"
+
+#: includes/no_views.inc:43
+msgid "View signup schedule"
+msgstr "Visa schema för anmälan"
+
+#: includes/no_views.inc:78
+msgid "Signup schedule"
+msgstr "Schema för anmälan"
+
+#: includes/no_views.inc:79
+msgid "View full signup schedule"
+msgstr "Visa fullständig schema för anmälan"
+
+#: includes/no_views.inc:110
+msgid "Signups for @user"
+msgstr "Anmälningar för @user"
+
+#: includes/node_admin.inc:33
+#: theme/signup_form.inc:55
+msgid "Name"
+msgstr "Namn"
+
+#: includes/node_admin.inc:34
+#: views/signup.views.inc:198
+msgid "Signup time"
+msgstr "Anmälningstid"
+
+#: includes/node_admin.inc:35
+msgid "Extra information"
+msgstr "Extra information"
+
+#: includes/node_admin.inc:36
+msgid "Attendance"
+msgstr "Deltagande"
+
+#: includes/node_admin.inc:62
+msgid "No users have signed up for this %node_type."
+msgstr "Inga användare har anmält sig för denna %node_type."
+
+#: includes/node_admin.inc:73
+msgid "Mark as attended"
+msgstr "Markera som deltagit"
+
+#: includes/node_admin.inc:74
+msgid "Mark as did not attend"
+msgstr "Markera som deltog ej"
+
+#: includes/node_admin.inc:78
+#: includes/signup_cancel.inc:39
+#: includes/signup_cancel_form.inc:32
+msgid "Cancel signup"
+msgstr "Avbryt anmälan"
+
+#: includes/node_admin.inc:98
+msgid "No users selected."
+msgstr "Inga användare valda."
+
+#: includes/node_admin.inc:120;189
+msgid "You do not have permission to cancel signups."
+msgstr "Du har inte rättighet att avbryta anmälningar."
+
+#: includes/node_admin.inc:159
+msgid "Anonymous signup: %anon_mail"
+msgstr "Gäst anmäld: %anon_mail"
+
+#: includes/node_admin.inc:171
+msgid "Are you sure you want to cancel signups for these users?"
+msgstr "Är du säker på att du vill avbryta anmälan för dessa användare?"
+
+#: includes/node_admin.inc:173
+#: includes/signup_cancel.inc:38
+msgid "This action cannot be undone."
+msgstr "Denna åtgärd kan inte ångras."
+
+#: includes/node_admin.inc:174
+msgid "Cancel signups"
+msgstr "Avbryt anmälningar"
+
+#: includes/node_admin.inc:174
+msgid "Keep signups"
+msgstr "Behåll anmälningar"
+
+#: includes/node_admin_summary.inc:16
+msgid "Closed (limit reached)"
+msgstr "Stängd (gräns nådd)"
+
+#: includes/node_admin_summary.inc:61
+msgid "Signups opened for !title."
+msgstr "Anmälan öppnad för !title."
+
+#: includes/node_admin_summary.inc:65
+msgid "Signups closed for !title."
+msgstr "Anmälan stängd för !title."
+
+#: includes/node_form.inc:108
+msgid "%node_type start time is already past the signup close-in-advance time, signups now closed."
+msgstr "Starttiden för %node_type är redan efter tiden för anmälningstidens slut, anmälan är nu stängd."
+
+#: includes/node_form.inc:177
+#: views/handlers/signup_handler_field_signup_send_confirmation.inc:9
+#: views/handlers/signup_handler_filter_signup_disabled.inc:9
+msgid "Enabled"
+msgstr "Aktiverad"
+
+#: includes/node_form.inc:179
+msgid "Disabled, but save existing signup information"
+msgstr "Inaktiverad, men spara existerande anmälningsinformation"
+
+#: includes/node_form.inc:180
+msgid "Disabled, and remove all signup information"
+msgstr "Inaktiverad, och ta bort all anmälningsinformation"
+
+#: includes/node_form.inc:180
+msgid "This can not be undone, use with extreme caution!"
+msgstr "Detta kan inte ångras, använd med stor tillförsikt!"
+
+#: includes/node_form.inc:194
+msgid "If enabled, you can control whether users may sign up by visiting the !signups tab and toggling if signups are %open or %closed for this %node_type."
+msgstr "Om aktiverad så kan du kontrollera huruvida användare kan anmäla sig genom att besöka fliken !signups och skifta om anmälan är %open eller %closed för denna %node_type."
+
+#: includes/node_form.inc:194
+#: theme/admin.inc:42
+msgid "open"
+msgstr "öppen"
+
+#: includes/node_form.inc:194
+#: theme/admin.inc:46
+msgid "closed"
+msgstr "stängd"
+
+#: includes/node_form.inc:204
+msgid "If disabled, all of the other signup settings will be ignored."
+msgstr "Om inaktiverad så kommer alla andra inställningar för anmälan att ignoreras."
+
+#: includes/node_output.inc:76
+#: includes/signup_form.inc:55
+msgid "login"
+msgstr "logga in"
+
+#: includes/node_output.inc:77
+msgid "register"
+msgstr "registrera"
+
+#: includes/node_output.inc:81
+msgid "Please !login to sign up for this %node_type."
+msgstr "Var vänlig !login för att anmäla dig till denna %node_type."
+
+#: includes/node_output.inc:84
+msgid "Please !login or !register to sign up for this %node_type."
+msgstr "Var vänlig !login eller !register för att anmäla dig till denna %node_type."
+
+#: includes/node_settings.inc:31
+msgid "Supported string substitutions: %node_title, %node_url, %node_start_time, %user_name, %user_mail, %user_signup_info (additional information from the signup form), %cancel_signup_url (access to this link is denied to users without the \"%cancel_own_signups\" permission), and any tokens in the %replacement_tokens list."
+msgstr "Stödda strängersättningar: %node_title, %node_url, %node_start_time, %user_name, %user_mail, %user_signup_info (ytterligare information från anmälningsformuläret), %cancel_signup_url (åtkomst till denna länk nekas för användare utan rättigheten \"%cancel_own_signups\"), och alla tecken i listan %replacement_tokens."
+
+#: includes/node_settings.inc:34
+msgid "Supported string substitutions: %node_title, %node_url, %node_start_time, %user_name, %user_mail, %user_signup_info (additional information from the signup form), and %cancel_signup_url (access to this link is denied to users without the \"%cancel_own_signups\" permission)."
+msgstr "Stödda strängersättningar: %node_title, %node_url, %node_start_time, %user_name, %user_mail, %user_signup_info (ytterligare information från anmälningsformuläret), och %cancel_signup_url (åtkomst till denna länk nekas för användare utan rättigheten \"%cancel_own_signups\")."
+
+#: includes/node_settings.inc:51
+msgid "Send signups to"
+msgstr "Skicka anmälningar till"
+
+#: includes/node_settings.inc:54
+msgid "Email address where notification of new signups will be sent. Leave blank for no notifications."
+msgstr "E-postadress som meddelande om nya anmälningar kommer att skickas till. Lämna blankt för inga meddelanden."
+
+#: includes/node_settings.inc:58
+#: views/signup.views.inc:86
+msgid "Send confirmation"
+msgstr "Skicka bekräftelse"
+
+#: includes/node_settings.inc:63
+msgid "Confirmation email"
+msgstr "E-postmeddelande för bekräftelse"
+
+#: includes/node_settings.inc:66
+msgid "Email sent to user upon signup. !token_description"
+msgstr "E-postmeddelande skickat till användare efter anmälan. !token_description"
+
+#: includes/node_settings.inc:82
+#: views/signup.views.inc:110
+msgid "Send reminder"
+msgstr "Skicka påminnelse"
+
+#: includes/node_settings.inc:94
+msgid "day(s) before this %node_type"
+msgstr "dag(ar) innan denna %node_type"
+
+#: includes/node_settings.inc:94
+msgid "day(s) before start time"
+msgstr "dag(ar) innan starttid"
+
+#: includes/node_settings.inc:98
+msgid "Reminder email"
+msgstr "E-postmeddelande för påminnelse"
+
+#: includes/node_settings.inc:101
+msgid "Email sent to user as a reminder before the %node_type starts. !token_description"
+msgstr "E-postmeddelande skickat till användare som en påminnelse innan %node_type startar. !token_description"
+
+#: includes/node_settings.inc:101
+msgid "Email sent to user as a reminder before the start time. !token_description"
+msgstr "E-postmeddelande skickat till användare som en påminnelse innan starttiden. !token_description"
+
+#: includes/node_settings.inc:111
+msgid "Signup limit"
+msgstr "Gräns för anmälan"
+
+#: includes/node_settings.inc:114
+msgid "Maximum number of users who can sign up before signups are automatically closed. If set to 0, there is no limit."
+msgstr "Maximalt antal användare som kan anmäla sig innan anmälan stängs automatiskt. Om detta är sant till 0 finns det ingen gräns."
+
+#: includes/signup_cancel.inc:14
+msgid "Invalid link to cancel a signup."
+msgstr "Ogiltig länk för att avbryta en anmälan."
+
+#: includes/signup_cancel.inc:36
+msgid "Are you sure you want to cancel the signup to %node_title?"
+msgstr "Är du säker på att du vill avbryta anmälan till %node_title?"
+
+#: includes/signup_cancel.inc:39
+msgid "Keep signup"
+msgstr "Behåll anmälan"
+
+#: includes/signup_form.inc:37
+msgid "Sign up another user"
+msgstr "Anmäl en annan användare"
+
+#: includes/signup_form.inc:42
+msgid "Sign up for @title"
+msgstr "Anmäl till @title"
+
+#: includes/signup_form.inc:54
+msgid "Email"
+msgstr "E-post"
+
+#: includes/signup_form.inc:55
+msgid "An e-mail address is required for users who are not registered at this site. If you are a registered user at this site, please !login to sign up for this %node_type."
+msgstr "En e-postadress krävs för användare som inte är registrerade på denna webbplats. Om du är en registrerad användare på denna webbplats, var vänlig !login för att anmäla dig till denna %node_type"
+
+#: includes/signup_form.inc:66
+msgid "Username"
+msgstr "Användarnamn"
+
+#: includes/signup_form.inc:146
+msgid "Invalid email address entered for signup."
+msgstr "Ogiltig e-postadress angiven för anmälan."
+
+#: includes/signup_form.inc:149
+msgid "The email address entered belongs to a registered user."
+msgstr "E-postadressen som angavs hör till en registrerad användare."
+
+#: includes/signup_form.inc:153
+msgid "The email address entered has already been used to sign up for this %node_type."
+msgstr "E-postadressen som angavs har redan använts för att anmäla sig för denna %node_type."
+
+#: includes/signup_form.inc:184
+msgid "User %user_name does not exist."
+msgstr "Användare %user_name existerar inte."
+
+#: includes/signup_form.inc:187
+msgid "User !user does not have permission to sign up."
+msgstr "Användare !user har inte rättighet att anmäla sig."
+
+#: panels/content_types/signup_form.inc:10;27
+msgid "Signup form"
+msgstr "Anmälningsformulär"
+
+#: panels/content_types/signup_form.inc:30
+msgid "Signup form."
+msgstr "Anmälningsformulär."
+
+#: panels/content_types/signup_form.inc:31
+msgid "Node"
+msgstr "Nod"
+
+#: panels/content_types/signup_form.inc:32
+msgid "Contributed modules"
+msgstr "Bidragna moduler"
+
+#: panels/content_types/signup_form.inc:75
+msgid "\"@s\" @type"
+msgstr "\"@s\" @type"
+
+#: theme/admin.inc:50
+msgid "enabled"
+msgstr "aktiverad"
+
+#: theme/admin.inc:53
+msgid "No content is currently !status for signups."
+msgstr "Inget innehåll är för närvarande !status för anmälan."
+
+#: theme/email.inc:20
+msgid "SIGNUP INFORMATION"
+msgstr "INFORMATION FÖR ANMÄLAN"
+
+#: theme/email.inc:66
+msgid "This is a copy of the signup broadcast you just sent."
+msgstr "Detta är en kopia på spridningsanmälan som du just skickade."
+
+#: theme/email.inc:67
+msgid "Here is the original text you entered, with none of the tokens replaced:"
+msgstr "Här är originaltexten du angav, med inga av tecknen utbytta:"
+
+#: theme/email.inc:71
+msgid "Here is how the message that was sent to each user looked, with all of the tokens replaced (using your account for the user-related tokens):"
+msgstr "Här är hur meddelandet som skickades till varje användare såg ut, med alla tecken utbytta (genom att använda ditt konto för de användarrelaterade tecknen):"
+
+#: theme/no_views.inc:21
+msgid "!users signed up"
+msgstr "!users anmält sig"
+
+#: theme/no_views.inc:27
+msgid "!count anonymous"
+msgstr "!count gäster"
+
+#: theme/no_views.inc:21
+msgid "1 individual"
+msgid_plural "@count individuals"
+msgstr[0] "1 person"
+msgstr[1] "@count personer"
+
+#: theme/node.admin.inc:53
+msgid "Total"
+msgstr "Totalt"
+
+#: theme/node.admin.inc:58
+msgid "Signup summary"
+msgstr "Anmälningsöversikt"
+
+#: theme/node.admin.inc:68
+msgid "Signup details"
+msgstr "Detaljer för anmälan"
+
+#: theme/node.admin.inc:134
+#: views/handlers/signup_handler_filter_signup_user_attended.inc:9
+msgid "Did not attend"
+msgstr "Deltog inte"
+
+#: theme/node.admin.inc:137
+#: views/handlers/signup_handler_filter_signup_user_attended.inc:9
+msgid "Attended"
+msgstr "Deltog"
+
+#: theme/node.inc:26
+msgid "Signups closed for this %node_type"
+msgstr "Anmälan stängd för denna %node_type"
+
+#: theme/node.inc:95
+msgid "Your signup information"
+msgstr "Din anmälningsinformation"
+
+#: theme/signup_form.inc:61
+msgid "Phone"
+msgstr "Telefon"
+
+#: views/signup.views.inc:29
+msgid "Status: Open/Closed"
+msgstr "Status: Öppen/Stängd"
+
+#: views/signup.views.inc:30
+msgid "Are signups open or closed for this node?"
+msgstr "Är anmälan öppen eller stängd för denna nod?"
+
+#: views/signup.views.inc:39
+msgid "Filter on if signups are open or closed for each node."
+msgstr "Filtrera på om anmälan är öppen eller stängd för varje nod."
+
+#: views/signup.views.inc:45
+msgid "Sort by if signups are closed or open."
+msgstr "Sortera på om anmälan är öppen eller stängd."
+
+#: views/signup.views.inc:50
+msgid "Signup Limit"
+msgstr "Begränsning av anmälan"
+
+#: views/signup.views.inc:51
+msgid "Maximum number of users who can sign up before signups are automatically closed (set to 0 for no limit)."
+msgstr "Maximalt antal användare som kan anmäla sig innan anmälan automatiskt stängs (ange 0 för ingen gräns)."
+
+#: views/signup.views.inc:60
+msgid "Filter by the maximum number of users who can sign up before signups are automatically closed (set to 0 for no limit)."
+msgstr "Filtrera på maximalt antal användare som kan anmäla sig innan anmälan stängs automatiskt (ange 0 för ingen gräns)."
+
+#: views/signup.views.inc:66
+msgid "Notification: Email Address"
+msgstr "Meddelande: E-postadress"
+
+#: views/signup.views.inc:67
+msgid "Address where notification emails are sent wenever a user signs up."
+msgstr "Adress som e-postmeddelande skickas till när en ny användare anmäler sig."
+
+#: views/signup.views.inc:75
+msgid "Send Confirmation"
+msgstr "Skicka bekräftelse"
+
+#: views/signup.views.inc:76
+msgid "Should confirmation email be sent to each user who signs up."
+msgstr "Skall e-postmeddelande med bekräftelse skickas till varje användare som anmäler sig."
+
+#: views/signup.views.inc:85
+msgid "Filter on if signup confirmation is enabled or disabled."
+msgstr "Filtrera på om bekräftelse på anmälan är aktiverad eller inaktiverad."
+
+#: views/signup.views.inc:91
+msgid "Confirmation: Message"
+msgstr "Bekräftelse: Meddelande"
+
+#: views/signup.views.inc:92
+msgid "The body of the optional confirmation email that can be sent whenever a user signs up."
+msgstr "Brödtexten för det valfria e-postmeddelandet med bekräftelse som kan skickas när en användare anmält sig."
+
+#: views/signup.views.inc:100
+msgid "Send Reminder"
+msgstr "Skicka påminnelse"
+
+#: views/signup.views.inc:101
+msgid "Should a reminder email be automatically sent to all users who signed up. This will be false if either an administrator disabled the feature for a given event, or if the reminder was already sent."
+msgstr "Skall ett e-postmeddelande som påminnelse skickas automatiskt till alla användare som har anmält sig. Detta kommer som falskt antingen en administratör inaktiverat funktionen för en given händelse, eller om påminnelsen redan har sänts."
+
+#: views/signup.views.inc:109
+msgid "Filter on if a signup reminder email will be sent."
+msgstr "Filtrera på om ett e-postmeddelande för påminnelse skall skickas."
+
+#: views/signup.views.inc:115
+msgid "Reminder: Days Before Event for Email"
+msgstr "Påminnelse: Dagar innan händelse för e-post"
+
+#: views/signup.views.inc:116
+msgid "How many days before an event will the reminder email be sent."
+msgstr "Hur många dagar innan en händelse skall ett e-postmeddelande för påminnelse skickas."
+
+#: views/signup.views.inc:125
+msgid "Reminder: Message"
+msgstr "Påminnelse: Meddelande"
+
+#: views/signup.views.inc:126
+msgid "The body of the optional reminder email that can be sent a configurable time before an event begins."
+msgstr "Brödtexten för det valfria e-postmeddelandet för påminnelse som kan skickas en konfigurerbar tid innan en händelse börjar."
+
+#: views/signup.views.inc:134
+msgid "Enabled/Disabled"
+msgstr "Aktiverad/Inaktiverad"
+
+#: views/signup.views.inc:137
+msgid "Filter on if signups are enabled or disabled."
+msgstr "Filtrera på om anmälan är aktiverad eller inaktiverad."
+
+#: views/signup.views.inc:143
+msgid "Node: Signup link"
+msgstr "Nod: Länk för anmälan"
+
+#: views/signup.views.inc:146
+msgid "Link to one of the signup-related tabs on each node."
+msgstr "Länka till en av de anmälningsrelaterade flikarna på varje nod."
+
+#: views/signup.views.inc:161
+msgid "User"
+msgstr "Användare"
+
+#: views/signup.views.inc:162
+msgid "The user who signed up."
+msgstr "Användaren som anmälde sig."
+
+#: views/signup.views.inc:166;239
+msgid "Signup user"
+msgstr "Anmäl användare"
+
+#: views/signup.views.inc:171
+msgid "User available signups"
+msgstr "Tillgängliga anmälningar för användare"
+
+#: views/signup.views.inc:172
+msgid "Displays nodes the given user has not signed up for. Note that this argument will not work properly if you add the %signup_user relationship to the view."
+msgstr "Visa noder som den givna användare inte har anmält sig till. Observera att detta argument inte kommer att fungera korrekt om du lägger till släktskapet %signup_user till vyn."
+
+#: views/signup.views.inc:172
+msgid "Signup: User"
+msgstr "Anmäl: Användare"
+
+#: views/signup.views.inc:180
+msgid "User: Email Address"
+msgstr "Användare: E-postadress"
+
+#: views/signup.views.inc:184
+msgid "Email address of a user (authenticated or anonymous) who signed up."
+msgstr "E-postadress för en användare (inloggad eller gäst) som anmälde sig."
+
+#: views/signup.views.inc:184
+msgid "WARNING: only expose this data in a view that is restricted to users whom you can trust with such sensitive information."
+msgstr "VARNING: visa enbart dessa data i en vy som begränsas till användare som du kan lita på med sådan känslig information."
+
+#: views/signup.views.inc:189
+msgid "User: Signup Time"
+msgstr "Användare: Tid för anmälan"
+
+#: views/signup.views.inc:190
+msgid "Time when user signed up."
+msgstr "Tid när användare anmälde sig."
+
+#: views/signup.views.inc:197
+msgid "Time when the user signed up."
+msgstr "Tid när användaren anmälde sig."
+
+#: views/signup.views.inc:202
+msgid "Sort by time of sign up."
+msgstr "Sortera på tid för anmälan."
+
+#: views/signup.views.inc:207
+msgid "User: Attended"
+msgstr "Användare: Deltog"
+
+#: views/signup.views.inc:208
+msgid "Did the user attend or not?"
+msgstr "Deltog användaren eller inte?"
+
+#: views/signup.views.inc:215
+msgid "Filter on users who attended or not."
+msgstr "Filtrera på användare som deltog eller inte."
+
+#: views/signup.views.inc:220
+msgid "Sort by if the user attended or not."
+msgstr "Sortera på om om användaren deltog eller inte."
+
+#: views/signup.views.inc:225
+msgid "User: Additional Signup Info"
+msgstr "Användare: Ytterligare anmälningsinfo"
+
+#: views/signup.views.inc:226
+msgid "Enter the additional field name (from signup.theme) in the Option column."
+msgstr "Ange ytterligare fältnamn (från signup.theme) in kolumnen Alternativ."
+
+#: views/signup.views.inc:234
+msgid "User: Anonymous/Authenticated"
+msgstr "Användare: Gäst/Inloggad"
+
+#: views/signup.views.inc:238
+msgid "Filter on if a user who signed up is anonymous, or an authenticated user on the site."
+msgstr "Filtrera på om en användare som anmälde sig är en gäst eller en inloggad användare på denna webbplats."
+
+#: views/signup.views.inc:244
+msgid "User: Current User"
+msgstr "Användare: Nuvarande användare"
+
+#: views/signup.views.inc:248
+msgid "This allows you to filter by whether or not the node was signed up by the logged in user of the view."
+msgstr "Detta låter dig filtrera på huruvida noden var anmäld åt den inloggade användaren för vyn."
+
+#: views/signup.views.inc:311
+#: views/plugins/signup_plugin_argument_validate_signup_status.inc:15
+msgid "Signup status"
+msgstr "Status för anmälan"
+
+#: views/handlers/signup_handler_field_signup_node_link.inc:17
+msgid "Signup tab to link to"
+msgstr "Flik för anmälan att länka till"
+
+#: views/handlers/signup_handler_field_signup_node_link.inc:19
+msgid "Signup current user form"
+msgstr "Formulär för anmälan av nuvarande användare"
+
+#: views/handlers/signup_handler_field_signup_node_link.inc:20
+msgid "Signup user list"
+msgstr "Lista för anmälda användare"
+
+#: views/handlers/signup_handler_field_signup_node_link.inc:21
+msgid "Administer signups"
+msgstr "Administrera anmälda"
+
+#: views/handlers/signup_handler_field_signup_node_link.inc:22
+msgid "Form to sign up other users"
+msgstr "Formulär för att anmäla andra användare"
+
+#: views/handlers/signup_handler_field_signup_node_link.inc:23
+msgid "Signup broadcast form"
+msgstr "Formulär för att sprida anmälan"
+
+#: views/handlers/signup_handler_field_signup_node_link.inc:29
+msgid "Set view as return destination"
+msgstr "Ange vy som returnerande destination"
+
+#: views/handlers/signup_handler_field_signup_node_link.inc:30
+msgid "After submitting a form, do you want to be redirected back to this view, or stay at the other page?"
+msgstr "Efter att ha skickat ett formulär, vill du bli vidarebefordad till denna vy, eller stanna på samma sida?"
+
+#: views/handlers/signup_handler_field_signup_node_link.inc:58
+msgid "signup form"
+msgstr "formulär för anmälan"
+
+#: views/handlers/signup_handler_field_signup_node_link.inc:61
+msgid "signup list"
+msgstr "lista på anmälda"
+
+#: views/handlers/signup_handler_field_signup_node_link.inc:64
+msgid "administer signups"
+msgstr "administrera anmälda"
+
+#: views/handlers/signup_handler_field_signup_node_link.inc:67
+msgid "signup other users"
+msgstr "anmäl andra användare"
+
+#: views/handlers/signup_handler_field_signup_node_link.inc:70
+msgid "signup broadcast"
+msgstr "sprida anmälan"
+
+#: views/handlers/signup_handler_field_signup_user_form_data.inc:12
+msgid " Field Name"
+msgstr "Fältnamn"
+
+#: views/handlers/signup_handler_field_signup_user_form_data.inc:13
+msgid "If you want to display a single field from signup.theme, enter its name here, otherwise, all fields will be displayed."
+msgstr "Om du vill visa ett enkelt fält från signup.theme, ange dess namn här, annars kommer alla fält att visas."
+
+#: views/handlers/signup_handler_filter_signup_user_authenticated.inc:9
+msgid "Authenticated"
+msgstr "Inloggad"
+
+#: views/plugins/signup_plugin_argument_validate_signup_status.inc:17
+msgid "Signups enabled (either open or closed)"
+msgstr "Anmälan aktiverad (antingen öppen eller stängd)"
+
+#: views/plugins/signup_plugin_argument_validate_signup_status.inc:18
+msgid "Signups open"
+msgstr "Anmälan öppen"
+
+#: views/plugins/signup_plugin_argument_validate_signup_status.inc:19
+msgid "Signups closed"
+msgstr "Anmälan stängd"
+
+#: views/plugins/signup_plugin_argument_validate_signup_status.inc:20
+msgid "Signups disabled"
+msgstr "Anmälan inaktiverad"
+
+#: views/plugins/signup_plugin_argument_validate_signup_status.inc:22
+msgid "Validate if the current node is signup-enabled and if signups are open or closed"
+msgstr "Bekräfta om den nuvarande noden är anmälningsaktiverad och om anmälan är öppen eller stängd."
+
+#: views/plugins/signup_plugin_argument_validate_signup_status.inc:30
+msgid "Validate user has access to the node"
+msgstr "Bekräfta användare har åtkomst till noden"
+

@@ -1,5 +1,5 @@
 <?php
-// $Id: filefield_sources.inc,v 1.1 2010/08/06 11:05:26 deciphered Exp $
+// $Id: filefield_sources.inc,v 1.2 2010/08/10 04:51:03 deciphered Exp $
 /**
  * @file
  * Adds FileField Sources integration.
@@ -21,11 +21,17 @@ function filefield_sources_wysiwyg_imagefield_theme_registry_alter($theme_regist
  */
 function theme_wysiwyg_imagefield_filefield_source_reference_element($element) {
   drupal_add_js(drupal_get_path('module', 'wysiwyg_imagefield') . '/modules/filefield_sources.js');
-
-  $view = views_get_view('wysiwyg_imagefield');
-  $view->pager['use_pager'] = TRUE;
-  $view->use_ajax = TRUE;
-
   $element['autocomplete']['#field_suffix'] = theme('submit', $element['select']);
-  return '<div class="filefield-source filefield-source-reference clear-block"><span class="wysiwyg_imagefield-hidden">' . theme('textfield', $element['autocomplete']) . '</span>' . $view->render('default') . '</div>';
+
+  if (module_exists('views')) {
+    $view = views_get_view('wysiwyg_imagefield');
+    $view->pager['use_pager'] = TRUE;
+    $view->use_ajax = TRUE;
+
+    return '<div class="filefield-source filefield-source-reference clear-block"><span class="wysiwyg_imagefield-hidden">' . theme('textfield', $element['autocomplete']) . '</span>' . $view->render('default') . '</div>';
+  }
+
+  else {
+    return '<div class="filefield-source filefield-source-reference clear-block">' . theme('textfield', $element['autocomplete']) . '</div>';
+  }
 }

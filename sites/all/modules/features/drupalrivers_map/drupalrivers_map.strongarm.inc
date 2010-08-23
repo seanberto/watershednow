@@ -75,13 +75,13 @@ function drupalrivers_map_strongarm() {
   $strongarm->value = array(
     'title' => '-3',
     'body_field' => '-2',
-    'revision_information' => '0',
-    'author' => '1',
-    'options' => '2',
-    'comment_settings' => '4',
-    'menu' => '-1',
+    'revision_information' => '3',
+    'author' => '4',
+    'options' => '5',
+    'comment_settings' => '7',
+    'menu' => '2',
     'taxonomy' => '-4',
-    'path' => '3',
+    'path' => '6',
   );
 
   $export['content_extra_weights_map_point'] = $strongarm;

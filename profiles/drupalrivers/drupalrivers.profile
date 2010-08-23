@@ -53,6 +53,12 @@ function drupalrivers_profile_modules() {
     'imagefield',
     'emfield',
     'emvideo',
+    'nodereference',
+    // Date
+    'date',
+    'date_api',
+    'date_popup',
+    'date_timezone',
     // Other
 		'advanced_help',
 		'boxes',
@@ -64,6 +70,7 @@ function drupalrivers_profile_modules() {
 		// User interface and WYSIWYG
 		'better_formats',
 		'insert',
+		'filefield_sources',
 		'jquery_ui',
 		'webform',
 		'wysiwyg',
@@ -74,9 +81,13 @@ function drupalrivers_profile_modules() {
 		'simple_payments',
 		'simple_payments_paypal',
 		'simple_donations',
+		// Event Sigups
+		'signup',
 		// Drupal Rivers features
 		'drupalrivers_common',
 		'drupalrivers_blog',
+		'drupalrivers_events',
+		'drupalrivers_action',
 		'drupalrivers_map',
 		// Development (NOTE: Comment out for production installs.)
 		'devel',
@@ -170,7 +181,7 @@ function drupalrivers_profile_tasks(&$task, $url) {
   db_query("UPDATE {system} SET status = 0 WHERE type = 'theme' and name ='%s'", 'watershed');
   variable_set('theme_default', 'watershed'); // set the default theme to Basic
 	variable_set('admin_theme', 'rubik'); // set the admin theme to Rubik
-	variable_set('node_admin_theme', 0); // Use the default them, not the admin theme for content editing
+	variable_set('node_admin_theme', 1); // Use the admin theme for content editing
 
 }
 
@@ -328,8 +339,7 @@ function _drupalrivers_fiters_wysiwyg() {
   	(22,3,'filter',1,2),
   	(23,3,'filter',2,0)"
   );
-  
-/*  
+   
   // Setting up WYSIWYG profiles
   $wysiwyg_profiles = array();
   $wysiwyg_profiles['1'] = array(
@@ -352,7 +362,7 @@ function _drupalrivers_fiters_wysiwyg() {
   foreach ($wysiwyg_profiles as $profile) {
     db_query("INSERT INTO {wysiwyg} (`format`,`editor`,`settings`) VALUES (%d, '%s', '%s')", $profile['format'], $profile['editor'], $profile['settings']);
   };
-*/
+  
 }
 
 /**

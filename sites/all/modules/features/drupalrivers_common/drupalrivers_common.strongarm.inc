@@ -47,24 +47,10 @@ function drupalrivers_common_strongarm() {
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'comment_anonymous_webform';
-  $strongarm->value = 0;
-
-  $export['comment_anonymous_webform'] = $strongarm;
-  $strongarm = new stdClass;
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
   $strongarm->name = 'comment_controls_page';
   $strongarm->value = '3';
 
   $export['comment_controls_page'] = $strongarm;
-  $strongarm = new stdClass;
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'comment_controls_webform';
-  $strongarm->value = '3';
-
-  $export['comment_controls_webform'] = $strongarm;
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
@@ -75,24 +61,10 @@ function drupalrivers_common_strongarm() {
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'comment_default_mode_webform';
-  $strongarm->value = '4';
-
-  $export['comment_default_mode_webform'] = $strongarm;
-  $strongarm = new stdClass;
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
   $strongarm->name = 'comment_default_order_page';
   $strongarm->value = '1';
 
   $export['comment_default_order_page'] = $strongarm;
-  $strongarm = new stdClass;
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'comment_default_order_webform';
-  $strongarm->value = '1';
-
-  $export['comment_default_order_webform'] = $strongarm;
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
@@ -103,24 +75,10 @@ function drupalrivers_common_strongarm() {
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'comment_default_per_page_webform';
-  $strongarm->value = '50';
-
-  $export['comment_default_per_page_webform'] = $strongarm;
-  $strongarm = new stdClass;
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
   $strongarm->name = 'comment_form_location_page';
   $strongarm->value = '0';
 
   $export['comment_form_location_page'] = $strongarm;
-  $strongarm = new stdClass;
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'comment_form_location_webform';
-  $strongarm->value = '0';
-
-  $export['comment_form_location_webform'] = $strongarm;
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
@@ -138,31 +96,10 @@ function drupalrivers_common_strongarm() {
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'comment_preview_webform';
-  $strongarm->value = '1';
-
-  $export['comment_preview_webform'] = $strongarm;
-  $strongarm = new stdClass;
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
   $strongarm->name = 'comment_subject_field_page';
   $strongarm->value = '1';
 
   $export['comment_subject_field_page'] = $strongarm;
-  $strongarm = new stdClass;
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'comment_subject_field_webform';
-  $strongarm->value = '1';
-
-  $export['comment_subject_field_webform'] = $strongarm;
-  $strongarm = new stdClass;
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'comment_webform';
-  $strongarm->value = '0';
-
-  $export['comment_webform'] = $strongarm;
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
@@ -177,32 +114,29 @@ function drupalrivers_common_strongarm() {
   $strongarm->value = array(
     'title' => '-5',
     'body_field' => '-4',
-    'revision_information' => '-1',
-    'author' => '-2',
-    'options' => '0',
-    'comment_settings' => '2',
-    'menu' => '-3',
-    'path' => '1',
+    'revision_information' => '2',
+    'author' => '1',
+    'options' => '3',
+    'comment_settings' => '5',
+    'menu' => '0',
+    'path' => '4',
   );
 
   $export['content_extra_weights_page'] = $strongarm;
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'content_extra_weights_webform';
-  $strongarm->value = array(
-    'webform' => '-3',
-    'title' => '-5',
-    'body_field' => '-4',
-    'revision_information' => '0',
-    'author' => '-1',
-    'options' => '1',
-    'comment_settings' => '3',
-    'menu' => '-2',
-    'path' => '2',
-  );
+  $strongarm->name = 'context_reaction_block_all_regions';
+  $strongarm->value = 0;
 
-  $export['content_extra_weights_webform'] = $strongarm;
+  $export['context_reaction_block_all_regions'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'context_reaction_block_disable_core';
+  $strongarm->value = '1';
+
+  $export['context_reaction_block_disable_core'] = $strongarm;
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
@@ -273,13 +207,6 @@ function drupalrivers_common_strongarm() {
   $strongarm->value = 0;
 
   $export['enable_revisions_page_page'] = $strongarm;
-  $strongarm = new stdClass;
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'enable_revisions_page_webform';
-  $strongarm->value = 0;
-
-  $export['enable_revisions_page_webform'] = $strongarm;
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
@@ -389,7 +316,7 @@ function drupalrivers_common_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'node_admin_theme';
-  $strongarm->value = 0;
+  $strongarm->value = 1;
 
   $export['node_admin_theme'] = $strongarm;
   $strongarm = new stdClass;
@@ -401,15 +328,6 @@ function drupalrivers_common_strongarm() {
   );
 
   $export['node_options_page'] = $strongarm;
-  $strongarm = new stdClass;
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'node_options_webform';
-  $strongarm->value = array(
-    0 => 'status',
-  );
-
-  $export['node_options_webform'] = $strongarm;
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
@@ -495,7 +413,7 @@ function drupalrivers_common_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'pathauto_node_bulkupdate';
-  $strongarm->value = FALSE;
+  $strongarm->value = 0;
 
   $export['pathauto_node_bulkupdate'] = $strongarm;
   $strongarm = new stdClass;
@@ -516,14 +434,14 @@ function drupalrivers_common_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'pathauto_node_page_pattern';
-  $strongarm->value = '';
+  $strongarm->value = '[title-raw]';
 
   $export['pathauto_node_page_pattern'] = $strongarm;
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'pathauto_node_pattern';
-  $strongarm->value = 'content/[title-raw]';
+  $strongarm->value = '[title-raw]';
 
   $export['pathauto_node_pattern'] = $strongarm;
   $strongarm = new stdClass;
@@ -533,13 +451,6 @@ function drupalrivers_common_strongarm() {
   $strongarm->value = 'feed';
 
   $export['pathauto_node_supportsfeeds'] = $strongarm;
-  $strongarm = new stdClass;
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'pathauto_node_webform_pattern';
-  $strongarm->value = 'surveys/[title-raw]';
-
-  $export['pathauto_node_webform_pattern'] = $strongarm;
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
@@ -642,7 +553,7 @@ function drupalrivers_common_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'pathauto_punctuation_hyphen';
-  $strongarm->value = 1;
+  $strongarm->value = '1';
 
   $export['pathauto_punctuation_hyphen'] = $strongarm;
   $strongarm = new stdClass;
@@ -666,6 +577,13 @@ function drupalrivers_common_strongarm() {
   $strongarm->value = '0';
 
   $export['pathauto_punctuation_left_square'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'pathauto_punctuation_less_than';
+  $strongarm->value = '0';
+
+  $export['pathauto_punctuation_less_than'] = $strongarm;
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
@@ -705,7 +623,7 @@ function drupalrivers_common_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'pathauto_punctuation_quotes';
-  $strongarm->value = 0;
+  $strongarm->value = '0';
 
   $export['pathauto_punctuation_quotes'] = $strongarm;
   $strongarm = new stdClass;
@@ -789,21 +707,21 @@ function drupalrivers_common_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'pathauto_taxonomy_applytofeeds';
-  $strongarm->value = FALSE;
+  $strongarm->value = '';
 
   $export['pathauto_taxonomy_applytofeeds'] = $strongarm;
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'pathauto_taxonomy_bulkupdate';
-  $strongarm->value = FALSE;
+  $strongarm->value = 0;
 
   $export['pathauto_taxonomy_bulkupdate'] = $strongarm;
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'pathauto_taxonomy_pattern';
-  $strongarm->value = 'category/[vocab-raw]/[catpath-raw]';
+  $strongarm->value = '[vocab-raw]/[catpath-raw]';
 
   $export['pathauto_taxonomy_pattern'] = $strongarm;
   $strongarm = new stdClass;
@@ -831,7 +749,7 @@ function drupalrivers_common_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'pathauto_user_bulkupdate';
-  $strongarm->value = FALSE;
+  $strongarm->value = 0;
 
   $export['pathauto_user_bulkupdate'] = $strongarm;
   $strongarm = new stdClass;
@@ -852,7 +770,7 @@ function drupalrivers_common_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'pathauto_verbose';
-  $strongarm->value = FALSE;
+  $strongarm->value = 0;
 
   $export['pathauto_verbose'] = $strongarm;
   $strongarm = new stdClass;
@@ -959,12 +877,10 @@ function drupalrivers_common_strongarm() {
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'webform_node_types';
-  $strongarm->value = array(
-    0 => 'webform',
-  );
+  $strongarm->name = 'wysiwyg_imagefield_page';
+  $strongarm->value = 'field_image_assets';
 
-  $export['webform_node_types'] = $strongarm;
+  $export['wysiwyg_imagefield_page'] = $strongarm;
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;

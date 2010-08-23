@@ -1,0 +1,230 @@
+# Danish translation of Drupal (signup.module)
+# Copyright 2006 Morten Wulff <wulff@tem.dtu.dk>
+msgid ""
+msgstr ""
+"Project-Id-Version: Danish translation of Drupal (signup.module) $Id: da.po,v 1.1 2008/11/06 10:20:48 dww Exp $\n"
+"POT-Creation-Date: 2006-01-07 16:06+0100\n"
+"PO-Revision-Date: 2006-01-13 16:09+0100\n"
+"Last-Translator: Morten Wulff <wulff@tem.dtu.dk>\n"
+"Language-Team: Danish <danish@psyke.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-Language: Danish\n"
+"X-Poedit-Country: DENMARK\n"
+
+#: signup.module:65
+msgid "Event reminder: %event"
+msgstr "Påmindelse: %event"
+
+#: signup.module:104
+msgid "Allow users to sign up for events."
+msgstr "Tillad brugerne at tilmelde sig til arrangementer."
+
+#: signup.module:107
+msgid "<p>Signup allows users to sign up for nodes of any type.  Includes options for sending a notification email to a selected email address upon a new user signup (good for notifying event coordinators, etc.) and a confirmation email to users who sign up--these options are per node.  When used on event nodes (with event.module installed and regular cron runs), it can also send out reminder emails to all signups X days before the start of the event (per node setting) and auto-close event signups 1 hour before their start (general setting). Settings exist for resticting signups to selected roles and content types.</p><br><p>To use signup, you must enable a node type for signups in administer->settings->content types, and you must also grant the 'allow signups' permission to any user role for which you wish to allow signups in administer->access control. Each signup node will now have a place for users to sign up, and administrators with the 'admin signups' privilege will be able to view signups for each signup node and see an overview of signups for all nodes (the overview is located in administer/signup)</p><br><p>Default settings for notification email address, reminder emails and confirmation emails are located in administer->settings->signup. These will be the default values used for a signup node unless otherwise specified (to configure these options per node, visit 'edit' for that node and make the adjustments in the 'Sign up settings' section)</p><br><p>Signups can be manually closed for any node at administer->signup.</p><br><p>The user signup form is fully themable--form fields may be added or deleted.  For more details see the instructions in signup.theme, where a sample user form is included</p>"
+msgstr "<p>Tilmelding lader brugerne melde sig til indholdselementer af alle typer. Indeholder muligheder for at sende beskeder til en bestemt e-post adresse ved nye tilmeldinger (så arrangøren underrettes) og beskeder til de brugere, der tilmelder sig - kan indstilles for hvert enkelt indholdselement. Bruges modulet sammen med indholdstypen arrangement (med event.module og cron aktiveret) udsendes påmindelser til alle tilmeldte X dage før et arrnagement starter (vælges for hvert indholdselement) og tilmelding til arrangementer lukkes automatisk en time før de starter (generel indstilling). Tilmelding kan begrænses til bestemte roller og indholdstyper.</p><p>For at bruge tilmeldinger skal du aktivere tilmelding for en indholdstype under administration->indstillinger->indholdstyper og du skal give tilladelsen 'tillad tilmelding' til alle roller der skal kunne tilmelde sig. Hvert indholdselement med en tilmelding vil nu have et felt hvor brugerne kan tilmelde sig, og administratorer med tilladelsen 'administrer tilmeldinger' vil kunne se tilmeldinger for hvert enkelt indholdselement og se en oversigt over samtlige tilmeldinger (oversigten findes under administration->tilmelding).</p><p>Standardinstillinger for e-post adresser og indhold findes under administration->indstillinger->tilmelding. De bruges som standardværdi for alle tilmeldinger men kan ændres for hvert indholdselement.</p><p>Tilmelding kan lukkes manuelt for ethvert indholdselement under administration->tilmelding.<p><p>Tilmeldingsformularens udseende kan styres af temaer -- formularfelter kan tilføjes eller slettes. Se instruktionerne i signup.theme for yderligere information.</p>"
+
+#: signup.module:122
+#: ;127;0
+msgid "signup"
+msgstr "tilmelding"
+
+#: signup.module:141
+msgid "signups"
+msgstr "tilmeldinger"
+
+#: signup.module:173
+msgid "Allow signups"
+msgstr "Tillad tilmeldinger"
+
+#: signup.module:175
+msgid "if selected, users will be allowed to do signups for this node type"
+msgstr "vælg dette hvis brugerne skal kunne tilmelde sig indhold af denne type"
+
+#: signup.module:192
+msgid "Sign up settings"
+msgstr "Tilmelding"
+
+#: signup.module:233
+msgid ""
+"WARNING: %d user(s) signed up for this event.  Deleting this event will delete \n"
+"        all signups associated with it!."
+msgstr "Advarsel: %d bruger(e) har tilmeldt sig til dette arrangement. Sletter du arrangmentet slettes alle tilmeldinger knyttet til det."
+
+#: signup.module:236
+msgid "No users signed up for this event"
+msgstr "Ingen brugere har tilmeldt sig dette arrangement"
+
+#: signup.module:266
+msgid "Signups closed for this event"
+msgstr "Tilmelding lukket for dette arrangement"
+
+#: signup.module:272
+msgid ""
+"<p>Please <a href=\"%login\">login/register</a> to sign up \n"
+"              for this event.</p>"
+msgstr "<p><a href=\"%login\">Log ind</a> for at tilmelde dig til dette arrangement.</p>"
+
+#: signup.module:287
+#: ;415
+msgid "Sign up"
+msgstr "Tilmeld"
+
+#: signup.module:289
+msgid "Sign up for %title"
+msgstr "Tilmelding til %title"
+
+#: signup.module:296
+msgid "Your signup information"
+msgstr "Din tilmelding"
+
+#: signup.module:303
+#: ;483;531
+msgid "Cancel signup"
+msgstr "Fortryd tilmelding"
+
+#: signup.module:333
+msgid "Event"
+msgstr "Arrangement"
+
+#: signup.module:333
+msgid "Signups"
+msgstr "Tilmeldinger"
+
+#: signup.module:333
+msgid "Operations"
+msgstr "Handlinger"
+
+#: signup.module:343
+msgid "View Signups"
+msgstr "Vis tilmeldinger"
+
+#: signup.module:343
+msgid "Close Event"
+msgstr "Luk arrangement"
+
+#: signup.module:358
+msgid "Signup cancelled"
+msgstr "Tilmelding annulleret"
+
+#: signup.module:387
+#: ;400
+msgid "Submit"
+msgstr "Indsend"
+
+#: signup.module:393
+msgid "Signup settings updated"
+msgstr "Indstillinger opdateret"
+
+#: signup.module:398
+msgid "Default signup information"
+msgstr "Standardindstillinger"
+
+#: signup.module:398
+msgid "New signup nodes will start with these settings"
+msgstr "Nye indholdselementer vil starte med disse indstillinger"
+
+#: signup.module:436
+msgid ""
+"You will receive a confirmation email shortly \n"
+"        which contains  further event information"
+msgstr "Du vil om kort tid modtage en e-mail med yderligere information om arrangementet"
+
+#: signup.module:438
+msgid "You will receive a reminder email %d day(s) before the event"
+msgstr "Du vil modtage en påmindelse %d dag(e) før arrangementet."
+
+#: signup.module:444
+msgid "Signup confirmed."
+msgstr "Tilmelding bekræftet."
+
+#: signup.module:450
+msgid "[Untimed]"
+msgstr "[Ikke tidssat]"
+
+#: signup.module:455
+msgid "SIGNUP INFORMATION"
+msgstr "Tilmeldinger"
+
+#: signup.module:463
+msgid "Signup confirmation for event: %event"
+msgstr "Bekræftelse af tilmelding til: %event"
+
+#: signup.module:471
+msgid "New Event Signup"
+msgstr "Ny tilmelding"
+
+#: signup.module:473
+msgid "Signup confirmation for event: %title"
+msgstr "Bekræftelse af tilmelding til: %title"
+
+#: signup.module:474
+msgid "The following information was submitted as a signup for %title"
+msgstr "Følgende information blev indsendt som tilmelding til %title"
+
+#: signup.module:475
+msgid "Date/Time: %time"
+msgstr "Dato/tid: %time"
+
+#: signup.module:475
+msgid "username:"
+msgstr "brugernavn:"
+
+#: signup.module:476
+msgid "email:"
+msgstr "e-mail:"
+
+#: signup.module:511
+msgid "%d individual(s) signed up"
+msgstr "%d person(er) har tilmeldt sig"
+
+#: signup.module:560
+msgid "Send signups to"
+msgstr "Send tilmeldinger til"
+
+#: signup.module:561
+msgid "Email address where notification of new signups will be sent. Leave blank for no notifications"
+msgstr "E-mail adresse hvor beskeder om nye tilmeldinger skal sendes. Lad feltet være tomt hvis du ikke ønsker at blive underrettet."
+
+#: signup.module:563
+msgid "Send confirmation"
+msgstr "Send bekræftelse"
+
+#: signup.module:565
+msgid "Confirmation email"
+msgstr "Bekræftelse"
+
+#: signup.module:566
+msgid ""
+"Email sent to user upon signup. Supported string substitutions: %event, %time, %username, %useremail, \n"
+"    %info (user signup information)"
+msgstr "E-mail der sendes til brugeren ved tilmelding. Understøttede variable: %event, %time, %username, %useremail, %info"
+
+#: signup.module:568
+msgid "Send reminder"
+msgstr "Send påmindelse"
+
+#: signup.module:577
+msgid "Reminder email"
+msgstr "Påmindelse e-mail"
+
+#: signup.module:578
+msgid ""
+"Email sent to user as an event reminder. Supported string substitutions: %event, %time, %username, \n"
+"    %useremail"
+msgstr "E-mail der sendes til brugeren som en påmindelse. Understøttede variable: %event, %time, %username, %useremail"
+
+#: signup.module:582
+msgid "Signup information"
+msgstr "Tilmeldinger"
+
+#: signup.module:156
+msgid "allow signups"
+msgstr "tillad tilmeldinger"
+
+#: signup.module:156
+msgid "admin signups"
+msgstr "administrer tilmeldinger"
+

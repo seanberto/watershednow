@@ -1,0 +1,70 @@
+# $Id: signup_confirm_email.pot,v 1.1 2009/07/27 21:06:39 dww Exp $
+#
+# LANGUAGE translation of Drupal (general)
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+# Generated from files:
+#  signup_confirm_email.inc,v 1.1 2009/07/24 17:47:49 dww
+#  signup_confirm_email.module,v 1.1 2009/07/24 17:47:49 dww
+#  signup_confirm_email.info,v 1.1 2009/07/24 17:47:49 dww
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2009-07-27 14:05-0700\n"
+"PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
+"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: signup_confirm_email.inc:25
+msgid "E-mail address"
+msgstr ""
+
+#: signup_confirm_email.inc:60
+msgid "Invalid e-mail address"
+msgstr ""
+
+#: signup_confirm_email.inc:105
+msgid "Change e-mail address and sign up"
+msgstr ""
+
+#: signup_confirm_email.inc:105
+msgid "Save changes"
+msgstr ""
+
+#: signup_confirm_email.inc:108
+msgid "Are you sure you want to change your e-mail address?"
+msgstr ""
+
+#: signup_confirm_email.inc:110
+msgid "You have entered a new e-mail address (%new_address) which is different from the one currently saved in your profile (%current_address). If you continue, the new address will be used for future e-mail messages from this site."
+msgstr ""
+
+#: signup_confirm_email.inc:111
+msgid "Cancel"
+msgstr ""
+
+#: signup_confirm_email.inc:124
+msgid "Updated the e-mail address in your profile to %new_address."
+msgstr ""
+
+#: signup_confirm_email.module:0
+msgid "signup_confirm_email"
+msgstr ""
+
+#: signup_confirm_email.info:0
+msgid "Signup confirm e-mail"
+msgstr ""
+
+#: signup_confirm_email.info:0
+msgid "Adds a field to the signup form to confirm the user's e-mail address."
+msgstr ""
+
+#: signup_confirm_email.info:0
+msgid "6.x"
+msgstr ""
+

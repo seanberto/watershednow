@@ -1,7 +1,7 @@
 /*
- * jQuery UI Effects Explode 1.7.3
+ * jQuery UI Effects Explode 1.6
  *
- * Copyright (c) 2009 AUTHORS.txt (http://jqueryui.com/about)
+ * Copyright (c) 2008 AUTHORS.txt (http://ui.jquery.com/about)
  * Dual licensed under the MIT (MIT-LICENSE.txt)
  * and GPL (GPL-LICENSE.txt) licenses.
  *
@@ -24,8 +24,8 @@ $.effects.explode = function(o) {
 	var offset = el.offset();
 
 	//Substract the margins - not fixing the problem yet.
-	offset.top -= parseInt(el.css("marginTop"),10) || 0;
-	offset.left -= parseInt(el.css("marginLeft"),10) || 0;
+	offset.top -= parseInt(el.css("marginTop")) || 0;
+	offset.left -= parseInt(el.css("marginLeft")) || 0;
 
 	var width = el.outerWidth(true);
 	var height = el.outerHeight(true);
@@ -43,7 +43,7 @@ $.effects.explode = function(o) {
 					top: -i*(height/rows)
 				})
 				.parent()
-				.addClass('ui-effects-explode')
+				.addClass('effects-explode')
 				.css({
 					position: 'absolute',
 					overflow: 'hidden',
@@ -67,7 +67,7 @@ $.effects.explode = function(o) {
 				if(o.callback) o.callback.apply(el[0]); // Callback
 				el.dequeue();
 
-				$('div.ui-effects-explode').remove();
+				$('.effects-explode').remove();
 
 	}, o.duration || 500);
 

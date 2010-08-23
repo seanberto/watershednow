@@ -23,7 +23,7 @@ function drupalrivers_common_context_default_contexts() {
 
   // Translatables
   // Included for use with string extractors like potx.
-  t('section');
+  t('page');
 
   $export['homepage'] = $context;
   $context = new stdClass;

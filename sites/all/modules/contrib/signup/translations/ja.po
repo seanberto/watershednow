@@ -1,0 +1,1246 @@
+# $Id: ja.po,v 1.2 2008/11/27 08:28:16 pineray Exp $
+#
+# Japanese translation of Drupal (general)
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+# Generated from files:
+#  signup.module,v 1.205 2008/11/19 23:47:56 dww
+#  date.inc,v 1.13 2008/11/22 01:44:19 dww
+#  node_form.inc,v 1.3 2008/11/19 01:44:07 dww
+#  signup_handler_field_signup_send_confirmation.inc,v 1.1 2008/11/12 01:00:58 dww
+#  signup_handler_filter_signup_disabled.inc,v 1.4 2008/11/22 00:47:25 dww
+#  no_views.inc,v 1.15 2008/11/14 04:14:04 dww
+#  broadcast.inc,v 1.1 2008/11/15 02:03:50 dww
+#  cron.inc,v 1.1 2008/11/15 02:03:50 dww
+#  signup_form.inc,v 1.1 2008/11/15 02:03:50 dww
+#  signup_handler_filter_signup_user_authenticated.inc,v 1.3 2008/11/22 00:47:25 dww
+#  admin.settings.inc,v 1.2 2008/11/19 01:44:07 dww
+#  admin.signup_administration.inc,v 1.1 2008/11/15 02:03:50 dww
+#  signup.install,v 1.23 2008/11/19 18:35:11 dww
+#  signup.info,v 1.5 2008/11/06 10:20:48 dww
+#  signup.views.inc,v 1.4 2008/11/22 00:47:24 dww
+#  node_admin_summary.inc,v 1.1 2008/11/15 02:03:50 dww
+#  signup_handler_field_signup_status.inc,v 1.1 2008/11/12 01:00:58 dww
+#  signup_handler_filter_signup_status.inc,v 1.2 2008/11/22 00:47:25 dww
+#  node.admin.inc,v 1.4 2008/11/19 18:35:11 dww
+#  node_settings.inc,v 1.1 2008/11/15 02:03:50 dww
+#  token_help.inc,v 1.1 2008/11/15 02:03:50 dww
+#  event.6x-2.inc,v 1.2 2008/11/25 17:54:05 dww
+#  scheduler.inc,v 1.4 2008/11/06 10:20:48 dww
+#  node_admin.inc,v 1.1 2008/11/15 02:03:50 dww
+#  signup_form.inc,v 1.3 2008/11/19 18:35:11 dww
+#  admin.inc,v 1.1 2008/11/12 23:22:19 dww
+#  node_output.inc,v 1.1 2008/11/15 02:03:50 dww
+#  signup_cancel_form.inc,v 1.1 2008/11/15 02:03:50 dww
+#  signup_form.inc,v 1.4 2008/11/15 02:03:50 dww
+#  email.inc,v 1.1 2008/11/12 23:22:19 dww
+#  no_views.inc,v 1.2 2008/11/19 18:30:07 dww
+#  node.inc,v 1.1 2008/11/12 23:22:19 dww
+#  signup_plugin_argument_validate_signup_status.inc,v 1.1 2008/11/12 01:00:58 dww
+#  signup_handler_field_signup_user_form_data.inc,v 1.1 2008/11/12 01:00:58 dww
+#  signup_handler_filter_boolean.inc,v 1.1 2008/11/22 00:47:25 dww
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2008-11-27 16:08+0900\n"
+"PO-Revision-Date: 2008-11-27 17:27+0900\n"
+"Last-Translator: PineRay <matsudaterutaka@gmail.com>\n"
+"Language-Team: Japanese <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
+
+#: signup.module:273
+msgid "Signup allows users to sign up (in other words, register) for content of any type. The most common use is for events, where users indicate they are planning to attend. This module includes options for sending a notification email to a selected email address upon a new user signup (good for notifying event coordinators, etc.) and a confirmation email to users who sign up. Each of these options are controlled per node. When used on event nodes (with <a href=\"@event_url\">event.module</a> installed) or nodes that have a date field (with <a href=\"@date_url\">date.module</a>) and regular cron runs, it can also send out reminder emails to all signups a configurable number of days before the start of the event (also controlled per node) and to automatically close signups 1 hour before their start (general setting). Settings exist for resticting signups to selected roles and content types."
+msgstr "どのタイプのコンテンツへも、ユーザはサインアップ (言い換えると、登録) できるようになります。最も一般的な使い方は、ユーザが出席する予定になっているようなイベントです。ユーザが新しくサインアップした時に通知メールを送信したり (イベント主催者に便利です)、確認メールを送信するオプションがあります。これらのオプションはそれぞれノードごとに設定することができます。eventノード (<a href=\"@event_url\">event.module</a>がインストール済みの場合) や日付フィールドのあるノードと組み合わせてcronを実行すれば、イベントが始まるまでの指定した日時にサインアップしたユーザへリマインダメールを送信することができ (ノードごとに設定可能)、開始1時間前に自動でサインアップをクローズにすることができます (共通の設定)。選択するロールとコンテンツタイプでサインアップを制限する設定が存在します。"
+
+#: signup.module:275
+msgid "To use signup, you must enable which content types should allow signups in administer->settings->content types, and you must also grant the %sign_up_for_content permission to any user role that should be able to sign up in administer->access control. Each signup-enabled node will now have a place for users to sign up."
+msgstr "サインアップを使用するには、管理セクション->コンテンツの管理->コンテンツタイプ でサインアップを有効にするコンテンツタイプを設定しなくてはなりません。また、管理セクション->ユーザの管理 でサインアップすることができるようにするユーザロールに %sign_up_for_content 権限を与えなければなりません。そうすることで、サインアップが有効なノードでサインアップのフォームがユーザに表示されます。"
+
+#: signup.module:277
+msgid "There are two ways for a user to have administrative access to the signup information about a given node: either the user has the %administer_signups_for_own_content permission and they are viewing a node they created, or the user has the global %administer_all_signups permission. Administrative access allows a user to view all the users who have signed up for the node, along with whatever information they included when they signed up.  Signup administrators can also cancel other user's signups for the node, and can close signups on the node entirely (meaning no one else is allowed to sign up)."
+msgstr "指定のノードのサインアップに関する情報をユーザが管理できる状況は2つあります: ユーザが%administer_signups_for_own_content権限を持っていて自分が作成したノードを閲覧しているか、または共通の%administer_all_signups権限を持っているかです。サインアップの管理セクションにアクセスすると、そのノードにサインアップしたすべてのユーザが、サインアップの際に入力した情報とともに表示されます。サインアップの管理者は他のユーザのサインアップをキャンセルでき、ノードのサインアップをクローズにする (つまりそれ以上サインアップできなくする) ことができます。"
+
+#: signup.module:279
+msgid "Default settings for notification email address, reminder emails and confirmation emails are located in administer->settings->signup. These will be the default values used for a signup node unless otherwise specified (to configure these options per node, visit 'edit' for that node and make the adjustments in the 'Sign up settings' section)."
+msgstr "通知メールのアドレスやリマインダメール、確認メールのデフォルトの設定は 管理セクション->サイトの環境設定->サインアップ にあります。特に指定が無ければ、これらの設定をサインアップノードのデフォルトの値として使用します (これらのオプションをノードごとに設定するには、そのノードの「編集」にアクセスして、「サインアップの設定」セクションで調整します)。"
+
+#: signup.module:281
+msgid "Signups can be manually closed for any node at the %signup_overview page, or on the 'signups' tab on each node."
+msgstr "%signup_overview page、または各ノードの「サインアップ」タブで、サインアップを手作業でクローズにすることができます。"
+
+#: signup.module:281
+msgid "Signup overview"
+msgstr "サインアップの概観"
+
+#: signup.module:283
+msgid "The user signup form is fully themable -- form fields may be added or deleted. For more details see the instructions in signup.theme, where a sample user form is included."
+msgstr "ユーザに表示するサインアップフォームを完全にカスタマイズ -- フォームフィールドを追加したり削除することができます。より詳しい情報は、signup.theme にある案内を参照してください。ユーザフォームのサンプルが含まれています。"
+
+#: signup.module:289
+msgid "This page allows you to send an email message to every user who signed up for this %node_type."
+msgstr "このページで、この %node_type へサインアップしているすべてのユーザへメールを送信することができます。"
+
+#: signup.module:525
+#: includes/date.inc:92
+#: includes/node_form.inc:167
+msgid "Signup settings"
+msgstr "サインアップの設定"
+
+#: signup.module:531
+msgid "Signup options"
+msgstr "サインアップのオプション"
+
+#: signup.module:533;538
+#: includes/node_form.inc:183
+#: views/handlers/signup_handler_field_signup_send_confirmation.inc:9
+#: views/handlers/signup_handler_filter_signup_disabled.inc:9
+msgid "Disabled"
+msgstr "無効"
+
+#: signup.module:534;538
+msgid "Allowed (off by default)"
+msgstr "許可 (デフォルトはオフ)"
+
+#: signup.module:535;538
+msgid "Enabled (on by default)"
+msgstr "有効 (デフォルトはオン)"
+
+#: signup.module:538
+msgid "If %disabled is selected, signups will not be possible for this content type. If %allowed_off is selected, signups will be off by default, but users with the %admin_all_signups permission will be able to allow signups for specific posts of this content type. If %enabled_on is selected, users will be allowed to signup for this content type unless an administrator disbles signups on specific posts."
+msgstr "%disabled を選択すると、このコンテンツタイプでサインアップを利用できません。%allowed_off を選択すると、デフォルトではサインアップの機能がオフになっていますが、%admin_all_signups 権限を持つユーザはこのコンテンツタイプの特定の記事でサインアップの機能をオンにすることができます。%enabled_on を選択すると、管理者が無効にするまでは、ユーザはこのコンテンツタイプへサインアップすることができます。"
+
+#: signup.module:538;457
+msgid "administer all signups"
+msgstr "すべてのサインアップの管理"
+
+#: signup.module:653
+#: includes/no_views.inc:66
+msgid "Signup information"
+msgstr "サインアップの情報"
+
+#: signup.module:654
+msgid "Signup form and other information."
+msgstr "サインアップとその他の情報。"
+
+#: signup.module:676
+msgid "Signup to !title cancelled."
+msgstr "!titleへのサインアップをキャンセルしました。"
+
+#: signup.module:692;708
+#: includes/broadcast.inc:134;152
+#: includes/cron.inc:69;123
+msgid "view"
+msgstr "表示"
+
+#: signup.module:758
+msgid "Anonymous user %email is already signed up for %title"
+msgstr "匿名ユーザ %email は %title にすでにサインアップしています。"
+
+#: signup.module:769
+#: includes/signup_form.inc:191
+msgid "User !user is already signed up for %title"
+msgstr "ユーザ !user は %title にすでにサインアップしています。"
+
+#: signup.module:794
+msgid "You will receive a confirmation email shortly which contains further information about this %node_type."
+msgstr "この%node_typeに関する情報を記した短い確認メールを送信します。"
+
+#: signup.module:795
+msgid "You will receive a reminder email !number !days before the %node_type."
+msgstr "%node_type の !number !days前にリマインダメールを送信します。"
+
+#: signup.module:816;849
+msgid "Signup confirmation for !node_type: !title"
+msgstr "!node_type: !title へのサインアップの確認"
+
+#: signup.module:831
+msgid "The following information was submitted as a signup for !title"
+msgstr "!title へのサインアップとして、下記の情報を送信しました"
+
+#: signup.module:833
+msgid "Date/Time: !time"
+msgstr "日時: !time"
+
+#: signup.module:836
+msgid "Username: !name"
+msgstr "ユーザ名: !name"
+
+#: signup.module:836
+#: views/handlers/signup_handler_filter_signup_user_authenticated.inc:9
+msgid "Anonymous"
+msgstr "匿名ユーザ"
+
+#: signup.module:839
+msgid "Profile page: !url"
+msgstr "プロフィールページ: !url"
+
+#: signup.module:843
+msgid "E-mail: !email"
+msgstr "メールアドレス: !email"
+
+#: signup.module:853
+msgid "New !node_type Signup"
+msgstr "!node_typeへの新しいサインアップ"
+
+#: signup.module:862
+msgid "Signup to !title confirmed."
+msgstr "!title へのサインアップを確認しました。"
+
+#: signup.module:902
+msgid "Signup limit reached for !title, signups closed."
+msgstr "!title へのサインアップの上限に達しましたので、サインアップをクローズにしました。"
+
+#: signup.module:909
+msgid "Signup limit reached."
+msgstr "サインアップの上限に達しました。"
+
+#: signup.module:917
+msgid "Signup limit increased for !title, signups re-opened."
+msgstr "!title へのサインアップの上限が増量されましたので、サインアップを再開しました。"
+
+#: signup.module:920
+msgid "Total signups for !title now below limit, signups re-opened."
+msgstr "!title へのサインアップの合計が上限を下回っていますので、サインアップを再開しました。"
+
+#: signup.module:924
+msgid "Signup limit updated for !title."
+msgstr "!title へのサインアップの上限を更新しました。"
+
+#: signup.module:932
+msgid "Signup limit removed for !title, signups now open."
+msgstr "!title へのサインアップの上限を除去しましたので、サインアップをオープンしました。"
+
+#: signup.module:935
+msgid "Signup limit removed for !title."
+msgstr "!title へのサインアップの上限を除去しました。"
+
+#: signup.module:692;708;0
+#: includes/broadcast.inc:134;152
+#: includes/cron.inc:69;123
+msgid "signup"
+msgstr "サインアップ"
+
+#: signup.module:692
+msgid "Signups closed for %title."
+msgstr "!title へのサインアップをクローズにしました。"
+
+#: signup.module:708
+msgid "Signups reopened for %title."
+msgstr "!title へのサインアップを再開しました。"
+
+#: signup.module:795
+msgid "day"
+msgid_plural "days"
+msgstr[0] "日"
+msgstr[1] "日"
+
+#: signup.module:454
+msgid "sign up for content"
+msgstr "コンテンツへのサインアップ"
+
+#: signup.module:455
+msgid "cancel own signups"
+msgstr "自分のサインアップのキャンセル"
+
+#: signup.module:456
+#: includes/admin.settings.inc:109
+msgid "view all signups"
+msgstr "すべてのサインアップの表示"
+
+#: signup.module:458
+msgid "administer signups for own content"
+msgstr "自分のコンテンツへのサインアップの管理"
+
+#: signup.module:459
+msgid "email users signed up for own content"
+msgstr "自分のコンテンツへサインアップしたユーザへメール送信"
+
+#: signup.module:460
+msgid "email all signed up users"
+msgstr "すべてのサインアップしたユーザへメール送信"
+
+#: signup.module:319
+msgid "Configure settings for signups."
+msgstr "サインアップの設定を行います。"
+
+#: signup.module:329
+msgid "View all signup-enabled posts, and open or close signups on them."
+msgstr "サインアップが有効なすべての記事を表示し、それらのサインアップをオープンにしたりクローズにしたりします。"
+
+#: signup.module:332
+msgid "Signup administration"
+msgstr "サインアップの管理"
+
+#: signup.module:339
+#: includes/admin.settings.inc:54
+#: includes/signup_form.inc:93
+msgid "Sign up"
+msgstr "サインアップ"
+
+#: signup.module:350
+#: includes/admin.signup_administration.inc:59
+#: includes/node_form.inc:194;194
+msgid "Signups"
+msgstr "サインアップ"
+
+#: signup.module:370
+#: includes/admin.signup_administration.inc:104
+msgid "Signup broadcast"
+msgstr "サインアップ同報メッセージ"
+
+#: signup.install:10
+msgid "Signup module per-node settings."
+msgstr "サインアップモジュールのノード別の設定。"
+
+#: signup.install:13
+msgid "Primary key: node ID"
+msgstr "主キー: ノードID"
+
+#: signup.install:20
+msgid "Email address to send signup notifications to."
+msgstr "サインアップの通知の宛先となるメールアドレス。"
+
+#: signup.install:27
+msgid "Boolean indicating whether confirmation emails should be sent."
+msgstr "確認メールを送信するかどうかを表す論理値。"
+
+#: signup.install:33
+msgid "Email template to send to users when they signup."
+msgstr "サインアップの後でユーザに送信するメールのテンプレート。"
+
+#: signup.install:39
+msgid "Boolean indicating whether reminder emails should be sent. This is set to 0 once the reminders are sent."
+msgstr "リマインダメールを送信するかどうかを表す論理値。リマインダが送信されると、この値は0となります。"
+
+#: signup.install:45
+msgid "Number of days before the start of a time-based node when the reminder emails should be sent."
+msgstr "リマインダメールの送信から、日時設定のあるノードが始まるまでの日数。"
+
+#: signup.install:52
+msgid "Email template to send to users to remind them about a signup."
+msgstr "サインアップについて思い出させるためにユーザへ送信するメールのテンプレート。"
+
+#: signup.install:58
+msgid "Number of hours before the start of a time-based node when signups should automatically be closed. This column is not currently used and the behavior is controlled by a site-wide setting.  See http://drupal.org/node/290249 for more information."
+msgstr "サインアップを自動でクローズにしてから、日時設定のあるノードが始まるまでの時間数。このカラムは現在使用されておらず、サイト全体の設定で動作は管理されています。より詳しい情報は、http://drupal.org/node/290249 を参照してください。"
+
+#: signup.install:65
+msgid "Maximum number of users who can signup before signups are closed. If set to 0, there is no limit."
+msgstr "サインアップがクローズとなるまでにサインアップすることのできるユーザの最大数。０と設定すると無制限となります。"
+
+#: signup.install:72
+msgid "Boolean indicating if signups are open (1) or closed (0) for the given node"
+msgstr "指定のノードでサインアップがオープン (1) かクローズ (0) かを表す論理値。"
+
+#: signup.install:82
+msgid "Records information for each user who signs up for a node."
+msgstr "ノードへサインアップした各ユーザの情報を格納します。"
+
+#: signup.install:85
+msgid "Key: the user ID of the user who signed up."
+msgstr "キー: サインアップしたユーザのユーザID。"
+
+#: signup.install:92
+msgid "Key: the node ID of the node the user signed up for."
+msgstr "キー: ユーザがサインアップしたノードのノードID。"
+
+#: signup.install:99
+msgid "The email address for an anonymous user who signed up, or an empty string for authenticated users."
+msgstr "サインアップした匿名ユーザのメールアドレス。登録ユーザの場合は空欄となります。"
+
+#: signup.install:106
+msgid "Integer timestamp of when the user signed up for the node."
+msgstr "ユーザがノードにサインアップした日時のタイムスタンプ"
+
+#: signup.install:113
+msgid "Serialized string of additional signup form values.  See theme_signup_user_form() from theme/signup.theme for more information."
+msgstr "追加サインアップフォームの値をシリアライズした文字列。より詳しい情報は、theme/signup.theme の theme_signup_user_form() を参照してください。"
+
+#: signup.install:236
+msgid "The old %signup_user_view setting was enabled on your site, so the %view_all_signups permission has been added to the %authenticated_user role. Please consider customizing what roles have this permission on the !access_control page."
+msgstr "従来の %signup_user_view の設定が有効になっているので、%authenticated_user ロールに %view_all_signups 権限を追加しました。どのロールにこの権限を持たせるか、!access_control ページで設定してください。"
+
+#: signup.install:236;244
+msgid "Users can view signups"
+msgstr "サインアップを表示することのできるユーザ"
+
+#: signup.install:236
+msgid "Access control"
+msgstr "アクセス制御"
+
+#: signup.install:244
+msgid "The %signup_user_view setting has been removed."
+msgstr "%signup_user_viewの設定を除去しました。"
+
+#: signup.install:313
+msgid "Added the 'cancel own signups' permission to all roles that have the 'sign up for content' permission."
+msgstr "「コンテンツへのサインアップ」権限を持つすべてのロールに「自分のサインアップのキャンセル」権限を追加しました。"
+
+#: signup.install:313
+msgid "If you do not want your users to cancel their own signups, go to the <a href=\"@access_url\">Access control</a> page and unset this permission."
+msgstr "ユーザが自分のサインアップをキャンセルできないようにするには、<a href=\"@access_url\">アクセス制御</a>ページにアクセスして、この権限を外してください。"
+
+#: signup.install:331
+msgid "Migrated signup settings per content type."
+msgstr "コンテンツタイプ別のサインアップの設定。"
+
+#: signup.install:401
+msgid "Replaced %event, %eventurl, %time, %username, %useremail, and %info tokens with %node_title, %node_url, %node_start_time, %user_name, %user_mail, and %user_signup_info in the reminder and confirmation email templates."
+msgstr "リマインダメールと確認メールのテンプレートにある、%event、%eventurl、%time、%username、%useremail、%info トークンを %node_title、%node_url、%node_start_time、%user_name、%user_mail、%user_signup_info と置き換えました。"
+
+#: signup.install:419
+msgid "Removed the deprecated %old_view_name and %old_view_type variables. If you were using embedding a view on signup-enabled nodes, please visit the <a href=\"@signup_settings_url\">Signup configuration page</a> and select a new value for the %setting_name setting (which is located under the Advanced settings)."
+msgstr "%old_view_name および %old_view_type 変数を削除しました。サインアップが有効なノードでビューの埋め込みを使用していれば、<a href=\"@signup_settings_url\">サインアップの設定ページ</a>にアクセスして、 %setting_name の設定 (高度な設定にあります) に新しい値を選択してください。"
+
+#: signup.install:424
+#: includes/admin.settings.inc:134
+msgid "View to embed for the signup user list"
+msgstr "サインアップユーザ一覧として埋め込むビュー"
+
+#: signup.info:0
+#: views/signup.views.inc:19;143
+msgid "Signup"
+msgstr "サインアップ"
+
+#: signup.info:0
+msgid "Allow users to sign up for content (especially events)."
+msgstr "ユーザがコンテンツ (特にイベント) へサインアップできるようになります。"
+
+#: includes/admin.settings.inc:17
+msgid "Close x hours before"
+msgstr "x 時間前にクローズ"
+
+#: includes/admin.settings.inc:21
+msgid "The number of hours before the event which signups will no longer be allowed. Use negative numbers to close signups after the event start (example: -12)."
+msgstr "イベントにサインアップできなくするまでの時間数。イベントがスタートしてからサインアップをクローズにするには、マイナスの値を指定します (例: -12)。"
+
+#: includes/admin.settings.inc:26
+msgid "Default signup information"
+msgstr "デフォルトのサインアップの情報"
+
+#: includes/admin.settings.inc:27
+msgid "New signup-enabled nodes will start with these settings."
+msgstr "サインアップが有効な新しいノードは、これらの設定を作成時のデフォルトとします。"
+
+#: includes/admin.settings.inc:34
+msgid "Advanced settings"
+msgstr "高度な設定"
+
+#: includes/admin.settings.inc:39
+msgid "Format string for displaying signup-related dates"
+msgstr "サインアップに関する日時を表示する際の書式"
+
+#: includes/admin.settings.inc:42
+msgid "Small"
+msgstr "小"
+
+#: includes/admin.settings.inc:43
+msgid "Medium"
+msgstr "中程度"
+
+#: includes/admin.settings.inc:44
+msgid "Large"
+msgstr "大"
+
+#: includes/admin.settings.inc:47
+msgid "Whenever this module needs to print a date (both in the administrative interface, and in the various e-mail messages it can send), this setting controls which date format string to use. The format strings are defined at the <a href=\"!settings_url\">Date and time settings page</a>."
+msgstr "このモジュールで日時を出力する際は (管理用のインターフェースや送信する様々なメールにおいても)、ここで選択した書式を常に使用します。書式の内容は<a href=\"!settings_url\">日付と時刻</a>で設定します。"
+
+#: includes/admin.settings.inc:50
+msgid "Location of the signup form and related information"
+msgstr "サインアップフォームと関連情報の位置"
+
+#: includes/admin.settings.inc:53
+msgid "At the bottom of each node"
+msgstr "各ノードの最下部"
+
+#: includes/admin.settings.inc:54
+msgid "On a separate %sign_up tab"
+msgstr "%sign_upタブに分離"
+
+#: includes/admin.settings.inc:55
+msgid "Do not display signup form"
+msgstr "サインアップフォームを非表示"
+
+#: includes/admin.settings.inc:58
+msgid ""
+"On every signup-enabled node, users with permission to\n"
+" sign up can be presented with a form and additional signup-related information. This setting controls where this information should be displayed: either directly on the node itself, on a separate tab, or not at all."
+msgstr "サインアップが有効なノードで、サインアップの権限を持つユーザにフォームやサインアップに関連した追加の情報を表示します。この情報をどこに表示するかをここで設定します: ノードに直接表示する、またはタブに分離する、表示しないといった選択肢があります。"
+
+#: includes/admin.settings.inc:77
+msgid "Default fieldset behavior for per-node signup form"
+msgstr "ノード別のサインアップフォームにおけるフィールドセットのデフォルトの動作"
+
+#: includes/admin.settings.inc:79
+msgid "Collapsed"
+msgstr "折りたたむ"
+
+#: includes/admin.settings.inc:79
+msgid "Expanded"
+msgstr "展開"
+
+#: includes/admin.settings.inc:81
+msgid "If the signup form is included at the bottom of each node, the signup form will be encapsulated in a collapsible fieldset. This setting controls if that fieldset is expanded or collapsed by default."
+msgstr "各ノードの最下部にサインアップフォームを表示する場合、折りたたみ可能なフィールドセットの中にサインアップフォームを配置します。そのフィールドセットをデフォルトで展開するか折りたたむかをここで選択します。"
+
+#: includes/admin.settings.inc:89
+msgid "Use the built-in listing"
+msgstr "内蔵の一覧表示を使用"
+
+#: includes/admin.settings.inc:92
+msgid "Embed a view"
+msgstr "ビューの埋め込み"
+
+#: includes/admin.settings.inc:93
+msgid "If you choose to embed a view, you will be able to select which view you want to use below. The view you select will have a single argument passed in, the node id (nid) of the signup-enabled node being viewed. You can also use views to display this listing on its own tab or in a block if you disable this setting."
+msgstr "ビューの埋め込みを選択すると、使用するビューを下記で選択することができます。選択したビューには、サインアップが有効なノードのノードIDを表す引数が渡されます。あるいは、この設定を無効にした場合、ビューを使用してノードの一覧をタブやブロックで表示することができます。"
+
+#: includes/admin.settings.inc:96
+msgid "If you enable the !views_url, you will be able to embed a view directly onto the page for this listing."
+msgstr "!views_url を有効にしていれば、この一覧のビューをページに直接埋め込むことができるようになります。"
+
+#: includes/admin.settings.inc:96
+msgid "Views module"
+msgstr "Viewsモジュール"
+
+#: includes/admin.settings.inc:98
+msgid "Do not display a listing at all"
+msgstr "一覧表示を行わない"
+
+#: includes/admin.settings.inc:105
+msgid "How to display the list of signed-up users"
+msgstr "サインアップしたユーザ一覧の表示方法"
+
+#: includes/admin.settings.inc:109
+msgid "If the signup form is being displayed, users with the %view_signups permission can see a list of all users who have signed up. This setting controls if and how that list should be generated. !views_help_text"
+msgstr "サインアップフォームを表示する場合、%view_signups 権限を持つユーザにサインアップしたすべてのユーザの一覧を表示します。一覧をどのように生成するかをここで設定します。!views_help_text"
+
+#: includes/admin.settings.inc:138
+msgid "If the signup user list is being generated by embedding a view, this selects which view should be used. The view's name, description, and display(s) it defines are listed.  NOTE: if you enable or customize the view being used for this, you should strongly consider disabling the view's menu items to prevent a duplicate tab showing the same information."
+msgstr "埋め込んだビューでサインアップしたユーザの一覧を生成する場合、使用するビューを選択します。定義されているビューの名前や説明、表示方法が一覧に並んでいます。注意: ここで使用するビューを有効にしたりカスタマイズする場合は、同じ情報を表示するタブの重複を避けるために、ビューのメニュー項目を無効にする方が良いでしょう。"
+
+#: includes/admin.settings.inc:158
+msgid "Save configuration"
+msgstr "設定の保存"
+
+#: includes/admin.signup_administration.inc:25
+msgid "All"
+msgstr "すべて"
+
+#: includes/admin.signup_administration.inc:26
+#: includes/node_admin_summary.inc:22
+#: views/handlers/signup_handler_field_signup_status.inc:9
+#: views/handlers/signup_handler_filter_signup_status.inc:9
+msgid "Open"
+msgstr "オープン"
+
+#: includes/admin.signup_administration.inc:27
+#: includes/node_admin_summary.inc:22
+#: views/handlers/signup_handler_field_signup_status.inc:9
+#: views/handlers/signup_handler_filter_signup_status.inc:9
+msgid "Closed"
+msgstr "クローズド"
+
+#: includes/admin.signup_administration.inc:34
+msgid "Filter by signup status"
+msgstr "サインアップの状態で絞り込み"
+
+#: includes/admin.signup_administration.inc:38
+msgid "Filter"
+msgstr "フィルタ"
+
+#: includes/admin.signup_administration.inc:58
+msgid "Title"
+msgstr "タイトル"
+
+#: includes/admin.signup_administration.inc:60
+#: theme/node.admin.inc:60
+msgid "Limit"
+msgstr "上限"
+
+#: includes/admin.signup_administration.inc:61
+#: theme/node.admin.inc:58
+msgid "Status"
+msgstr "状態"
+
+#: includes/admin.signup_administration.inc:62
+#: theme/node.admin.inc:61
+msgid "Operations"
+msgstr "操作"
+
+#: includes/admin.signup_administration.inc:100
+msgid "View signups"
+msgstr "サインアップの表示"
+
+#: includes/admin.signup_administration.inc:103
+msgid "Send an email message to all users who signed up."
+msgstr "サインアップしたすべてのユーザへメールを送信します。"
+
+#: includes/admin.signup_administration.inc:115
+#: includes/node_admin_summary.inc:36
+msgid "Update"
+msgstr "更新"
+
+#: includes/admin.signup_administration.inc:124;128
+msgid "Start"
+msgstr "開始"
+
+#: includes/broadcast.inc:20
+msgid "No users have signup up for this %node_type."
+msgstr "この%node_typeには誰もサインアップしていません。"
+
+#: includes/broadcast.inc:30
+msgid "Supported string substitutions: %tokens, and any tokens in the %replacement_tokens list."
+msgstr "サポートしている置換文字列: %tokens、および %replacement_tokens にあるすべてのトークン。"
+
+#: includes/broadcast.inc:30
+#: includes/node_settings.inc:31
+#: includes/token_help.inc:21
+msgid "Replacement tokens"
+msgstr "置換トークン"
+
+#: includes/broadcast.inc:33
+msgid "Supported string substitutions: %tokens."
+msgstr "サポートしている置換文字列: %tokens。"
+
+#: includes/broadcast.inc:38
+msgid "Subject"
+msgstr "件名"
+
+#: includes/broadcast.inc:43
+msgid "Message body"
+msgstr "メッセージ本文"
+
+#: includes/broadcast.inc:45
+msgid "Body of the email message you wish to send to all users who have signed up for this %node_type. !token_description"
+msgstr "この %node_type へサインアップしたすべてのユーザに送信するメッセージの本文。 !token_description"
+
+#: includes/broadcast.inc:56
+msgid "Send yourself a copy."
+msgstr "コピーを自分宛に送信したい場合は、ここにチェックを入れてください。"
+
+#: includes/broadcast.inc:61
+msgid "Send"
+msgstr "送信"
+
+#: includes/broadcast.inc:72
+msgid "From"
+msgstr "送信元"
+
+#: includes/broadcast.inc:80
+msgid "This message will be sent from: %from"
+msgstr "このメッセージの送信者: %from"
+
+#: includes/broadcast.inc:153
+msgid "Sent a copy of this message to %email"
+msgstr "このメッセージのコピーを %email へ送信"
+
+#: includes/broadcast.inc:156
+msgid "Message sent to all users who have signed up"
+msgstr "サインアップしたすべてのユーザに送信するメッセージ"
+
+#: includes/broadcast.inc:134
+msgid "Broadcast email for %title sent to %email."
+msgstr "%title の同報メッセージメールを %email へ送信しました。"
+
+#: includes/broadcast.inc:152
+msgid "Broadcast email copy for %title sent to %email."
+msgstr "%title の同報メッセージメールのコピーを %email へ送信しました。"
+
+#: includes/cron.inc:51
+msgid "!node_type reminder: !title"
+msgstr "!node_type のリマインダ: !title"
+
+#: includes/cron.inc:69
+msgid "Reminder for %title sent to %user_mail."
+msgstr "%title のリマインダを %user_mail へ送信しました。"
+
+#: includes/cron.inc:123
+msgid "Signups closed for %title by cron."
+msgstr "%title へのサインアップをcronでクローズにしました。"
+
+#: includes/date.inc:169;233
+msgid "Date field to use with signup"
+msgstr "サインアップと組み合わせるDateフィールド"
+
+#: includes/date.inc:172
+msgid "Select the date field of this content type to use for signup time-based functionality, such as automatically closing signups when the start time has passed and sending reminder emails. Select \"%none\" to not use a date field for signup functionality at all."
+msgstr "開始日時が経過すれば自動的にサインアップをクローズにしたり、リマインダメールを送信したりといった、日時と関係のあるサインアップの機能に使用する、このコンテンツタイプの日付フィールドを選択してください。「%none」を選択すると、サインアップの機能に日付フィールドを使用しません。"
+
+#: includes/date.inc:172
+msgid "None"
+msgstr "なし"
+
+#: includes/date.inc:236
+msgid "<none>"
+msgstr "<なし>"
+
+#: includes/date.inc:242
+msgid "You have enabled the %node_type content type for signups, and have added one or more date fields, but have not selected a date field for use with signup. You can modify the %signup_date_field setting at the <a href=\"@type_admin_url\">%node_type configuration page</a> to select a date field to use, or disable this warning by selecting %none."
+msgstr "%node_typeコンテンツタイプでサインアップを有効にしており、フィールドを追加していますが、サインアップに使用するデータフィールドを選択していません。<a href=\"@type_admin_url\">%node_type の設定ページ</a>で %signup_date_field の設定を変更して使用するデータフィールドを選択するか、または %none を選択してこの警告を無効にすることができます。"
+
+#: includes/date.inc:247
+msgid "You have enabled the %node_type content type for signups but have not added a date field. You can either <a href=\"@type_add_field_url\">add a date field</a>, or disable this warning by selecting %none for the %signup_date_field setting at the <a href=\"@type_admin_url\">%node_type configuration page</a>."
+msgstr "%node_typeコンテンツタイプでサインアップを有効にしていますが、データフィールドを追加していません。<a href=\"@type_add_field_url\">データフィールドを追加</a>するか、または<a href=\"@type_admin_url\">%node_typeの設定ページ</a>にある %signup_date_field の設定で %none を選択してこの警告を無効にすることができます。"
+
+#: includes/date.inc:268
+msgid "<Not specified>"
+msgstr "<指定なし>"
+
+#: includes/date.inc:273
+msgid "<None>"
+msgstr "<なし>"
+
+#: includes/date.inc:380
+msgid " to "
+msgstr " ～ "
+
+#: includes/event.6x-2.inc:90
+#: includes/scheduler.inc:110
+msgid "[Untimed]"
+msgstr "[時間設定なし]"
+
+#: includes/no_views.inc:33;42;71
+msgid "Current signups"
+msgstr "現在のサインアップ数"
+
+#: includes/no_views.inc:43
+msgid "View signup schedule"
+msgstr "サインアップのスケジュールを表示"
+
+#: includes/no_views.inc:78
+msgid "Signup schedule"
+msgstr "サインアップのスケジュール"
+
+#: includes/no_views.inc:79
+msgid "View full signup schedule"
+msgstr "サインアップの完全なスケジュールを表示"
+
+#: includes/no_views.inc:110
+msgid "Signups for @user"
+msgstr "@userのサインアップ"
+
+#: includes/node_admin.inc:42
+#: theme/signup_form.inc:55
+msgid "Name"
+msgstr "名前"
+
+#: includes/node_admin.inc:43
+#: views/signup.views.inc:190
+msgid "Signup time"
+msgstr "サインアップ日時"
+
+#: includes/node_admin.inc:44
+msgid "Extra information"
+msgstr "その他の情報"
+
+#: includes/node_admin.inc:73
+msgid "No users have signed up for this %node_type."
+msgstr "この%node_typeには誰もサインアップしていません。"
+
+#: includes/node_admin.inc:83;147
+msgid "Cancel signups"
+msgstr "サインアップのキャンセル"
+
+#: includes/node_admin.inc:95
+msgid "No users selected."
+msgstr "ユーザが選択されていません。"
+
+#: includes/node_admin.inc:128
+msgid "Anonymous signup: %anon_mail"
+msgstr "匿名のサインアップ: %anon_mail"
+
+#: includes/node_admin.inc:144
+msgid "Are you sure you want to cancel signups for these users?"
+msgstr "これらのユーザのサインアップを本当にキャンセルしますか？"
+
+#: includes/node_admin.inc:146
+msgid "This action cannot be undone."
+msgstr "この操作は元に戻すことができませんので、十分に注意して実行してください。"
+
+#: includes/node_admin.inc:147
+msgid "Keep signups"
+msgstr "サインアップを残す"
+
+#: includes/node_admin_summary.inc:16
+msgid "Closed (limit reached)"
+msgstr "クローズ (上限到達)"
+
+#: includes/node_admin_summary.inc:61
+msgid "Signups opened for !title."
+msgstr "!title へのサインアップをオープンにしました。"
+
+#: includes/node_admin_summary.inc:65
+msgid "Signups closed for !title."
+msgstr "!title へのサインアップをクローズにしました。"
+
+#: includes/node_form.inc:108
+msgid "%node_type start time is already past the signup close-in-advance time, signups now closed."
+msgstr "%node_type の締切時間をすでに過ぎているので、サインアップをクローズにしました。"
+
+#: includes/node_form.inc:177
+#: views/handlers/signup_handler_field_signup_send_confirmation.inc:9
+#: views/handlers/signup_handler_filter_signup_disabled.inc:9
+msgid "Enabled"
+msgstr "有効"
+
+#: includes/node_form.inc:179
+msgid "Disabled, but save existing signup information"
+msgstr "無効にするが、既存のサインアップに関する情報は保存。"
+
+#: includes/node_form.inc:180
+msgid "Disabled, and remove all signup information"
+msgstr "無効にして、サインアップに関するすべての情報を除去。"
+
+#: includes/node_form.inc:180
+msgid "This can not be undone, use with extreme caution!"
+msgstr "この操作は元に戻すことができませんので、十分に注意して実行してください。"
+
+#: includes/node_form.inc:194
+msgid "If enabled, you can control whether users may sign up by visiting the !signups tab and toggling if signups are %open or %closed for this %node_type."
+msgstr "有効であれば、!signups タブにアクセスしてこの%node_typeのサインアップが %open か %closed かを切り替えることによって、ユーザがサインアップできるかどうかを制御することができます。"
+
+#: includes/node_form.inc:194
+#: theme/admin.inc:42
+msgid "open"
+msgstr "オープン"
+
+#: includes/node_form.inc:194
+#: theme/admin.inc:46
+msgid "closed"
+msgstr "クローズド"
+
+#: includes/node_form.inc:204
+msgid "If disabled, all of the other signup settings will be ignored."
+msgstr "無効であれば、サインアップの他の設定はすべて無視されます。"
+
+#: includes/node_output.inc:67
+#: includes/signup_form.inc:55
+msgid "login"
+msgstr "ログイン"
+
+#: includes/node_output.inc:68
+msgid "register"
+msgstr "登録"
+
+#: includes/node_output.inc:72
+msgid "Please !login to sign up for this %node_type."
+msgstr "!loginしてから %node_type にサインアップしてください。"
+
+#: includes/node_output.inc:75
+msgid "Please !login or !register to sign up for this %node_type."
+msgstr "この %node_type へサインアップするには!loginまたは!registerしてください。"
+
+#: includes/node_settings.inc:31
+msgid "Supported string substitutions: %node_title, %node_url, %node_start_time, %user_name, %user_mail, %user_signup_info (additional information from the signup form), and any tokens in the %replacement_tokens list."
+msgstr "サポートする置換文字列: %node_title, %node_url、%node_start_time、%user_name、%user_mail, %user_signup_info (サインアップフォームからの追加情報)、および %replacement_tokens の一覧にあるすべてのトークン。"
+
+#: includes/node_settings.inc:34
+msgid "Supported string substitutions: %node_title, %node_url, %node_start_time, %user_name, %user_mail, %user_signup_info (additional information from the signup form)."
+msgstr "サポートする置換文字列: %node_title、%node_url、%node_start_time、%user_name、%user_mail、%user_signup_info (サインアップフォームからの追加情報)。"
+
+#: includes/node_settings.inc:51
+msgid "Send signups to"
+msgstr "サインアップ通知の宛先"
+
+#: includes/node_settings.inc:54
+msgid "Email address where notification of new signups will be sent. Leave blank for no notifications."
+msgstr "新しいサインアップに関する通知メールの宛先。空欄であれば通知を送信しません。"
+
+#: includes/node_settings.inc:58
+#: views/signup.views.inc:86
+msgid "Send confirmation"
+msgstr "確認メールを送信"
+
+#: includes/node_settings.inc:63
+msgid "Confirmation email"
+msgstr "確認メール"
+
+#: includes/node_settings.inc:66
+msgid "Email sent to user upon signup. !token_description"
+msgstr "サインアップの際にユーザへ送信するメール。!token_description"
+
+#: includes/node_settings.inc:82
+#: views/signup.views.inc:110
+msgid "Send reminder"
+msgstr "リマインダを送信"
+
+#: includes/node_settings.inc:94
+msgid "day(s) before this %node_type"
+msgstr "日 (この%node_typeまでの日数)"
+
+#: includes/node_settings.inc:94
+msgid "day(s) before start time"
+msgstr "日 (開始日までの日数)"
+
+#: includes/node_settings.inc:98
+msgid "Reminder email"
+msgstr "リマインダメール"
+
+#: includes/node_settings.inc:101
+msgid "Email sent to user as a reminder before the %node_type starts. !token_description"
+msgstr "%node_typeが始まるまでに、リマインダとしてユーザにメールを送信します。!token_description"
+
+#: includes/node_settings.inc:101
+msgid "Email sent to user as a reminder before the start time. !token_description"
+msgstr "開始日時までにリマインダとしてユーザにメールを送信します。!token_description"
+
+#: includes/node_settings.inc:111
+msgid "Signup limit"
+msgstr "サインアップの上限"
+
+#: includes/node_settings.inc:114
+msgid "Maximum number of users who can sign up before signups are automatically closed. If set to 0, there is no limit."
+msgstr "サインアップを自動でクローズとするまでに、サインアップすることができるユーザの最大数。0を設定すると無制限になります。"
+
+#: includes/signup_cancel_form.inc:37
+msgid "Cancel signup"
+msgstr "サインアップのキャンセル"
+
+#: includes/signup_form.inc:37
+msgid "Sign up another user"
+msgstr "他のユーザでサインアップ"
+
+#: includes/signup_form.inc:42
+msgid "Sign up for @title"
+msgstr "@titleへのサインアップ"
+
+#: includes/signup_form.inc:54
+msgid "Email"
+msgstr "メールアドレス"
+
+#: includes/signup_form.inc:55
+msgid "An e-mail address is required for users who are not registered at this site. If you are a registered user at this site, please !login to sign up for this %node_type."
+msgstr "このサイトに登録していないユーザであれば、メールアドレスが必須となります。登録ユーザであれば、!loginしてからこの%node_typeにサインアップしてください。"
+
+#: includes/signup_form.inc:66
+msgid "Username"
+msgstr "ユーザ名"
+
+#: includes/signup_form.inc:146
+msgid "Invalid email address entered for signup."
+msgstr "サインアップに入力されたメールアドレスが無効です。"
+
+#: includes/signup_form.inc:149
+msgid "The email address entered belongs to a registered user."
+msgstr "入力されたメールアドレスはユーザ登録されています。"
+
+#: includes/signup_form.inc:153
+msgid "The email address entered has already been used to sign up for this %node_type."
+msgstr "入力されたメールアドレスで、この%node_typeへすでにサインアップがなされています。"
+
+#: includes/signup_form.inc:184
+msgid "User %user_name does not exist."
+msgstr "ユーザ %user_name は存在しません。"
+
+#: includes/signup_form.inc:187
+msgid "User !user does not have permission to sign up."
+msgstr "ユーザ !user にはサインアップの権限がありません。"
+
+#: panels/content_types/signup_form.inc:10;27
+msgid "Signup form"
+msgstr "サインアップフォーム"
+
+#: panels/content_types/signup_form.inc:30
+msgid "Signup form."
+msgstr "サインアップのフォーム。"
+
+#: panels/content_types/signup_form.inc:31
+msgid "Node"
+msgstr "ノード"
+
+#: panels/content_types/signup_form.inc:32
+msgid "Contributed modules"
+msgstr "寄与されたモジュール"
+
+#: panels/content_types/signup_form.inc:75
+msgid "\"@s\" @type"
+msgstr "「@s」 @type"
+
+#: theme/admin.inc:50
+msgid "enabled"
+msgstr "有効"
+
+#: theme/admin.inc:53
+msgid "No content is currently !status for signups."
+msgstr "サインアップが !status のコンテンツはありません。"
+
+#: theme/email.inc:20
+msgid "SIGNUP INFORMATION"
+msgstr "サインアップの情報"
+
+#: theme/email.inc:66
+msgid "This is a copy of the signup broadcast you just sent."
+msgstr "あなたが送信したサインアップ同報メッセージのコピーです。"
+
+#: theme/email.inc:67
+msgid "Here is the original text you entered, with none of the tokens replaced:"
+msgstr "トークンによる置換を行う前の、あなたが入力したそのままのテキスト:"
+
+#: theme/email.inc:71
+msgid "Here is how the message that was sent to each user looked, with all of the tokens replaced (using your account for the user-related tokens):"
+msgstr "トークンによる置換を行った後の、各ユーザが受信するメッセージ:"
+
+#: theme/no_views.inc:21
+msgid "!users signed up"
+msgstr "!usersがサインアップ"
+
+#: theme/no_views.inc:27
+msgid "!count anonymous"
+msgstr "!count 名の匿名ユーザ"
+
+#: theme/no_views.inc:21
+msgid "1 individual"
+msgid_plural "@count individuals"
+msgstr[0] "1 名"
+msgstr[1] "@count 名"
+
+#: theme/node.admin.inc:59
+msgid "Total"
+msgstr "合計"
+
+#: theme/node.admin.inc:64
+msgid "Signup summary"
+msgstr "サインアップの概要"
+
+#: theme/node.admin.inc:74
+msgid "Signup details"
+msgstr "サインアップの詳細"
+
+#: theme/node.inc:26
+msgid "Signups closed for this %node_type"
+msgstr "この%node_typeへのサインアップは締め切られました"
+
+#: theme/node.inc:95
+msgid "Your signup information"
+msgstr "あなたのサインアップに関する情報"
+
+#: theme/signup_form.inc:61
+msgid "Phone"
+msgstr "電話番号"
+
+#: views/signup.views.inc:29
+msgid "Status: Open/Closed"
+msgstr "状態: オープン/クローズ"
+
+#: views/signup.views.inc:30
+msgid "Are signups open or closed for this node?"
+msgstr "このノードへのサインアップがオープンかクローズか？"
+
+#: views/signup.views.inc:39
+msgid "Filter on if signups are open or closed for each node."
+msgstr "サインアップがオープンかクローズかで各ノードを絞り込みます。"
+
+#: views/signup.views.inc:45
+msgid "Sort by if signups are closed or open."
+msgstr "サインアップがクローズかオープンかで並び替えます。"
+
+#: views/signup.views.inc:50
+msgid "Signup Limit"
+msgstr "サインアップの上限"
+
+#: views/signup.views.inc:51
+msgid "Maximum number of users who can sign up before signups are automatically closed (set to 0 for no limit)."
+msgstr "サインアップが自動的にクローズとなるまでにサインアップすることのできるユーザの最大数 (0の場合は無制限)。"
+
+#: views/signup.views.inc:60
+msgid "Filter by the maximum number of users who can sign up before signups are automatically closed (set to 0 for no limit)."
+msgstr "サインアップが自動的にクローズとなるまでにサインアップすることのできるユーザの最大数で絞り込みます (0の場合は無制限)。"
+
+#: views/signup.views.inc:66
+msgid "Notification: Email Address"
+msgstr "通知: メールアドレス"
+
+#: views/signup.views.inc:67
+msgid "Address where notification emails are sent wenever a user signs up."
+msgstr "ユーザがサインアップした際に送信する通知メールの宛先。"
+
+#: views/signup.views.inc:75
+msgid "Send Confirmation"
+msgstr "確認メールを送信"
+
+#: views/signup.views.inc:76
+msgid "Should confirmation email be sent to each user who signs up."
+msgstr "サインアップしたユーザに確認メールをそうしんするかどうか。"
+
+#: views/signup.views.inc:85
+msgid "Filter on if signup confirmation is enabled or disabled."
+msgstr "サインアップの確認メールが有効か無効かで絞り込みます。"
+
+#: views/signup.views.inc:91
+msgid "Confirmation: Message"
+msgstr "確認: メッセージ"
+
+#: views/signup.views.inc:92
+msgid "The body of the optional confirmation email that can be sent whenever a user signs up."
+msgstr "ユーザがサインアップした際に送信する、任意の確認メールの本文。"
+
+#: views/signup.views.inc:100
+msgid "Send Reminder"
+msgstr "リマインダメールを送信"
+
+#: views/signup.views.inc:101
+msgid "Should a reminder email be automatically sent to all users who signed up. This will be false if either an administrator disabled the feature for a given event, or if the reminder was already sent."
+msgstr "サインアップしたすべてのユーザにリマインダメールを自動で送信するかどうか。指定されたイベントで管理者がこの機能を無効にしていても、またリマインダがすでに送信済みであっても、FALSEとなります。"
+
+#: views/signup.views.inc:109
+msgid "Filter on if a signup reminder email will be sent."
+msgstr "サインアップのリマインダメールを送信するかどうかで絞り込みます。"
+
+#: views/signup.views.inc:115
+msgid "Reminder: Days Before Event for Email"
+msgstr "リマインダ: メール送信からイベントまでの日数"
+
+#: views/signup.views.inc:116
+msgid "How many days before an event will the reminder email be sent."
+msgstr "イベントの何日前にリマインダメールを送信するか。"
+
+#: views/signup.views.inc:125
+msgid "Reminder: Message"
+msgstr "リマインダ: メッセージ"
+
+#: views/signup.views.inc:126
+msgid "The body of the optional reminder email that can be sent a configurable time before an event begins."
+msgstr "イベントが始まるまでの指定した日時に送信する、任意のリマインダメールの本文。"
+
+#: views/signup.views.inc:134
+msgid "Enabled/Disabled"
+msgstr "有効/無効"
+
+#: views/signup.views.inc:137
+msgid "Filter on if signups are enabled or disabled."
+msgstr "サインアップが有効か無効かで絞り込みます。"
+
+#: views/signup.views.inc:153
+msgid "User"
+msgstr "ユーザ"
+
+#: views/signup.views.inc:154
+msgid "The user who signed up."
+msgstr "サインアップしているユーザ。"
+
+#: views/signup.views.inc:158;213
+msgid "Signup user"
+msgstr "サインアップユーザ"
+
+#: views/signup.views.inc:163
+msgid "User available signups"
+msgstr "ユーザがサインアップ可能"
+
+#: views/signup.views.inc:164
+msgid "Displays nodes the given user has not signed up for. Note that this argument will not work properly if you add the %signup_user relationship to the view."
+msgstr "与えられたユーザがまだサインアップしていないノードを表示します。ビューに %signup_user の関連性を加えなければ、この引数は正しく動作しないことに注意してください。"
+
+#: views/signup.views.inc:164
+msgid "Signup: User"
+msgstr "サインアップ: ユーザ"
+
+#: views/signup.views.inc:172
+msgid "User: Email Address"
+msgstr "ユーザ: メールアドレス"
+
+#: views/signup.views.inc:176
+msgid "Email address of a user (authenticated or anonymous) who signed up."
+msgstr "サインアップしたユーザ (登録または匿名) のメールアドレス。"
+
+#: views/signup.views.inc:176
+msgid "WARNING: only expose this data in a view that is restricted to users whom you can trust with such sensitive information."
+msgstr "警告: 機密情報を任せられるとあなたが信頼するユーザにだけ、このデータを表示するようにしてください。"
+
+#: views/signup.views.inc:181
+msgid "User: Signup Time"
+msgstr "ユーザ: サインアップ日時"
+
+#: views/signup.views.inc:182
+msgid "Time when user signed up."
+msgstr "ユーザがサインアップした日時。"
+
+#: views/signup.views.inc:189
+msgid "Time when the user signed up."
+msgstr "ユーザがサインアップした日時。"
+
+#: views/signup.views.inc:194
+msgid "Sort by time of sign up."
+msgstr "サインアップの日時で並び替えます。"
+
+#: views/signup.views.inc:199
+msgid "User: Additional Signup Info"
+msgstr "ユーザ: 追加のサインアップ情報"
+
+#: views/signup.views.inc:200
+msgid "Enter the additional field name (from signup.theme) in the Option column."
+msgstr "オプションカラムの追加フィールド名 (signup.themeより) を入力してください。"
+
+#: views/signup.views.inc:208
+msgid "User: Anonymous/Authenticated"
+msgstr "ユーザ: 匿名/登録"
+
+#: views/signup.views.inc:212
+msgid "Filter on if a user who signed up is anonymous, or an authenticated user on the site."
+msgstr "匿名ユーザか登録ユーザかで絞り込みます。"
+
+#: views/signup.views.inc:218
+msgid "User: Current User"
+msgstr "ユーザ: 現在のユーザ"
+
+#: views/signup.views.inc:222
+msgid "This allows you to filter by whether or not the node was signed up by the logged in user of the view."
+msgstr "ログインして表示しているユーザがサインアップしているかどうかでノードを絞り込むことができます。"
+
+#: views/signup.views.inc:279
+#: views/plugins/signup_plugin_argument_validate_signup_status.inc:15
+msgid "Signup status"
+msgstr "サインアップの状態"
+
+#: views/handlers/signup_handler_field_signup_user_form_data.inc:12
+msgid " Field Name"
+msgstr " フィールド名"
+
+#: views/handlers/signup_handler_field_signup_user_form_data.inc:13
+msgid "If you want to display a single field from signup.theme, enter its name here, otherwise, all fields will be displayed."
+msgstr "signup.theme にある単一のフィールドを表示させる場合は、その名前を個々に入力してください。入力が無ければ、すべてのフィールドを表示します。"
+
+#: views/handlers/signup_handler_filter_boolean.inc:23
+msgid "Yes"
+msgstr "はい"
+
+#: views/handlers/signup_handler_filter_boolean.inc:23
+msgid "No"
+msgstr "いいえ"
+
+#: views/handlers/signup_handler_filter_boolean.inc:55
+msgid "exposed"
+msgstr "表示"
+
+#: views/handlers/signup_handler_filter_signup_user_authenticated.inc:9
+msgid "Authenticated"
+msgstr "登録"
+
+#: views/plugins/signup_plugin_argument_validate_signup_status.inc:17
+msgid "Signups enabled (either open or closed)"
+msgstr "サインアップが有効 (オープンおよびクローズ)"
+
+#: views/plugins/signup_plugin_argument_validate_signup_status.inc:18
+msgid "Signups open"
+msgstr "サインアップがオープン"
+
+#: views/plugins/signup_plugin_argument_validate_signup_status.inc:19
+msgid "Signups closed"
+msgstr "サインアップがクローズ"
+
+#: views/plugins/signup_plugin_argument_validate_signup_status.inc:20
+msgid "Signups disabled"
+msgstr "サインアップが無効"
+
+#: views/plugins/signup_plugin_argument_validate_signup_status.inc:22
+msgid "Validate if the current node is signup-enabled and if signups are open or closed"
+msgstr "現在のノードのサインアップが有効となっているかどうか、またオープンかクローズかを確認"
+
+#: views/plugins/signup_plugin_argument_validate_signup_status.inc:30
+msgid "Validate user has access to the node"
+msgstr "ユーザがノードへのアクセス権限を持っているかどうか確認"
+

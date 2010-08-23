@@ -1,19 +1,19 @@
-# $Id: wysiwyg_imagefield.pot,v 1.1 2010/08/06 11:05:26 deciphered Exp $
+# $Id: wysiwyg_imagefield.pot,v 1.2 2010/08/09 23:53:11 deciphered Exp $
 #
 # LANGUAGE translation of Drupal (general)
 # Copyright YEAR NAME <EMAIL@ADDRESS>
 # Generated from files:
-#  wysiwyg_imagefield.module: n/a
-#  modules/help.inc: n/a
+#  wysiwyg_imagefield.module,v 1.1 2010/08/06 11:05:26 deciphered
+#  help.inc,v 1.1 2010/08/06 11:05:26 deciphered
 #  wysiwyg_imagefield.info: n/a
-#  plugins/wysiwyg_imagefield.inc: n/a
-#  plugins/wysiwyg_imagefield/wysiwyg_imagefield.js: n/a
+#  wysiwyg_imagefield.inc,v 1.1 2010/08/06 11:05:26 deciphered
+#  wysiwyg_imagefield.js,v 1.2 2010/08/08 03:18:59 deciphered
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2010-08-06 18:16+1000\n"
+"POT-Creation-Date: 2010-08-10 09:37+1000\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -22,7 +22,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: wysiwyg_imagefield.module:43 modules/help.inc:18
+#: wysiwyg_imagefield.module:43 modules/help.inc:19
 msgid "Use with WYSIWYG ImageField?"
 msgstr ""
 
@@ -46,7 +46,7 @@ msgstr ""
 msgid "'Number of values' must be set 'Unlimited' to use this field with WYSIWYG ImageField."
 msgstr ""
 
-#: wysiwyg_imagefield.info:0 plugins/wysiwyg_imagefield.inc:13;16 plugins/wysiwyg_imagefield/wysiwyg_imagefield.js:0
+#: wysiwyg_imagefield.info:0 plugins/wysiwyg_imagefield.inc:17;20 plugins/wysiwyg_imagefield/wysiwyg_imagefield.js:0
 msgid "WYSIWYG ImageField"
 msgstr ""
 
@@ -55,74 +55,130 @@ msgid "An ImageField based IMCE alternative"
 msgstr ""
 
 #: modules/help.inc:15
+msgid "Configuration"
+msgstr ""
+
+#: modules/help.inc:16
 msgid "WYSIWYG ImageField must be enabled and configured on each desire Content type, follow these simple steps to do so:"
 msgstr ""
 
-#: modules/help.inc:17
+#: modules/help.inc:18
 msgid "Create a new ImageField or edit a pre-defined ImageField on the desire Content types !manage_fields page."
 msgstr ""
 
-#: modules/help.inc:17
+#: modules/help.inc:18
 msgid "Manage fields"
 msgstr ""
 
-#: modules/help.inc:18
+#: modules/help.inc:19
 msgid "Check the !wif_checkbox checkbox."
 msgstr ""
 
-#: modules/help.inc:19
+#: modules/help.inc:20
 msgid "Under the !insert section, check the !insert_btn checkbox and configure the !enabled_styles and !default_styles sections."
 msgstr ""
 
-#: modules/help.inc:19
+#: modules/help.inc:20
 msgid "Insert"
 msgstr ""
 
-#: modules/help.inc:19
+#: modules/help.inc:20
 msgid "Enable insert button"
 msgstr ""
 
-#: modules/help.inc:19
+#: modules/help.inc:20
 msgid "Enabled insert styles"
 msgstr ""
 
-#: modules/help.inc:19
+#: modules/help.inc:20
 msgid "Default insert styles"
 msgstr ""
 
-#: modules/help.inc:20
+#: modules/help.inc:21
 msgid "(optional*) Under the !file_sources section, check the !autocomplete checkbox."
 msgstr ""
 
-#: modules/help.inc:20
+#: modules/help.inc:21
 msgid "File sources"
 msgstr ""
 
-#: modules/help.inc:20
+#: modules/help.inc:21
 msgid "Autocomplete reference textfield"
 msgstr ""
 
-#: modules/help.inc:21
+#: modules/help.inc:22
 msgid "Set !values to !unlimited."
 msgstr ""
 
-#: modules/help.inc:21
+#: modules/help.inc:22
 msgid "Number of values"
 msgstr ""
 
-#: modules/help.inc:21
+#: modules/help.inc:22
 msgid "Unlimited"
 msgstr ""
 
-#: modules/help.inc:23
+#: modules/help.inc:24
+msgid "Once WYSIWYG ImageField is configured in your desired Content types, enable the WYSIWYG plugin on your desired WYSIWYG profile and you are ready to go."
+msgstr ""
+
+#: modules/help.inc:25
 msgid "* Requires !filefield_sources and !views to provide Image Library functionality."
 msgstr ""
 
-#: modules/help.inc:23
+#: modules/help.inc:25
 msgid "FileField Sources module"
 msgstr ""
 
-#: modules/help.inc:23
+#: modules/help.inc:25
 msgid "Views module"
+msgstr ""
+
+#: modules/help.inc:27
+msgid "Frequently asked questions"
+msgstr ""
+
+#: modules/help.inc:29
+msgid "Where did my ImageField go?"
+msgstr ""
+
+#: modules/help.inc:31
+msgid "To make the process of adding inline images as streamlined as possible, WYSIWYG ImageField removes the ImageField widget from the user interface, making in visible only when needed."
+msgstr ""
+
+#: modules/help.inc:32
+msgid "It is recommended that if you require a ImageField accessible outside of the WYSIWYG ImageField experience that you create an ImageField for the sole purpose of using it with ImageField instead of using your existing ImageField."
+msgstr ""
+
+#: modules/help.inc:35
+msgid "How can I add a search to the 'Reference existing files' tab?"
+msgstr ""
+
+#: modules/help.inc:37
+msgid "If you have both the FileField Sources and Views modules installed, the !existing_files section will be displayed as a Views table. This View can be modified by the administrator (or approved roles) to add or remove columns, filters and a number of options."
+msgstr ""
+
+#: modules/help.inc:37
+msgid "Reference existing files"
+msgstr ""
+
+#: modules/help.inc:38
+msgid "By adding an Exposed filter, you are essentially adding a search engine to the existing file list."
+msgstr ""
+
+#: modules/help.inc:39
+msgid "The View can be modified at:"
+msgstr ""
+
+#: modules/help.inc:43
+msgid "How can I see all the files uploaded to the WYSIWYG ImageField widget?"
+msgstr ""
+
+#: modules/help.inc:45
+msgid "Currently this is not available, for the sole purpose of keeping the system as simple as possible."
+msgstr ""
+
+#: modules/help.inc:46
+msgid "Ideas have been put forward and there will be a solution for this in a future release."
 msgstr ""
 

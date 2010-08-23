@@ -1,0 +1,974 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Signup\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2007-10-02 15:51+0100\n"
+"Last-Translator: Sten Johnsen <sten@bedre-bilder.no>\n"
+"Language-Team: THINEA Webteknologi <sten@thinea.no>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Norwegian Bokmal\n"
+"X-Poedit-Country: NORWAY\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+#: signup_event_5.x-1.inc:45
+#: signup_event_5.x-2.inc:47
+msgid "Start"
+msgstr "Start"
+
+#: signup_event_5.x-1.inc:83
+#: ;104 signup_event_5.x-2.inc:83
+#: signup_event_none.inc:27
+msgid "[Untimed]"
+msgstr "[ikke tidsatt]"
+
+#: signup_event_5.x-1.inc:94
+msgid "Start: "
+msgstr "Start: "
+
+#: signup_event_5.x-1.inc:96
+msgid "End: "
+msgstr "Slutt: "
+
+#: signup_event_5.x-1.inc:100
+msgid "Timezone: "
+msgstr "Tidssone: "
+
+#: signup_views.inc:30
+msgid "Signup: User: Name"
+msgstr "Påmelding: Bruker: Navn"
+
+#: signup_views.inc:33
+msgid "Username of an authenticated user who signed up, or %anonymous for anonymous signups."
+msgstr "Brukernavn på en autentisert bruker som er påmeldt eller %anonymous for anonyme påmeldinger."
+
+#: signup_views.inc:33
+#: ;80;285;289 signup.module:1842
+msgid "Anonymous"
+msgstr "Anonym"
+
+#: signup_views.inc:36
+msgid "Signup: User: Email Address"
+msgstr "Påmelding: Bruker: Epost Adresse"
+
+#: signup_views.inc:41
+msgid "Email address of a user (authenticated or anonymous) who signed up."
+msgstr "Epost adresse til en bruker (autentisert eller anonym) som er påmeldt."
+
+#: signup_views.inc:41
+msgid "WARNING: only expose this data in a view that is restricted to users whom you can trust with such sensitive information."
+msgstr "ADVARSEL: synliggjør denne informasjonen kun et sted som er begrenset til brukere som du kan stole på ivaretar denne typen følsom informasjon."
+
+#: signup_views.inc:44
+#: ;59;67
+msgid "Signup: User: Signup Time"
+msgstr "Påmelding: Bruker: Påmeldingstidspunkt"
+
+#: signup_views.inc:48
+msgid "Time when user signed up."
+msgstr "Tid når bruker er påmeldt."
+
+#: signup_views.inc:51
+msgid "Signup: User: Additional Signup Info"
+msgstr "Påmelding: Bruker: Tilleggsinformasjon"
+
+#: signup_views.inc:54
+msgid "Enter the additional field name (from signup.theme) in the Option column."
+msgstr "Skriv inn tilleggsfelter (fra signup.theme) i Alternativer kolonnen."
+
+#: signup_views.inc:62
+msgid "Sorts by time of sign up."
+msgstr "Sorter etter påmeldingstidspunkt."
+
+#: signup_views.inc:72
+msgid "Enter dates in the format: CCYY-MM-DD HH:MM:SS. Enter 'now' to use the current time. You may enter a delta (in seconds) to the option that will be added to the time; this is most useful when combined with now. If you have the jscalendar module from jstools installed, you can use a popup date picker here."
+msgstr "Skriv inn datoer i formatet: CCÅÅ-MM-DD TT:MM:SS. Skriv 'nå' for å benytte tidspunktet akkurat nå. Du kan legge inn en differanse (i sekunder) til valget som vil bli lagt til tiden; dette er hensiktsmessig kombinert med 'nå'. Dersom du har jscalendar modulen fra jstools installert, kan du benytte en popup datohenter her."
+
+#: signup_views.inc:75
+msgid "Signup: User: Anonymous/Authenticated"
+msgstr "Påmelding: Bruker: Anonym/Autentisert"
+
+#: signup_views.inc:77
+msgid "is"
+msgstr "er"
+
+#: signup_views.inc:80
+msgid "Authenticated"
+msgstr "Autentisert"
+
+#: signup_views.inc:83
+msgid "Filter on if a user who signed up is anonymous, or an authenticated user on the site."
+msgstr "Filtrer på om en bruker som er påmeldt er anonym eller er en autentisert bruker på nettstedet."
+
+#: signup_views.inc:100
+#: ;150;156
+msgid "Signup: Node: Open/Closed"
+msgstr "Påmelding: Node: Åpen/Lukket"
+
+#: signup_views.inc:103
+msgid "Are signups open or closed for this node?"
+msgstr "Er påmelding åpen eller stengt for denne noden?"
+
+#: signup_views.inc:106
+#: ;165
+msgid "Signup: Node: Signup Limit"
+msgstr "Påmelding: Node: Påmeldingsgrense"
+
+#: signup_views.inc:108
+msgid "Maximum number of users who can sign up before signups are automatically closed (set to 0 for no limit)."
+msgstr "Maksimalt antall brukere som kan melde seg på før påmelding automatisk blir lukket (sett denne til 0 for ingen begrensning)."
+
+#: signup_views.inc:111
+msgid "Signup: Notification: Email Address"
+msgstr "Påmelding: Påminnelse: Epost adresse"
+
+#: signup_views.inc:112
+msgid "Address where notification emails are sent wenever a user signs up."
+msgstr "E-post adresse hvor påminnelser om nye påmeldinger sendes."
+
+#: signup_views.inc:116
+msgid "Signup: Confirmation: Enabled/Disabled"
+msgstr "Påmelding: Bekreftelse: Aktivert/Deaktivert"
+
+#: signup_views.inc:118
+msgid "Should confirmation email be sent to each user who signs up."
+msgstr "Skal bekreftelse sendes til til hver bruker som melder seg på?"
+
+#: signup_views.inc:121
+msgid "Signup: Confirmation: Message"
+msgstr "Påmelding: Bekreftelse: Melding"
+
+#: signup_views.inc:122
+msgid "The body of the optional confirmation email that can be sent whenever a user signs up."
+msgstr "Brødteksten til en valgfri bekreftelse som kan sendes når en bruker melder seg på."
+
+#: signup_views.inc:125
+msgid "Signup: Reminder: Enabled/Disabled"
+msgstr "Påmelding: Påminnelse: Aktivert/Deaktivert"
+
+#: signup_views.inc:127
+msgid "Should a reminder email be automatically sent to all users who signed up. This will be false if either an administrator disabled the feature for a given event, or if the reminder was already sent."
+msgstr "Skal en påminnelse sendes automatisk til alle brukere som er påmeldt? Denne vil være avslått dersom enten administrator har slått av denne muligheten for en gitt hendelse, eller påminnelse allerede er sendt."
+
+#: signup_views.inc:130
+msgid "Signup: Reminder: Days Before Event for Email"
+msgstr "Påmelding: Påminnelse: Dager før hendelsen for epost"
+
+#: signup_views.inc:132
+msgid "How many days before an event will the reminder email be sent."
+msgstr "Hvor mange dager før en hendelse vil påminnelsen sendes ut?"
+
+#: signup_views.inc:135
+msgid "Signup: Reminder: Message"
+msgstr "Påmelding: Påminnelse: Melding"
+
+#: signup_views.inc:136
+msgid "The body of the optional reminder email that can be sent a configurable time before an event begins."
+msgstr "Brødteksten av en valgfri påminnelsesmelding som kan sendes ut til de påmeldte et valgfritt antall timer før en hendelse begynner."
+
+#: signup_views.inc:151
+msgid "Sort by if signups are closed or open."
+msgstr "Sorter etter om påmelding er stengt eller åpen."
+
+#: signup_views.inc:157
+#: ;172
+msgid "are"
+msgstr "er"
+
+#: signup_views.inc:160
+#: ;222 signup.module:850
+#: ;1432
+msgid "Open"
+msgstr "Åpen"
+
+#: signup_views.inc:160
+#: ;222 signup.module:851
+#: ;1432
+msgid "Closed"
+msgstr "Stengt"
+
+#: signup_views.inc:162
+msgid "Filter on if signups are open or closed for each node."
+msgstr "Filtrer på hvorvidt påmelding er åpen eller stengt for hver node."
+
+#: signup_views.inc:167
+msgid "Filter by the maximum number of users who can sign up before signups are automatically closed (set to 0 for no limit)."
+msgstr "Filtrer etter maksimalt antall brukere som kan melde seg på før påmelding automatisk lukkes (sett til 0 for ingen begrensning)."
+
+#: signup_views.inc:170
+msgid "Signup: Node: Enabled/Disabled"
+msgstr "Påmelding: Node: Aktiver/Deaktiver"
+
+#: signup_views.inc:175
+#: signup.module:446
+msgid "Disabled"
+msgstr "Deaktivert"
+
+#: signup_views.inc:175
+#: signup.module:440
+#: contrib/signup_ecommerce/signup_ecommerce.module:43
+msgid "Enabled"
+msgstr "Aktiv"
+
+#: signup_views.inc:178
+msgid "Filter on if signups are enabled or disabled."
+msgstr "Filtrer etter om påmelding er aktivert eller deaktivert."
+
+#: signup_views.inc:230
+msgid "Signup: User: UID Signup for Node"
+msgstr "Påmelding: Bruker: UID Påmelding for Node"
+
+#: signup_views.inc:232
+msgid "Filter signups by signed up user."
+msgstr "Filtrer påmeldinger etter påmeldt bruker."
+
+#: signup_views.inc:235
+msgid "Signed up"
+msgstr "Påmeldt"
+
+#: signup_views.inc:235
+msgid "Not signed up"
+msgstr "Ikke påmeldt"
+
+#: signup.module:24
+msgid "List of users current signups."
+msgstr "Liste over påmeldte brukere."
+
+#: signup.module:33
+#: ;367
+msgid "Current signups"
+msgstr "Påmeldte brukere"
+
+#: signup.module:34
+msgid "View signup schedule"
+msgstr "Vis påmeldingsplan"
+
+#: signup.module:103
+msgid "Event reminder: !event"
+msgstr "Vi minner om: !event"
+
+#: signup.module:113
+#: ;1277
+msgid "SIGNUP INFORMATION"
+msgstr "PÅMELDINGSINFORMASJON"
+
+#: signup.module:125
+msgid "Reminder for %event sent to %useremail."
+msgstr "Påminnelse for %event sendt til %usermail."
+
+#: signup.module:125
+#: ;171;1079;1095;1851
+#: contrib/signup_ecommerce/signup_ecommerce.module:184
+msgid "view"
+msgstr "vis"
+
+#: signup.module:171
+msgid "Signups closed for %event by cron."
+msgstr "Påmeldinger stengt for %event av cron."
+
+#: signup.module:235
+msgid "Signup allows users to sign up (in other words, register) for content of any type. The most common use is for events, where users indicate they are planning to attend. This module includes options for sending a notification email to a selected email address upon a new user signup (good for notifying event coordinators, etc.) and a confirmation email to users who sign up. Each of these options are controlled per node. When used on event nodes (with event.module installed and regular cron runs), it can also send out reminder emails to all signups a configurable number of days before the start of the event (also controlled per node) and to automatically close event signups 1 hour before their start (general setting). Settings exist for resticting signups to selected roles and content types."
+msgstr "Signup tillater brukere å melde seg på (med andre ord, registrere seg for) innhold av enhver type. Som oftest benyttes denne modulen for hendelser, hvor brukere angir at de har til hensikt å delta. Denne modulen inkluderer valg for å sende en påminnelse til en valgt e-post adresse når en ny bruker melder seg på (fint for koordinatorer av hendelsen) og en bekreftelsesmail til brukeren som melder seg på. Hver av disse valgene kan velges separat for hver node. Når benyttet på hendelsesnoder (med Event-modulen installert og cron kjører med faste intervaller), kan denne modulen også sende ut en påminnelse til alle som er påmeldt et valgt antall dager før hendelsen starter (kan også kontrolleres pr. node) og automatisk lukke muligheten for påmeldinger 1 time før de starter (generell innstilling). Det er også innstillinger for å begrense påmelding til bestemte roller og innholdstyper. "
+
+#: signup.module:237
+msgid "To use signup, you must enable which content types should allow signups in administer->settings->content types, and you must also grant the %sign_up_for_content permission to any user role that should be able to sign up in administer->access control. Each signup-enabled node will now have a place for users to sign up."
+msgstr "For å benytte Signup (påmelding) må du først angi hvilke innholdstyper som skal tillate påmeldinger i administrer->innstillinger->innholdstyper og tillate %sign_up_for_content adgang for alle bruker-rollene som skal ha mulighet for å melde seg på i administrer->tilgangsbegrensninger. Alle påmeldingsbare noder vil nå ha et valg for påmelding."
+
+#: signup.module:239
+msgid "There are two ways for a user to have administrative access to the signup information about a given node: either the user has the %administer_signups_for_own_content permission and they are viewing a node they created, or the user has the global %administer_all_signups permission. Administrative access allows a user to view all the users who have signed up for the node, along with whatever information they included when they signed up.  Signup administrators can also cancel other user's signups for the node, and can close signups on the node entirely (meaning no one else is allowed to sign up)."
+msgstr "Det er to måter for en bruker å ha administrativ tilgang til påmeldingsinformasjonen på en gitt node: Enten har brukeren %administer_signups_for_own_content adgang og ser på den noden som brukeren selv har laget, eller brukeren har den globale %administer_all_signups tillatelsen. Administrativ tilgang tillater en bruker å se alle brukere som har meldt seg på en node sammen med den informasjonen de skrev inn ved påmelding. Påmeldingsadministratorer kan også kansellere andre brukeres påmelding på noden, og kan stenge for påmeldinger helt (som betyr at ingen andre kan melde seg på)."
+
+#: signup.module:241
+msgid "Default settings for notification email address, reminder emails and confirmation emails are located in administer->settings->signup. These will be the default values used for a signup node unless otherwise specified (to configure these options per node, visit 'edit' for that node and make the adjustments in the 'Sign up settings' section)."
+msgstr "Standard innstillinger for påminnelse e-post adresse, påminnelse melding og bekreftelsesmelding finnes i adminstrer->innstillinger->påmelding. Disse vil være standardverdiene for alle påmeldingsnoder med mindre noe annet er spesifisert (for å endre innstilling for hver enkelt node, klikk Rediger for denne noden og gjør endringer under 'Påmeldingsinnstillinger')."
+
+#: signup.module:243
+msgid "Signups can be manually closed for any node at the %signup_overview page, or on the 'signups' tab on each node."
+msgstr "Påmeldinger kan manuelt stenges for enhver node på %signup_overview siden, eller på påmeldinger-fanekortet på hver enkelt node."
+
+#: signup.module:243
+msgid "Signup overview"
+msgstr "Påmelding oversikt"
+
+#: signup.module:245
+msgid "The user signup form is fully themable -- form fields may be added or deleted. For more details see the instructions in signup.theme, where a sample user form is included."
+msgstr "Påmeldingsskjemaet er fullt ut modifiserbart -- skjemafelter kan legges til eller slettes. For flere detaljer se instruksjoner i signup.theme, hvor et eksempel er lagt ved."
+
+#: signup.module:252
+msgid "This page allows you to send an email message to every user who signed up for this @node_type."
+msgstr "Denne siden gjør det mulig å sende en e-post til alle brukere som er påmeldt hendelsen. Vær oppmerksom på at meldingen sansynligvis vil feile og ikke bli utsendt om du benytter æ, ø eller å i emnefeltet. Dette er en begrensning i Drupal."
+
+#: signup.module:268
+msgid "Configure settings for signups."
+msgstr "Innstillinger for påmeldinger."
+
+#: signup.module:272
+#: signup.info:0
+msgid "Signup"
+msgstr "Påmelding"
+
+#: signup.module:272
+#: ;430
+msgid "Signup settings"
+msgstr "Påmelding innstillinger"
+
+#: signup.module:277
+msgid "View all signup-enabled posts, and open or close signups on them."
+msgstr "Vis alle påmeldingsbare poster, og åpne eller steng påmelding på dem."
+
+#: signup.module:280
+msgid "Signup administration"
+msgstr "Påmeldingsadministrering"
+
+#: signup.module:303
+#: ;457;881
+msgid "Signups"
+msgstr "Påmeldinger"
+
+#: signup.module:312
+#: ;923
+msgid "Signup broadcast"
+msgstr "Melding til påmeldte"
+
+#: signup.module:367
+msgid "view signup schedule"
+msgstr "vis påmeldingsplan"
+
+#: signup.module:370
+msgid "Signup information"
+msgstr "Påmeldingsinformasjon"
+
+#: signup.module:398
+#: contrib/signup_ecommerce/signup_ecommerce.module:20
+msgid "Allow signups by default"
+msgstr "Tillat påmelding som standard"
+
+#: signup.module:400
+msgid "If selected, users will be allowed to signup for this node type by default. Users with %admin_all_signups permission will be able to toggle this setting on a per-node basis."
+msgstr "Dersom valgt vil brukere være i stand til å melde seg på denne innholdstypen som standard. Brukere med %admin_all_signups adgang vil være i stand til å slå av eller på denne innstillingen for hver enkelt node."
+
+#: signup.module:400
+#: ;350
+msgid "administer all signups"
+msgstr "administrere alle påmeldinger"
+
+#: signup.module:442
+msgid "Disabled, but save existing signup information"
+msgstr "Inaktiv, men lagre eksisterende påmeldingsinformasjon"
+
+#: signup.module:443
+msgid "Disabled, and remove all signup information"
+msgstr "Inaktiv og fjern all påmeldingsinformasjon"
+
+#: signup.module:443
+msgid "This can not be undone, use with extreme caution!"
+msgstr "Denne kan ikke angres. Bruk med forsiktighet!"
+
+#: signup.module:457
+msgid "If enabled, you can control whether users may sign up by visiting the !signups tab and toggling if signups are %open or %closed for this @node_type."
+msgstr "Dersom aktivert kan du kontrollere hvorvidt brukere kan melde seg på ved å åpne !signups fanekortet og slå av eller på om påmelding er %open eller %closed for @node_type."
+
+#: signup.module:457
+#: ;1001
+msgid "open"
+msgstr "åpen"
+
+#: signup.module:457
+#: ;1004
+msgid "closed"
+msgstr "stengt"
+
+#: signup.module:467
+msgid "If disabled, all of the other signup settings will be ignored."
+msgstr "Dersom deaktivert vil alle andre påmeldingsinnstillinger ingnoreres."
+
+#: signup.module:617
+msgid "Event start time is already past the signup close-in-advance time, signups now closed."
+msgstr "Hendelsens starttid er allerede passert tidspunktet hvor påmelding automatisk stenges. Påmelding er nå stengt."
+
+#: signup.module:684
+msgid "Signups closed for this event"
+msgstr "Påmelding er stengt for denne hendelsen"
+
+#: signup.module:702
+msgid "login"
+msgstr "logg inn"
+
+#: signup.module:703
+msgid "register"
+msgstr "registrer"
+
+#: signup.module:709
+msgid "Email"
+msgstr "E-post"
+
+#: signup.module:710
+msgid "An e-mail address is required for users who are not registered at this site. If you are a registered user at this site, please !login to sign up for this event."
+msgstr "En e-postadresse er påkrevet for brukere som ikke er registrert på disse sidene. Dersom du er registrert som bruker, vennligst !login for å melde deg på denne hendelsen."
+
+#: signup.module:718
+msgid "Please !login or !register to sign up for this event."
+msgstr "Vennligst !login eller !register for å melde deg på denne hendelsen."
+
+#: signup.module:750
+msgid "!users signed up"
+msgstr "!users er påmeldt"
+
+#: signup.module:756
+msgid "!count anonymous"
+msgstr "!count anonyme"
+
+#: signup.module:774
+msgid "Your signup information"
+msgstr "Din påmeldingsinformasjon"
+
+#: signup.module:805
+msgid "Sign up for @title"
+msgstr "Meld deg på @title"
+
+#: signup.module:819
+msgid "Sign up"
+msgstr "Meld deg på"
+
+#: signup.module:832
+#: ;1570
+msgid "Cancel signup"
+msgstr "Kansellér påmeldingen"
+
+#: signup.module:849
+msgid "All"
+msgstr "Alle"
+
+#: signup.module:858
+msgid "Filter by signup status"
+msgstr "Filtrer ette påmeldingsstatus"
+
+#: signup.module:862
+msgid "Filter"
+msgstr "Filter"
+
+#: signup.module:880
+msgid "Title"
+msgstr "Tittel"
+
+#: signup.module:882
+#: ;1416
+msgid "Limit"
+msgstr "Begrensning"
+
+#: signup.module:883
+#: ;1414
+msgid "Status"
+msgstr "Status"
+
+#: signup.module:884
+#: ;1362;1417
+msgid "Operations"
+msgstr "Operasjoner"
+
+#: signup.module:920
+#, fuzzy
+msgid "View signups"
+msgstr "Vis påmeldinger"
+
+#: signup.module:923
+msgid "Send an email message to all users who signed up."
+msgstr "Send en epost til alle brukere som er påmeldt."
+
+#: signup.module:934
+#: ;1446
+msgid "Update"
+msgstr "Oppdatér"
+
+#: signup.module:1007
+msgid "enabled"
+msgstr "aktivert"
+
+#: signup.module:1010
+msgid "No content is currently !status for signups."
+msgstr "Intet innhold er er for tiden !status for påmeldinger."
+
+#: signup.module:1063
+msgid "Signup to !title cancelled."
+msgstr "Påmelding til !title er kansellert."
+
+#: signup.module:1079
+msgid "Signups closed for %title."
+msgstr "Påmeldinger stengt for %title."
+
+#: signup.module:1095
+msgid "Signups reopened for %title."
+msgstr "Påmeldinger gjenåpnet for %title."
+
+#: signup.module:1104
+msgid "Close x hours before"
+msgstr "Steng x timer før"
+
+#: signup.module:1108
+msgid "The number of hours before the event which signups will no longer be allowed. Use negative numbers to close signups after the event start (example: -12)."
+msgstr "Antall timer før hendelsen når påmeldinger skal lukkes og ikke lenger være tillatt. Benytt negative tall for å stenge påmelding etter at hendelsen har startet (for eksempel: -12)."
+
+#: signup.module:1113
+msgid "Default signup information"
+msgstr "Standard påmeldingsinformasjon"
+
+#: signup.module:1114
+msgid "New signup-enabled nodes will start with these settings."
+msgstr "Nye påmeldingsaktiverte noder vil åpne med disse innstillingene."
+
+#: signup.module:1121
+msgid "Advanced settings"
+msgstr "Avanserte innstillinger"
+
+#: signup.module:1126
+msgid "Default fieldset behavior for per-node signup form"
+msgstr "Standard oppførsel for per node påmeldingsskjema."
+
+#: signup.module:1128
+msgid "Collapsed"
+msgstr "Kollapset"
+
+#: signup.module:1128
+msgid "Expanded"
+msgstr "Utvidet"
+
+#: signup.module:1130
+msgid "On every signup-enabled node, users with permission to sign up will be presented with a form which is encapsulated in a collapsible fieldset. This setting controls if that fieldset is expanded or collapsed by default."
+msgstr "I alle noder hvor påmelding er aktivert vil brukere med tilgang til å melde seg på bli presentert med et skjema som er omsluttet av et kollapsibelt feltsett. Denne innstillingen avgjør om det feltsettet er utvidet eller kollapset som standard."
+
+#: signup.module:1147
+msgid "Save configuration"
+msgstr "Lagre innstillinger"
+
+#: signup.module:1236
+msgid "Anonymous user %email is already signed up for %title"
+msgstr "Anonym bruker %email er allerede påmeldt %title"
+
+#: signup.module:1247
+msgid "User !user is already signed up for %title"
+msgstr "Bruker !user er allerede påmeldt %title"
+
+#: signup.module:1265
+msgid "You will receive a confirmation email shortly which contains further event information."
+msgstr "Du vil motta en bekreftelse på e-post om kort tid. Denne vil inneholde mer informasjon om hendelsen."
+
+#: signup.module:1266
+msgid "You will receive a reminder email !number !days before the event."
+msgstr "Du vil motta en påminnelse !number !days før hendelsen."
+
+#: signup.module:1297
+msgid "Signup confirmation for event: !event"
+msgstr "Bekreftelse: !event"
+
+#: signup.module:1305
+msgid "New Event Signup"
+msgstr "Ny Påmelding"
+
+#: signup.module:1306
+msgid "Signup confirmation for event: !title"
+msgstr "Pameldingsbekreftelse for: !title"
+
+#: signup.module:1307
+msgid "The following information was submitted as a signup for !title"
+msgstr "Følgende informasjon ble lagt inn gjennom en påmelding på !title"
+
+#: signup.module:1308
+msgid "Date/Time: !time"
+msgstr "Dato/Tid: !time"
+
+#: signup.module:1309
+msgid "Username:"
+msgstr "Brukernavn:"
+
+#: signup.module:1310
+msgid "Email:"
+msgstr "E-post:"
+
+#: signup.module:1314
+msgid "Signup to !title confirmed."
+msgstr "Påmelding til !title er bekreftet."
+
+#: signup.module:1338
+msgid "Signups for @user"
+msgstr "Påmeldinger for @user"
+
+#: signup.module:1355
+msgid "Signup summary"
+msgstr "Påmelding oppsummert"
+
+#: signup.module:1358
+msgid "Signup details"
+msgstr "Påmelding detaljer"
+
+#: signup.module:1360
+msgid "Name/Signup time"
+msgstr "Navn/Påmeldingstid"
+
+#: signup.module:1361
+#, fuzzy
+msgid "Extra information"
+msgstr "Påmeldingsinformasjon"
+
+#: signup.module:1415
+msgid "Total"
+msgstr "Totalt"
+
+#: signup.module:1426
+msgid "Closed (limit reached)"
+msgstr "Stengt (grensen er nådd)"
+
+#: signup.module:1470
+msgid "Signups opened for !title."
+msgstr "Påmeldinger gjenåpnet for !title."
+
+#: signup.module:1474
+msgid "Signups closed for !title."
+msgstr "Påmeldinger stengt for !title."
+
+#: signup.module:1507
+#, fuzzy
+msgid "Signup limit reached for !title, signups closed."
+msgstr "Påmelding til !title er kansellert."
+
+#: signup.module:1514
+#, fuzzy
+msgid "Signup limit reached."
+msgstr "Påmelding til !title er kansellert."
+
+#: signup.module:1522
+msgid "Signup limit increased for !title, signups re-opened."
+msgstr "Påmeldingsgrense er utvidet for !title. Påmelding er åpnet igjen."
+
+#: signup.module:1525
+msgid "Total signups for !title now below limit, signups re-opened."
+msgstr "Totalt antall påmeldinger for !title er nå under grensen. Påmelding er åpnet igjen."
+
+#: signup.module:1529
+msgid "Signup limit updated for !title."
+msgstr "Påmeldinger stengt for !title."
+
+#: signup.module:1537
+msgid "Signup limit removed for !title, signups now open."
+msgstr "Påmeldingsgrensen er fjernet for !title. Påmelding er nå åpen."
+
+#: signup.module:1540
+msgid "Signup limit removed for !title."
+msgstr "Påmeldinger gjenåpnet for !title."
+
+#: signup.module:1619
+msgid "Supported string substitutions: %event, %time, %username, %useremail, %info (user signup information)."
+msgstr "Støttdede strengerstatninger: %event, %time, %username, %useremail, %info (påmeldingsinformasjon)."
+
+#: signup.module:1635
+msgid "Send signups to"
+msgstr "Send påmeldinger til"
+
+#: signup.module:1638
+msgid "Email address where notification of new signups will be sent. Leave blank for no notifications."
+msgstr "E-post adresse hvor påminnelser om nye påmeldinger sendes. La denne stå åpen dersom ingen påminnelser skal sendes."
+
+#: signup.module:1642
+msgid "Send confirmation"
+msgstr "Send bekreftelse"
+
+#: signup.module:1647
+msgid "Confirmation email"
+msgstr "Bekreftelsesmelding"
+
+#: signup.module:1650
+msgid "Email sent to user upon signup."
+msgstr "E-post sendt til bruker ved påmelding."
+
+#: signup.module:1660
+msgid "Send reminder"
+msgstr "Send påminnelse"
+
+#: signup.module:1671
+msgid "day(s) before event"
+msgstr "dag(er) før hendelse"
+
+#: signup.module:1675
+msgid "Reminder email"
+msgstr "Påminnelsesmelding"
+
+#: signup.module:1678
+msgid "Email sent to user as an event reminder."
+msgstr "E-post sendt til bruker som en påminnelse om hendelsen."
+
+#: signup.module:1682
+#, fuzzy
+msgid "Signup limit"
+msgstr "Påmelding"
+
+#: signup.module:1685
+msgid "Maximum number of users who can sign up before signups are automatically closed. If set to 0, there is no limit."
+msgstr "Maksimum antall brukere som kan melde seg på får påmelding automatisk lukkes. Dersom den er satt til 0 er det ingen maksimumsgrense."
+
+#: signup.module:1759
+msgid "No users have signup up for this @node_type."
+msgstr "Ingen brukere er påmeldt @node_type."
+
+#: signup.module:1769
+msgid "Supported string substitutions: %tokens."
+msgstr "Støttede strengerstatninger: %tokens"
+
+#: signup.module:1773
+msgid "Subject"
+msgstr "Emne"
+
+#: signup.module:1778
+msgid "Message body"
+msgstr "Meldingstekst"
+
+#: signup.module:1780
+msgid "Body of the email message you wish to send to all users who have signed up for this @node_type."
+msgstr "Brødtekst til meldingen som du ønsker å sende til alle brukere som er påmeldt @node_type."
+
+#: signup.module:1785
+msgid "Send"
+msgstr "Send"
+
+#: signup.module:1796
+msgid "From"
+msgstr "Fra"
+
+#: signup.module:1804
+msgid "This message will be sent from: %from"
+msgstr "Denne meldingen vil bli sendt fra: %from"
+
+#: signup.module:1851
+msgid "Broadcast email for %event sent to %email."
+msgstr "Fellesmelding for %event sendt til %email."
+
+#: signup.module:1854
+#, fuzzy
+msgid "Message sent to all users who have signed up"
+msgstr "E-post sendt til bruker ved påmelding."
+
+#: signup.module:125
+#: ;171;1079;1095;1851;0 signup.theme:0
+msgid "signup"
+msgstr "påmelding"
+
+#: signup.module:750
+msgid "1 individual"
+msgid_plural "@count individuals"
+msgstr[0] "1 person"
+msgstr[1] "@count personer"
+
+#: signup.module:1266
+msgid "day"
+msgid_plural "days"
+msgstr[0] "dag"
+msgstr[1] "dager"
+
+#: signup.module:348
+msgid "sign up for content"
+msgstr "meld deg på"
+
+#: signup.module:349
+msgid "view all signups"
+msgstr "vis alle påmeldinger"
+
+#: signup.module:351
+msgid "administer signups for own content"
+msgstr "administrer påmeldinger for eget innhold"
+
+#: signup.module:352
+msgid "email users signed up for own content"
+msgstr "send melding til brukere som er påmeldt eget innhold"
+
+#: signup.module:353
+msgid "email all signed up users"
+msgstr "send melding til alle påmeldte brukere"
+
+#: signup.theme:49
+msgid "Name"
+msgstr "Navn"
+
+#: signup.theme:55
+msgid "Phone"
+msgstr "Telefon"
+
+#: signup.install:88
+msgid "Signup module installed successfully."
+msgstr "Påmeldingsmodulen er installert."
+
+#: signup.install:91
+msgid "Table installation for the Signup module was unsuccessful. The tables may need to be installed by hand. See the signup.install file for a list of the installation queries."
+msgstr "Tabellinstallering for Signup modulen var mislykket. Tabellene kan måtte installeres manuelt. Se signup.install fil for en liste over installasjonsskriptet."
+
+#: signup.install:188
+msgid "The old %signup_user_view setting was enabled on your site, so the %view_all_signups permission has been added to the %authenticated_user role. Please consider customizing what roles have this permission on the !access_control page."
+msgstr "Den gamle %signup_user_view innstillingen ble slått på slik at %view_all_signups tillatelsen er lagt til %authenticated_user rollen. Vurder hvilke roller som skal ha denne adgangen på !access_control siden."
+
+#: signup.install:188
+#: ;196
+msgid "Users can view signups"
+msgstr "Brukere kan se påmeldinger"
+
+#: signup.install:188
+msgid "Access control"
+msgstr "Adgangskontroll"
+
+#: signup.install:196
+msgid "The %signup_user_view setting has been removed."
+msgstr "%signup_user_view innstilling er fjernet."
+
+#: signup.info:0
+msgid "Allow users to sign up for content (especially events)."
+msgstr "Tillat brukere å melde seg på (spesielt hendelser)."
+
+#: contrib/signup_conflicts/signup_conflicts.module:21
+msgid "Alert users to signup conflicts."
+msgstr "Varsle brukere om påmeldingskonflikter."
+
+#: contrib/signup_conflicts/signup_conflicts.module:31
+msgid "%number schedule %conflict in your current signups"
+msgstr "%number kollisjoner %conflict i dine påmeldinger"
+
+#: contrib/signup_conflicts/signup_conflicts.module:32
+msgid "Schedule conflicts"
+msgstr "Timeplanskollisjoner"
+
+#: contrib/signup_conflicts/signup_conflicts.module:48
+msgid "Provide schedule conflict info for signup module."
+msgstr "Angi informasjon om timeplanskonflikter for påmeldingsmodulen."
+
+#: contrib/signup_conflicts/signup_conflicts.module:51
+msgid ""
+"<p>signup_conflicts is an add-on for signup module, which allows users and admins\r\n"
+"        to view any schedule conflicts which exist between signup events.  Simply enable\r\n"
+"        the module in administer -> modules.  Users will see any schedule conflicts listed\r\n"
+"        on their user page, and admins will see two additional tabs, 'conflicts' and\r\n"
+"        'conflict detail', appear in the administer -> signup section.  there is also\r\n"
+"        an optional block--when enabled it provides the user with a teaser to alert\r\n"
+"        them of schedule conflicts.</p>\r\n"
+"\r\n"
+"        <p>NOTE: this module requires the signup module and the event module to be properly installed</p>"
+msgstr ""
+"<p>signup_conflicts er en tilleggsmodul for påmeldingsmodulen, som gjør at brukere \r\n"
+"       og administratorer kan se enhver konflikt mellom hendelser de er påmeldt. Aktiver \r\n"
+"       modulen i administrer -> moduler.  Brukere vil se om det er konflikt mellom hendelser\r\n"
+"        de er påmeldt på sine brukersider. Administratorer vil se to nye fankort: 'konflikter' \r\n"
+"       og 'konfliktdetaljer' i administrer -> påmelding.  I tillegg er det en valgfri blokk -- når \r\n"
+"       aktivert viser den brukeren en ledetekst for å varsle ham om en eventuell konflikt.</p>\r\n"
+"\r\n"
+"        <p>MERK: denne modulen krever at påmeldingsmodulen (Signup) og hendelsesmodulen (event) er installert.</p>"
+
+#: contrib/signup_conflicts/signup_conflicts.module:96
+#: ;182
+msgid "conflicts"
+msgstr "konflikter"
+
+#: contrib/signup_conflicts/signup_conflicts.module:99
+msgid "conflict detail"
+msgstr "konfliktdetaljer"
+
+#: contrib/signup_conflicts/signup_conflicts.module:125
+msgid "Signup conflicts exist"
+msgstr "Påmeldingskonflikter finnes"
+
+#: contrib/signup_conflicts/signup_conflicts.module:150
+msgid "<h4>%user, 0 schedule conflicts</h4>"
+msgstr "<h4>%user, 0 hendelseskonflikter</h4>"
+
+#: contrib/signup_conflicts/signup_conflicts.module:156
+#: ;183
+msgid "%total total %conflict"
+msgstr "%total totalt %conflict"
+
+#: contrib/signup_conflicts/signup_conflicts.module:158
+#: ;186
+msgid "No schedule conflicts"
+msgstr "Ingen hendelseskonflikter"
+
+#: contrib/signup_conflicts/signup_conflicts.module:182
+msgid "user"
+msgstr "bruker"
+
+#: contrib/signup_conflicts/signup_conflicts.module:263
+msgid "The module %module was deactivated--it requires the following disabled/non-existant modules to function properly: %dependencies"
+msgstr "Modulen %module ble deaktivert -- den krever følgende deaktiverte/ikke-eksisterende moduler for å fungere skikkelig: %dependencies"
+
+#: contrib/signup_conflicts/signup_conflicts.module:281
+msgid "%user, %total schedule %conflict:"
+msgstr "%user, %total timeplan %conflict:"
+
+#: contrib/signup_conflicts/signup_conflicts.module:289
+msgid "conflicts with:"
+msgstr "er i konflikt med: "
+
+#: contrib/signup_conflicts/signup_conflicts.module:31
+msgid "conflict exists"
+msgid_plural "conflicts exist"
+msgstr[0] "konflikt eksisterer"
+msgstr[1] "konflikter eksisterer"
+
+#: contrib/signup_conflicts/signup_conflicts.module:156
+#: ;183;281
+msgid "conflict"
+msgid_plural "conflicts"
+msgstr[0] "konflikt"
+msgstr[1] "konflikter"
+
+#: contrib/signup_conflicts/signup_conflicts.module:0
+msgid "signup_conflicts"
+msgstr "signup_conflicts"
+
+#: contrib/signup_ecommerce/signup_ecommerce.module:16
+msgid "Integrates the signup and e-commerce modules."
+msgstr "Integrerer påmelding og e-handelsmodulene."
+
+#: contrib/signup_ecommerce/signup_ecommerce.module:19
+msgid "signup_ecommerce provides basic integration between the ecommerce module and the signup module, specifically allowing automatic user signup upon purchase of an enabled product type."
+msgstr "signup_ecommerce tilbyr grunnleggende integrering mellom e-handelsmodulen og påmeldingsmodulen, spesifikt tillater den automatisk påmelding ved kjøp av en aktivert produkttype."
+
+#: contrib/signup_ecommerce/signup_ecommerce.module:20
+msgid "To enable the feature, go to the <a href=\"%url\">content types configuration page</a>, and click %configure for the content type you wish to enable. Make sure that the %allow_signups and %signup_ecommerce_integration checkboxes are checked, and save the settings."
+msgstr "For å slå på denne funksjonen, gå til <a href=\"%url\">Innholdstype konfigurering</a> og klikk %configure for innholdstypen du ønsker å aktivere. Sørg for at %allow_signups og %signup_ecommerce_integration boksene er huket av og lagre innstillingene."
+
+#: contrib/signup_ecommerce/signup_ecommerce.module:20
+msgid "configure"
+msgstr "konfigurer"
+
+#: contrib/signup_ecommerce/signup_ecommerce.module:20
+#: ;39
+msgid "Signup E-commerce integration"
+msgstr "Påmelding e-handelsintegrasjo"
+
+#: contrib/signup_ecommerce/signup_ecommerce.module:21
+msgid "For the node type you just enabled, any time somebody purchases a product of that node type, they will automatically be signed up for that node. The signup information will include the transaction ID for reference."
+msgstr "For den nodetypen du akkurat har aktivert, hver gang noen kjøper et produkt av denne nodetypen, vil de automatisk bli påmeldt den noden. Påmeldingsinformasjonen vil være inkludert i transaksjonsid for referanse."
+
+#: contrib/signup_ecommerce/signup_ecommerce.module:46
+msgid "If selected, users will be automatically signed up for any products of this node type that they purchase."
+msgstr "Dersom valgt vil brukere automatisk bli påmeldt produkter de har kjøp av denne nodetypen."
+
+#: contrib/signup_ecommerce/signup_ecommerce.module:50
+msgid "Workflow"
+msgstr "Arbeidsflyt"
+
+#: contrib/signup_ecommerce/signup_ecommerce.module:53
+msgid "Order completion"
+msgstr "Fullfør ordre"
+
+#: contrib/signup_ecommerce/signup_ecommerce.module:54
+msgid "Payment completion"
+msgstr "Fullfør betaling"
+
+#: contrib/signup_ecommerce/signup_ecommerce.module:56
+msgid "Determines when the autosignup action occurs for products of this node type."
+msgstr "Angir når automatisk påmelding skjer for produkter av denne nodetypen."
+
+#: contrib/signup_ecommerce/signup_ecommerce.module:184
+msgid "%user (%user_url) auto-signed up to %node"
+msgstr "%user (%user_url) automatisk påmeldt %node"
+
+#: contrib/signup_ecommerce/signup_ecommerce.module:184
+#: ;0
+msgid "signup_ecommerce"
+msgstr "signup_ecommerce"
+

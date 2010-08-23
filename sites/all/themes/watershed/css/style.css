@@ -174,3 +174,10 @@ input#edit-search-theme-form-1 {
 #primary {
   font-size: 1.2em;
 }
+
+/* Donation widget styles */
+.simple-donations {
+/*  float: right;
+  height: 100px;
+  margin-top: -100px;*/
+}

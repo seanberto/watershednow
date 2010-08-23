@@ -1,4 +1,4 @@
-// $Id: README.txt,v 1.1 2010/08/06 11:05:26 deciphered Exp $
+// $Id: README.txt,v 1.4 2010/08/18 06:08:35 deciphered Exp $
 
 The WYSIWYG ImageField module is an inline image management tool for the WYSIWYG
 module based on the ImageField and Insert modules with an IMCE-esque image
@@ -9,7 +9,7 @@ WYSIWYG ImageField was written and is maintained by Stuart Clark (deciphered).
 
 
 Features
--------------------
+--------------------------
 
 * Support for WYSIWYG libraries:
   * CKEditor/FCKEditor.
@@ -28,7 +28,7 @@ Features
 
 
 Required modules
--------------------
+--------------------------
 
 * WYSIWYG module.
 * ImageField module.
@@ -37,14 +37,14 @@ Required modules
 
 
 Recommended modules
--------------------
+--------------------------
 
 * FileField Sources module.
 * Views module.
 
 
 Configuration
--------------------
+--------------------------
 
 WYSIWYG ImageField must be enabled and configured on each desire Content type,
 follow these simple steps to do so:
@@ -63,6 +63,54 @@ follow these simple steps to do so:
 
 5. Set 'Number of values' to 'Unlimited'.
 
+Once WYSIWYG ImageField is configured in your desired Content types, enable the
+WYSIWYG plugin on your desired WYSIWYG profile and you are ready to go.
 
   * Requires FileField Sources module and Views module to provide Image Library
     functionality.
+
+
+Frequently asked questions
+--------------------------
+
+Q. Where did my ImageField go?
+
+A. To make the process of adding inline images as streamlined as possible,
+   WYSIWYG ImageField removes the ImageField widget from the user interface,
+   making in visible only when needed.
+
+   It is recommended that if you require a ImageField accessible outside of
+   the WYSIWYG ImageField experience that you create an ImageField for the sole
+   purpose of using it with ImageField instead of using your existing
+   ImageField.
+
+
+Q. How can I add a search to the 'Reference existing files' tab?
+
+A. If you have both the FileField Sources and Views modules installed, the
+   'Reference existing files' section will be displayed as a Views table. This
+   View can be modified by the administrator (or approved roles) to add or
+   remove columns, filters and a number of options.
+
+   By adding an Exposed filter, you are essentially adding a search engine to
+   the existing file list.
+
+   The View can be modified at:
+   http://[www.yoursite.com/path/to/drupal]/admin/build/views/edit/wysiwyg_imagefield
+
+
+Q. How can I see all the files uploaded to the WYSIWYG ImageField widget?
+
+A. Currently this is not available, for the sole purpose of keeping the system
+   as simple as possible.
+
+   Ideas have been put forward and there will be a solution for this in a
+   future release.
+
+
+Known issues
+--------------------------
+
+- Pager on FileField Sources View occasionally themed incorrectly.
+- FileField Sources View style issue with IE6.
+- Dialog doesn't close on Insert in IE6.

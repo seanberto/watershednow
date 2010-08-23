@@ -1,0 +1,158 @@
+# $Id: sv.po,v 1.1 2010/05/01 18:30:28 quicksketch Exp $
+#
+# Swedish translation of Drupal (filefield_sources)
+# Generated from files:
+#  filefield_sources.module,v 1.6 2010/02/26 12:39:35 quicksketch
+#  filefield_sources.info,v 1.1 2009/04/17 00:20:12 quicksketch
+#  imce.inc,v 1.4 2010/03/02 20:01:27 quicksketch
+#  reference.inc,v 1.3 2010/03/02 19:20:13 quicksketch
+#  remote.inc,v 1.5 2010/02/21 04:47:43 quicksketch
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Filefield Sources 6.x\n"
+"POT-Creation-Date: 2010-03-29 08:23+0200\n"
+"PO-Revision-Date: 2010-03-29 23:57+0100\n"
+"Last-Translator: Magnus Gunnarsson <magnus.gunnarsson76@gmail.com>\n"
+"Language-Team: drupalsverige.se\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
+"X-Poedit-Language: Swedish\n"
+"X-Poedit-Country: SWEDEN\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#: filefield_sources.module:101
+msgid "File sources"
+msgstr "Källor för fil"
+
+#: filefield_sources.module:111
+msgid "Enabled sources"
+msgstr "Aktiverade källor"
+
+#: filefield_sources.module:114
+msgid "Select the available locations from which this widget may select files."
+msgstr "Välj den tillgängliga platsen där denna gränssnittskomponent får välja filer."
+
+#: filefield_sources.module:243;290
+msgid "Upload"
+msgstr "Ladda upp"
+
+#: filefield_sources.module:291
+msgid "Upload a file from your computer."
+msgstr "Ladda upp en fil från din dator."
+
+#: filefield_sources.module:311
+msgid "The file does not exist."
+msgstr "Filen existerar inte."
+
+#: filefield_sources.module:323
+msgid "The selected file %name could not be referenced."
+msgstr "Den valda filen %name kunde inte hänvisas."
+
+#: filefield_sources.info:0
+msgid "FileField Sources"
+msgstr "Källor för FileField"
+
+#: filefield_sources.info:0
+msgid "Extends FileField to allow referencing of existing files, remote files, and server files."
+msgstr "Utökar FileField att tillåta hänvisning av existerande filer, fjärrfiler, och filer på server."
+
+#: filefield_sources.info:0
+msgid "CCK"
+msgstr "CCK"
+
+#: sources/imce.inc:30
+msgid "IMCE file browser"
+msgstr "IMCE filhanterare"
+
+#: sources/imce.inc:31
+msgid "File browser"
+msgstr "Filhanterare"
+
+#: sources/imce.inc:32
+msgid "Select a file to use from a file browser."
+msgstr "Välj en fil att använda från en filhanterare."
+
+#: sources/imce.inc:91
+msgid "No file selected"
+msgstr "Ingen fil vald"
+
+#: sources/imce.inc:91
+msgid "browse"
+msgstr "bläddra"
+
+#: sources/imce.inc:96
+#: sources/reference.inc:95
+msgid "Select"
+msgstr "Välj"
+
+#: sources/imce.inc:132
+msgid "The selected file could not be used because the file does not exist in the database."
+msgstr "Den valda filen kunde inte användas eftersom filen inte existerar i databasen."
+
+#: sources/reference.inc:21
+msgid "Autocomplete reference textfield"
+msgstr "Automatiskt kompletterande textfält för hänvisning"
+
+#: sources/reference.inc:22
+msgid "Reference existing"
+msgstr "Hänvisa existerande"
+
+#: sources/reference.inc:23
+msgid "Reuse an existing file by entering its file name."
+msgstr "Återanvänd en existerande fil genom att ange dess filnamn."
+
+#: sources/reference.inc:123
+msgid "The referenced file could not be used because the file does not exist in the database."
+msgstr "Den hänvisade filen kunde inte användas eftersom filen inte existerar i databasen."
+
+#: sources/remote.inc:21
+msgid "Remote URL textfield"
+msgstr "Textfält för URL"
+
+#: sources/remote.inc:22
+msgid "Remote URL"
+msgstr "URL"
+
+#: sources/remote.inc:23
+msgid "Download a file from a remote server."
+msgstr "Ladda ned en fil från en annan server."
+
+#: sources/remote.inc:90
+msgid "Transfer"
+msgstr "Överför"
+
+#: sources/remote.inc:100;197
+msgid "Starting transfer..."
+msgstr "Påbörjar överföring..."
+
+#: sources/remote.inc:120
+msgid "The remote URL must be a file and have an extension."
+msgstr "URL:en måste vara en fil och ha en filändelse."
+
+#: sources/remote.inc:128
+msgid "Only files with the following extensions are allowed: %files-allowed."
+msgstr "Endast filer med följande ändelser tillåts: %files-allowed."
+
+#: sources/remote.inc:155
+msgid "The remote file could not be transfered because access to the file was denied."
+msgstr "Filen kunde inte överföras eftersom åtkomst till filen nekades."
+
+#: sources/remote.inc:158
+msgid "The remote file could not be transfered because it was not found."
+msgstr "Filen kunde inte överföras eftersom den inte hittades."
+
+#: sources/remote.inc:161
+msgid "The remote file could not be transfered due to an HTTP error (@code)."
+msgstr "Filen kunde inte överföras på grund av ett HTTP-fel (@code)."
+
+#: sources/remote.inc:170
+msgid "The remote file is %filesize exceeding the maximum file size of %maxsize."
+msgstr "Filen är %filesize vilket överskrider den största filstorleken  på %maxsize."
+
+#: sources/remote.inc:204
+msgid "Transfering... (@current of @total)"
+msgstr "Överför... (@current av @total)"
+

@@ -138,12 +138,12 @@ function drupalrivers_blog_strongarm() {
   $strongarm->value = array(
     'title' => '-5',
     'body_field' => '-4',
-    'revision_information' => '-1',
-    'author' => '-2',
-    'options' => '0',
-    'comment_settings' => '2',
-    'menu' => '-3',
-    'path' => '1',
+    'revision_information' => '2',
+    'author' => '1',
+    'options' => '3',
+    'comment_settings' => '5',
+    'menu' => '0',
+    'path' => '4',
   );
 
   $export['content_extra_weights_update'] = $strongarm;
@@ -180,5 +180,19 @@ function drupalrivers_blog_strongarm() {
   );
 
   $export['node_options_update_feed'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'pathauto_node_update_feed_pattern';
+  $strongarm->value = 'feeds/[nid]';
+
+  $export['pathauto_node_update_feed_pattern'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'pathauto_node_update_pattern';
+  $strongarm->value = 'updates/[title-raw]';
+
+  $export['pathauto_node_update_pattern'] = $strongarm;
   return $export;
 }
