@@ -53,10 +53,11 @@ function drupalrivers_profile_modules() {
     'imagefield',
     'emfield',
     'emvideo',
+    'optionwidgets',
     'nodereference',
     // Date
-    'date',
     'date_api',
+    'date',
     'date_popup',
     'date_timezone',
     // Other
@@ -339,7 +340,8 @@ function _drupalrivers_fiters_wysiwyg() {
   	(22,3,'filter',1,2),
   	(23,3,'filter',2,0)"
   );
-   
+  
+/* 
   // Setting up WYSIWYG profiles
   $wysiwyg_profiles = array();
   $wysiwyg_profiles['1'] = array(
@@ -362,7 +364,7 @@ function _drupalrivers_fiters_wysiwyg() {
   foreach ($wysiwyg_profiles as $profile) {
     db_query("INSERT INTO {wysiwyg} (`format`,`editor`,`settings`) VALUES (%d, '%s', '%s')", $profile['format'], $profile['editor'], $profile['settings']);
   };
-  
+*/
 }
 
 /**

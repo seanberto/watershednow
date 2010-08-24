@@ -11,12 +11,13 @@ function drupalrivers_common_content_default_fields() {
     'field_name' => 'field_attachments',
     'type_name' => 'page',
     'display_settings' => array(
+      'weight' => '-1',
+      'parent' => '',
       'label' => array(
         'format' => 'above',
-        'exclude' => 0,
       ),
       'teaser' => array(
-        'format' => 'default',
+        'format' => 'hidden',
         'exclude' => 0,
       ),
       'full' => array(
@@ -85,83 +86,15 @@ function drupalrivers_common_content_default_fields() {
     ),
   );
 
-  // Exported field: field_donation_pages
-  $fields['page-field_donation_pages'] = array(
-    'field_name' => 'field_donation_pages',
-    'type_name' => 'page',
-    'display_settings' => array(
-      'label' => array(
-        'format' => 'above',
-        'exclude' => 0,
-      ),
-      'teaser' => array(
-        'format' => 'default',
-        'exclude' => 0,
-      ),
-      'full' => array(
-        'format' => 'default',
-        'exclude' => 0,
-      ),
-      '4' => array(
-        'format' => 'default',
-        'exclude' => 0,
-      ),
-      '2' => array(
-        'format' => 'default',
-        'exclude' => 0,
-      ),
-      '3' => array(
-        'format' => 'default',
-        'exclude' => 0,
-      ),
-      'token' => array(
-        'format' => 'default',
-        'exclude' => 0,
-      ),
-    ),
-    'widget_active' => '1',
-    'type' => 'nodereference',
-    'required' => '0',
-    'multiple' => '1',
-    'module' => 'nodereference',
-    'active' => '1',
-    'referenceable_types' => array(
-      'donation' => 'donation',
-      'event' => 0,
-      'map_point' => 0,
-      'page' => 0,
-      'take_action' => 0,
-      'update' => 0,
-      'update_feed' => 0,
-      'webform' => 0,
-    ),
-    'advanced_view' => '--',
-    'advanced_view_args' => '',
-    'widget' => array(
-      'autocomplete_match' => 'contains',
-      'size' => 60,
-      'default_value' => array(
-        '0' => array(
-          'nid' => NULL,
-        ),
-      ),
-      'default_value_php' => NULL,
-      'label' => 'Assocated donation pages',
-      'weight' => '-3',
-      'description' => 'Select the donation pages that are associated with this page.',
-      'type' => 'nodereference_buttons',
-      'module' => 'nodereference',
-    ),
-  );
-
   // Exported field: field_image_assets
   $fields['page-field_image_assets'] = array(
     'field_name' => 'field_image_assets',
     'type_name' => 'page',
     'display_settings' => array(
+      'weight' => '6',
+      'parent' => '',
       'label' => array(
         'format' => 'above',
-        'exclude' => 0,
       ),
       'teaser' => array(
         'format' => 'image_plain',
@@ -247,16 +180,17 @@ function drupalrivers_common_content_default_fields() {
     'field_name' => 'field_takeaction_pages',
     'type_name' => 'page',
     'display_settings' => array(
+      'weight' => '-2',
+      'parent' => '',
       'label' => array(
-        'format' => 'above',
-        'exclude' => 0,
+        'format' => 'hidden',
       ),
       'teaser' => array(
-        'format' => 'default',
+        'format' => 'hidden',
         'exclude' => 0,
       ),
       'full' => array(
-        'format' => 'default',
+        'format' => 'hidden',
         'exclude' => 0,
       ),
       '4' => array(
@@ -283,8 +217,8 @@ function drupalrivers_common_content_default_fields() {
     'module' => 'nodereference',
     'active' => '1',
     'referenceable_types' => array(
+      'donation' => 'donation',
       'take_action' => 'take_action',
-      'donation' => 0,
       'event' => 0,
       'map_point' => 0,
       'page' => 0,
@@ -303,9 +237,9 @@ function drupalrivers_common_content_default_fields() {
         ),
       ),
       'default_value_php' => NULL,
-      'label' => 'Associated "Take Action" pages',
+      'label' => 'Associated action pages',
       'weight' => '-2',
-      'description' => 'Select those "Take Action" pages associated with this page.',
+      'description' => 'Select those "Take Action" and donation pages associated with this page.',
       'type' => 'nodereference_buttons',
       'module' => 'nodereference',
     ),
@@ -313,8 +247,7 @@ function drupalrivers_common_content_default_fields() {
 
   // Translatables
   // Included for use with string extractors like potx.
-  t('Assocated donation pages');
-  t('Associated "Take Action" pages');
+  t('Associated action pages');
   t('Attachments');
   t('Image assets');
 

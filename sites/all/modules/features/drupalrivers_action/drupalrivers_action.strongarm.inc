@@ -99,6 +99,13 @@ function drupalrivers_action_strongarm() {
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'comment_form_location_update';
+  $strongarm->value = '0';
+
+  $export['comment_form_location_update'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'comment_preview_donation';
   $strongarm->value = '1';
 
@@ -157,16 +164,17 @@ function drupalrivers_action_strongarm() {
   $strongarm->name = 'content_extra_weights_donation';
   $strongarm->value = array(
     'title' => '-5',
-    'body_field' => '-4',
-    'revision_information' => '0',
-    'author' => '1',
-    'options' => '2',
-    'comment_settings' => '3',
-    'menu' => '-1',
-    'path' => '4',
+    'revision_information' => '1',
+    'author' => '2',
+    'options' => '3',
+    'comment_settings' => '4',
+    'menu' => '0',
+    'path' => '5',
   );
 
   $export['content_extra_weights_donation'] = $strongarm;
+
+  $strongarm = new stdClass;
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
@@ -174,13 +182,12 @@ function drupalrivers_action_strongarm() {
   $strongarm->value = array(
     'webform' => '0',
     'title' => '-5',
-    'body_field' => '-3',
-    'revision_information' => '2',
-    'author' => '1',
-    'options' => '3',
-    'comment_settings' => '5',
-    'menu' => '-4',
-    'path' => '4',
+    'revision_information' => '3',
+    'author' => '2',
+    'options' => '4',
+    'comment_settings' => '6',
+    'menu' => '1',
+    'path' => '5',
   );
 
   $export['content_extra_weights_take_action'] = $strongarm;
@@ -202,14 +209,14 @@ function drupalrivers_action_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'form_build_id_donation';
-  $strongarm->value = 'form-1953ebaeeb3cc86b5731ad320b4248b1';
+  $strongarm->value = 'form-68419792eff84df7f93fdee584fc0cb4';
 
   $export['form_build_id_donation'] = $strongarm;
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'form_build_id_take_action';
-  $strongarm->value = 'form-780bfc30cc1fecf2d2750277879abb07';
+  $strongarm->value = 'form-9239f24a962e362ef7a35578583f6fc7';
 
   $export['form_build_id_take_action'] = $strongarm;
   $strongarm = new stdClass;
@@ -247,17 +254,10 @@ function drupalrivers_action_strongarm() {
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'simple_donations_allowed_event';
-  $strongarm->value = 0;
+  $strongarm->name = 'simple_donations_allowed_donation';
+  $strongarm->value = 1;
 
-  $export['simple_donations_allowed_event'] = $strongarm;
-  $strongarm = new stdClass;
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'simple_donations_allowed_take_action';
-  $strongarm->value = 0;
-
-  $export['simple_donations_allowed_take_action'] = $strongarm;
+  $export['simple_donations_allowed_donation'] = $strongarm;
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
@@ -268,20 +268,6 @@ function drupalrivers_action_strongarm() {
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'simple_donations_button_event';
-  $strongarm->value = 'Donate now!';
-
-  $export['simple_donations_button_event'] = $strongarm;
-  $strongarm = new stdClass;
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'simple_donations_button_take_action';
-  $strongarm->value = 'Donate now!';
-
-  $export['simple_donations_button_take_action'] = $strongarm;
-  $strongarm = new stdClass;
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
   $strongarm->name = 'simple_donations_description_donation';
   $strongarm->value = 'Enter the amount you wish to donate.';
 
@@ -289,59 +275,17 @@ function drupalrivers_action_strongarm() {
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'simple_donations_description_event';
-  $strongarm->value = 'Enter the amount you wish to donate.';
-
-  $export['simple_donations_description_event'] = $strongarm;
-  $strongarm = new stdClass;
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'simple_donations_description_take_action';
-  $strongarm->value = 'Enter the amount you wish to donate.';
-
-  $export['simple_donations_description_take_action'] = $strongarm;
-  $strongarm = new stdClass;
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
   $strongarm->name = 'simple_donations_teaser_donation';
-  $strongarm->value = 0;
+  $strongarm->value = 1;
 
   $export['simple_donations_teaser_donation'] = $strongarm;
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'simple_donations_teaser_event';
-  $strongarm->value = 0;
-
-  $export['simple_donations_teaser_event'] = $strongarm;
-  $strongarm = new stdClass;
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'simple_donations_teaser_take_action';
-  $strongarm->value = 0;
-
-  $export['simple_donations_teaser_take_action'] = $strongarm;
-  $strongarm = new stdClass;
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
   $strongarm->name = 'simple_donations_title_donation';
-  $strongarm->value = 'Donation Amount';
+  $strongarm->value = 'Amount';
 
   $export['simple_donations_title_donation'] = $strongarm;
-  $strongarm = new stdClass;
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'simple_donations_title_event';
-  $strongarm->value = 'Donation Amount';
-
-  $export['simple_donations_title_event'] = $strongarm;
-  $strongarm = new stdClass;
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'simple_donations_title_take_action';
-  $strongarm->value = 'Donation Amount';
-
-  $export['simple_donations_title_take_action'] = $strongarm;
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;

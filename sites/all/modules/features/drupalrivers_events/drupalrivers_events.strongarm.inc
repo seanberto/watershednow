@@ -74,18 +74,87 @@ function drupalrivers_events_strongarm() {
   $strongarm->name = 'content_extra_weights_event';
   $strongarm->value = array(
     'title' => '-5',
-    'body_field' => '-3',
-    'revision_information' => '4',
-    'author' => '5',
-    'options' => '6',
-    'comment_settings' => '7',
-    'menu' => '3',
-    'path' => '8',
-    'signup_node_info' => '1',
-    'signup_node_list' => '2',
+    'revision_information' => '5',
+    'author' => '6',
+    'options' => '7',
+    'comment_settings' => '8',
+    'menu' => '4',
+    'path' => '9',
+    'signup_node_info' => '2',
+    'signup_node_list' => '3',
   );
 
   $export['content_extra_weights_event'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'date:event:full:field_date_event_fromto';
+  $strongarm->value = 'both';
+
+  $export['date:event:full:field_date_event_fromto'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'date:event:full:field_date_event_multiple_from';
+  $strongarm->value = '';
+
+  $export['date:event:full:field_date_event_multiple_from'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'date:event:full:field_date_event_multiple_number';
+  $strongarm->value = '';
+
+  $export['date:event:full:field_date_event_multiple_number'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'date:event:full:field_date_event_multiple_to';
+  $strongarm->value = '';
+
+  $export['date:event:full:field_date_event_multiple_to'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'date:event:full:field_date_event_show_repeat_rule';
+  $strongarm->value = 'show';
+
+  $export['date:event:full:field_date_event_show_repeat_rule'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'date:event:teaser:field_date_event_fromto';
+  $strongarm->value = 'both';
+
+  $export['date:event:teaser:field_date_event_fromto'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'date:event:teaser:field_date_event_multiple_from';
+  $strongarm->value = '';
+
+  $export['date:event:teaser:field_date_event_multiple_from'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'date:event:teaser:field_date_event_multiple_number';
+  $strongarm->value = '';
+
+  $export['date:event:teaser:field_date_event_multiple_number'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'date:event:teaser:field_date_event_multiple_to';
+  $strongarm->value = '';
+
+  $export['date:event:teaser:field_date_event_multiple_to'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'date:event:teaser:field_date_event_show_repeat_rule';
+  $strongarm->value = 'show';
+
+  $export['date:event:teaser:field_date_event_show_repeat_rule'] = $strongarm;
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
@@ -97,7 +166,7 @@ function drupalrivers_events_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'form_build_id_event';
-  $strongarm->value = 'form-4cd3b3749d89d3b56f42e0deaedefa56';
+  $strongarm->value = 'form-6a6509eb03934d24eae8421eef3eef22';
 
   $export['form_build_id_event'] = $strongarm;
   $strongarm = new stdClass;
@@ -126,23 +195,9 @@ function drupalrivers_events_strongarm() {
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'signup_node_default_state_donation';
-  $strongarm->value = 'disabled';
-
-  $export['signup_node_default_state_donation'] = $strongarm;
-  $strongarm = new stdClass;
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
   $strongarm->name = 'signup_node_default_state_event';
   $strongarm->value = 'allowed_off';
 
   $export['signup_node_default_state_event'] = $strongarm;
-  $strongarm = new stdClass;
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'signup_node_default_state_take_action';
-  $strongarm->value = 'disabled';
-
-  $export['signup_node_default_state_take_action'] = $strongarm;
   return $export;
 }

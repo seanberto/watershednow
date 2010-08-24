@@ -137,7 +137,6 @@ function drupalrivers_blog_strongarm() {
   $strongarm->name = 'content_extra_weights_update';
   $strongarm->value = array(
     'title' => '-5',
-    'body_field' => '-4',
     'revision_information' => '2',
     'author' => '1',
     'options' => '3',
@@ -162,6 +161,13 @@ function drupalrivers_blog_strongarm() {
   );
 
   $export['content_extra_weights_update_feed'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'enable_revisions_page_update';
+  $strongarm->value = 1;
+
+  $export['enable_revisions_page_update'] = $strongarm;
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
