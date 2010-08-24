@@ -59,7 +59,7 @@ function drupalrivers_common_context_default_contexts() {
   // Translatables
   // Included for use with string extractors like potx.
   t('Instructions when creating or editing a page node.');
-  t('section');
+  t('help');
 
   $export['page_add_edit'] = $context;
   $context = new stdClass;

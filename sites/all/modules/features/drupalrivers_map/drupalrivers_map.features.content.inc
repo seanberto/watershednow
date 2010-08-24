@@ -6,6 +6,75 @@
 function drupalrivers_map_content_default_fields() {
   $fields = array();
 
+  // Exported field: field_action_pages
+  $fields['map_point-field_action_pages'] = array(
+    'field_name' => 'field_action_pages',
+    'type_name' => 'map_point',
+    'display_settings' => array(
+      'label' => array(
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      'teaser' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '4' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '2' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '3' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+    'widget_active' => '1',
+    'type' => 'nodereference',
+    'required' => '0',
+    'multiple' => '1',
+    'module' => 'nodereference',
+    'active' => '1',
+    'referenceable_types' => array(
+      'donation' => 'donation',
+      'take_action' => 'take_action',
+      'event' => 0,
+      'map_point' => 0,
+      'page' => 0,
+      'update' => 0,
+      'update_feed' => 0,
+      'webform' => 0,
+    ),
+    'advanced_view' => '--',
+    'advanced_view_args' => '',
+    'widget' => array(
+      'autocomplete_match' => 'contains',
+      'size' => 60,
+      'default_value' => array(
+        '0' => array(
+          'nid' => NULL,
+        ),
+      ),
+      'default_value_php' => NULL,
+      'label' => 'Associated action pages',
+      'weight' => 0,
+      'description' => 'Select those "Take Action" and donation pages associated with this watershed feature.',
+      'type' => 'nodereference_buttons',
+      'module' => 'nodereference',
+    ),
+  );
+
   // Exported field: field_attachments
   $fields['map_point-field_attachments'] = array(
     'field_name' => 'field_attachments',
@@ -165,80 +234,12 @@ function drupalrivers_map_content_default_fields() {
       'insert_default' => 'imagecache_web',
       'insert_class' => '',
       'insert_width' => '',
+      'wysiwyg_imagefield' => TRUE,
       'label' => 'Image assets',
       'weight' => '8',
       'description' => '',
       'type' => 'imagefield_widget',
       'module' => 'imagefield',
-    ),
-  );
-
-  // Exported field: field_action_pages
-  $fields['map_point-field_action_pages'] = array(
-    'field_name' => 'field_action_pages',
-    'type_name' => 'map_point',
-    'display_settings' => array(
-      'label' => array(
-        'format' => 'above',
-        'exclude' => 0,
-      ),
-      'teaser' => array(
-        'format' => 'default',
-        'exclude' => 0,
-      ),
-      'full' => array(
-        'format' => 'default',
-        'exclude' => 0,
-      ),
-      '4' => array(
-        'format' => 'default',
-        'exclude' => 0,
-      ),
-      '2' => array(
-        'format' => 'default',
-        'exclude' => 0,
-      ),
-      '3' => array(
-        'format' => 'default',
-        'exclude' => 0,
-      ),
-      'token' => array(
-        'format' => 'default',
-        'exclude' => 0,
-      ),
-    ),
-    'widget_active' => '1',
-    'type' => 'nodereference',
-    'required' => '0',
-    'multiple' => '1',
-    'module' => 'nodereference',
-    'active' => '1',
-    'referenceable_types' => array(
-      'donation' => 'donation',
-      'take_action' => 'take_action',
-      'event' => 0,
-      'map_point' => 0,
-      'page' => 0,
-      'update' => 0,
-      'update_feed' => 0,
-      'webform' => 0,
-    ),
-    'advanced_view' => '--',
-    'advanced_view_args' => '',
-    'widget' => array(
-      'autocomplete_match' => 'contains',
-      'size' => 60,
-      'default_value' => array(
-        '0' => array(
-          'nid' => NULL,
-        ),
-      ),
-      'default_value_php' => NULL,
-      'label' => 'Associated action pages',
-      'weight' => 0,
-      'description' => 'Select those "Take Action" and donation pages associated with this watershed feature.',
-      'type' => 'nodereference_buttons',
-      'module' => 'nodereference',
     ),
   );
 

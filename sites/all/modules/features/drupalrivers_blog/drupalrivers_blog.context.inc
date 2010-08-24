@@ -38,7 +38,7 @@ function drupalrivers_blog_context_default_contexts() {
   // Translatables
   // Included for use with string extractors like potx.
   t('Instructions when creating or editing an update node.');
-  t('section');
+  t('help');
 
   $export['update_add_edit'] = $context;
   return $export;
