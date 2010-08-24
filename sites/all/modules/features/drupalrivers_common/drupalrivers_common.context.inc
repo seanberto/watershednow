@@ -31,7 +31,7 @@ function drupalrivers_common_context_default_contexts() {
   $context->api_version = 3;
   $context->name = 'page_add_edit';
   $context->description = 'Instructions when creating or editing a page node.';
-  $context->tag = 'section';
+  $context->tag = 'help';
   $context->conditions = array(
     'node' => array(
       'values' => array(

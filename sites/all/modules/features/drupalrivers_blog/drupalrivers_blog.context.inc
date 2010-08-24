@@ -10,7 +10,7 @@ function drupalrivers_blog_context_default_contexts() {
   $context->api_version = 3;
   $context->name = 'update_add_edit';
   $context->description = 'Instructions when creating or editing an update node.';
-  $context->tag = 'section';
+  $context->tag = 'help';
   $context->conditions = array(
     'node' => array(
       'values' => array(

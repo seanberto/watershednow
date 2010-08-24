@@ -238,9 +238,9 @@ function drupalrivers_action_content_default_fields() {
     ),
   );
 
-  // Exported field: field_takeaction_pages
-  $fields['donation-field_takeaction_pages'] = array(
-    'field_name' => 'field_takeaction_pages',
+  // Exported field: field_action_pages
+  $fields['donation-field_action_pages'] = array(
+    'field_name' => 'field_action_pages',
     'type_name' => 'donation',
     'display_settings' => array(
       'weight' => '-2',
@@ -796,9 +796,9 @@ function drupalrivers_action_content_default_fields() {
     ),
   );
 
-  // Exported field: field_takeaction_pages
-  $fields['take_action-field_takeaction_pages'] = array(
-    'field_name' => 'field_takeaction_pages',
+  // Exported field: field_action_pages
+  $fields['take_action-field_action_pages'] = array(
+    'field_name' => 'field_action_pages',
     'type_name' => 'take_action',
     'display_settings' => array(
       'weight' => '-2',

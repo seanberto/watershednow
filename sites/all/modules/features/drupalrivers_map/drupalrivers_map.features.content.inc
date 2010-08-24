@@ -173,9 +173,9 @@ function drupalrivers_map_content_default_fields() {
     ),
   );
 
-  // Exported field: field_takeaction_pages
-  $fields['map_point-field_takeaction_pages'] = array(
-    'field_name' => 'field_takeaction_pages',
+  // Exported field: field_action_pages
+  $fields['map_point-field_action_pages'] = array(
+    'field_name' => 'field_action_pages',
     'type_name' => 'map_point',
     'display_settings' => array(
       'label' => array(

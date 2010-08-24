@@ -175,9 +175,9 @@ function drupalrivers_common_content_default_fields() {
     ),
   );
 
-  // Exported field: field_takeaction_pages
-  $fields['page-field_takeaction_pages'] = array(
-    'field_name' => 'field_takeaction_pages',
+  // Exported field: field_action_pages
+  $fields['page-field_action_pages'] = array(
+    'field_name' => 'field_action_pages',
     'type_name' => 'page',
     'display_settings' => array(
       'weight' => '-2',

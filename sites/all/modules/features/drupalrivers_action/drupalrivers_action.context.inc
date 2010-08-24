@@ -8,7 +8,7 @@ function drupalrivers_action_context_default_contexts() {
   $context = new stdClass;
   $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
   $context->api_version = 3;
-  $context->name = 'relevent_content';
+  $context->name = 'action_content';
   $context->description = 'Context triggered when viewing a node';
   $context->tag = 'section';
   $context->conditions = array(
@@ -45,6 +45,6 @@ function drupalrivers_action_context_default_contexts() {
   t('Context triggered when viewing a node');
   t('section');
 
-  $export['relevent_content'] = $context;
+  $export['action_content'] = $context;
   return $export;
 }
