@@ -21,6 +21,10 @@ function simple_payments_schema() {
       'timestamp' => array('type' => 'int', 'unsigned' => TRUE, 'not null' => TRUE),
       'details' => array('type' => 'text', 'not null' => TRUE, 'serialize' => TRUE),
       'processed' => array('type' => 'int', 'unsigned' => TRUE),
+      'payer_email' => array(
+        'type' => 'varchar',
+        'length' => 255,
+      ),
     ),
     'primary key' => array('payment_id'),
     'indexes' => array(
@@ -48,6 +52,22 @@ function simple_payments_install() {
 function simple_payments_uninstall() {
 
   drupal_uninstall_schema('simple_payments');
+}
+
+/**
+ * Add payer_email field to simple_payments table.
+ */
+function simple_payments_update_6001() {
+  $ret = array();
+
+  $spec = array(
+    'type' => 'varchar',
+    'length' => 255,
+  );
+
+  db_add_field($ret, 'simple_payment', 'payer_email', $spec);
+
+  return $ret;
 }
 
 /**

@@ -159,6 +159,7 @@ function simple_payments_paypal_ipn() {
 	$payment['amount'] = bcmul($ipn['mc_gross'], 100);
   $payment['timestamp'] = strtotime($ipn['payment_date']);
 	$payment['details'] = $ipn;
+	$payment['payer_email'] = $ipn['payer_email'];
 	
 	simple_payments_payment_received($payment);
 }
