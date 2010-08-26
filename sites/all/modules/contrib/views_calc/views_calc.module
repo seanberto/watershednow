@@ -1,0 +1,368 @@
+<?php
+
+/**
+ * @file
+ * This module will allow you to add calculated fields to views tables
+ * and compute (SUM, COUNT, AVG, etc) columns of numeric data in a views table.
+ */
+function views_calc_views_api() {
+  return array(
+    'api' => 2,
+    'path' => drupal_get_path('module', 'views_calc'),
+  );
+}
+
+function views_calc_theme() {
+  $path = drupal_get_path('module', 'views_calc');
+  return array(
+    'views_calc_ui_table' => array(
+      'arguments' => array('form' => NULL),
+      'file' => 'theme.inc',
+    ),
+  );
+}
+
+/**
+ * Implementation of hook_help().
+ */
+function views_calc_help($section, $arg) {
+  switch ($section) {
+    case 'admin/settings/views_calc':
+    case 'admin/settings/views_calc/fields':
+      return t('<p>Set up calculation fields. Calculation fields will be displayed in the views fields list and can be added to any view.</p>');
+    case 'admin/settings/views_calc/settings':
+      return t('Put one operator on each line. To avoid the possibility of SQL injection, calculation text will only allow these values, numbers, and field names. Make sure this list includes any text other than field names that should be allowed in the calculation fields.');
+    case 'admin/help#views_calc':
+      return t('<ul> <li>Go to admin/settings/views_calc to create calculations.</li> <li>The \'Fields\' tab will allow you to create calculated fields that can be inserted into any view. The calculations can include the value of any Views field, combined with numbers, arithmatic operations, and common SQL functions like ROUND() or MIN(). Each available field has a shortcut name like %Node:Title. Create SQL snippets like (%Node:Field1 + 84600) or ROUND(%Node:Field2 / 3). </li> <li>The \'Columns\' tab allows you to set column calculations. The column totals are added in the view itself by using the style \'Views Calc Table\' and setting the fields in the table that should have column totals.</li> <li>The \'Settings\' tab allows you to add new functions to the list of allowable functions. </ul>');
+  }
+}
+
+/**
+ * Default SQL operator alternatives.
+ *
+ * The ones allowed in this system are stored in the
+ * variable views_calc_operators, and can be changed
+ * at admin/settings/views_calc.
+ *
+ */
+function _views_calc_operators() {
+  $default = array('+', '-', '*', '/', '(', ')', ',', "'", 'CONCAT', 'MIN', 'MAX', 'ROUND', 'NOW()');
+  $operators = variable_get('views_calc_operators', implode("\n", $default));
+  return explode("\n", $operators);
+
+}
+
+/**
+ *  Column calculation alternatives
+ */
+function _views_calc_calc_options() {
+  return array('COUNT' => 'Count', 'SUM' => 'Sum', 'AVG' => 'Average', 'MIN' => 'Minimum', 'MAX' => 'Maximum');
+}
+
+/**
+ *  Result format options
+ */
+function _views_calc_format_options() {
+  $options = array(
+    'none' => '',
+    'integer' => 'intval',
+    'decimal (1)' => 'number_format:1',
+    'decimal (2)' => 'number_format:2',
+    'shortdate' => 'format_date:small',
+    'mediumdate' => 'format_date',
+    'longdate' => 'format_date:large',
+    'custom' => '',
+    );
+  return $options;
+}
+
+/**
+ * Implementation of hook_perm().
+ *
+ * The permission 'administer views calc' has rights to alter the SQL
+ * operators that can be used in calculations.
+ *
+ * The permission 'create views calc' has rights to create calculated
+ * fields and set calculation columns on views.
+ */
+function views_calc_perm() {
+  return array('create views calc', 'administer views calc');
+}
+
+function views_calc_menu() {
+
+  $items = array();
+  $items['admin/settings/views_calc'] = array(
+    'title' => t('Views Calc'),
+    'description' => t('Set Views Calc fields and columns.'),
+    'type' => MENU_NORMAL_ITEM,
+    'weight' => 10,
+    'priority' => 1,
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('views_calc_fields_form'),
+    'access arguments' => array('create views calc'),
+    );
+  $items['admin/settings/views_calc/fields'] = array(
+    'title' => t('Fields'),
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'weight' => 5,
+    'priority' => 1,
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('views_calc_fields_form'),
+    'access arguments' => array('create views calc'),
+    );
+  $items['admin/settings/views_calc/settings'] = array(
+    'title' => t('Settings'),
+    'type' => MENU_LOCAL_TASK,
+    'weight' => 10,
+    'priority' => 1,
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('views_calc_settings_form'),
+    'access arguments' => array('administer views calc'),
+    );
+  return $items;
+}
+
+/**
+ *  Implementation of hook_settings()
+ */
+function views_calc_settings_form() {
+  drupal_set_title(t('Views Calc'));
+  $operators = _views_calc_operators();
+  $form['views_calc_operators'] = array(
+    '#type' => 'textarea',
+    '#default_value' => implode("\n", $operators),
+    '#title' => t('Allowable functions and operators'),
+    '#rows' => intval(sizeof($operators) + 2),
+    );
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Save'),
+    );
+  return $form;
+}
+
+function views_calc_settings_form_submit($form, &$form_state) {
+  $form_values = $form_state['values'];
+  variable_set('views_calc_operators', $form_values['views_calc_operators']);
+}
+
+/**
+ * Views Calc Fields tab on views list.
+ */
+function views_calc_fields_form() {
+  $i = 0;
+  $substitutions = _views_calc_substitutions();
+  $reverse       = array_flip($substitutions);
+
+  // display current views calcs fields
+  $fields = _views_calc_fields();
+  while ($field = db_fetch_array($fields)) {
+    $form[] = views_calc_field_form_item($i, $field, $substitutions);
+    $i++;
+  }
+  // add blank fields for more calcs
+  for ($x = $i + 1; $x < $i + 2; $x++) {
+    $field = array();
+    $form[] = views_calc_field_form_item($i, $field, $substitutions);
+  }
+  $form['#prefix'] = '<div class="views-calc-field-settings">';
+  $form['#suffix'] = '</div><div class="views-calc-field-names"><strong>Field Substitutions</strong><div class="form-item">'. theme('item_list', _views_calc_substitutions()) .'</div></div>';
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Save'),
+    );
+  return $form;
+}
+
+/**
+ * A form element for an individual calculated field.
+ */
+function views_calc_field_form_item($i, $field, $substitutions) {
+  if (empty($field)) {
+    $field = array('cid' => 0, 'label' => '', 'tablelist' => '', 'calc' => '', 'format' => '', 'custom' => '');
+  }
+  $form['group'][$i] = array(
+    '#type' => 'fieldset',
+    '#tree' => TRUE,
+    '#title' => t('Field: ') . !empty($field['label']) ? $field['label'] : t('New'),
+    '#collapsible' => TRUE,
+    '#collapsed'   => FALSE,
+    );
+  $form['group'][$i]['cid'] = array(
+    '#type' => 'hidden',
+    '#value' => intval($field['cid']),
+    );
+  $form['group'][$i]['tablelist'] = array(
+    '#type' => 'hidden',
+    '#value' => $field['tablelist'],
+    );
+  $form['group'][$i]['label'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Label'),
+    '#field_prefix' => 'ViewsCalc: ',
+    '#default_value' => str_replace('ViewsCalc: ', '', $field['label']),
+    '#description' => t('The views field name for this field (i.e. Views Calc: My Calculation).'),
+    );
+  $form['group'][$i]['calc'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Calculation'),
+    '#default_value' => strtr($field['calc'], $substitutions),
+    '#description' => t('<p>The query operation to be performed, using numbers, field substitutions, and '. implode(' ', _views_calc_operators()) .'.</p>'),
+    );
+  $form['group'][$i]['format'] = array(
+    '#type' => 'select',
+    '#title' => t('Format'),
+    '#default_value' => $field['format'],
+    '#options' => drupal_map_assoc(array_keys(_views_calc_format_options())),
+    '#description' => t('The format of the result of this calculation.'),
+    );
+  $form['group'][$i]['custom'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Custom function'),
+    '#default_value' => $field['custom'],
+    '#description' => t('The function to call for a custom format.'),
+    );
+  return $form;
+}
+
+/**
+ *  Validate the views calc settings
+ */
+function views_calc_fields_form_validate($form, &$form_state) {
+  $form_values = $form_state['values'];
+  $edit = $form_values;
+  foreach ($edit as $delta => $item) {
+    if ($item['calc'] == '' || !is_numeric($delta)) {
+      // remove blank fields, don't save them
+      unset($form_values[$delta]);
+    } else {
+      // Remove all valid values from calc, if anything is left over, it is invalid.
+
+      // First, remove all field names.
+      $repl = array();
+      $patterns = array();
+      foreach (_views_calc_substitutions() as $key => $value) {
+        $key = trim($value);
+        $count = strlen($value);
+        $replace = preg_quote($value);
+        $patterns[] = "`(^|[^\\\\\\\\])". $replace ."`";
+        $repl[] = '${1}';
+      }
+      $remaining = trim(preg_replace($patterns, $repl, $item['calc']));
+      // Next, remove functions and numbers.
+      $repl = array();
+      $patterns = array();
+      foreach (_views_calc_replacements() as $value) {
+        $patterns[] = "`(^|[^\\\\\\\\])". preg_quote(trim($value)) ."`";
+        $repl[] = '${1}';
+      }
+      $remaining = trim(preg_replace($patterns, $repl, $remaining));
+      if (!empty($remaining)) {
+        form_set_error($form_values[$delta]['calc'], t('The values %remaining in %field are not allowed.', array('%remaining' => $remaining, '%field' => $item['label'])));
+      }
+    }
+  }
+}
+
+/**
+ *  Save the views calc field settings
+ */
+function views_calc_fields_form_submit($form, &$form_state) {
+  $form_values = $form_state['values'];
+  $edit = $form_values;
+  foreach ($edit as $delta => $value) {
+    if ($value['calc'] == '' || !is_numeric($delta)) {
+      // remove blank fields, don't save them
+      unset($form_values[$delta]);
+
+    } 
+    else {
+      $tables = array();
+      $form_values[$delta]['label']  = $value['label'];
+      $form_values[$delta]['format'] = $value['format'];
+      $form_values[$delta]['custom'] = $value['custom'];
+      $form_values[$delta]['calc']   = $value['calc'];
+
+      // Substitute field names back into the calculation.
+      $matches = array();
+      foreach (_views_calc_substitutions() as $key => $value) {
+        $label_patterns[] = "`(^|[^\\\\\\\\])". preg_quote($value) ."`";
+        $value_patterns[] = "`(^|[^\\\\\\\\])". preg_quote($key) ."`";
+        $repl[] = '${1}'. $key;
+      }
+      $form_values[$delta]['calc'] = preg_replace($label_patterns, $repl, $form_values[$delta]['calc']);
+
+      // Extract the fields and table names from the calculation.
+      $tables = array();
+      $fields = array();
+      foreach ($value_patterns as $pattern) {
+        if (preg_match($pattern, $form_values[$delta]['calc'], $results)) {
+          $fields[] = trim($results[0]);
+          $tmp = explode('.', trim($results[0]));
+          if (trim($tmp[0])) {
+            $tables[trim($tmp[0])] = trim($tmp[0]);
+          }
+        }
+      }
+      $form_values[$delta]['tablelist'] = implode(',', $tables);
+      $form_values[$delta]['fieldlist'] = implode(',', $fields);
+    }
+  }
+  foreach ($form_values as $delta => $value) {
+    if ($value['cid'] == 0) {
+      drupal_write_record('views_calc_fields', $value);
+    } 
+    else {
+      drupal_write_record('views_calc_fields', $value, array('cid'));
+    }
+  }
+  views_invalidate_cache();
+  drupal_set_message(t('Views Calc fields were updated.'));
+}
+
+/**
+ * Wrapper function to make sure this function will always work.
+ */
+function views_calc_views_fetch_fields($base, $type) {
+  if (!module_exists('views')) {
+    return array();
+  }
+  require_once('./'. drupal_get_path('module', 'views') .'/includes/admin.inc');
+  return views_fetch_fields($base, $type);
+}
+
+/**
+ *  Field substitutions for calculations.
+ */
+function _views_calc_substitutions($base = 'node') {
+  $fields = views_calc_views_fetch_fields($base, 'field');
+  $substitutions['node.nid'] = '%Node.nid';
+  $substitutions['node.uid'] = '%Node.uid';
+  foreach ($fields as $key => $field) {
+    // For now, omit calculated fields from available fields list.
+    // Doing caculations on calculated fields will require some
+    // complex additional logic, especially if they are nested
+    // several levels deep.
+    if (substr($key, 0, 4) != '.cid') {
+      $substitutions[$key] = '%'. str_replace(' ', '', $key);
+    }
+  }
+  return $substitutions;
+}
+
+/**
+ *  Views calc fields result object
+ */
+function _views_calc_fields() {
+  return db_query("SELECT * FROM {views_calc_fields}");
+}
+
+/**
+ *  An array of allowable calculation values.
+ */
+function _views_calc_replacements() {
+  $operators     = array_filter(_views_calc_operators(), 'trim');
+  $numbers       = range(0, 9);
+  return array_merge($operators, $numbers);
+}

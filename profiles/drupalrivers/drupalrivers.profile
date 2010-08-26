@@ -32,6 +32,7 @@ function drupalrivers_profile_modules() {
     'admin',
     // Views
     'views',
+    'views_calc',
     // CTools
     'ctools',
     // Context

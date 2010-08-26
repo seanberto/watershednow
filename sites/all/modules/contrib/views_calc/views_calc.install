@@ -1,0 +1,144 @@
+<?php
+// $Id: views_calc.install,v 1.3 2008/09/16 18:03:08 karens Exp $
+/**
+ * Implementation of hook_schema().
+ */
+function views_calc_schema() {
+  $schema['views_calc_fields'] = array(
+    'fields' => array(
+      'cid' => array('type' => 'serial', 'not null' => TRUE, 'disp-width' => '10'),
+      'label' => array('type' => 'varchar', 'length' => '255', 'not null' => TRUE, 'default' => ''),
+      'format' => array('type' => 'varchar', 'length' => '255', 'not null' => TRUE, 'default' => ''),
+      'custom' => array('type' => 'varchar', 'length' => '255', 'not null' => TRUE, 'default' => ''),
+      'tablelist' => array('type' => 'text', 'not null' => TRUE),
+      'fieldlist' => array('type' => 'text', 'not null' => TRUE),
+      'calc' => array('type' => 'text', 'not null' => TRUE),
+      ),
+    'primary key' => array('cid'),
+    'indexes' => array(
+      'cid' => array('cid'))
+  );
+  return $schema;
+}
+
+function views_calc_install() {
+  drupal_install_schema('views_calc');
+}
+
+function views_calc_uninstall() {
+  db_query("DROP TABLE {views_calc_fields}");
+}
+
+/**
+ * Convert the queryname stored in the variable to the fullname
+ * so we can access both the fieldname and the tablename from
+ * the selections.
+ *
+ * Change the calc 'AVERAGE' to 'AVG' to match the db function.
+ */
+function views_calc_update_1() {
+  $ret = array();
+  include_once(drupal_get_path('module', 'views') .'/views.module');
+  include_once(drupal_get_path('module', 'views_calc') .'/views_calc.module');
+  $view_calcs = (array) variable_get('views_calc_vid','');
+  foreach ($view_calcs as $view_id) {
+    if ($view = views_get_view($view_id)) {
+      $cols = (array) variable_get('views_calc_'. $view->vid .'_col','');
+      $new_cols = array();
+      foreach ($cols as $col) {
+        foreach ($view->field as $field) {
+          if ($field['queryname'] == $col) {
+            $new_cols[] = $field['fullname'];
+          }
+        }
+      }
+      variable_set('views_calc_'. $view->vid .'_col', $new_cols);
+      $rows = (array) variable_get('views_calc_'. $view->vid. '_row','');
+      $new_rows = array();
+      foreach ($rows as $row) {
+        foreach ($view->field as $field) {
+          if ($field['queryname'] == $col) {
+            $new_rows[] = $field['fullname'];
+          }
+        }
+      }
+      variable_set('views_calc_'. $view->vid .'_row', $new_rows);
+      $col_calc   = (array) variable_get('views_calc_'.$view->vid.'_col_calc','');
+      foreach ($col_calc as $calc) {
+        if ($calc == 'AVERAGE') {
+          $new_calcs[] = 'AVG';
+        }
+        else {
+          $new_calcs[] = $calc;
+        }
+      }
+      variable_set('views_calc_'. $view->vid .'_col_calc', $new_calcs);
+      $row_calc   = (array) variable_get('views_calc_'.$view->vid.'_row_calc','');
+      foreach ($row_calc as $calc) {
+        if ($calc == 'AVERAGE') {
+          $new_calcs[] = 'AVG';
+        }
+        else {
+          $new_calcs[] = $calc;
+        }
+      }
+      variable_set('views_calc_'. $view->vid .'_row_calc', $new_calcs);
+    }
+  }
+  return $ret;
+}
+
+/**
+ * Create a table to store custom views calculation fields.
+ */
+function views_calc_update_2() {
+  $ret = array();
+  global $db_type;
+
+  switch ($db_type) {
+    case 'mysql':
+    case 'mysqli':
+      $ret[] = update_sql("CREATE TABLE if not exists {views_calc_fields} (
+        cid int(10) unsigned NOT NULL default '0',
+        label varchar(255),
+        format varchar(255),
+        custom varchar(255),
+        tablelist text,
+        fieldlist text,
+        calc text,
+        KEY (cid)
+      ) /*!40100 DEFAULT CHARACTER SET utf8 */");
+      break;
+    case 'postgres':
+      $ret[] = update_sql("CREATE TABLE if not exists {views_calc_fields} (
+        cid int(10) unsigned NOT NULL default '0',
+        label varchar(255),
+        format varchar(255),
+        custom varchar(255),
+        tablelist text,
+        fieldlist text,
+        calc text,
+        KEY (cid)
+      ) ");
+     break;
+  }
+  return $ret;
+}
+
+/**
+ * TODO
+ * Use these values to create new default views, then delete them.
+ *
+function views_calc_update_6000() {
+  $view_calcs = (array) variable_get('views_calc_vid','');
+  foreach ($view_calcs as $view_id) {
+    variable_del('views_calc_'. $view_id .'_col');
+    variable_del('views_calc_'. $view_id .'_col_calc');
+    variable_del('views_calc_'. $view_id .'_row');
+    variable_del('views_calc_'. $view_id .'_row_calc');
+  }
+  variable_del('views_calc_vid');
+  variable_del('views_calc_operators');
+  
+}
+ */

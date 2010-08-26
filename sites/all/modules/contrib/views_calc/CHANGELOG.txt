@@ -1,0 +1,33 @@
+// $Id: CHANGELOG.txt,v 1.15 2009/05/17 11:27:42 karens Exp $
+
+Version 6.1-dev
+=================
+
+Version 6.1-3
+=================
+
+- #464568 Remove charts integration now that Charts module does it.
+
+Version 6.1-2
+=================
+
+- #442874 Don't print subtotal when there is only one page.
+- #441722 Make sure only the requested calculations are displayed.
+
+Version 6.1-1
+=================
+
+- Add option to either hide or show the detailed rows along with calculated totals.
+- #406686 Make sure tables for computed fields are not removed from the query.
+- #368221 Make sure you can do column calculations on a custom calculated field.
+- Make sure preview picks up recent, unsaved, changes in calculation options.
+- Simplify the code by making this an extension of the Views table style instead of the base style.
+- Add sub-totals for paged views that show both the page and the grand totals.
+- Add 'justification' setting to right, left, or center-justify values.
+- Change execute_display() to execute() to avoid breaking exposed filters.
+- Make sure totals are passed through field themes so they get the right formatting.
+- Add charts support to create chart out of aggregated data.
+- Add schema to install.
+- #309202 Fix substitution list.
+- Add UI to select columns to total.
+- Basic, rough upgrade to Drupal 6 and Views 2.
