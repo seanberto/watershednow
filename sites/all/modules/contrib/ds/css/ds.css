@@ -1,0 +1,142 @@
+/* $Id: ds.css,v 1.1.2.23 2010/06/15 08:17:51 swentel Exp $ */
+
+/* Display fields overview screen. */
+
+#fields td {
+	vertical-align: top;
+  white-space: nowrap;
+}
+
+.settings-tab-row {
+	margin: 0.5em 0;
+	line-height: 2.5em;
+}
+
+#fields td.region {
+  font-weight: bold;
+}
+
+#fields td.region a {
+  font-weight: normal;
+}
+
+#fields tr.region-message {
+  font-weight: normal;
+  color: #999;
+}
+
+#fields tr.region-populated {
+  display: none;
+}
+
+.field-region {
+  background-color: #ff6;
+  margin-top: 4px;
+  margin-bottom: 4px;
+  padding: 3px;
+}
+
+.ds-label-label {
+	float: left;
+	margin-right: 15px;
+}
+
+.ds-label-title {
+	float: left;
+}
+
+.ds-label-title .form-text {
+  width: 130px;
+}
+
+.settings-tab label {
+  display: block;
+  float: left;
+  margin-right: 0.3em;
+  width: 100px;
+}
+
+.region .description, .settings-tab, .ds-normal {
+  font-weight: normal;
+}
+
+tr.region-css-disabled  {
+  filter:alpha(opacity=60);
+  -moz-opacity:0.6;
+  -khtml-opacity: 0.6;
+  opacity: 0.6;
+}
+
+.render-region .form-item {
+	margin-top: 0;
+	margin-bottom: 0;
+}
+
+span.label-field, span.label-edit {
+  padding:2px;
+  font-size-adjust:none;
+  font-stretch:normal;
+  font-style:normal;
+  font-variant:normal;
+  font-weight:normal;
+  line-height:24px;
+}
+
+span.label-field {
+  font-size: 13px;
+  float: left;
+}
+
+span.label-edit {
+  font-size: 11px;
+  float: right;
+}
+
+span.field-group {
+  font-weight: bold;
+}
+
+.ds-display {
+	display: block;
+}
+
+.ds-hidden {
+  display: none;
+}
+
+#display-tabs {
+  display: block;
+  font-size: 14px;
+}
+
+#field-tab {
+  float: left;
+  border: 1px solid #eee;
+  padding: 5px;
+}
+
+#ds-tabs .tab {
+  float: left;
+  margin-left: 5px;
+  border: 1px solid #eee;
+  padding: 5px;
+}
+
+#ds-tabs .selected {
+  background-color: #EDF5FA;
+}
+
+#ds-tabs .not-selected {
+  background-color: #FFFFFF;
+}
+
+#ds-overview-page .ds-row-title {
+  font-weight: bold;
+  background: #E4F0F8 none repeat scroll 0 0;
+  font-size: 14px;
+}
+
+#ds-overview-page .ds-row-type {
+  background: #fff none repeat scroll 0 0;
+  border: 0 none;
+}

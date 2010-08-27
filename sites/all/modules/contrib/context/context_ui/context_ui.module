@@ -1,5 +1,5 @@
 <?php
-// $Id: context_ui.module,v 1.13.2.48.2.1.2.18 2010/08/05 16:46:26 yhahn Exp $
+// $Id: context_ui.module,v 1.13.2.48.2.1.2.19 2010/08/23 16:40:56 yhahn Exp $
 
 /**
  * Implementation of hook_ctools_plugin_directory().
@@ -262,5 +262,15 @@ function context_ui_settings(&$form_state) {
       }
     }
   }
-  return system_settings_form($form);
+  $form = system_settings_form($form);
+  $form['#submit'][] = 'context_ui_settings_submit';
+  return $form;
+}
+
+/**
+ * Extra submit handler for context_ui_settings.
+ * Mark the menu cache as needing a rebuild.
+ */
+function context_ui_settings_submit($form, &$form_state) {
+  variable_set('menu_rebuild_needed', TRUE);
 }

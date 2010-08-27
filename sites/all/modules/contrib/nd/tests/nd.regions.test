@@ -1,0 +1,109 @@
+<?php
+// $Id: nd.regions.test,v 1.1.2.7.2.7 2010/07/05 20:27:29 swentel Exp $
+
+/**
+ * @file
+ * Tests for Node displays (regions)
+ */
+
+class NodeDisplaysRegions extends DrupalWebTestCase {
+  /**
+   * Implementation of getInfo().
+   */
+  function getInfo() {
+    return array(
+      'name' => t('ND regions'),
+      'description' => t('Tests for ND regions.'),
+      'group' => t('Display suite'),
+    );
+  }
+
+  /**
+   * Implementation of setUp().
+   */
+  function setUp() {
+    parent::setUp('ds', 'ds_ui', 'nd');
+  }
+
+  /**
+   * Helper function to determine if a field is in a region. Returns true if not found.
+   * @param string $search The field to search for in the regions.
+   * @param array $regions A list of regions.
+   */
+  function _nd_field_not_found($search, $regions) {
+    foreach ($regions as $region) {
+      foreach ($region as $field => $weight) {
+        if ($field == $search) {
+          return FALSE;
+        }
+      }
+    }
+    return TRUE;
+  }
+
+  /**
+   * Helper function to build an object.
+   * @param stdClass $object A node.
+   * @param $build_mode The build mode for the node.
+   */
+  function _nd_build_object($object, $build_mode = NODE_BUILD_NORMAL, $teaser = FALSE, $page = TRUE) {
+    $object_loaded = node_load($object->nid, array(), TRUE);
+    $object_loaded->build_mode = $build_mode;
+    $object_rendered = node_build_content($object_loaded, $teaser, $page);
+    node_invoke_nodeapi($object_rendered, 'alter', $teaser, $page);
+    return $object_rendered;
+  }
+
+  /**
+   * Test that region handling works when no cck fields are defined.
+   */
+  function testRegionsWithNoCCKFields() {
+    $admin_user = $this->drupalCreateUser(array('administer nodes', 'access display suite', 'administer nd', 'configure layout for nd', 'export and import settings', 'revert overridden settings', 'use PHP in custom fields'));
+    $this->drupalLogin($admin_user);
+    $this->drupalGet('admin/build/ds/layout/page/full');
+    $this->assertRaw('edit-body-full-region-wrapper', t('Region handling works with no CCK fields.'), t('Region handling'));
+  }
+
+  /**
+   * Test if nodeapi & preprocess do their job good by
+   * excluding fields and putting them in the right region.
+   */
+  function testRendering() {
+    $admin_user = $this->drupalCreateUser(array('administer nodes', 'access display suite', 'administer nd', 'configure layout for nd', 'export and import settings', 'revert overridden settings', 'use PHP in custom fields'));
+    $this->drupalLogin($admin_user);
+
+    $page_node = $this->drupalCreateNode();
+
+    // First post.
+    $edit = array(
+      'title[full][region]' => 'header',
+      'author[full][region]' => 'middle',
+      'body[full][region]' => 'middle',
+      'links[full][region]' => 'footer',
+      'post_date[full][region]' => 'disabled',
+    );
+    $this->drupalPost('admin/build/ds/layout/page/full', $edit, t('Save'));
+    $page_object = $this->_nd_build_object($page_node);
+    $this->assertTrue(in_array('title', array_keys($page_object->regions['header'])), t('Title is in header region'), t('Rendering tests'));
+    $this->assertTrue(in_array('author', array_keys($page_object->regions['middle'])), t('Author is in middle region'), t('Rendering tests'));
+    $this->assertTrue(in_array('body', array_keys($page_object->regions['middle'])), t('Body is in middle region'), t('Rendering tests'));
+    $this->assertTrue(in_array('links', array_keys($page_object->regions['footer'])), t('Links is in footer region'), t('Rendering tests'));
+    $this->assertTrue($this->_nd_field_not_found('post_date', $page_object->regions), t('Post date is disabled'), t('Rendering tests'));
+
+    // Let's do another one..
+    $edit = array(
+      'title[full][region]' => 'disabled',
+      'author[full][region]' => 'right',
+      'body[full][region]' => 'middle',
+      'links[full][region]' => 'footer',
+      'post_date[full][region]' => 'footer',
+    );
+    $this->drupalPost('admin/build/ds/layout/page/full', $edit, t('Save'));
+    $page_object = $this->_nd_build_object($page_node);
+    $this->assertTrue(in_array('post_date', array_keys($page_object->regions['footer'])), t('Post date is in footer region'), t('Rendering tests'));
+    $this->assertTrue(in_array('author', array_keys($page_object->regions['right'])), t('Author is in right region'), t('Rendering tests'));
+    $this->assertTrue(in_array('body', array_keys($page_object->regions['middle'])), t('Body is in middle region'), t('Rendering tests'));
+    $this->assertTrue(in_array('links', array_keys($page_object->regions['footer'])), t('Links is in footer region'), t('Rendering tests'));
+    $this->assertTrue($this->_nd_field_not_found('title', $page_object->regions), t('Title is disabled'), t('Rendering tests'));
+  }
+}

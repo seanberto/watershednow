@@ -1,0 +1,89 @@
+<?php
+// $Id: nd_fivestar.module,v 1.1.2.10.2.5 2010/02/03 13:16:35 swentel Exp $
+
+/**
+ * @file
+ * Fivestar support for Node displays module.
+ */
+
+/**
+ * Implementation of hook_ds_fields().
+ */
+function nd_fivestar_ds_fields($type_name, $build_mode, $extra) {
+  $fields = array();
+  if (variable_get('nd_fivestar_'. $type_name, 0)) {
+    $fields = array(
+      'fivestar_widget' => array(
+        'title' => t('Fivestar'),
+        'type' => DS_FIELD_TYPE_FUNCTION,
+        'status' => DS_FIELD_STATUS_STATIC,
+        'properties' => array(
+          'formatters' => array(
+            'nd_fivestar_clickable' => t('Clickable widget'),
+            'nd_fivestar_static' => t('Static display'),
+          ),
+        )
+      ),
+    );
+  }
+  return array('nd' => $fields);
+}
+
+/**
+ * Implementation of hook_form_alter().
+ */
+function nd_fivestar_form_alter(&$form, $form_state, $form_id) {
+  // We need to alter the settings, because clickable or widget type
+  // will be chosen in the field display settings of the content type.
+  if ($form_id == 'node_type_form' && isset($form['identity']['type'])) {
+    if (variable_get('nd_fivestar_'. $form['#node_type']->type, 0)) {
+      $form['fivestar']['fivestar']['#default_value'] = TRUE;
+    }
+    $form['fivestar']['direct']['fivestar_position']['#access'] = FALSE;
+    $form['fivestar']['direct']['fivestar_position_teaser']['#access'] = FALSE;
+    $form['#submit'][] = 'nd_fivestar_submit';
+  }
+}
+
+/**
+ * Submit callback, reset fivestar_nodetype if needed, but save
+ * an extra nd_fivestar_nodetype variable. This way, we are
+ * sure that the nodeapi of fivestar isn't fired.
+ */
+function nd_fivestar_submit($form, &$form_state) {
+  $values = $form_state['values'];
+  $node_type = $values['type'];
+  if ($values['fivestar'] == 1) {
+    variable_set('fivestar_'. $node_type, 0);
+  }
+  variable_set('nd_fivestar_'. $node_type, $values['fivestar']);
+}
+
+/**
+ * Implementation of hook_fivestar_access().
+ */
+function nd_fivestar_fivestar_access($type, $id, $uid) {
+  if ($type == 'node' && $node = node_load($id)) {
+    if (variable_get('nd_fivestar_'. $node->type, 0)) {
+      return TRUE;
+    }
+  }
+}
+
+/**
+ * Clickable fivestar.
+ */
+function nd_fivestar_clickable($field) {
+  if (user_access('rate content') && fivestar_validate_target('node', $field['object']->nid)) {
+    return fivestar_widget_form($field['object']);
+  }
+  // Fall through static if not allowed to rate.
+  return fivestar_static('node', $field['object']->nid, NULL, $field['object']->type);
+}
+
+/**
+ * Static fivestar.
+ */
+function nd_fivestar_static($field) {
+  return fivestar_static('node', $field['object']->nid, NULL, $field['object']->type);
+}

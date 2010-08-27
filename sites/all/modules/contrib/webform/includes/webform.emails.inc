@@ -1,5 +1,5 @@
 <?php
-// $Id: webform.emails.inc,v 1.9.2.8 2010/08/16 16:15:43 quicksketch Exp $
+// $Id: webform.emails.inc,v 1.9.2.9 2010/08/19 03:00:45 quicksketch Exp $
 
 /**
  * @file
@@ -143,9 +143,9 @@ function theme_webform_email_add_form($form) {
   $form['email_component']['#attributes']['class'] = 'webform-set-active';
   $form['email_option']['component']['#title'] = $form['email_option']['component']['#title'] . ': ' . drupal_render($form['email_component']);
 
-  // For spacing consistency, every option is wrapped in container-inline.
+  // For spacing consistency, every option is wrapped in webform-container-inline.
   foreach (element_children($form['email_option']) as $option) {
-    $form['email_option'][$option]['#prefix'] = '<div class="container-inline">';
+    $form['email_option'][$option]['#prefix'] = '<div class="webform-container-inline">';
     $form['email_option'][$option]['#suffix'] = '</div>';
   }
 
@@ -290,8 +290,8 @@ function webform_email_edit_form($form_state, $node, $email = array()) {
   $form['templates']['default'] = array(
     '#type' => 'textarea',
     '#value' => $default_template,
-    '#attributes' => array('style' => 'display: none;'),
     '#resizable' => FALSE,
+    '#weight' => 19,
   );
 
   // Add the submit button.
@@ -319,9 +319,9 @@ function theme_webform_email_edit_form($form) {
       $form[$field . '_' . $option]['#attributes']['class'] = 'webform-set-active';
       $form[$field . '_option'][$option]['#title'] = $title . ': ' . drupal_render($form[$field . '_' . $option]);
     }
-    // For spacing consistency, every option is wrapped in container-inline.
+    // For spacing consistency, every option is wrapped in webform-container-inline.
     foreach (element_children($form[$field . '_option']) as $option) {
-      $form[$field . '_option'][$option]['#prefix'] = '<div class="container-inline">';
+      $form[$field . '_option'][$option]['#prefix'] = '<div class="webform-container-inline">';
       $form[$field . '_option'][$option]['#suffix'] = '</div>';
     }
     // Wrap the default option in a placeholder tag..
@@ -341,6 +341,10 @@ function theme_webform_email_edit_form($form) {
     '#children' => $details,
     '#collapsible' => FALSE,
   );
+
+  // Ensure templates are completely hidden.
+  $form['templates']['#prefix'] = '<div id="webform-email-templates" style="display: none">';
+  $form['templates']['#suffix'] = '</div>';
 
   $form['template']['template']['#description'] .= drupal_render($form['template']['components']);
 

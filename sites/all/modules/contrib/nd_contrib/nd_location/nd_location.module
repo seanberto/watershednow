@@ -1,0 +1,481 @@
+<?php
+// $Id: nd_location.module,v 1.1.2.22 2010/06/16 10:29:24 swentel Exp $
+
+/**
+ * @file
+ * Location support for node displays.
+ */
+
+/**
+ * Implementation of hook_menu().
+ */
+function nd_location_menu() {
+  $items = array();
+
+  if (module_exists('ds_ui')) {
+    $items['admin/build/ds/nd/nd_location'] = array(
+      'title' => 'Location',
+      'page callback' => 'nd_location_settings',
+      'access arguments' => array('administer nd'),
+      'file' => 'nd_location.admin.inc',
+      'type' => MENU_LOCAL_TASK,
+      'weight' => 11,
+    );
+  }
+
+  return $items;
+}
+
+/**
+ * Implementation of hook_ds_info_alter().
+ */
+function nd_location_ds_info_alter(&$help, $module) {
+  if ($module == 'nd') {
+    $help[] = t('<h3>Node displays location</h3>
+        <p>ND location has support for location and gmap. It exposes all location fields as separate fields, depending on the collection settings. Note: it does not work with the CCK location, but with the location on the node type.</p>
+        <p>You can also add new location field via the <a href="!url">settings screen</a> and you get 2 other fields in your display settings, namely the individual google map and a "Open on Gmap" link which opens up the info window on the map.</p>
+        <p>If you are creating a view and want to use Display suite row plugin, you can not use location as base, you need to use the node table, otherwhise you will have duplicate results.</p>
+        ', array('!url' => url('admin/build/ds/nd/nd_location'))
+    );
+  }
+}
+
+/**
+ * Implementation of hook_content_build_modes().
+ */
+function nd_location_content_build_modes() {
+  $build_modes = array(
+    'nd' => array(
+      'title' => t('Location displays'),
+      'build modes' => array(
+        'bubble' => array(
+          'title' => t('Bubble'),
+          'weight' => 6,
+        ),
+      )
+    )
+  );
+
+  return $build_modes;
+}
+
+/**
+ * Implementation of hook_theme().
+ */
+function nd_location_theme() {
+  $theme_functions = array(
+    'nd_location_gmap' => array(
+      'arguments' => array(
+        'field' => NULL,
+        'latitude' => NULL,
+        'longitude' => NULL,
+        'width' => NULL,
+        'height' => NULL,
+        'zoom' => NULL,
+      ),
+    ),
+    'nd_location_gmap_open' => array(
+      'arguments' => array('field' => NULL),
+    ),
+    'nd_location_textfield' => array(
+      'arguments' => array('field' => NULL),
+    ),
+    'nd_location_textarea' => array(
+      'arguments' => array('field' => NULL),
+    ),
+    'nd_location_directions' => array(
+      'arguments' => array('field' => NULL),
+    ),
+    'nd_location_goto_gmaps' => array(
+      'arguments' => array('field' => NULL),
+    ),
+    'nd_location_address' => array(
+      'arguments' => array('field' => NULL),
+    ),
+  );
+
+  // Formatters for single map, they will be sent to a function which will
+  // determine width and height - and maybe in the future more options.
+  // That function will call theme('nd_location_gmap');
+  $theme_functions['nd_location_gmap_default'] = array(
+    'arguments' => array('field' => NULL),
+    'function' => 'nd_location_gmap_formatter',
+  );
+
+  // Custom formatters.
+  $location_formatters = variable_get('nd_location_formatters', array());
+  if (!empty($location_formatters)) {
+    foreach ($location_formatters as $key => $formatter) {
+      $theme_functions['nd_location_gmap_'. $key] = array(
+        'arguments' => array('field' => NULL),
+        'function' => 'nd_location_gmap_formatter',
+      );
+    }
+  }
+
+  return $theme_functions;
+}
+
+/**
+ * Implementation of hook_ds_fields().
+ */
+function nd_location_ds_fields($type_name, $build_mode, $extra) {
+
+  $fields = array();
+  $location_settings = variable_get('location_settings_node_'. $type_name, array());
+
+  // Only return if max in the location array is bigger then 0.
+  if (isset($location_settings['multiple']['max']) && $location_settings['multiple']['max'] > 0) {
+
+    // Gmap fields from ND location.
+    $fields = array(
+      'nd_location_gmap' => array(
+        'title' => t('Gmap'),
+        'type' => DS_FIELD_TYPE_THEME,
+        'status' => DS_FIELD_STATUS_STATIC,
+        'properties' => array(
+          'formatters' => array(
+            'nd_location_gmap_default' => t('Gmap default'),
+          ),
+        ),
+      ),
+      'nd_location_gmap_open' => array(
+        'title' => t('Open gmap'),
+        'type' => DS_FIELD_TYPE_THEME,
+        'status' => DS_FIELD_STATUS_STATIC,
+        'properties' => array(
+          'formatters' => array(
+            'nd_location_gmap_open' => t('Open on gmap'),
+          ),
+        ),
+      ),
+      'nd_directions' => array(
+        'title' => t('Directions link'),
+        'type' => DS_FIELD_TYPE_THEME,
+        'status' => DS_FIELD_STATUS_STATIC,
+        'properties' => array(
+          'formatters' => array(
+            'nd_location_directions' => t('Default'),
+          ),
+        ),
+      ),
+      'nd_goto_gmaps' => array(
+        'title' => t('Link to Google Maps'),
+        'type' => DS_FIELD_TYPE_THEME,
+        'status' => DS_FIELD_STATUS_STATIC,
+        'properties' => array(
+          'formatters' => array(
+            'nd_location_goto_gmaps' => t('Default'),
+          ),
+        ),
+      ),
+      'nd_location_address' => array(
+        'title' => t('Full address'),
+        'type' => DS_FIELD_TYPE_THEME,
+        'status' => DS_FIELD_STATUS_STATIC,
+        'properties' => array(
+          'formatters' => array(
+            'nd_location_address' => t('Default'),
+          ),
+        ),
+      ),
+    );
+
+    // Custom gmap formatters.
+    $location_formatters = variable_get('nd_location_formatters', array());
+    if (!empty($location_formatters)) {
+      foreach ($location_formatters as $key => $formatter) {
+        $fields['nd_location_gmap']['properties']['formatters']['nd_location_gmap_'. $key] = 'Gmap '. $formatter['width'] .' x '. $formatter['height'];
+      }
+    }
+
+    // Location fields.
+    foreach ($location_settings['form']['fields'] as $field => $value) {
+
+      // We'll ignore the collect which is 0.
+      if ($value['collect'] == 0) {
+        continue;
+      }
+
+      $fields[$field] = array(
+        'title' => ucfirst(str_replace('_', ' ', $field)),
+        'type' => DS_FIELD_TYPE_THEME,
+        'status' => DS_FIELD_STATUS_STATIC,
+        'properties' => array(
+          'formatters' => array(
+            'nd_location_textfield' => t('Textfield'),
+            'nd_location_textarea' => t('Textarea'),
+          ),
+        ),
+      );
+    }
+  }
+
+  return array('nd' => $fields);
+}
+
+/**
+ * Implementation of hook_locationapi().
+ */
+function nd_location_locationapi(&$location, $op, $a3 = NULL, $a4 = NULL) {
+
+  // Performance check.
+  static $lids = array();
+  if (isset($location['lid']) && isset($lids[$location['lid']]) && $op != 'load') {
+    return;
+  }
+
+  // Build fields on before hand.
+  $nd_location_fields = variable_get('nd_location_fields', array());
+  if (empty($nd_location_fields)) {
+    return;
+  }
+
+  $fields = array();
+  if (!empty($nd_location_fields)) {
+    foreach ($nd_location_fields as $key => $value) {
+      $fields['fields'][$key] = $value['name'];
+      $fields['defaults'][$key] = array(
+        'default' => '',
+        'collect' => 0,
+        'weight' => 30,
+      );
+      $fields['field_expand'][$key] = array(
+        '#type' => $value['type'],
+        '#title' => $value['name'],
+        '#description' => NULL,
+        '#required' => ($a4 == 2),
+        '#default_value' => $location,
+      );
+    }
+  }
+
+  if (empty($fields)) {
+    return;
+  }
+
+  switch ($op) {
+    case 'fields':
+      return $fields['fields'];
+
+    case 'defaults':
+      return $fields['defaults'];
+
+    case 'field_expand':
+      if (isset($fields['field_expand'][$a3])) {
+        return $fields['field_expand'][$a3];
+      }
+      break;
+
+    case 'save':
+      db_query('DELETE FROM {nd_location} WHERE lid = %d', $location['lid']);
+      $data = array();
+      foreach ($fields['fields'] as $key => $name) {
+        $data[$key] = (isset($location[$key])) ? $location[$key] : '';
+      }
+      db_query("INSERT INTO {nd_location} (lid, data) VALUES (%d, '%s')", $location['lid'], serialize($data));
+      break;
+
+    case 'load':
+      if (!isset($lids[$location['lid']])) {
+        $lid = $location['lid'];
+        $lids[$lid] = array();
+        $data = db_result(db_query('SELECT data FROM {nd_location} WHERE lid = %d', $location['lid']));
+        if ($data !== FALSE) {
+          $data = unserialize($data);
+          foreach ($fields['fields'] as $key => $name) {
+            $lids[$lid][$key] = (isset($data[$key])) ? $data[$key] : '';
+          }
+        }
+      }
+      return $lids[$location['lid']];
+      break;
+
+    case 'delete':
+      db_query('DELETE FROM {nd_location} WHERE lid = %d', $location['lid']);
+      break;
+  }
+}
+
+/**
+ * Determines the format for the gmap. Only fire with latitude and longitude are available.
+ */
+function nd_location_gmap_formatter($field) {
+  if (!empty($field['object']->location['latitude']) && !empty($field['object']->location['longitude'])) {
+
+    // Defaults.
+    $zoom = 'default';
+    $width = 'default';
+    $height = 'default';
+    $latitude = $field['object']->location['latitude'];
+    $longitude = $field['object']->location['longitude'];
+
+    // Check format.
+    $format = str_replace('nd_location_gmap_', '', $field['formatter']);
+    if ($format != 'default') {
+      $formatters = variable_get('nd_location_formatters', array());
+      $formatter = $formatters[$format];
+      $width = $formatter['width'] .'px';
+      $height = $formatter['height'] .'px';
+      $zoom = $formatter['zoom'];
+    }
+
+    return theme('nd_location_gmap', $field, $latitude, $longitude, $width, $height, $zoom);
+  }
+}
+
+/**
+ * Theme location textfield.
+ */
+function theme_nd_location_textfield($field) {
+  if (!empty($field['object']->location[$field['key']])) {
+    $value = $field['object']->location[$field['key']];
+    if ($field['key'] == 'country') {
+      $value = $field['object']->location['country_name'];
+    }
+    if ($field['key'] == 'province') {
+      $value = $field['object']->location['province_name'];
+    }
+    if ($field['key'] == 'locpick') {
+      // Latitude.
+      $value  = '';
+      list($degrees, $minutes, $seconds, $negative) = location_dd_to_dms($field['object']->location['latitude']);
+      $value .= "${degrees}° ${minutes}' ${seconds}\" ";
+      if (!$negative) {
+        $value .= 'N';
+      }
+      else {
+        $value .= 'S';
+      }
+      // Longitude
+      list($degrees, $minutes, $seconds, $negative) = location_dd_to_dms($field['object']->location['longitude']);
+      $value .= ", ${degrees}° ${minutes}' ${seconds}\" ";
+      if (!$negative) {
+        $value .= 'E';
+      }
+      else {
+        $value .= 'W';
+      }
+    }
+    return check_plain($value);
+  }
+}
+
+/**
+ * Theme location textarea.
+ */
+function theme_nd_location_textarea($field) {
+  if (!empty($field['object']->location[$field['key']])) {
+    return _filter_autop(filter_xss($field['object']->location[$field['key']]));
+  }
+}
+
+/**
+ * Theme individual google map.
+ */
+function theme_nd_location_gmap($field, $latitude, $longitude, $width, $height, $zoom) {
+  $map = array();
+  $bubble_content = _nd_location_theme_bubble($field);
+  if (!empty($bubble_content)) {
+    $map['markers'][] = array(
+      'latitude' => $latitude,
+      'longitude' => $longitude,
+      'text' => $bubble_content,
+    );
+  }
+
+  return gmap_simple_map($latitude, $longitude, '', '', $zoom, $width, $height, FALSE, $map);
+}
+
+/**
+ * Theme link to open info window op Gmap.
+ */
+function theme_nd_location_gmap_open($field) {
+  $longitude = $field['object']->location['longitude'];
+  $latitude = $field['object']->location['latitude'];
+  static $number = -1, $js = FALSE;
+  if (!$js) {
+    $js = TRUE;
+    drupal_add_js(drupal_get_path('module', 'nd_location') .'/nd_location.js');
+  }
+
+  $number++;
+  return '<a href="" onclick="Drupal.ND_location.open_gmap_bubble('. $longitude .','. $latitude .'); return false;">'. t('Open on map') .'</a>';
+}
+
+/**
+ * Add link to go to google maps.
+ */
+function theme_nd_location_goto_gmaps($field) {
+  $destination = array();
+  $fields = array('street', 'city', 'province_name', 'postal_code');
+  foreach ($fields as $key) {
+    if (!empty($field['object']->location[$key])) {
+      $destination[] = check_plain($field['object']->location[$key]);
+    }
+  }
+  if (!empty($destination)) {
+    $longitude = $field['object']->location['longitude'];
+    $latitude = $field['object']->location['latitude'];
+    $link = '<a href="http://maps.google.com/?f=q&source=s_q&q='. implode($destination, '+') .'&sll='. $latitude .','. $longitude .'" target="_blank">'. t('Open in new window') .'</a>';
+    return $link;
+  }
+}
+
+/**
+ * Add directions link field
+ */
+function theme_nd_location_directions($field) {
+  $destination = array();
+  $fields = array('street', 'city', 'province_name', 'postal_code');
+  foreach ($fields as $key) {
+    if (!empty($field['object']->location[$key])) {
+      $destination[] = check_plain($field['object']->location[$key]);
+    }
+  }
+  if (!empty($destination)) {
+    $link ='<a href="http://maps.google.com/?daddr='. implode($destination, '+') .'" target="_blank">'. t('Driving Directions') .'</a>';
+    return $link;
+  }
+}
+
+/**
+ * Combine all address fields.
+ */
+function theme_nd_location_address($field) {
+  $address = array();
+  if (!empty($field['object']->location)) {
+    if (!empty($field['object']->location['street'])) {
+      $address[] = check_plain($field['object']->location['street']);
+    }
+    $fullcity = array();
+    if (!empty($field['object']->location['postal_code'])) {
+      $fullcity[] = check_plain($field['object']->location['postal_code']);
+    }
+    if (!empty($field['object']->location['city'])) {
+      $fullcity[] = check_plain($field['object']->location['city']);
+    }
+    $address[] = implode($fullcity, ' ');
+    if (!empty($field['object']->location['province_name'])) {
+      $address[] = check_plain($field['object']->location['province_name']);
+    }
+  }
+  return implode($address, ', ');
+}
+
+/**
+ * Helper function to theme a node in a bubble. This is
+ * called when an individual map is rendered. At that moment
+ * the node itself already has been built and prepared and is being
+ * rendered through Display Suite, so we need to clone and invoke
+ * the nodeapi alter ourselves otherwhise we'll get some annoying notices.
+ * There might be some limits to fields, but we'll see what happens.
+ */
+function _nd_location_theme_bubble($field) {
+  $bubble_node = drupal_clone($field['object']);
+  $bubble_node->build_mode = 'bubble';
+  $page = ($field['object']->build_mode == 'full') ? TRUE : FALSE;
+  $teaser = ($page == TRUE) ? FALSE : TRUE;
+  node_invoke_nodeapi($bubble_node, 'alter', $teaser, $page);
+  return theme('node', $bubble_node, $teaser, $page);
+}

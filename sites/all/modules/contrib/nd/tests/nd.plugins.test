@@ -1,0 +1,131 @@
+<?php
+// $Id: nd.plugins.test,v 1.1.2.4.2.8 2010/06/08 00:20:08 swentel Exp $
+
+/**
+ * @file
+ * Tests for Node displays (plugins)
+ */
+
+class NodeDisplaysPlugins extends DrupalWebTestCase {
+  /**
+   * Implementation of getInfo().
+   */
+  function getInfo() {
+    return array(
+      'name' => t('ND plugins'),
+      'description' => t('Tests for ND plugins.'),
+      'group' => t('Display suite'),
+    );
+  }
+
+  /**
+   * Implementation of setUp().
+   */
+  function setUp() {
+    parent::setUp('ds', 'ds_ui', 'nd');
+  }
+
+  /**
+   * Helper function to build an object.
+   * @param stdClass $object A node.
+   * @param $build_mode The build mode for the node.
+   */
+  function _nd_build_object($object, $build_mode = NODE_BUILD_NORMAL, $teaser = FALSE, $page = TRUE) {
+    $object_loaded = node_load($object->nid, array(), TRUE);
+    $object_loaded->build_mode = $build_mode;
+    $object_rendered = node_build_content($object_loaded, $teaser, $page);
+    node_invoke_nodeapi($object_rendered, 'alter', $teaser, $page);
+    return $object_rendered;
+  }
+
+  /**
+   * Tests for plugins.
+   */
+  function testPlugins() {
+    $admin_user = $this->drupalCreateUser(array('administer nodes', 'access display suite', 'administer nd', 'configure layout for nd', 'export and import settings', 'revert overridden settings', 'use PHP in custom fields', 'administer blocks'));
+    $this->drupalLogin($admin_user);
+
+    $plugin_settings = variable_get('nd_plugin_settings', array());
+    $this->assertEqual($plugin_settings, array(), t('Plugin settings is empty'), t('Plugin tests'));
+
+    // Enable the emptyregionrender plugin.
+    $edit = array(
+      'plugin_emptyregionrender' => TRUE,
+    );
+    $this->drupalPost('admin/build/ds/nd/plugins', $edit, t('Save'));
+
+    $plugin_settings = variable_get('nd_plugin_settings', array());
+    $this->assertTrue(isset($plugin_settings['emptyregionrender']), t('Empty region render enabled.'), t('Plugin tests'));
+
+    $page_node = $this->drupalCreateNode();
+
+    // First post.
+    $edit = array(
+      'title[full][region]' => 'header',
+      'author[full][region]' => 'middle',
+      'body[full][region]' => 'middle',
+    );
+    $this->drupalPost('admin/build/ds/layout/page/full', $edit, t('Save'));
+
+    // Test that footer is not rendered with the emptyregionrender plugin enabled.
+    $this->drupalGet('node/'. $page_node->nid);
+    $this->assertNoRaw('ds-region-footer', t('Footer is not rendered.'), t('Plugin tests'));
+
+    // Save again.
+    $edit = array(
+      'title[full][region]' => 'header',
+      'author[full][region]' => 'middle',
+      'body[full][region]' => 'middle',
+      'emptyregionrender[region-render-footer]' => TRUE,
+    );
+    $this->drupalPost('admin/build/ds/layout/page/full', $edit, t('Save'));
+
+    // Test that footer is rendered with the emptyregionrender plugin enabled.
+    $this->drupalGet('node/'. $page_node->nid);
+    $this->assertRaw('nd-region-footer', t('Footer is rendered.'), t('Plugin tests'));
+
+    // Enable the blocktoregion plugin.
+    $edit = array(
+      'plugin_emptyregionrender' => FALSE,
+      'plugin_regiontoblock' => TRUE,
+    );
+    $this->drupalPost('admin/build/ds/nd/plugins', $edit, t('Save'));
+
+    $plugin_settings = variable_get('nd_plugin_settings', array());
+    $this->assertFalse(isset($plugin_settings['emptyregionrender']), t('Empty region render disabled.'), t('Plugin tests'));
+    $this->assertTrue(isset($plugin_settings['regiontoblock']), t('Region to block enabled.'), t('Plugin tests'));
+
+    // Save full node display settings.
+    $edit = array(
+      'title[full][region]' => 'header',
+      'body[full][region]' => 'middle',
+      'author[full][region]' => 'right',
+    );
+    $this->drupalPost('admin/build/ds/layout/page/full', $edit, t('Save'));
+
+    // Go to full node and make sure the right ds region is rendered.
+    $this->drupalGet('node/'. $page_node->nid);
+    $this->assertRaw('nd-region-right', t('Right region is rendered.'), t('Plugin tests'));
+
+    // Save again but assign the right block to a region.
+    $edit = array(
+      'title[full][region]' => 'header',
+      'body[full][region]' => 'middle',
+      'author[full][region]' => 'right',
+      'regiontoblock[region-block-right]' => TRUE,
+    );
+    $this->drupalPost('admin/build/ds/layout/page/full', $edit, t('Save'));
+
+    // Go to blocks page and put this region into right sidebar.
+    $edit = array(
+      'ds_b4bd9b390ca7a23ee5c8f8d1858c1ed8[region]' => 'right',
+    );
+    $this->drupalPost('admin/build/block', $edit, t('Save blocks'));
+
+    // Go to full node and assert the right region is not rendered but the block is.
+    $this->drupalGet('node/'. $page_node->nid);
+    $this->assertNoRaw('nd-region-right', t('Right region is not rendered.'), t('Plugin tests'));
+    $this->assertRaw('id="block-ds-b4bd9b390ca7a23ee5c8f8d1858c1ed8"', t('Block is rendered'), t('Plugin tests'));
+    $this->assertRaw('<div class="field field-author">'. $admin_user->name .'</div>', t('Author name rendered'), t('Plugin tests'));
+  }
+}

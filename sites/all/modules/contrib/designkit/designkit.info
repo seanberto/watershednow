@@ -1,0 +1,14 @@
+; $Id: designkit.info,v 1.1 2009/12/14 20:57:19 yhahn Exp $
+name = "DesignKit"
+description = "Provides design customization options that can be utilized by themes."
+package = "User interface"
+dependencies[] = "imagecache"
+dependencies[] = "color"
+core = "6.x"
+
+; Information added by drupal.org packaging script on 2010-08-12
+version = "6.x-1.0-beta1"
+core = "6.x"
+project = "designkit"
+datestamp = "1281644191"
+

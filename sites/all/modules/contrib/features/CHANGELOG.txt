@@ -1,4 +1,13 @@
-// $Id: CHANGELOG.txt,v 1.1.2.14 2010/08/19 22:08:00 yhahn Exp $
+// $Id: CHANGELOG.txt,v 1.1.2.15 2010/08/23 14:24:39 yhahn Exp $
+
+features DRUPAL-6--1-0
+----------------------
+- No changes from RC3.
+
+features DRUPAL-6--1-0-RC3
+--------------------------
+- Ensure feature module name is properly handled in AHAH callback.
+- #577852: Do not allow module to add itself as dependency.
 
 features DRUPAL-6--1-0-RC2
 --------------------------

@@ -1,0 +1,15 @@
+<?php
+// $Id: nd_context_bm.install,v 1.1.2.1 2010/07/27 19:11:52 swentel Exp $
+
+/**
+ * @file
+ * install nd_context_bm
+ */
+
+/**
+ * Implementation of hook_install().
+ */
+function nd_context_bm_install() {
+  // Ensure that we get called as early as possible among the hooking modules (nodeapi).
+  db_query("UPDATE {system} SET weight = -98 WHERE name = 'nd_context_bm'");
+}

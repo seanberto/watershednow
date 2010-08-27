@@ -1,0 +1,43 @@
+<?php
+// $Id: ds.install,v 1.1.2.4 2010/05/28 19:51:50 swentel Exp $
+
+/**
+ * @file
+ * Display suite install file.
+ */
+
+/**
+ * Implementation of hook_uninstall().
+ */
+function ds_uninstall() {
+  db_query("DELETE FROM {variable} WHERE name LIKE 'ds_%%'");
+  cache_clear_all('variables', 'cache');
+}
+
+/**
+ * Implementation of hook_update_N().
+ *
+ * We simply return an array here. We want the people to
+ * run update.php because new theming functions got introduced.
+ */
+function ds_update_1() {
+  return array();
+}
+
+/**
+ * Implementation of hook_update_N().
+ */
+function ds_update_2() {
+  // Enable the UI module, not everyone knows that the module UI
+  // and core are separated now.
+  module_enable(array('ds_ui'));
+  return array();
+}
+
+/**
+ * Implementation of hook_update_N().
+ */
+function ds_update_3() {
+  // Needs menu rebuild.
+  return array();
+}

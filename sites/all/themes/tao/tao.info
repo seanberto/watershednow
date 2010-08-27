@@ -47,10 +47,3 @@ stylesheets[all][] = "taxonomy.css"
 stylesheets[all][] = "tracker.css"
 stylesheets[all][] = "update.css"
 stylesheets[all][] = "user.css"
-
-; Information added by fserver
-core = "6.x"
-datestamp = "1281644111"
-project = "tao"
-project status url = "http://code.developmentseed.org/fserver"
-version = "6.x-2.3"

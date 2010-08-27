@@ -1,0 +1,13 @@
+; $Id: nd.info,v 1.1.2.7 2009/10/18 15:48:58 swentel Exp $
+name = "Node displays"
+description = "Extended node build and display modes"
+core = "6.x"
+dependencies[] = ds
+package = "Display suite"
+
+; Information added by drupal.org packaging script on 2010-07-18
+version = "6.x-2.3"
+core = "6.x"
+project = "nd"
+datestamp = "1279453209"
+

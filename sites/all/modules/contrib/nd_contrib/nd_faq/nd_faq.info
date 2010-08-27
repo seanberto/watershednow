@@ -1,0 +1,14 @@
+; $Id: nd_faq.info,v 1.1.2.1 2010/05/18 15:42:52 swentel Exp $
+name = ND Faq
+description = FAQ support for Node Displays
+core = "6.x"
+dependencies[] = nd
+dependencies[] = faq
+package = "Display suite"
+
+; Information added by drupal.org packaging script on 2010-08-14
+version = "6.x-2.x-dev"
+core = "6.x"
+project = "nd_contrib"
+datestamp = "1281744818"
+

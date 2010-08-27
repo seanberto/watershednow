@@ -1,5 +1,5 @@
 <?php
-// $Id: time.inc,v 1.24.2.9 2010/06/30 04:27:14 quicksketch Exp $
+// $Id: time.inc,v 1.24.2.10 2010/08/19 03:00:45 quicksketch Exp $
 
 /**
  * @file
@@ -184,7 +184,7 @@ function theme_webform_time($element) {
     $element['minute']['#attributes']['class'] = 'error';
   }
 
-  $output = '<div class="container-inline">' . drupal_render($element['hour']) . drupal_render($element['minute']) . drupal_render($element['ampm']) . '</div>';
+  $output = '<div class="webform-container-inline">' . drupal_render($element['hour']) . drupal_render($element['minute']) . drupal_render($element['ampm']) . '</div>';
 
   $element['#type'] = 'element';
   return theme('form_element', $element, $output);

@@ -1,0 +1,69 @@
+/* $Id: nd_regions.css,v 1.1.2.3 2010/05/31 12:16:09 swentel Exp $ */
+
+.nd-region-header {
+  clear: both;
+}
+
+.nd-region-left {
+  display: inline;
+  float: left;
+}
+
+.nd-region-middle-wrapper {
+  display: inline;
+  float: left;
+  width: 100%;
+  margin-right: -100%;
+}
+
+.nd-region-right {
+  display: inline;
+  float: right;
+}
+
+.nd-region-footer {
+  clear: both;
+}
+
+/* default region dimensions */
+
+.nd-region-left {
+  width: 25%;
+}
+
+.nd-region-right {
+  width: 25%;
+}
+
+/* middle region */
+
+.nd-no-sidebars .nd-region-middle {
+}
+
+.nd-sidebar-left .nd-region-middle {
+  margin-left: 25%;
+}
+
+.nd-sidebar-right .nd-region-middle {
+  margin-right: 25%;
+}
+
+.nd-two-sidebars .nd-region-middle {
+  margin-left: 25%;
+  margin-right: 25%;
+}
+
+/* Fix for IE */
+.nd-no-sidebars {
+  display:block;
+  float:none;
+  margin-right:0;
+  width:auto;
+}
+
+.nd-sidebar-right {
+  *display: inline;
+  *float: right;
+  *width: 100%;
+  *margin-left: -100%;
+}

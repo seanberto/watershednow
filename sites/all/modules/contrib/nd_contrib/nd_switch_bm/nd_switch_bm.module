@@ -1,0 +1,123 @@
+<?php
+// $Id: nd_switch_bm.module,v 1.1.2.1 2010/07/27 15:03:28 swentel Exp $
+
+/**
+ * @file
+ * ND switch build mode file.
+ */
+
+/**
+ * Implementation of hook_perm().
+ */
+function nd_switch_bm_perm() {
+  $perms = array(
+    'administer nd_switch_bm',
+    'nd_switch_bm all content types',
+  );
+
+  // Add per content type specific perms
+  foreach (content_types() as $ct ) {
+    $perms[] = 'nd_switch_bm ' . $ct['type'];
+  }
+
+  return $perms;
+}
+
+/**
+ * Implementation of hook_nodeapi().
+ */
+function nd_switch_bm_nodeapi(&$node, $op, $teaser, $page) {
+  switch ($op) {
+    case 'view':
+      // So far we'll only want to do this on full build mode node page views; let's not overrule search, search_index, rss, etc.
+      if ($page && ($node->build_mode == NODE_BUILD_NORMAL || $node->build_mode == NODE_BUILD_PREVIEW) && $node->nd_switch_bm) {
+        $node->build_mode = $node->nd_switch_bm;
+      }
+      break;
+  }
+}
+
+/**
+ * Implementation of hook_form_alter().
+ */
+function nd_switch_bm_form_alter(&$form, $form_state, $form_id) {
+
+  // Process content type form.
+  if ($form_id == 'node_type_form' && isset($form['identity']['type'])) {
+
+    // List of all build modes - @todo: filter by content type?
+    $ds_bm = ds_get_build_modes('nd');
+    foreach ( $ds_bm as $key => $item ) {
+      // exclude the "full mode", because that is just confusing
+      if ($key!=='full') {
+        $options[$key] = $item['title'];
+      }
+    }
+
+    $form['nd_switch_bm'] = array(
+      '#title' => t('Node Displays - switch build modes'),
+      '#type' => 'fieldset',
+      '#collapsible' => TRUE,
+      '#collapsed' => TRUE
+    );
+    $form['nd_switch_bm']['nd_switch_bm_map'] = array(
+      '#type' => 'checkboxes',
+      '#title' => t('Allow switching inidividual node full page view build mode to one of these'),
+      '#default_value' => variable_get('nd_switch_bm_map_'. $form['#node_type']->type, array()),
+      '#options' => $options,
+      '#description' => t('Not checking any build modes, will disable this feature in the node edit form.'),
+    );
+  }
+
+  // Process node edit form.
+  if (isset($form['type']) && isset($form['#node']) && $form['type']['#value'] . '_node_form' == $form_id) {
+    if ( user_access('administer nd_switch_bm') || user_access('nd_switch_bm all content types') || user_access('nd_switch_bm ' . $form['#node']->type) ) {
+
+      // Find the allowed_map
+      $allowed_map = variable_get('nd_switch_bm_map_' . $form['#node']->type, FALSE);
+      if ($allowed_map && is_array($allowed_map) && count($allowed_map)) {
+        $node = $form['#node'];
+        $form['nd_switch_bm'] = array(
+          '#title' => t('Node Displays - switch (full) build mode'),
+          '#type' => 'fieldset',
+          '#collapsible' => TRUE,
+          '#collapsed' => TRUE
+        );
+
+        // Build mode options.
+        $ds_bm = ds_get_build_modes('nd');
+        $options = array('' => t('Default'));
+        foreach ($ds_bm as $key => $item ) {
+          if (in_array( $key, $allowed_map ) ) {
+            $options[$key] = $item['title'];
+          }
+        }
+        $form['nd_switch_bm']['nd_switch_bm'] = array(
+          '#type' => 'select',
+          '#title' => t('Build mode'),
+          '#options' => $options,
+          '#default_value' => $node->nd_switch_bm,
+          '#description' => t('Switch to a different build mode to display the default full page view of this node.'),
+          '#weight' => -1,
+        );
+      }
+    }
+  }
+}
+
+/**
+ * Implementation of hook_content_extra_fields().
+ */
+function nd_switch_bm_content_extra_fields($type_name) {
+  $extra = array();
+  $allowed_map = variable_get('nd_switch_bm_map_'. $type_name, FALSE);
+
+  if ($allowed_map && is_array($allowed_map) && count($allowed_map)) {
+    $extra['nd_switch_bm'] = array(
+      'label' => t('Node Displays - switch build modes'),
+      'description' => t('Switch full build mode per individual node'),
+      'weight' => 100
+    );
+  }
+  return $extra;
+}

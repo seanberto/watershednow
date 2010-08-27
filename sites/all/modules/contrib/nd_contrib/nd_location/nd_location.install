@@ -1,0 +1,50 @@
+<?php
+// $Id: nd_location.install,v 1.1.2.1 2010/03/24 12:44:30 swentel Exp $
+
+/**
+ * @file
+ * Install file.
+ */
+
+/**
+ * Implementation of hook_install().
+ */
+function nd_location_install() {
+  drupal_install_schema('nd_location');
+  db_query("UPDATE {system} SET weight = 1 WHERE name = '%s' AND type = '%s'", 'nd_location', 'module');
+}
+
+/**
+ * Implementation of hook_uninstall().
+ */
+function nd_location_uninstall() {
+  db_query("DELETE FROM {variable} WHERE name LIKE 'nd_location_%%'");
+  cache_clear_all('variables', 'cache');
+  drupal_uninstall_schema('nd_location');
+}
+
+/**
+ * Implementation of hook_schema().
+ */
+function nd_location_schema() {
+  $schema['nd_location'] = array(
+    'description' => 'Stores information about the nid.',
+    'fields' => array(
+      'lid' => array(
+        'description' => 'The lid this record affects.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0
+      ),
+      'data' => array(
+        'description' => 'The data of this lid.',
+        'type' => 'text',
+        'not null' => TRUE,
+        'size' => 'big'
+      ),
+    ),
+  );
+
+  return $schema;
+}

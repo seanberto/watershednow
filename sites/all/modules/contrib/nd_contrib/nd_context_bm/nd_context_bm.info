@@ -1,0 +1,14 @@
+; $Id: nd_context_bm.info,v 1.1.2.1 2010/07/27 19:11:52 swentel Exp $
+name = "ND context"
+dependencies[] = "context"
+dependencies[] = "ds"
+description = "Allow nd-build modes to act as conditions and triggers for contexts"
+package = "Display suite"
+core = "6.x"
+
+; Information added by drupal.org packaging script on 2010-08-14
+version = "6.x-2.x-dev"
+core = "6.x"
+project = "nd_contrib"
+datestamp = "1281744818"
+

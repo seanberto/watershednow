@@ -1,0 +1,173 @@
+<?php
+// $Id: nd.buildmodes.test,v 1.1.2.11.2.7 2010/06/08 00:20:08 swentel Exp $
+
+/**
+ * @file
+ * Tests for Node displays (Build modes)
+ */
+
+class NodeDisplaysBuildModes extends DrupalWebTestCase {
+  /**
+   * Implementation of getInfo().
+   */
+  function getInfo() {
+    return array(
+      'name' => t('ND build modes'),
+      'description' => t('Tests for ND build modes.'),
+      'group' => t('Display suite'),
+    );
+  }
+
+  /**
+   * Implementation of setUp().
+   */
+  function setUp() {
+    parent::setUp('ds', 'ds_ui', 'nd');
+  }
+
+  /**
+   * Helper function to build an object.
+   * @param stdClass $object A node.
+   * @param $build_mode The build mode for the node.
+   */
+  function _nd_build_object($object, $build_mode = NODE_BUILD_NORMAL, $teaser = FALSE, $page = TRUE) {
+    $object_loaded = node_load($object->nid, array(), TRUE);
+    $object_loaded->build_mode = $build_mode;
+    $object_rendered = node_build_content($object_loaded, $teaser, $page);
+    node_invoke_nodeapi($object_rendered, 'alter', $teaser, $page);
+    return $object_rendered;
+  }
+
+  /**
+   * Test matrix build modes.
+   */
+  function testBuildModesMatrix() {
+    $admin_user = $this->drupalCreateUser(array('administer nodes', 'access display suite', 'administer nd', 'configure layout for nd', 'export and import settings', 'revert overridden settings', 'use PHP in custom fields'));
+    $this->drupalLogin($admin_user);
+    $exclude_build_modes = variable_get('nd_buildmodes_exclude', array());
+    $this->assertEqual(array(), $exclude_build_modes, t('Preprocess exclude is empty'), t('ND settings exclude'));
+
+    // Page display settings.
+    $edit = array(
+      'title[full][region]' => 'header',
+    );
+    $this->drupalPost('admin/build/ds/layout/page', $edit, t('Save'));
+    $edit = array(
+      'title[teaser][region]' => 'header',
+    );
+    $this->drupalPost('admin/build/ds/layout/page/teaser', $edit, t('Save'));
+    // Story display settings.
+    $edit = array(
+      'title[full][region]' => 'header',
+    );
+    $this->drupalPost('admin/build/ds/layout/story', $edit, t('Save'));
+    $edit = array(
+      'title[teaser][region]' => 'header',
+    );
+    $this->drupalPost('admin/build/ds/layout/story/teaser', $edit, t('Save'));
+
+    // Create page & story node.
+    $page_node = $this->drupalCreateNode();
+    $story_node = $this->drupalCreateNode(array('type' => 'story'));
+
+    // Test on render_by_ds property.
+    $page_object = $this->_nd_build_object($page_node);
+    $this->assertTrue($page_object->render_by_ds, t('Page full rendered by ND'), t('ND settings exclude'));
+    $story_object = $this->_nd_build_object($page_node);
+    $this->assertTrue($story_object->render_by_ds, t('Story full rendered by ND'), t('ND settings exclude'));
+
+    // Exclude page teaser & story full.
+    $edit = array(
+      'page-teaser' => TRUE,
+      'story-full' => TRUE,
+    );
+    $this->drupalPost('admin/build/ds/nd/buildmodes', $edit, t('Save settings'));
+    $exclude_build_modes = variable_get('nd_buildmodes_exclude', array());
+    $this->assertTrue($exclude_build_modes['page']['teaser'], t('Teaser page will not be processed'), t('ND settings matrix'));
+    $this->assertTrue($exclude_build_modes['story']['full'], t('Story full will not be processed'), t('ND settings matrix'));
+
+    // Test on render_by_nd property.
+    $page_object = $this->_nd_build_object($page_node, 'teaser', TRUE, FALSE);
+    $this->assertFalse($page_object->render_by_ds, t('Page teaser not rendered by ND'), t('ND settings exclude'));
+    $story_object = $this->_nd_build_object($story_node, 'full', FALSE, TRUE);
+    $this->assertFalse($story_object->render_by_ds, t('Story full not rendered by ND'), t('ND settings exclude'));
+
+    // de-exclude page-teaser again.
+    $edit = array(
+      'page-teaser' => FALSE,
+      'story-full' => TRUE,
+    );
+    $this->drupalPost('admin/build/ds/nd/buildmodes', $edit, t('Save settings'));
+    $exclude_build_modes = variable_get('nd_buildmodes_exclude', array());
+    $this->assertFalse($exclude_build_modes['page']['teaser'], t('Teaser page will not be processed'), t('ND settings matrix'));
+    $this->assertTrue($exclude_build_modes['story']['full'], t('Story full will not be processed'), t('ND settings matrix'));
+
+    // Test on render_by_ds property.
+    $page_object = $this->_nd_build_object($page_node, 'teaser', TRUE, FALSE);
+    $this->assertTrue($page_object->render_by_ds, t('Page teaser rendered by ND'), t('ND settings exclude'));
+    $story_object = $this->_nd_build_object($story_node, 'full', FALSE, TRUE);
+    $this->assertFalse($story_object->render_by_ds, t('Story full not rendered by ND'), t('ND settings exclude'));
+
+  }
+
+  /**
+   * Test build modes.
+   */
+  function testNdBuildModes() {
+    $admin_user = $this->drupalCreateUser(array('administer nodes', 'access display suite', 'administer nd', 'configure layout for nd', 'export and import settings', 'revert overridden settings', 'use PHP in custom fields'));
+    $this->drupalLogin($admin_user);
+    $this->drupalGet('admin/build/ds/nd/buildmodes');
+
+    // Test being empty.
+    $build_modes = variable_get('nd_build_modes', array());
+    $this->assertEqual(array(), $build_modes, t('Build modes are empty'), t('Custom build modes.'));
+
+    // Valid build mode.
+    $edit = array(
+      'key' => 'test_key',
+      'name' => 'Test label'
+    );
+    $this->drupalPost('admin/build/ds/nd/buildmodes', $edit, t('Save build mode'));
+    $build_modes = variable_get('nd_build_modes', array());
+    $this->assertTrue(array_key_exists('test_key', $build_modes), t('test_key exists'), t('Custom build modes'));
+    $this->assertEqual($build_modes['test_key'], $edit['name'], t('Label equals Test label'), t('Custom build modes'));
+
+    // Try to add the same build mode, must fail.
+    $this->drupalPost('admin/build/ds/nd/buildmodes', $edit, t('Save build mode'));
+    $this->assertText(t('This build mode already exists.'), 'Key already exists', t('Custom build modes'));
+
+    // Update build mode.
+    $edit = array(
+      'key' => 'test_key',
+      'name' => 'Test label 2',
+    );
+    $this->drupalPost('admin/build/ds/nd/buildmodes/edit/test_key', $edit, t('Save build mode'));
+    $build_modes = variable_get('nd_build_modes', array());
+    $this->assertEqual($build_modes['test_key'], $edit['name'], t('Label equals Test label 2'), t('Custom build modes'));
+    $this->assertEqual(count($build_modes), 1, t('Only 1 build mode'), t('Custom build modes'));
+
+    // Add new build mode.
+    $edit = array(
+      'key' => 'test_key_two',
+      'name' => 'Test label 3',
+    );
+    $this->drupalPost('admin/build/ds/nd/buildmodes', $edit, t('Save build mode'));
+    $build_modes = variable_get('nd_build_modes', array());
+    $this->assertEqual($build_modes['test_key_two'], $edit['name'], t('Label equals Test label 3'), t('Custom build modes'));
+    $this->assertEqual(count($build_modes), 2, t('2 build modes found'), t('Custom build modes'));
+
+    // Delete build mode.
+    $this->drupalPost('admin/build/ds/nd/buildmodes/delete/test_key', array(), t('Delete'));
+    $build_modes = variable_get('nd_build_modes', array());
+    $this->assertFalse(array_key_exists('test_key', $build_modes), t('test_key removed'), t('Custom build modes'));
+    $this->assertEqual(count($build_modes), 1, t('Only 1 build mode'), t('Custom build modes'));
+
+    // Invalid key.
+    $edit = array(
+      'key' => 'test_key moehaha',
+      'name' => 'Test label'
+    );
+    $this->drupalPost('admin/build/ds/nd/buildmodes', $edit, t('Save build mode'));
+    $this->assertText(t('The machine-readable name must contain only lowercase letters, numbers and underscores.'), 'Key is not valid', t('Custom build modes'));
+  }
+}

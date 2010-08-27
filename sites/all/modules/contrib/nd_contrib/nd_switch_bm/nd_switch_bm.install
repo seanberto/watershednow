@@ -1,0 +1,57 @@
+<?php
+// $Id: nd_switch_bm.install,v 1.1.2.1 2010/07/27 15:03:28 swentel Exp $
+
+/**
+ * @file
+ * Install file.
+ */
+
+/**
+ * Implementation of hook_install().
+ */
+function nd_switch_bm_install() {
+  $ret = array();
+
+  /*
+   * hook_schema_alter does not add fields to the database.
+   * @see http://drupal.org/node/185596
+   */
+  $schema['node_revisions'] = array();
+  nd_switch_bm_schema_alter($schema);
+  foreach ($schema['node_revisions']['fields'] as $name => $spec) {
+    db_add_field($ret, 'node_revisions', $name, $spec);
+  }
+
+  // Ensure that we get called as early as possible among the hooking modules (nodeapi).
+  db_query("UPDATE {system} SET weight = -99 WHERE name = 'nd_switch_bm'");
+}
+
+/**
+ * Implementation of hook_uninstall().
+ */
+function nd_switch_bm_uninstall() {
+  $ret = array();
+
+  // Drop field in node revision table.
+  db_drop_field($ret, 'node_revisions', 'nd_switch_bm');
+
+  // Remove maps
+  db_query("DELETE FROM {variable} WHERE name LIKE 'nd_switch_bm\_%%'");
+  cache_clear_all('variables', 'cache');
+}
+
+/**
+ * Implementation of hook_schema_alter().
+ */
+function nd_switch_bm_schema_alter(&$schema) {
+
+  // Add a field nd_switch_bm to the node_revisions table in order to store the override.
+  if (isset($schema['node_revisions'])) {
+    $schema['node_revisions']['fields']['nd_switch_bm'] = array(
+      'type' => 'varchar',
+      'length' => 255,
+      'not null' => TRUE,
+      'default' => '',
+    );
+  }
+}

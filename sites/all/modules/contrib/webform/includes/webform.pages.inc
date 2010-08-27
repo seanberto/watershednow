@@ -1,5 +1,5 @@
 <?php
-// $Id: webform.pages.inc,v 1.10.2.1 2010/03/27 18:21:06 quicksketch Exp $
+// $Id: webform.pages.inc,v 1.10.2.2 2010/08/19 03:00:45 quicksketch Exp $
 
 /**
  * @file
@@ -12,6 +12,8 @@
  */
 function webform_configure_form(&$form_state, $node) {
   $form = array();
+
+  drupal_add_css(drupal_get_path('module', 'webform') . '/css/webform-admin.css');
 
   $form['nid'] = array(
     '#type' => 'value',
@@ -224,14 +226,11 @@ function webform_configure_form_submit($form, &$form_state) {
 function theme_webform_advanced_submit_limit_form($form) {
   $form['submit_limit']['#attributes']['class'] = 'webform-set-active';
   $form['submit_interval']['#attributes']['class'] = 'webform-set-active';
+  // Remove div wrappers around limit options.
   $replacements = array(
-    '!count' => drupal_render($form['submit_limit']),
-    '!timespan' => drupal_render($form['submit_interval']),
+    '!count' => preg_replace('/(<div[^>]*>)(.*?)(<\/div>)/s', '$2', drupal_render($form['submit_limit'])),
+    '!timespan' =>  preg_replace('/(<div[^>]*>)(.*?)(<\/div>)/s', '$2', drupal_render($form['submit_interval'])),
   );
-  $form['enforce_limit']['no']['#prefix'] = '<div class="container-inline">';
-  $form['enforce_limit']['no']['#suffix'] = '</div>';
-  $form['enforce_limit']['yes']['#prefix'] = '<div class="container-inline">';
-  $form['enforce_limit']['yes']['#suffix'] = '</div>';
   $form['enforce_limit']['yes']['#title'] = t('Limit to !count submission(s) !timespan', $replacements);
   return drupal_render($form);
 }

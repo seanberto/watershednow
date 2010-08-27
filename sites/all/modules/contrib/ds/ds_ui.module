@@ -1,0 +1,61 @@
+<?php
+// $Id: ds_ui.module,v 1.1.2.3 2010/06/08 00:22:20 swentel Exp $
+
+/**
+ * @file
+ * Administrative interface to display suite.
+ */
+
+/**
+ * Implementation of hook_perm().
+ */
+function ds_ui_perm() {
+  require_once('includes/ds.registry.inc');
+  return _ds_ui_perm();
+}
+
+/**
+ * Implementation of hook_menu().
+ */
+function ds_ui_menu() {
+  require_once('includes/ds.registry.inc');
+  return _ds_ui_menu();
+}
+
+/**
+ * Implementation of hook_theme().
+ */
+function ds_ui_theme() {
+  require_once('includes/ds.registry.inc');
+  return _ds_theme_ui();
+}
+
+/**
+ * Helper function to check access.
+ *
+ * @param string $perm_1 a permission.
+ * @param string $perm_2 a permission.
+ */
+function _ds_ui_menu_access($perm_1, $perm_2) {
+  if (user_access($perm_1) && user_access($perm_2)) {
+    return TRUE;
+  }
+  return FALSE;
+}
+
+/**
+ * Implementation of hook_theme_registry_alter().
+ */
+function ds_ui_theme_registry_alter(&$theme_registry) {
+  array_unshift($theme_registry['page']['theme paths'], drupal_get_path('module', 'ds_ui') .'/theme');
+}
+
+/**
+ * Implementation of hook_preprocess_page().
+ */
+function ds_ui_preprocess_page(&$vars) {
+  // Only fire on page examples page.
+  if (arg(4) == 'fields-examples') {
+    $vars['template_files'][] = 'ds-page-fieldexamples';
+  }
+}

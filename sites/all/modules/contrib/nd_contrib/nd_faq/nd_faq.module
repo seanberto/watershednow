@@ -1,0 +1,39 @@
+<?php
+// $Id: nd_faq.module,v 1.1.2.3 2010/07/27 13:43:06 swentel Exp $
+
+/**
+ * @file
+ * Faq support for Node displays module.
+ */
+
+/**
+ * Implementation of hook_ds_fields().
+ */
+function nd_faq_ds_fields($type_name, $build_mode, $extra) {
+  $fields = array();
+
+  $fields = array(
+    'faq_widget' => array(
+      'title' => t('FAQ : Question details'),
+      'type' => DS_FIELD_TYPE_FUNCTION,
+      'status' => DS_FIELD_STATUS_STATIC,
+      'properties' => array(
+        'formatters' => array(
+          'nd_faq_question_details_default' => t('Default'),
+        ),
+      )
+    ),
+  );
+
+  return array('nd' => $fields);
+}
+
+/**
+ * Returns the detailed question as a seperated field.
+ *
+ * @param array $field
+ * @return string
+ */
+function nd_faq_question_details_default($field) {
+  return $field['object']->detailed_question;
+}

@@ -1,0 +1,22 @@
+<?php
+// $Id: ucd.install,v 1.1.2.1 2010/05/27 16:54:51 swentel Exp $
+
+/**
+ * @file
+ * Install file.
+ */
+
+/**
+ * Implementation of hook_install().
+ */
+function ucd_install() {
+  db_query("UPDATE {system} set weight = 10 WHERE name = 'ucd'");
+}
+
+/**
+ * Implementation of hook_update_N().
+ */
+function ucd_update_1() {
+  db_query("UPDATE {system} set weight = 10 WHERE name = 'ucd'");
+  return array();
+}

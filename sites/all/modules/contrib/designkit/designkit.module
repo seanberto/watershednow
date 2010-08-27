@@ -1,0 +1,254 @@
+<?php
+// $Id: designkit.module,v 1.1.2.8 2010/08/12 19:03:51 yhahn Exp $
+
+/**
+ * Implementation of hook_theme().
+ */
+function designkit_theme() {
+  return array(
+    'designkit_image' => array(
+      'arguments' => array('name' => '', 'filepath' => ''),
+    ),
+    'designkit_colorpicker' => array(
+      'arguments' => array('element' => array()),
+    ),
+    'designkit' => array(
+      'template' => 'designkit',
+      'arguments' => array('color' => array(), 'image' => array()),
+    ),
+  );
+}
+
+/**
+ * Turn design choices into theme variables.
+ */
+function designkit_preprocess_page(&$vars) {
+  $info = designkit_get_info();
+  $color = !empty($info['designkit']['color']) ? variable_get('designkit_color', array()) : array();
+  $image = !empty($info['designkit']['image']) ? variable_get('designkit_image', array()) : array();
+
+  // Clear out stale values for image keys. This prevents themes from
+  // getting unexpected values if no images have been set.
+  if (!empty($info['designkit']['image'])) {
+    foreach (array_keys($info['designkit']['image']) as $name) {
+      if (isset($vars[$name])) {
+        unset($vars[$name]);
+      }
+    }
+  }
+
+  // Process images array into an array of filepaths & add processed
+  // version to page template.
+  foreach ($image as $name => $fid) {
+    $file = db_fetch_object(db_query('SELECT * FROM {files} f WHERE f.fid = %d', $fid));
+    if ($file && $file->filepath && file_exists($file->filepath)) {
+      $image[$name] = $file->filepath;
+      $vars[$name] = theme('designkit_image', $name, $file->filepath);
+    }
+    else {
+      unset($image[$name]);
+    }
+  }
+
+  // Generate CSS styles.
+  if ($image || array_filter($color, 'designkit_valid_color')) {
+    // Add in designkit styles.
+    $vars['body_classes'] .= " designkit";
+    // Add styles.
+    $styles = theme('designkit', $color, $image);
+    // Provide in separate variable for themes that reset or blow away styles.
+    $vars['styles'] .= $styles;
+    $vars['designkit'] = $styles;
+  }
+}
+
+/**
+ * Implementation of hook_imagecache_default_presets().
+ */
+function designkit_imagecache_default_presets() {
+  $presets = array();
+
+  // Generate imagecache presets per image entry in theme info.
+  $info = designkit_get_info();
+  if (!empty($info['designkit']['image'])) {
+    foreach ($info['designkit']['image'] as $name => $image_info) {
+      if (isset($image_info['imagecache'])) {
+        list($action, $dimensions) = explode(':', $image_info['imagecache']);
+        list($width, $height) = explode('x', $dimensions);
+        $valid_actions = imagecache_action_definitions();
+        if (isset($valid_actions[$action]) && is_numeric($width) && is_numeric($height)) {
+          $presets["designkit-image-{$name}"] = array (
+            'presetname' => "designkit-image-{$name}",
+            'actions' => array (
+              0 => array (
+                'weight' => '0',
+                'module' => 'imagecache',
+                'action' => $action,
+                'data' => array (
+                  // @TODO: decide what to do with this hardcoded param.
+                  'fit' => 'inside',
+                  'width' => $width,
+                  'height' => $height,
+                ),
+              ),
+            ),
+          );
+        }
+      }
+    }
+  }
+
+  return $presets;
+}
+
+/**
+ * Determine whether a given color string is valid.
+ * Must be in the form of #ffffff (6 digit hex with preceding #) or
+ * #fff (3 digit hex with preceding #).
+ */
+function designkit_valid_color($color) {
+  $matches = array();
+  preg_match('/(#[0-9a-f]{6}|#[0-9a-f]{3})/i', $color, $matches);
+  if ($matches && (strlen($color) === 7 || strlen($color) === 3)) {
+    return TRUE;
+  }
+  return FALSE;
+}
+
+/**
+ * Retrieve designkit info for the site's default theme.
+ */
+function designkit_get_info($reset = FALSE) {
+  static $info;
+  if (!isset($info) || $reset) {
+    global $theme_key, $theme_info;
+    if (isset($theme_info, $theme_key) && $theme_key == variable_get('theme_default', 'garland')) {
+      $info = $theme_info->info;
+    }
+    else {
+      $default = variable_get('theme_default', 'garland');
+      $result = db_query("SELECT name,type,info FROM {system} WHERE type = 'theme' AND name = '%s'", $default);
+      while ($row = db_fetch_object($result)) {
+        $info = unserialize($row->info);
+      }
+    }
+  }
+  return isset($info) ? $info : FALSE;
+}
+
+/**
+ * Apply a shift color to a source color by a certain opacity value.
+ *
+ *  @param $source
+ *    An RGB hex string. The source color to which a shift
+ *    should be applied.
+ *  @param $shift
+ *    An RGB hex string. The shift color which defines the
+ *    color that the source should shift towards.
+ *  @param $opacity
+ *    A float between 0 and 1 that determines what opacity to use
+ *    for the blending shift color.
+ *  @return
+ *    An RGB hex string.
+ */
+function designkit_colorshift($source, $shift, $opacity = .5) {
+  if (designkit_valid_color($source) && designkit_valid_color($shift)) {
+    $source  = _color_unpack($source, TRUE);
+    $shift   = _color_unpack($shift, TRUE);
+    $shifted = array();
+    foreach (array_keys($source) as $key) {
+      // shifted = original color + (difference * opacity).
+      $shifted[$key] = $source[$key] + (($shift[$key] - $source[$key]) * $opacity);
+    }
+    return _color_pack($shifted, TRUE);
+  }
+  return $source;
+}
+
+/**
+ * Retrieve the HSL of a color, or the specified component.
+ *
+ *  @param $source
+ *    An RGB hex string. The source color from which to retrieve HSL values.
+ *  @param $key
+ *    Optional string key (either 'h', 's' or 'l') for the HSL component
+ *    to retrieve.
+ *  @return
+ *    Either an array of HSL values or the single component specified by $key.
+ */
+function designkit_colorhsl($source, $key = NULL) {
+  if (designkit_valid_color($source)) {
+    $source  = _color_unpack($source, TRUE);
+    $hsl = _color_rgb2hsl($source);
+    $keys = array('h' => 0, 's' => 1, 'l' => 2);
+    if (isset($key, $keys[$key])) {
+      return isset($hsl[$keys[$key]]) ? $hsl[$keys[$key]] : NULL;
+    }
+    return $hsl;
+  }
+  return NULL;
+}
+
+/**
+ * Spaces integration.
+ * Implementation of hook_form_alter() for spaces_features_form.
+ */
+function designkit_form_spaces_features_form_alter(&$form, &$form_state) {
+  module_load_include('inc', 'designkit', 'designkit.admin');
+  _designkit_form_alter($form, $form_state);
+}
+
+/**
+ * Theme integration.
+ * Implementation of hook_form_alter() for system_theme_settings.
+ */
+function designkit_form_system_theme_settings_alter(&$form, &$form_state) {
+  module_load_include('inc', 'designkit', 'designkit.admin');
+  _designkit_form_alter($form, $form_state);
+
+  // weight buttons if not weighted already.
+  $form['buttons']['#weight'] = !isset($form['buttons']['#weight']) ? 10 : $form['buttons']['#weight'];
+
+  // yank logo if DesignKit will provide one with the same key.
+  $form['logo']['#access'] = !isset($form['designkit_image']['logo']);
+
+  // system_theme_settings form requires an additional submit handler.
+  $form['#submit'][] = '_designkit_system_theme_settings_submit';
+}
+
+/**
+ * Preprocessor for theme('designkit').
+ */
+function template_preprocess_designkit(&$vars) {
+  // Map each color to a corresponding variable name.
+  foreach ($vars['color'] as $key => $color) {
+    $vars[$key] = $color;
+  }
+  // Map each image to a corresponding variable name.
+  // Provide a _raw version for non-imagecache processed URLs.
+  foreach ($vars['image'] as $key => $filepath) {
+    $vars[$key] = imagecache_create_url("designkit-image-{$key}", $filepath);
+    $vars["{$key}_raw"] = file_create_url($filepath);
+  }
+}
+
+/**
+ * Make image markup overridable.
+ */
+function theme_designkit_image($name, $filepath) {
+  return theme('imagecache', "designkit-image-{$name}", $filepath);
+}
+
+/**
+ * Theme colorpicker element.
+ */
+function theme_designkit_colorpicker($element) {
+  // Add Farbtastic color picker
+  drupal_add_css('misc/farbtastic/farbtastic.css', 'module', 'all', FALSE);
+  drupal_add_js('misc/farbtastic/farbtastic.js');
+  drupal_add_js(drupal_get_path('module', 'designkit') .'/designkit.js');
+
+  $output = theme('textfield', $element);
+  $output .= "<div id='{$element['#id']}-colorpicker' style='display:none;'></div>";
+  return $output;
+}

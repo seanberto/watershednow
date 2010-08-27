@@ -1,0 +1,35 @@
+<?php
+// $Id: nd_fivestar.install,v 1.1.2.1.2.1 2010/03/15 22:37:23 swentel Exp $
+
+/**
+ * @file
+ * Install file
+ */
+
+/**
+ * Implementation of hook_install().
+ */
+function nd_fivestar_install() {
+  $types = node_get_types('names');
+  foreach ($types as $type) {
+    $variable = 'fivestar_' . strtolower($type);
+    $enabled = variable_get($variable, 0);
+    variable_set('nd_' . $variable, $enabled);
+    variable_set($variable, 0);
+  }
+}
+
+/**
+ * Implementation of hook_uninstall().
+ */
+function nd_fivestar_uninstall() {
+  $types = node_get_types('names');
+  foreach ($types as $type) {
+    $variable = 'fivestar_' . strtolower($type);
+    $enabled = variable_get('nd_' . $variable, 0);
+    variable_set($variable, $enabled);
+  }
+
+  db_query("DELETE FROM {variable} WHERE name LIKE 'nd_fivestar_%%'");
+  cache_clear_all('variables', 'cache');
+}

@@ -1,4 +1,4 @@
-// $Id: webform.js,v 1.1.2.2 2010/04/11 06:13:51 quicksketch Exp $
+// $Id: webform.js,v 1.1.2.4 2010/08/26 11:14:42 quicksketch Exp $
 
 /**
  * JavaScript behaviors for the front-end display of webforms.
@@ -19,11 +19,20 @@ Drupal.webform.datepicker = function(context) {
     var $calendar = $webformDatepicker.find('input.webform-calendar');
     var startYear = $calendar[0].className.replace(/.*webform-calendar-start-(\d+).*/, '$1');
     var endYear = $calendar[0].className.replace(/.*webform-calendar-end-(\d+).*/, '$1');
+    var firstDay = $calendar[0].className.replace(/.*webform-calendar-day-(\d).*/, '$1');
+
+    // Ensure that start comes before end for datepicker.
+    if (startYear > endYear) {
+      var greaterYear = startYear;
+      startYear = endYear;
+      endYear = greaterYear;
+    }
 
     // Set up the jQuery datepicker element.
     $calendar.datepicker({
       dateFormat: 'yy-mm-dd',
       yearRange: startYear + ':' + endYear,
+      firstDay: firstDay,
       onSelect: function(dateText, inst) {
         var date = dateText.split('-');
         $webformDatepicker.find('select.year, input.year').val(+date[0]);

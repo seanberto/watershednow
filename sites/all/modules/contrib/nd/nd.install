@@ -1,0 +1,49 @@
+<?php
+// $Id: nd.install,v 1.1.2.4.2.4 2010/07/01 21:01:02 swentel Exp $
+
+/**
+ * @file
+ * Node displays install file.
+ */
+
+/**
+ * Implementation of hook_install().
+ */
+function nd_install() {
+  $install_text = 'Installation of Node displays is done. Please remember: if in the future you decide
+  to implement your own hook_preprocess functions which run after the modulename_preprocess_hook,
+  you might run into a racing condition problem where data won\'t be updated. Read !url for a solution.';
+
+  drupal_set_message(t($install_text, array('!url' => l('http://drupal.org/node/572614', 'http://drupal.org/node/572614'))));
+
+  // RSS doesn't have all regions.
+  variable_set('ds_build_mode_4', 'not_all');
+}
+
+/**
+ * Implementation of hook_uninstall().
+ */
+function nd_uninstall() {
+  db_query("DELETE FROM {variable} WHERE name LIKE 'nd_%%'");
+  variable_del('ds_build_mode_4');
+}
+
+/**
+ * Implementation of hook_update_N().
+ *
+ * We simply return an array here. We want the people to
+ * run update.php because new theming functions got introduced.
+ */
+function nd_update_1() {
+  return array();
+}
+
+/**
+ * Implementation of hook_update_N().
+ * We set the nd_use_date_api to FALSE because otherwhise people
+ * will lose the post date PHP field if they use it.
+ */
+function nd_update_2() {
+  variable_set('nd_use_date_api', FALSE);
+  return array();
+}

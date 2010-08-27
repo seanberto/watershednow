@@ -1,0 +1,301 @@
+<?php
+// $Id: nd_cck.module,v 1.1.2.11.2.35 2010/07/06 21:30:14 swentel Exp $
+
+/**
+ * @file
+ * CCK support for Node Displays.
+ */
+
+/**
+ * Implementation of hook_ds_info_alter().
+ */
+function nd_cck_ds_info_alter(&$help, $module) {
+  if ($module == 'nd') {
+    $help[] = t('<h3>Node displays CCK</h3><p>In the nd_cck folder you can find nd_cck.tpl.php which is optimized for CCK fields. You can copy this to your themes directory if you want to use your own version. It\'s a replacement for the default CCK content-field.tpl.php file. Copying the file to your theme folder will only work if content-field.tpl.php is in the theme folder. If Node reference is enabled, additional formatters will be available to render the node through the Display suite.<br />Note that if you disable this module, some fields still might be excluded from rendering, so make sure you visit the old display settings screen.</p>');
+  }
+}
+
+/**
+ * Implementation of hook_registry_alter().
+ */
+function nd_cck_theme_registry_alter(&$registry) {
+  $path = drupal_get_path('module', 'nd_cck');
+  array_unshift($registry['content_field']['theme paths'], $path);
+}
+
+/**
+ * Implementation of hook_menu_alter().
+ */
+function nd_cck_menu_alter(&$items) {
+  if (!defined('MAINTENANCE_MODE') && variable_get('content_schema_version', -1) >= 6007) {
+
+    $ds_api_modules = array();
+    foreach (module_implements('ds_api') as $module) {
+      $ds_api_modules[] = $module;
+    }
+
+    $build_modes = content_build_modes('_tabs');
+
+    foreach (node_get_types() as $type) {
+
+      $type_name = $type->type;
+      $content_type = content_types($type_name);
+      $type_url_str = $content_type['url_str'];
+
+      $display_path = 'admin/content/node-type/'. $type_url_str .'/display';
+
+      // If DS is excluded fully, continue, however, lets reset
+      if (variable_get('nd_type_'. $type->type, FALSE)) {
+        foreach ($ds_api_modules as $module) {
+          unset($items[$display_path .'/'. $module]);
+        }
+        continue;
+      }
+
+      // Reroute default local display tab.
+      $display_path = 'admin/content/node-type/'. $type_url_str .'/display';
+      $items[$display_path]['page callback'] = 'nd_cck_display_fields_reroute';
+      $items[$display_path]['page arguments'] = array($type_url_str);
+      unset($items[$display_path]['file']);
+
+      // Disable all other tabs.
+      foreach ($build_modes as $key => $tab) {
+        $display_path = 'admin/content/node-type/'. $type_url_str .'/display/'. $key;
+        unset($items[$display_path]);
+      }
+    }
+  }
+}
+
+/**
+ * Reroute display fields screen to display suite.
+ */
+function nd_cck_display_fields_reroute($type_name) {
+  drupal_set_message("This display for this content type is being managed by display suite.", 'warning', FALSE);
+  drupal_goto('admin/build/ds/layout/'. $type_name);
+}
+
+/**
+ * Implementation of hook_ds_fields().
+ */
+function nd_cck_ds_fields($type_name, $build_mode, $extra) {
+  $fields = array();
+  if (!empty($type_name)) {
+    $type = content_types($type_name);
+    $field_types = _content_field_types();
+    $fields = $type['fields'];
+    foreach ($fields as $field => $value) {
+      $options = array();
+      $field_type = $field_types[$value['type']];
+      if (isset($field_type['formatters'])) {
+        foreach ($field_type['formatters'] as $formatter_name => $formatter_info) {
+          $options[$formatter_name] = $formatter_info['label'];
+        }
+      }
+      $fields[$field]['storage'] = TRUE;
+      $fields[$field]['title'] = $value['widget']['label'];
+      $fields[$field]['status'] = DS_FIELD_STATUS_STATIC;
+      $fields[$field]['properties']['formatters'] = $options;
+    }
+
+    // Fieldgroup support.
+    if (module_exists('fieldgroup')) {
+      $groups = fieldgroup_groups($type_name);
+      if (!empty($groups)) {
+        foreach ($groups as $key => $group) {
+          $fields[$key] = array(
+            'title' => $group['label'],
+            'type' => DS_FIELD_TYPE_GROUP,
+            'status' => DS_FIELD_STATUS_STATIC,
+            'properties' => array(
+              'formatters' => array(
+                'ds_field' => 'A simple div',
+                'ds_group_fieldset_open' => 'Fieldset open',
+                'ds_group_fieldset_collapsible' => 'Fieldset collapsible',
+                'ds_group_fieldset_collapsed' => 'Fieldset collapsed',
+              ),
+            ),
+          );
+
+          // Tabs support.
+          if (module_exists('tabs')) {
+            $fields[$key]['properties']['formatters']['ds_tabs'] = 'Tabs';
+          }
+        }
+      }
+    }
+  }
+
+  return array('nd' => $fields);
+}
+
+/**
+ * Implementation of hook_form_alter().
+ */
+function nd_cck_form_alter(&$form, $form_state, $form_id) {
+  if ($form_id == 'ds_display_overview_form') {
+    $form['#submit'][] = 'nd_cck_display_overview_form_submit';
+  }
+}
+
+/**
+ * Submit handler for the display overview form.
+ */
+function nd_cck_display_overview_form_submit($form, &$form_state) {
+
+  $build_mode = $form['#build_mode'];
+  $module = $form['#module'];
+  $type = $form['#type_name'];
+  $sync_copy = _ds_get_sync_copy($form, $form_state);
+
+  // Fields.
+  module_load_include('inc', 'content', 'includes/content.crud');
+  $form_values = $form_state['values'];
+  foreach ($form_values as $key => $values) {
+    if (in_array($key, $form['#fields'])) {
+
+      $field = content_fields($key, $form['#type_name']);
+      $weight = $form_values[$key]['ds_weight'];
+      $format = isset($form_values[$key][$build_mode]['format']) ? $form_values[$key][$build_mode]['format'] : 'default';
+      $exclude = (isset($form_values[$key][$build_mode]['region']) && $form_values[$key][$build_mode]['region'] == 'disabled') ? 1 : 0;
+      $class = (isset($form_values[$key][$build_mode]['css-class'])) ? implode(' ', $form_state['values'][$key][$build_mode]['css-class']) : '';
+
+      // We have some numeric keys here, so we can't use array_merge
+      $field['display_settings'] = $values + $field['display_settings'];
+      $field['display_settings'][$build_mode]['css-class'] = $class;
+      $field['display_settings'][$build_mode]['exclude'] = $exclude;
+      $field['display_settings'][$build_mode]['weight'] = $weight;
+
+      // Sync / copy ?
+      if (!empty($sync_copy)) {
+        foreach ($sync_copy['copy'] as $build_mode) {
+          $field['display_settings'][$build_mode]['format'] = $format;
+          $field['display_settings'][$build_mode]['exclude'] = $exclude;
+          $field['display_settings'][$build_mode]['weight'] = $weight;
+          $field['display_settings'][$build_mode]['css-class'] = $class;
+        }
+      }
+
+      content_field_instance_update($field);
+    }
+  }
+}
+
+/**
+ * Theme preprocess function for field.tpl.php.
+ * Apply the label settings for the active context.
+ */
+function nd_cck_preprocess_content_field(&$variables) {
+
+  $variables['template_files'][] = 'nd_cck';
+
+  $element = $variables['element'];
+
+  $field = content_fields($element['#field_name'], $element['#node']->type);
+
+  // Delegate the label format to cck.
+  $format = isset($field['display_settings'][$element['#context']]['label']['format']) ? $field['display_settings'][$element['#context']]['label']['format'] : $field['display_settings']['label']['format'];
+  $variables['label_display'] = $format;
+
+  // Extra css class.
+  $class = isset($field['display_settings'][$element['#context']]['css-class']) ? $field['display_settings'][$element['#context']]['css-class'] : '';
+  if (!empty($class)) {
+    if (is_array($class)) {
+      $class = implode(' ', $class);
+    }
+    $variables['field_name_css'] .= ' '. $class;
+  }
+
+  // Override the label if a custom label is set.
+  $label = isset($field['display_settings'][$element['#context']]['label_value']) ? $field['display_settings'][$element['#context']]['label_value'] : (isset($field['display_settings']['label_value']) ? $field['display_settings']['label_value'] : NULL);
+  if (!empty($label)) {
+    $variables['label'] = $label;
+  }
+}
+
+/**
+ * Implementation of hook_field_formatter_info().
+ *
+ * Adds extra build modes to formatters of node reference.
+ */
+function nd_cck_field_formatter_info() {
+  $formatters = array();
+
+  if (module_exists('nodereference')) {
+    $build_modes = ds_get_build_modes('nd');
+    foreach ($build_modes as $key => $build_mode) {
+      $formatters['node_'. $key] = array(
+        'label' => t('Build mode: @build_mode', array('@build_mode' => $build_mode['title'])),
+        'field types' => array('nodereference'),
+        'multiple values' => CONTENT_HANDLE_CORE,
+      );
+    }
+  }
+
+  return $formatters;
+}
+
+/**
+ * Implementation of hook_theme().
+ *
+ * Adds theming functions for node reference and node displays.
+ */
+function nd_cck_theme() {
+  $theme_functions = array();
+
+  if (module_exists('nodereference')) {
+    $build_modes = ds_get_build_modes('nd');
+    foreach ($build_modes as $key => $build_mode) {
+      $theme_functions['nd_cck_formatter_node_'. $key] = array(
+        'arguments' => array('element'),
+        'function' => 'theme_nd_cck_node_formatter',
+      );
+    }
+  }
+
+  return $theme_functions;
+}
+
+/**
+ * Node reference theme formatter to support Node Displays.
+ * Based on theme_nodereference_formatter_full_teaser.
+ */
+function theme_nd_cck_node_formatter($element) {
+
+  static $recursion_queue = array();
+
+  $output = '';
+  $build_mode = str_replace('node_', '', $element['#formatter']);
+
+  if (!empty($element['#item']['nid']) && is_numeric($element['#item']['nid'])) {
+    $node = $element['#node'];
+    $field = content_fields($element['#field_name'], $element['#type_name']);
+    // If no 'referencing node' is set, we are starting a new 'reference thread'
+    if (!isset($node->referencing_node)) {
+      $recursion_queue = array();
+    }
+    $recursion_queue[] = $node->nid;
+    if (in_array($element['#item']['nid'], $recursion_queue)) {
+      // Prevent infinite recursion caused by reference cycles:
+      // if the node has already been rendered earlier in this 'thread',
+      // we fall back to 'default' (node title) formatter.
+      return theme('nodereference_formatter_default', $element);
+    }
+    if ($referenced_node = node_load($element['#item']['nid'])) {
+      if ($referenced_node->status <> 0) {
+        $referenced_node->referencing_node = $node;
+        $referenced_node->referencing_field = $field;
+        $referenced_node->build_mode = $build_mode;
+        _nodereference_titles($element['#item']['nid'], $referenced_node->title);
+        $page = FALSE;
+        $teaser = TRUE;
+        if ($build_mode == 'full') {
+          $page = TRUE;
+          $teaser = FALSE;
+        }
+        $output = node_view($referenced_node, $teaser, $page, FALSE);
+      }
+    }
+  }
+  return $output;
+}

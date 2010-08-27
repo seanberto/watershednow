@@ -1,5 +1,5 @@
 <?php
-// $Id: context.install,v 1.1.2.1.2.6.2.8 2010/08/05 16:46:26 yhahn Exp $
+// $Id: context.install,v 1.1.2.1.2.6.2.9 2010/08/23 18:19:17 yhahn Exp $
 
 /**
  * Implementation of hook_install().
@@ -235,7 +235,7 @@ function context_update_6301() {
     db_create_table($ret, 'context', $schema);
 
     // Migrate objects.
-    context_migrate_api_3($contexts);
+    context_migrate_api_3($ret, $contexts);
   }
   return $ret;
 }
@@ -254,8 +254,9 @@ function context_update_6302() {
     }
   }
   // Migrate objects.
-  context_migrate_api_3($contexts);
-  return array();
+  $ret = array();
+  context_migrate_api_3($ret, $contexts);
+  return $ret;
 }
 
 /**
@@ -286,7 +287,7 @@ function context_update_6304() {
 /**
  * Helper function to update context 2 objects to context 3.
  */
-function context_migrate_api_3($contexts) {
+function context_migrate_api_3(&$ret, $contexts) {
   foreach ($contexts as $context) {
     if (!db_result(db_query("SELECT name FROM {context} WHERE name = '%s'", "{$context->namespace}-{$context->attribute}-{$context->value}"))) {
       $new = array(
@@ -320,27 +321,45 @@ function context_migrate_api_3($contexts) {
       $reactions = array(
         'menu' => 'menu',
         'theme_section' => 'theme',
-        'css_injector' => 'css_injector'
+        'css_injector' => 'css_injector',
+        'block' => 'block',
       );
       foreach ($reactions as $old_key => $new_key) {
         if (isset($context->{$old_key})) {
-          $new['reactions'][$new_key] = $context->{$old_key};
-        }
-      }
-      // Special treatment for blocks.
-      if (isset($context->block)) {
-        foreach ($context->block as $block) {
-          $block = (array)$block;
-          $new['reactions']['block']['blocks'][$block['module'] .'-'. $block['delta']] = $block;
+          // Special treatment for blocks.
+          if ($old_key === 'block') {
+            foreach ($context->block as $block) {
+              $block = (array)$block;
+              $new['reactions']['block']['blocks'][$block['module'] .'-'. $block['delta']] = $block;
+            }
+          }
+          else {
+            $new['reactions'][$new_key] = $context->{$old_key};
+          }
         }
       }
       $new['conditions'] = serialize($new['conditions']);
       $new['reactions'] = serialize($new['reactions']);
 
-      // update_sql does not escape strings properly.
+      // Update_sql does not escape strings properly.
       db_query("INSERT INTO {context} (name,description,tag,conditions,reactions) VALUES ('%s', '%s', '%s', '%s', '%s')", $new['name'], $new['description'], $new['tag'], $new['conditions'], $new['reactions']);
 
-      drupal_set_message('Updated context: '. $new['name']);
+      // Notify the user of any keys that were not migrated.
+      $known_keys = array_merge(array_keys($conditions), array_keys($reactions), array('cid', 'system', 'namespace', 'attribute', 'value', 'description'));
+      $unmigrated = array_diff(array_keys((array) $context), $known_keys);
+      if (!empty($unmigrated)) {
+        $unmigrated = implode(', ', $unmigrated);
+        $ret[] = array(
+          'success' => TRUE,
+          'query' => "Updated context: {$new['name']}. The following properties could not be migrated: {$unmigrated}."
+        );
+      }
+      else {
+        $ret[] = array(
+          'success' => TRUE,
+          'query' => "Updated context: {$new['name']}."
+        );
+      }
     }
   }
 }

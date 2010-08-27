@@ -1,0 +1,86 @@
+<?php
+// $Id: nd_context_bm.module,v 1.1.2.1 2010/07/27 19:11:52 swentel Exp $
+
+/**
+ * @file
+ * ND context module.
+ */
+
+/**
+ * Implementation of hook_ctools_plugin_api().
+ */
+function nd_context_bm_ctools_plugin_api($module, $api) {
+  if ($module == 'context' && $api == 'plugins') {
+    return array('version' => 3);
+  }
+}
+
+/**
+ * Implementation of hook_context_plugins().
+ */
+function nd_context_bm_context_plugins() {
+  /**
+   * Conditions.
+   */
+  $plugins['nd_context_bm_condition'] = array(
+    'handler' => array(
+      'path' => drupal_get_path('module', 'nd_context_bm') .'/plugins',
+      'file' => 'nd_context_bm_condition.inc',
+      'class' => 'nd_context_bm_condition',
+      'parent' => 'context_condition',
+    ),
+  );
+
+  /**
+   * Reactions
+   */
+  $plugins['nd_context_bm_reaction'] = array(
+    'handler' => array(
+      'path' => drupal_get_path('module', 'nd_context_bm') .'/plugins',
+      'file' => 'nd_context_bm_reaction.inc',
+      'class' => 'nd_context_bm_reaction',
+      'parent' => 'context_reaction'
+    ),
+  );
+  return $plugins;
+}
+
+/**
+ * Implementation of hook_context_registry().
+ */
+function nd_context_bm_context_registry() {
+  return array(
+    'conditions' => array(
+      'nd_context_bm' => array(
+        'title' => t('ND build-modes'),
+        'plugin' => 'nd_context_bm_condition',
+      ),
+    ),
+    'reactions' => array(
+      'nd_context_bm' => array(
+        'title' => t('ND build-modes'),
+        'plugin' => 'nd_context_bm_reaction',
+      ),
+    )
+  );
+}
+
+/**
+ * Implementation of hook_nodeapi().
+ */
+function nd_context_bm_nodeapi(&$node, $op, $teaser, $page) {
+  if ($op == 'view' && $page) {
+    $object = menu_get_object();
+    if (isset($object->nid) && $object->nid === $node->nid) {
+      // A build mode as condition.
+      if ($plugin = context_get_plugin('condition', 'nd_context_bm')) {
+        $plugin->execute($node, $op);
+      }
+      // Trigger a build mode.
+      if ($plugin = context_get_plugin('reaction', 'nd_context_bm')) {
+        $plugin->execute($node);
+      }
+    }
+  }
+}
+

@@ -1,5 +1,5 @@
 <?php
-// $Id: webform.module,v 1.196.2.47 2010/08/16 17:54:19 quicksketch Exp $
+// $Id: webform.module,v 1.196.2.50 2010/08/26 11:56:37 quicksketch Exp $
 
 /**
  * This module provides a simple way to create forms and questionnaires.
@@ -1322,7 +1322,7 @@ function theme_webform_view_messages($node, $teaser, $page, $submission_count, $
 function webform_mail($key, &$message, $params) {
   $message['headers'] = array_merge($message['headers'], $params['headers']);
   $message['subject'] = $params['subject'];
-  $message['body'][] = drupal_wrap_mail($params['message']);
+  $message['body'][] = $params['message'];
 }
 
 /**
@@ -2305,7 +2305,7 @@ function _webform_filter_values($string, $node = NULL, $submission = NULL, $emai
 
   // Don't do any filtering if the string is empty.
   if (strlen(trim($string)) == 0) {
-    return;
+    return $string;
   }
 
   // Setup default token replacements.
@@ -2623,7 +2623,7 @@ function webform_format_email_address($address, $name, $node = NULL, $submission
     $address = _webform_filter_values($address, $node, $submission, NULL, FALSE, TRUE);
   }
 
-  if ($format == 'long' && isset($name)) {
+  if ($format == 'long' && !empty($name)) {
     $name = _webform_filter_values($name, $node, $submission, NULL, FALSE, TRUE);
     if ($encode) {
       $name = mime_header_encode($name);

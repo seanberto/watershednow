@@ -1,0 +1,23 @@
+<?php
+// $Id: ndtest.module,v 1.1.2.1 2010/01/26 17:27:44 swentel Exp $
+
+/**
+ * @file
+ * Node displays test module. Merely for test purposes.
+ */
+
+/**
+ * Implementation of hook_ds_default_settings().
+ */
+function ndtest_ds_default_settings() {
+  include_once('ndtest.ds_default.inc');
+  return _ndtest_ds_default_settings();
+}
+
+/**
+ * Implementation of hook_ds_fields().
+ */
+function ndtest_ds_fields() {
+  include_once('ndtest.ds_default.inc');
+  return _ndtest_ds_fields();
+}

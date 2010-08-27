@@ -1,0 +1,129 @@
+<?php
+// $Id: ucd.module,v 1.1.2.8 2010/06/28 16:03:31 swentel Exp $
+
+/**
+ * @file
+ * Ubercart displays.
+ */
+
+/**
+ * Implementation of hook_content_build_modes().
+ */
+function ucd_content_build_modes() {
+
+  $exclude_matrix = variable_get('nd_buildmodes_exclude', array());
+
+  foreach ($exclude_matrix as $key => $value) {
+    if ($key != 'product') {
+      $exclude_matrix[$key]['catalog'] = 1;
+    }
+  }
+
+  variable_set('nd_buildmodes_exclude', $exclude_matrix);
+
+  $build_modes = array(
+    'ucd' => array(
+      'title' => t('Ubercart displays'),
+      'build modes' => array(
+        'catalog' => array(
+          'title' => t('Products in catalog grid view'),
+          'weight' => 10,
+        ),
+      )
+    )
+  );
+
+  return $build_modes;
+}
+
+/**
+ * Implementation of hook_nodeapi().
+ */
+function ucd_nodeapi(&$node, $op, $teaser = NULL, $page = NULL) {
+  if (uc_product_is_product(array('type' => $node->type))) {
+    switch ($op) {
+      case 'view':
+        $product_fields = ucd_ubercart_fields();
+        foreach ($product_fields as $key => $value) {
+          $obj_key = 'ucd_'. $value;
+          $node->$obj_key = isset($node->content[$value]['#value']) ? $node->content[$value]['#value'] : '';
+        }
+      break;
+    }
+  }
+}
+
+/**
+ * Implementation of hook_ds_fields().
+ */
+function ucd_ds_fields($type_name, $build_mode, $extra) {
+  $fields = array();
+  if (uc_product_is_product(array('type' => $type_name))) {
+
+    $product_fields = ucd_ubercart_fields();
+
+    foreach ($product_fields as $key => $value) {
+
+      if ($build_mode == 'teaser' && ($value == 'weight' || $value == 'dimensions')) {
+        continue;
+      }
+
+      $fields['ucd_' . $value] = array(
+        'title' => 'Ubercart '. str_replace('_', ' ', $value),
+        'type' => DS_FIELD_TYPE_PREPROCESS,
+        'status' => DS_FIELD_STATUS_STATIC,
+      );
+    }
+  }
+  return array('nd' => $fields);
+}
+
+/**
+ * Return all ubercart fields.
+ */
+function ucd_ubercart_fields() {
+  $product_fields = array(
+    "display_price",
+    "model",
+    "list_price",
+    "cost",
+    "sell_price",
+    "weight",
+    "dimensions",
+    "add_to_cart"
+  );
+
+  // Support for uc options image.
+  if (module_exists('uc_option_image')) {
+    $product_fields[] = 'option_image';
+  }
+
+  return $product_fields;
+}
+
+/*
+ * Alter theme_uc_catalog_product_grid()
+ */
+function phptemplate_uc_catalog_product_grid($products) {
+  $product_table = '<div class="category-grid-products"><table>';
+  $count = 0;
+  foreach ($products as $nid) {
+    $product = node_load($nid);
+    $product->build_mode = 'catalog';
+
+    if ($count == 0) {
+      $product_table .= "<tr>";
+    }
+    elseif ($count % variable_get('uc_catalog_grid_display_width', 3) == 0) {
+      $product_table .= "</tr><tr>";
+    }
+
+    $product_table .= '<td>';
+    $product_table .= node_view($product);;
+    $product_table .= '</td>';
+    $count++;
+
+  }
+  $product_table .= "</tr></table></div>";
+  return $product_table;
+}

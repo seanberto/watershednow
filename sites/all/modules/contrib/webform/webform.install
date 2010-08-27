@@ -1,5 +1,5 @@
 <?php
-// $Id: webform.install,v 1.40.2.13 2010/07/27 06:08:00 quicksketch Exp $
+// $Id: webform.install,v 1.40.2.15 2010/08/26 09:33:52 quicksketch Exp $
 
 /**
  * @file
@@ -29,6 +29,7 @@ function webform_schema() {
       'confirmation_format' => array(
         'description' => 'The input format used by the confirmation message.',
         'type' => 'int',
+        'size' => 'tiny',
         'not null' => TRUE,
         'default' => 0,
       ),
@@ -199,6 +200,7 @@ function webform_schema() {
         'description' => 'A list of components that will not be included in the %email_values token. A list of CIDs separated by commas.',
         'type' => 'text',
         'not null' => TRUE,
+        'default' => '',
       ),
     ),
     'primary key' => array('nid', 'eid'),
@@ -805,7 +807,7 @@ function webform_update_6308() {
   $ret = array();
 
   // Add the new column to the e-mail table.
-  db_add_field($ret, 'webform_emails', 'excluded_components', array('type' => 'text', 'not null' => TRUE));
+  db_add_field($ret, 'webform_emails', 'excluded_components', array('type' => 'text', 'not null' => TRUE, 'default' => ''));
 
   // Build up our EXCLUSION lists, finding all components not in e-mails.
   $result = db_query("SELECT nid, cid FROM {webform_component} WHERE email = 0 ORDER BY nid");
@@ -1167,6 +1169,15 @@ function webform_update_6316() {
 function webform_update_6317() {
   $ret = array();
   $ret[] = update_sql("DELETE FROM {webform_emails} WHERE nid NOT IN (SELECT nid FROM {node})");
+  return $ret;
+}
+
+/**
+ * Ensure that the confirmation format column is correctly using size = 'tiny'.
+ */
+function webform_update_6318() {
+  $ret = array();
+  db_change_field($ret, 'webform', 'confirmation_format', 'confirmation_format', array('type' => 'int', 'size' => 'tiny', 'not null' => TRUE, 'default' => 0));
   return $ret;
 }
 

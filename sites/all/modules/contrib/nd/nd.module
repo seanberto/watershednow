@@ -1,0 +1,645 @@
+<?php
+// $Id: nd.module,v 1.1.2.123.2.56 2010/07/12 15:06:26 swentel Exp $
+
+/**
+ * @file
+ * Node displays.
+ */
+
+/**
+ * Implementation of hook_ds_api().
+ */
+function nd_ds_api() {
+
+  $help = array(
+    t('<h3>Node displays</h3>
+      <p>This module comes with a nd.tpl.php, available in the templates folder, which is optimized for use with Node Displays. You can copy the file to your themes folder to use your own version if you want. Copying the file to your theme folder will only work if node.tpl.php is in the theme folder.</p>
+      <p>You can create a file called <strong>nd-<em>node_type</em>.tpl.php</strong>, <strong>nd-<em>node_type</em>-<em>build_mode</em>.tpl.php</strong> or <strong>nd-<em>node_type</em>-<em>build_mode</em>-<em>nid</em>.tpl.php</strong> for even more fine-grained theming.</p>
+      <p>If you exclude the RSS build mode, the default node feed is generated, but might render strange content. Make sure you do not choose the "Titles only" as your feed content setting, otherwhise, this screen will not have any effect. Choosing either "Full text" or "Titles + teaser" does not matter, this screen will have effect on both settings, apart from the read more link and the format of the body (full/teaser). Remember that some fields like upload and terms are added automatically to the feed and that this build mode manipulates the $description variable, it does not add extra keys to the feed.</p>
+      <p>If you have a problem with the content not being rendered through DS, please read <a href="http://drupal.org/node/572614">http://drupal.org/node/572614</a>.
+      ')
+  );
+
+  return array(
+    'title' => 'Node displays',
+    'module' => 'nd',
+    'object' => 'node',
+    'views_base' => array('node', 'apachesolr'),
+    'types' => 'node_get_types',
+    'extra' => array('has_body'),
+    'plugins_exclude' => array(NODE_BUILD_RSS),
+    'regions_single' => array(NODE_BUILD_RSS),
+    'help' => $help,
+  );
+}
+
+/**
+ * Implementation of hook_init().
+ */
+function nd_init() {
+  drupal_add_css(drupal_get_path('module', 'nd') .'/css/nd_regions.css');
+}
+
+/**
+ * Implementation of hook_content_build_modes().
+ */
+function nd_content_build_modes() {
+  $build_modes = array(
+    'nd' => array(
+      'title' => t('Node displays'),
+      'build modes' => array(
+        'full' => array(
+          'title' => t('Full node'),
+          'weight' => -1,
+        ),
+        'teaser' => array(
+          'title' => t('Teaser'),
+          'weight' => 1,
+        ),
+        'sticky' => array(
+          'title' => t('Sticky'),
+          'weight' => 2,
+        ),
+        NODE_BUILD_RSS => array(
+          'title' => t('RSS'),
+          'weight' => 3,
+        )
+      )
+    )
+  );
+
+  // Also add this here, so other modules (like views_attach)
+  // can profit from custom build modes from the UI.
+  $db_build_modes = variable_get('nd_build_modes', array());
+  foreach ($db_build_modes as $key => $build_mode) {
+    $build_modes[$key] = array(
+      'title' => $build_mode,
+      'build modes' => array(
+        $key => array(
+          'title' => $build_mode,
+        ),
+      ),
+    );
+  }
+
+  return $build_modes;
+}
+
+/**
+ * Implementation of hook_registry_alter().
+ */
+function nd_theme_registry_alter(&$registry) {
+  $path = drupal_get_path('module', 'nd') .'/templates';
+  array_unshift($registry['node']['theme paths'], $path);
+}
+
+/**
+ * Implementation of hook_form_alter().
+ */
+function nd_form_alter(&$form, $form_state, $form_id) {
+  // Add build modes on the node content form of ctools/panels.
+  // We haven't created a separate module for this since there's only a
+  // simple form alter and a check in nd_nodeapi on the panel_identifier key.
+  if ($form_id == 'ctools_node_content_type_edit_form') {
+    $form['identifier']['#title'] = t('Build mode');
+    $form['identifier']['#type'] = 'select';
+    $form['identifier']['#description'] = t('Node displays has taken over the identifier textfield and is now a select box with the available build modes. The template suggestion will now be node-panel-BUILDMODE.tpl.php.');
+    $build_modes = array();
+    $all_build_modes = ds_get_build_modes('nd');
+    foreach ($all_build_modes as $key => $build_mode) {
+      $build_modes[$key] = $build_mode['title'];
+    }
+    $form['identifier']['#options'] = $build_modes;
+  }
+}
+
+/**
+ * Implementation of hook_nodeapi().
+ */
+function nd_nodeapi(&$node, $op, $teaser = NULL, $page = NULL) {
+
+  switch ($op) {
+    // Add has body property.
+    case 'load':
+      $node->has_body = node_get_types('type', $node->type)->has_body;
+      break;
+
+    // Determine build mode.
+    case 'view':
+      if ($node->build_mode == NODE_BUILD_RSS) {
+        // For the RSS build mode, we need to manipulate right now.
+        _nd_nodeapi($node);
+      }
+      elseif ($node->build_mode == NODE_BUILD_PREVIEW) {
+        $node->build_mode = $teaser == TRUE ? 'teaser' : 'full';
+        $node->has_body = node_get_types('type', $node->type)->has_body;
+      }
+      elseif ($node->build_mode === NODE_BUILD_NORMAL) {
+        $build_mode = ($page) ? 'full' : 'teaser';
+        $node->build_mode = $build_mode;
+      }
+
+      // Sticky.
+      if ($node->build_mode == 'teaser' && $node->sticky == 1) {
+        $node->build_mode = 'sticky';
+      }
+
+      // Panels support.
+      if (isset($node->panel_identifier)) {
+        $node->build_mode = $node->panel_identifier;
+      }
+
+      break;
+
+    // Alter the node object for viewing.
+    case 'alter':
+      // We ignore the RSS build mode, which is handled in the view operation.
+      if ($node->build_mode == NODE_BUILD_RSS) {
+        return;
+      }
+      _nd_nodeapi($node);
+      break;
+  }
+}
+
+/**
+ * Helper function to alter node properties
+ *
+ * @param stdClass $node The complete node object.
+ */
+function _nd_nodeapi(&$node) {
+
+  // Build fields and regions.
+  ds_build_fields_and_regions($node, 'nd');
+
+  // Special support for RSS.
+  if ($node->build_mode == NODE_BUILD_RSS && $node->render_by_ds == TRUE) {
+    foreach (element_children($node->content) as $key => $field) {
+      if (!isset($node->ds_fields[$field])) {
+        $node->content[$field]['#access'] = FALSE;
+      }
+      $node->content[$field]['#weight'] = $node->ds_fields[$field]['weight'];
+      unset($node->ds_fields[$field]);
+    }
+
+    foreach ($node->ds_fields as $key => $field) {
+      $render_key = $key .'_rendered';
+      $node->content[$key]['#value'] = theme('ds_field', $node->{$render_key}, $node->ds_fields[$key]);
+      $node->content['#content_extra_fields'][$key]['weight'] = $node->ds_fields[$key]['weight'];
+    };
+
+    // Body and title are tricky ones since their weights are set
+    // in #content_extra_fields, so update the value there!
+    $node->content['#content_extra_fields']['body_field']['weight'] = $node->content['body']['#weight'];
+    $node->content['#content_extra_fields']['title']['weight'] = $node->content['title']['#weight'];
+  }
+}
+
+/**
+ * Implementation of moduleName_preprocess_hook().
+ * The node data will be rendered in regions. This uses a helper function
+ * so themers/developers can call that helper function from within
+ * their preprocess_hooks if they are fiddling with some data. For information
+ * about this decision see http://drupal.org/node/570592 (issue) and
+ * http://drupal.org/node/572614 for information on howto implement.
+ */
+function nd_preprocess_node(&$vars, $hook) {
+  if (!variable_get('nd_preprocess_override', FALSE)) {
+    _nd_preprocess_node($vars, $hook);
+  }
+}
+
+/**
+ * Helper function used in either nd_preprocess_node or other preprocess function.
+ */
+function _nd_preprocess_node(&$vars, $hook) {
+
+  $node = $vars['node'];
+
+  // Break all the rendering if needed.
+  if (!$node->render_by_ds) {
+    return;
+  }
+
+  // Add nd-content_type-build_mode(-nid) template suggestion.
+  $vars['template_files'][] = 'nd';
+  $vars['template_files'][] = 'nd-'. $node->type;
+  $vars['template_files'][] = 'nd-'. $node->type .'-'. $node->build_mode;
+  $vars['template_files'][] = 'nd-'. $node->type .'-'. $node->build_mode .'-'. $node->nid;
+
+  $content = ds_render_content($node, 'nd', $vars);
+  $vars['content'] = $content;
+}
+
+/**
+ * Render the node object through the DS views plugin.
+ *
+ * @param array $vars The variables to manipulate.
+ * @param string $build_mode The build mode to use on this object.
+ */
+function ds_views_row_node(&$vars, $build_mode) {
+  nd_views_node_helper($vars, $build_mode);
+}
+
+/**
+ * Render the apachesolr object through the DS views plugin.
+ *
+ * @param array $vars The variables to manipulate.
+ * @param string $build_mode The build mode to use on this object.
+ */
+function ds_views_row_apachesolr(&$vars, $build_mode) {
+  nd_views_node_helper($vars, $build_mode);
+}
+
+/**
+ * Helper function for views node plugin.
+ */
+function nd_views_node_helper(&$vars, $build_mode) {
+
+  $nid = $vars['row']->nid;
+  if (!is_numeric($nid)) {
+    return;
+  }
+
+  $node = node_load($nid);
+  if (empty($node)) {
+    return;
+  }
+
+  $node->build_mode = $build_mode;
+
+  // Check the teaser flag and show_links flag.
+  $teaser = ($node->build_mode != 'full') ? TRUE : FALSE;
+  $show_links = ds_show_field('nd', $node->type, $build_mode, 'links');
+
+  // Build object.
+  $vars['object'] = node_view($node, $teaser, FALSE, $show_links);
+}
+
+/**
+ * Implementation of hook_theme().
+ */
+function nd_theme() {
+  $theme_functions = array();
+
+  // Single theming functions.
+  $formatters = array(
+    'nd_bodyfield', 'nd_title_h1_nolink', 'nd_title_h1_link', 'nd_title_h2_nolink', 'nd_title_h2_link',
+    'nd_title_h2_block_nolink', 'nd_title_h2_block_link', 'nd_title_p_nolink', 'nd_title_p_link',
+    'nd_book_add_new_child', 'nd_book_printer_version',
+  );
+
+  foreach ($formatters as $formatter) {
+    $theme_functions[$formatter] = array(
+      'arguments' => array('node' => NULL),
+    );
+  }
+
+  // Post date with Date API.
+  if (variable_get('nd_use_date_api', TRUE)) {
+    if (module_exists('date_api')) {
+      $date_formats = date_get_format_types('', TRUE);
+    }
+    else {
+      $date_formats = array(
+        'small' => array('title' => 'Small', 'type' => 'small'),
+        'medium' => array('title' => 'Medium', 'type' => 'medium'),
+        'large' => array('title' => 'Large', 'type' => 'large'),
+      );
+    }
+
+    foreach ($date_formats as $formatter) {
+      $theme_functions['nd_post_date_'. $formatter['type']] = array(
+        'arguments' => array('node' => NULL),
+        'function' => 'theme_nd_post_date',
+      );
+    }
+  }
+
+  // Vocabulary.
+  $vocab_formatters  = array(
+    'nd_terms_per_vocabulary_space', 'nd_terms_per_vocabulary_linked_space',
+    'nd_terms_per_vocabulary_comma', 'nd_terms_per_vocabulary_linked_comma',
+  );
+  foreach ($vocab_formatters as $formatter) {
+    $theme_functions[$formatter] = array(
+      'arguments' => array('node' => NULL),
+      'function' => 'nd_terms_per_vocabulary',
+    );
+  }
+
+  return $theme_functions;
+}
+
+/**
+ * Implementation of hook_ds_fields().
+ */
+function nd_ds_fields($type_name, $build_mode, $extra) {
+
+  $fields = array(
+    'title' => array(
+      'title' => t('Title'),
+      'type' => DS_FIELD_TYPE_THEME,
+      'status' => DS_FIELD_STATUS_STATIC,
+      'properties' => array(
+        'formatters' => array(
+          'nd_title_h1_nolink' => t('H1 title'),
+          'nd_title_h1_link' => t('H1 title, linked to node'),
+          'nd_title_h2_nolink' => t('H2 title'),
+          'nd_title_h2_link' => t('H2 title, linked to node'),
+          'nd_title_h2_block_nolink' => t('H2 block title'),
+          'nd_title_h2_block_link' => t('H2 block title, linked to node'),
+          'nd_title_p_nolink' => t('Paragraph title'),
+          'nd_title_p_link' => t('Paragraph title, linked to node'),
+        ),
+      )
+    ),
+    'author' => array(
+      'title' => t('Author'),
+      'type' => DS_FIELD_TYPE_THEME,
+      'status' => DS_FIELD_STATUS_STATIC,
+      'properties' => array(
+        'formatters' => array(
+          'ds_author_nolink' => t('Author'),
+          'ds_author_link' => t('Author linked to profile')
+        ),
+      ),
+    ),
+    'links' => array(
+      'title' => t('Links'),
+      'type' => DS_FIELD_TYPE_PREPROCESS,
+      'status' => DS_FIELD_STATUS_STATIC,
+    ),
+    'read_more' => array(
+      'title' => t('Read more'),
+      'type' => DS_FIELD_TYPE_CODE,
+      'status' => DS_FIELD_STATUS_DEFAULT,
+      'properties' => array(
+        'formatters' => array(
+          'ds_eval_code' => t('Default'),
+        ),
+        'code' => '<?php echo l(t("Read more"), "node/$object->nid"); ?>'
+      ),
+    ),
+  );
+
+  // Regression. People upgrading from 6.x-2.2 to 6.x-2.3 will lose
+  // the post date PHP code field, we can't do that by default. The
+  // update_2 will make the nd_use_date_api variable false, and
+  // developers can set this variable to 1 in the variable table.
+  if (variable_get('nd_use_date_api', TRUE)) {
+    // Post date formatters
+    if (module_exists('date_api')) {
+      $date_formats = date_get_format_types('', FALSE);
+    }
+    else {
+      $date_formats = array(
+        'small' => array('title' => 'Small', 'type' => 'small'),
+        'medium' => array('title' => 'Medium', 'type' => 'medium'),
+        'large' => array('title' => 'Large', 'type' => 'large'),
+      );
+    }
+
+    $date_formatters = array();
+    foreach ($date_formats as $formatter) {
+      $date_formatters['nd_post_date_'. $formatter['type']] = t($formatter['title']);
+    }
+
+    $fields['post_date'] = array(
+      'title' => t('Post date'),
+      'type' => DS_FIELD_TYPE_THEME,
+      'status' => DS_FIELD_STATUS_STATIC,
+      'properties' => array(
+        'formatters' => $date_formatters,
+      ),
+    );
+  }
+  else {
+    $fields['post_date'] = array(
+      'title' => t('Post date'),
+      'type' => DS_FIELD_TYPE_CODE,
+      'status' => DS_FIELD_STATUS_DEFAULT,
+      'properties' => array(
+        'formatters' => array(
+          'ds_eval_code' => t('Default'),
+        ),
+        'code' => '<?php echo format_date($object->created, "custom", "d/m/Y"); ?>'
+      ),
+    );
+  }
+
+  // Check for body.
+  if (isset($extra['has_body']) && $extra['has_body'] == TRUE) {
+    $fields['body'] = array(
+      'title' => t('Body'),
+      'type' => DS_FIELD_TYPE_THEME,
+      'status' => DS_FIELD_STATUS_STATIC,
+      'properties' => array(
+        'formatters' => array(
+          'nd_bodyfield' => t('Default')
+        ),
+      )
+    );
+  }
+
+  // Taxonomy support.
+  if (module_exists('taxonomy')) {
+
+    $all = FALSE;
+
+    // All vocabularies per content type.
+    // We can't use taxonomy_get_vocabularies() here, see http://drupal.org/node/810352.
+    $result = db_query("SELECT v.vid, v.*, n.type FROM {vocabulary} v LEFT JOIN {vocabulary_node_types} n ON v.vid = n.vid WHERE n.type = '%s' ORDER BY v.weight, v.name", $type_name);
+    while ($vocabulary = db_fetch_object($result)) {
+      $all = TRUE;
+      $fields['terms_'. $vocabulary->vid] = array(
+        'title' => t('Taxonomy: @vocab', array('@vocab' => $vocabulary->name)),
+        'type' => DS_FIELD_TYPE_THEME,
+        'status' => DS_FIELD_STATUS_STATIC,
+        'properties' => array(
+          'css-class' => 'field-terms field-terms-'. $vocabulary->vid,
+          'formatters' => array(
+            'nd_terms_per_vocabulary_space' => t('Separated by space'),
+            'nd_terms_per_vocabulary_linked_space' => t('Separated by space, linked to term'),
+            'nd_terms_per_vocabulary_comma' => t('Separated by comma'),
+            'nd_terms_per_vocabulary_linked_comma' => t('Separated by comma, linked to term'),
+          ),
+        ),
+      );
+    }
+
+    if ($all) {
+      // All terms.
+      $fields['terms'] = array(
+        'title' => t('Taxonomy: all terms'),
+        'type' => DS_FIELD_TYPE_PREPROCESS,
+        'status' => DS_FIELD_STATUS_STATIC,
+      );
+    }
+  }
+
+  // Upload support.
+  if (module_exists('upload') && $build_mode != 'teaser' && variable_get("upload_$type_name", 1)) {
+    $fields['files'] = array(
+      'title' => t('Core upload'),
+      'type' => DS_FIELD_TYPE_IGNORE,
+      'status' => DS_FIELD_STATUS_STATIC,
+    );
+  }
+
+  // Book support.
+  if (module_exists('book') && book_type_is_allowed($type_name)) {
+    $fields['book_navigation'] = array(
+      'title' => t('Book navigation'),
+      'type' => DS_FIELD_TYPE_FUNCTION,
+      'status' => DS_FIELD_STATUS_STATIC,
+      'properties' => array(
+        'formatters' => array(
+          'nd_book_navigation' => t('Book navigation'),
+        ),
+      ),
+    );
+
+    $fields['book_add_new_child'] = array(
+      'title' => t('Book: add new child'),
+      'type' => DS_FIELD_TYPE_THEME,
+      'status' => DS_FIELD_STATUS_STATIC,
+      'properties' => array(
+        'formatters' => array(
+          'nd_book_add_new_child' => t('Add new child'),
+        ),
+      ),
+    );
+
+    $fields['book_printer_version'] = array(
+      'title' => t('Book: printer version'),
+      'type' => DS_FIELD_TYPE_THEME,
+      'status' => DS_FIELD_STATUS_STATIC,
+      'properties' => array(
+        'formatters' => array(
+          'nd_book_printer_version' => t('Printer version'),
+        ),
+      ),
+    );
+  }
+
+  return array('nd' => $fields);
+}
+
+/**
+ * ND theming functions.
+ */
+function theme_nd_bodyfield($field) {
+  return $field['object']->content['body']['#value'];
+}
+
+function theme_nd_title_h1_nolink($field) {
+  return '<h1>'. check_plain($field['object']->title) .'</h1>';
+}
+
+function theme_nd_title_h1_link($field) {
+  return '<h1>'. l($field['object']->title, 'node/'. $field['object']->nid) .'</h1>';
+}
+
+function theme_nd_title_h2_nolink($field) {
+  return '<h2>'. check_plain($field['object']->title) .'</h2>';
+}
+
+function theme_nd_title_h2_link($field) {
+  return '<h2>'. l($field['object']->title, 'node/'. $field['object']->nid) .'</h2>';
+}
+
+function theme_nd_title_h2_block_nolink($field) {
+  return '<h2 class="block-title">'. check_plain($field['object']->title) .'</h2>';
+}
+
+function theme_nd_title_h2_block_link($field) {
+  return '<h2 class="block-title">'. l($field['object']->title, 'node/'. $field['object']->nid) .'</h2>';
+}
+
+function theme_nd_title_p_nolink($field) {
+  return '<p>'. check_plain($field['object']->title) .'</p>';
+}
+
+function theme_nd_title_p_link($field) {
+  return '<p>'. l($field['object']->title, 'node/'. $field['object']->nid) .'</p>';
+}
+
+/**
+ *  Post date formatter.
+ */
+function theme_nd_post_date($field) {
+  $date_format = str_replace('nd_post_date_', '', $field['formatter']);
+
+  if (module_exists('date_api')) {
+    $datetime = date_make_date($field['object']->created, NULL, DATE_UNIX);
+    $format = variable_get('date_format_'. $date_format, 'd/m/Y');
+    return date_format_date($datetime, 'custom', $format);
+  }
+  else {
+    return format_date($field['object']->created, $date_format);
+  }
+}
+
+/**
+ * Terms per vocabulary.
+ */
+function nd_terms_per_vocabulary($field) {
+  $content = '';
+  if (isset($field['object']->taxonomy) && !empty($field['object']->taxonomy)) {
+
+    $terms = array();
+    $linked = FALSE;
+    $vid = end(explode('_', $field['key']));
+    $formatter_explode = explode('_', $field['formatter']);
+    $separators = array('space' => ' ', 'comma' => ', ');
+    $separator = $separators[end($formatter_explode)];
+    $linked = prev($formatter_explode);
+
+    foreach ($field['object']->taxonomy as $tid => $term) {
+      if ($term->vid == $vid) {
+        $terms[] = ($linked == 'linked') ? l($term->name, taxonomy_term_path($term)) : check_plain($term->name);
+      }
+    }
+    if (!empty($terms)) {
+      $content = implode($separator, $terms);
+    }
+  }
+  return $content;
+}
+
+/**
+ * Book navigation theming.
+ */
+function nd_book_navigation($field) {
+  $content = '';
+  if (isset($field['object']->content['book_navigation'])) {
+    if (isset($field['object']->content['book_navigation']['#value'])) {
+      $content = $field['object']->content['book_navigation']['#value'];
+    }
+    elseif (isset($field['object']->book['bid']) && !empty($field['object']->book['bid'])) {
+      $content = theme('book_navigation', $field['object']->book);
+    }
+  }
+  else {
+    if (isset($field['object']->book['bid']) && !empty($field['object']->book['bid'])) {
+      $content = theme('book_navigation', $field['object']->book);
+    }
+  }
+  return $content;
+}
+
+/**
+ * Add new child for book.
+ */
+function theme_nd_book_add_new_child($field) {
+  $child = str_replace('_', '-', variable_get('book_child_type', 'book'));
+  return l(t('Add child page'), 'node/add/'. $child, array('query' => array('parent' => $field['object']->book['mlid'])));
+}
+
+/**
+ * Printer friendly version
+ */
+function theme_nd_book_printer_version($field) {
+  return l(t('Printer-friendly version'), 'book/export/html/'. $field['object']->nid);
+}

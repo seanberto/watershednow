@@ -1,0 +1,12 @@
+; $Id: ds.info,v 1.1.2.1 2010/04/24 19:04:04 swentel Exp $
+name = "Display suite"
+description = "Manage the display of your data objects."
+core = "6.x"
+package = "Display suite"
+
+; Information added by drupal.org packaging script on 2010-07-18
+version = "6.x-1.3"
+core = "6.x"
+project = "ds"
+datestamp = "1279453208"
+

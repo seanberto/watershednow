@@ -1,0 +1,22 @@
+<?php
+// $Id: nd_search.install,v 1.1.2.5 2010/07/01 12:35:12 swentel Exp $
+
+/**
+ * @file
+ * ND search install file.
+ */
+
+/**
+ * Implementation of hook_uninstall().
+ */
+function nd_search_uninstall() {
+  variable_del('nd_search_override_search_page');
+  variable_del('nd_search_deny_user_tab');
+  variable_del('nd_search_apachesolr_build_mode');
+  variable_del('nd_search_apachesolr_language');
+  variable_del('nd_search_apachesolr_hide_current_filters');
+  variable_del('nd_search_preprocess_vars');
+  variable_del('nd_search_apachesolr_show_title');
+  variable_del('nd_search_highlight');
+  variable_del('nd_search_highlight_selector');
+}

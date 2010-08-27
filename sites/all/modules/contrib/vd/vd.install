@@ -1,0 +1,23 @@
+<?php
+// $Id: vd.install,v 1.1 2010/02/10 13:59:56 swentel Exp $
+
+/**
+ * @file
+ * Views displays install file.
+ */
+
+/**
+ * Implementation of hook_install().
+ */
+function vd_install() {
+  // We need to run pretty late in the theming process, so we're
+  // sure that we have all variables available.
+  db_query("UPDATE {system} set weight = '20' WHERE name = 'vd'");
+}
+
+/**
+ * Implementation of hook_uninstall().
+ */
+function vd_uninstall() {
+  db_query("DELETE FROM {variable} WHERE name LIKE 'vd_%%'");
+}

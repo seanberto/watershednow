@@ -1,0 +1,51 @@
+-------------------------------------------------------------------------------------
+6.x-1.3 2010-07-18
+-------------------------------------------------------------------------------------
+- #845416 by swentel: ds_static_variables should hold key values in an array.
+- #843214 by swentel: add counter class on region to indicate how many fields are in it.
+- #824796 by swentel: check for fieldgroup in display because sometimes parent does not exist anymore
+- #818036 by swentel and netsensei: rebuild theme registry when creating new build modes.
+- #794908 by swentel: styles with no friendly names trigger illegal choice detection.
+- #795784 by swentel and jyve: add extra field-group class to fieldgroup.
+- #783050 by swentel: multiple classes on fields.
+- #783196 by swentel: sync/copy little confusing.
+- #786740 by swentel: excluding build modes confused administration logic.
+- #783056 by swentel: add classes to regions via the UI.
+- Move ui to admin/build/ds.
+
+-------------------------------------------------------------------------------------
+6.x-1.2 2010-05-07
+-------------------------------------------------------------------------------------
+- #770368 by swentel and zuuperman: views fields ds plugin.
+- #722852 by jyve: theming optimisations.
+- #777290 by swentel: fix empty region plugin order of regions.
+- #771134 by swentel: Add support for preprocess fields via UI and selecting a key in variables.
+- #737008 by swentel: Support feature integration per object type.
+- #779040 by swentel: DS now has a UI module. 
+- #781882 by swentel: add example outputs from objects.
+- #783106 by swentel: styles do not necessarily need friendly names.
+
+-------------------------------------------------------------------------------------
+6.x-1.1 2010-04-15
+-------------------------------------------------------------------------------------
+- Fix weights of build modes
+- #710094 by swentel: fix small edit link bug in layout overview screen.
+- #722004 by swentel: better description of ds_views_row_adv_VIEWSNAME.
+- #710034 by swentel: region to block plugin.
+- #723916 by swentel: fields title leads to edit screen.
+- #724124 by swentel: Add css-class to field definition.
+- #710782 by swentel: Add option to copy settings from one build mode to other(s).
+- #727224 by swentel: New option for ds_api.
+- #742658 by swentel: Rename ds_show_links() to ds_show_field().
+- #722852 by swentel and jyve: Theming optimizations.
+- #582618 by swentel, stalski, zuupermand and Jyve: Support for fieldgroups.
+- #763516 by swentel: validation of keys for fields, fieldgroups & buildmodes 
+                      can contain numbers.
+- #763024 by swentel: support for (cck) tabs.
+
+-------------------------------------------------------------------------------------
+6.x-1.0 2010-02-04
+-------------------------------------------------------------------------------------
+- Initial release.
+
+/* Last updated: $Id: CHANGELOG.txt,v 1.1.2.36 2010/07/18 11:20:59 swentel Exp $ */

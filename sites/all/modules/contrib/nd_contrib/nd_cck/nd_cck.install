@@ -1,0 +1,29 @@
+<?php
+// $Id: nd_cck.install,v 1.1.2.3 2010/04/24 12:27:36 swentel Exp $
+
+/**
+ * @file
+ * Install file.
+ */
+
+/**
+ * Implementation of hook_uninstall().
+ */
+function nd_cck_uninstall() {
+  // Reset the exclude settings on cck fields - so we don't confuse users
+  // when uninstalling nd cck - see http://drupal.org/node/751414
+  $query = 'SELECT field_name, type_name, display_settings from {content_node_field_instance}';
+  $result = db_query($query);
+  while ($row = db_fetch_object($result)) {
+    $display_settings = unserialize($row->display_settings);
+    foreach ($display_settings as $key => $value) {
+      if (is_array($value) && isset($value['exclude'])) {
+        $display_settings[$key]['exclude'] = 0;
+      }
+    }
+    db_query("UPDATE {content_node_field_instance} set display_settings = '%s' WHERE field_name = '%s' AND type_name = '%s'",
+      serialize($display_settings), $row->field_name, $row->type_name
+    );
+    content_clear_type_cache();
+  }
+}
