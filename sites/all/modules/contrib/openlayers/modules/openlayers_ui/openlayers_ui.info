@@ -1,0 +1,13 @@
+; $Id: openlayers_ui.info,v 1.1.2.3 2009/11/11 21:16:19 tmcw Exp $
+name = "OpenLayers UI"
+description = "Provides a user interface to manage OpenLayers maps."
+core = "6.x"
+package = "OpenLayers"
+dependencies[] = "openlayers"
+
+; Information added by drupal.org packaging script on 2010-08-27
+version = "6.x-2.x-dev"
+core = "6.x"
+project = "openlayers"
+datestamp = "1282911268"
+

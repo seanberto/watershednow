@@ -1,0 +1,56 @@
+<?php
+// $Id: openlayers_filters.test,v 1.1.2.1 2010/05/15 23:06:51 zzolo Exp $
+
+/**
+ * @file
+ * OpenLayers Filters tests.
+ *
+ * @ingroup openlayers
+ */
+
+/**
+ * Test Case for OpenLayers filters
+ */
+class OpenLayersFilters extends DrupalWebTestCase {
+  public static function getInfo() {
+    return array(
+      'name' => 'OpenLayers Filters',
+      'description' => 'Tests the OpenLayers filters.',
+      'group' => 'OpenLayers',
+    );
+  }
+
+  function setUp() {
+    // Install modules
+    parent::setUp('openlayers', 'ctools', 'openlayers_filters');
+  }
+
+  function testOpenLayersMapAlters() {
+    $user = $this->drupalCreateUser(array('administer filters', 
+      'access content', 'administer nodes'));
+    $this->drupalLogin($user);
+
+    // Variables
+    $format_name = 'openlayers_filter_test_format';
+
+    // Create new input format
+    $format = array();
+    $format['name'] = $format_name;
+    $format['roles[2]'] = 'checked';
+    $format['filters[openlayers_filters/0]'] = TRUE;
+    $this->drupalPost('admin/settings/filters/add', $format, 'Save configuration');
+    $this->drupalGet('admin/settings/filters');
+    $this->assertText($format_name, t('Filter created and in list'));
+    
+    // Create new story with macro
+    $story = array();
+    $story['title'] = 'filter_testing';
+    $story['body'] = 'Testing content and inline map: [openlayers default]';
+    // This should actually get the ID correctly
+    $story['format'] = 3;
+    $this->drupalPost('node/add/story', $story, 'Save');
+    $node = $this->drupalGetNodeByTitle($story["title"]);
+    $this->drupalGet('node/' . $node->nid);
+    $this->assertRaw('class="openlayers-container openlayers-container-preset-', t('Found OpenLayers output.'));
+  }
+}

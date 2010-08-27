@@ -1,0 +1,90 @@
+/* $Id: openlayers_ui.css,v 1.1.2.4 2010/05/18 19:25:57 tmcw Exp $
+
+/**
+ * @file
+ * OpenLayers Admin CSS
+ *
+ * This file holds CSS for the openlayers ui module
+ *
+ * @ingroup openlayers
+ */
+
+/**
+ * Map Form
+ */
+.openlayers-form-projection-description,
+.openlayers-form-layer-description {
+  font-size: smaller;
+  font-style: italic;
+}
+
+#openlayers-form-proj-msg {
+  display:none;
+}
+
+/**
+ * Preset form
+ */
+div.openlayers-column-right input.form-text,
+div.openlayers-column-left input.form-text { width:90%; }
+
+div.openlayers-column-left {
+  width:20%;
+  float:left;
+  }
+
+div.openlayers-column-right {
+  width:80%;
+  float:right;
+  }
+
+span.openlayers-dependency-value {
+  display: none;
+}
+
+span.openlayers-dependency-broken {
+  font-size: smaller;
+  display: none;
+  color: red;
+  }
+
+/**
+ * Panel links
+ */
+div.openlayers-column-left ul#openlayers-panel-links,
+div.openlayers-column-left ul#openlayers-panel-links li,
+div.openlayers-column-left ul#openlayers-panel-links li a {
+  display:block;
+  float:none;
+  padding:0px;
+  margin:0px;
+  }
+
+  div.openlayers-column-left ul#openlayers-panel-links { margin:0px 0px 10px; }
+
+  div.openlayers-column-left ul#openlayers-panel-links li a {
+    background:#f8f8f8;
+    padding:5px 5px 4px 4px;
+    border-left:1px solid #eee;
+    border-bottom:1px solid #eee;
+    cursor:pointer;
+    }
+
+  div.openlayers-column-left ul#openlayers-panel-links li a.openlayers-panel-active {
+    padding:4px 5px 4px 4px;
+    background:#fff;
+    border:1px solid #ccc;
+    border-right:0px;
+    margin-right:-1px;
+    }
+
+/* Panels */
+div.openlayers-panel {
+  border:1px solid #ccc;
+  background:#fff;
+  padding:10px;
+  margin:0px 0px 20px;
+  display:none;
+  }
+
+  div.openlayers-panel-active { display:block; }

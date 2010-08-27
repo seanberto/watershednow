@@ -1,0 +1,63 @@
+<?php
+// $Id: openlayers_cck.test,v 1.1.2.4 2010/03/22 23:55:10 zzolo Exp $
+
+/**
+ * @file
+ * OpenLayers CCK tests
+ */
+
+/**
+ * OpenLayers Test Class
+ */
+class OpenLayersCCKWidgetTest extends ContentCrudTestCase {
+  function getInfo() {
+    return array(
+      'name' => t('OpenLayers CCK widget'),
+      'description' => t('Tests the OpenLayers CCK Widget.'),
+      'group' => t('OpenLayers'),
+    );
+  }
+
+  function setUp() {
+    parent::setUp('openlayers', 'openlayers_cck', 'ctools');
+    $this->loginWithPermissions();
+    $this->acquireContentTypes(1);
+    module_load_include('inc', 'cck', 'tests/content.crud.test');
+  }
+
+  /**
+   * OpenLayers CCK Widget
+   */
+  function testOpenLayersCCK() {
+    $type = $this->content_types[0];
+    $type_url = str_replace('_', '-', $type->type);
+
+    $settings = array(
+      'type' => 'openlayers_wkt',
+      'widget_type' => 'openlayers_wkt_widget',
+    );
+    $field = $this->createField($settings, 0);
+    $field_name = $field['field_name'];
+
+    // Create a node with the checkbox on.
+    $edit = array(
+      'title' => $this->randomName(20),
+      'body' => $this->randomName(20),
+      $field_name .'[openlayers_wkt]' => 'POINT(1 1)',
+    );
+    $this->drupalPost('node/add/'. $type_url, $edit, 'Save');
+    $node = node_load(array('title' => $edit['title']));
+    $this->assertEqual(
+      $node->{$field_name}[0]['openlayers_wkt'],
+      'POINT(1 1)', 'Point: saved in the correct place');
+    $this->drupalGet('node/'. $node->nid);
+
+    // Edit the node and uncheck the box.
+    $edit = array(
+      $field_name .'[openlayers_wkt]' => 'POINT(4 4)',
+    );
+    $this->drupalPost('node/'. $node->nid .'/edit', $edit, 'Save');
+    $node = node_load($node->nid, NULL, TRUE);
+    $this->drupalGet('node/'. $node->nid);
+  }
+}

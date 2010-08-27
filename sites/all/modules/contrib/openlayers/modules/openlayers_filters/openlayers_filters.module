@@ -1,0 +1,111 @@
+<?php
+// $Id: openlayers_filters.module,v 1.3.2.3 2010/04/22 13:18:02 tmcw Exp $
+
+/**
+ * @file
+ * This file holds the main Drupal hook functions
+ * and private functions for the openlayers_filters module.
+ *
+ * @ingroup openlayers
+ */
+
+/**
+ * Implementation of hook_help().
+ */
+function openlayers_filters_help($path, $arg) {
+  $output = '';
+
+  switch ($path) {
+    case 'admin/help#openlayers_filters':
+      $output = '<p>'. t('The OpenLayers Filters module provides input filters 
+        to allow for inline maps.') .'</p>';
+      return $output;
+
+  }
+}
+
+/**
+ * Implementation of hook_filter().
+ */
+function openlayers_filters_filter($op, $delta = 0, $format = -1, $text = '', $cache_id = 0) {
+  if ($op == 'list') {
+    return array(
+      0 => t('Inline OpenLayers Maps'),
+    );
+  }
+
+  switch ($delta) {
+    case 0:
+      switch ($op) {
+        case 'no cache':
+          return TRUE;
+
+        case 'description':
+          return t('Substitutes a macro text like !macro_example into an 
+              appropriate rendered OpenLayers map.',
+            array(
+              '!macro_example' => '[openlayers preset_name]',
+            )
+          );
+
+        case 'prepare':
+          return $text;
+
+        case 'process':
+          $matches = array();
+          preg_match_all('/\[(openlayers[^\]]*)\]/', $text, $matches);
+
+          // Check for found
+          if (is_array($matches[1]) && count($matches[1]) > 0) {
+            foreach ($matches[1] as $i => $match) {
+              $exploded = explode(' ', $match);
+
+              if (count($exploded) > 1 && $preset = check_plain($exploded[1])) {
+                $map = openlayers_preset_load($preset);
+              }
+              else {
+                $map = openlayers_preset_load(
+                  variable_get('openlayers_default_preset', 'default'));
+              }
+
+              if (!empty($map->data) && is_array($map->data)) {
+                $rendered = openlayers_render_map($map->data);
+                // Replace text with rendered map preset
+                $text = str_replace($matches[0][$i], $rendered, $text);
+              }
+            }
+          }
+          return $text;
+      }
+      break;
+  }
+}
+
+/**
+ * Implementation of hook_filter_tips().
+ */
+function openlayers_filters_filter_tips($delta, $format, $long = FALSE) {
+  switch ($delta) {
+    case 0:
+      if ($long) {
+        return t('Substitutes a macro text like !macro_example into a the 
+          appropriate rendered OpenLayers map. This will render a map 
+          preset into the body of content. If the preset name is not given, 
+          as in !macro_example_default, the default map preset will be shown.',
+          array(
+            '!macro_example' => '[openlayers preset_name]',
+            '!macro_example_default' => '[openlayers]'
+          )
+        );
+      }
+      else {
+        return t('Substitutes a macro text like !macro_example into a the 
+          appropriate rendered OpenLayers map.',
+          array(
+            '!macro_example' => '[openlayers preset_name]',
+          )
+        );
+      }
+      break;
+  }
+}

@@ -1,0 +1,56 @@
+<?php
+// $Id: openlayers_geocoder.install,v 1.4 2009/11/23 20:38:07 antoniodemarco Exp $
+
+/**
+ * Implementation of hook_install()
+ */
+function openlayers_geocoder_install() {
+  drupal_install_schema('openlayers_geocoder');
+}
+
+/**
+ * Implementation of hook_schema().
+ */
+function openlayers_geocoder_schema() {
+  $schema['openlayers_geocoder'] = array(
+    'description' => 'Database storage for geocoding responses.',
+    'fields' => array(
+      'nid' => array(
+        'description' => 'The primary identifier for a node.',
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE),
+      'vid' => array(
+        'description' => 'The current {node_revisions}.vid version identifier.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0),
+      'openlayers_wkt' => array(
+        'description' => 'Location returned by the response in WKT format.',
+        'type' => 'text',
+        'not null' => TRUE,
+        'default' => ''),
+      'response' => array(
+        'description' => 'Geocoding response using xAL namespace.',
+        'type' => 'text',
+        'not null' => TRUE,
+        'default' => ''),
+      ),
+    'unique keys' => array(
+      'vid'     => array('vid')
+      ),
+    'primary key' => array('nid'),
+    );
+
+  return $schema;
+}
+
+/**
+ * Create database storage for geocoding responses.
+ */
+function openlayers_geocoder_update_6000() {
+  $schema = openlayers_geocoder_schema();
+  db_create_table($return, 'openlayers_geocoder', $schema['openlayers_geocoder']);
+  return $return;
+}

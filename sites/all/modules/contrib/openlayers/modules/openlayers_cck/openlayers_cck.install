@@ -1,0 +1,53 @@
+<?php
+// $Id: openlayers_cck.install,v 1.4 2009/09/21 04:36:31 zzolo Exp $
+
+/**
+ * @file
+ * This file holds the functions for the installing
+ * and enabling of the openlayers_cck module.
+ *
+ * @ingroup openlayers
+ */
+
+/**
+ * Implementation of hook_enable().
+ */
+function openlayers_cck_enable() {
+  // Let content/cck know about our actions
+  drupal_load('module', 'content');
+  content_notify('enable', 'openlayers_cck');
+}
+
+/**
+ * Implementation of hook_disable().
+ */
+function openlayers_cck_disable() {
+  // Let content/cck know about our actions
+  drupal_load('module', 'content');
+  content_notify('disable', 'openlayers_cck');
+}
+
+/**
+ * Implementation of hook_install().
+ */
+function openlayers_cck_install() {
+  // Let content/cck know about our actions
+  drupal_load('module', 'content');
+  content_notify('install', 'openlayers_cck');
+}
+
+/**
+ * Implementation of hook_uninstall().
+ */
+function openlayers_cck_uninstall() {
+  // Let content/cck know about our actions
+  drupal_load('module', 'content');
+  content_notify('uninstall', 'openlayers_cck');
+
+  // Get module variables
+  $results = db_query("SELECT v.name FROM {variable} AS v WHERE v.name LIKE '%s%%'", 'openlayers_cck_');
+  // Remove variables
+  while ($row = db_fetch_array($results)) {
+    variable_del($row['name']);
+  }
+}

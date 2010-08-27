@@ -1,0 +1,14 @@
+; $Id: openlayers_geocoder.info,v 1.2.2.1 2010/02/10 21:36:23 antoniodemarco Exp $
+
+name = OpenLayers Geocoder
+description = Provides OpenLayers CCK widget with geocoding capabilities.
+core = 6.x
+package = OpenLayers
+dependencies[] = openlayers_cck
+
+; Information added by drupal.org packaging script on 2010-08-13
+version = "6.x-2.x-dev"
+core = "6.x"
+project = "openlayers_geocoder"
+datestamp = "1281701789"
+
