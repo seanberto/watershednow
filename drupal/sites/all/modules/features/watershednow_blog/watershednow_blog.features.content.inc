@@ -6,9 +6,9 @@
 function watershednow_blog_content_default_fields() {
   $fields = array();
 
-  // Exported field: field_action_pages
-  $fields['update-field_action_pages'] = array(
-    'field_name' => 'field_action_pages',
+  // Exported field: field_get_involved
+  $fields['update-field_get_involved'] = array(
+    'field_name' => 'field_get_involved',
     'type_name' => 'update',
     'display_settings' => array(
       'weight' => '-2',
@@ -65,7 +65,7 @@ function watershednow_blog_content_default_fields() {
       'default_value' => array(
         '0' => array(
           'nid' => NULL,
-          '_error_element' => 'default_value_widget][field_action_pages][0][nid][nid',
+          '_error_element' => 'default_value_widget][field_get_involved][0][nid][nid',
         ),
       ),
       'default_value_php' => NULL,

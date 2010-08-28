@@ -3,7 +3,7 @@
 /**
  * Implementation of hook_views_default_views().
  */
-function watershednow_action_views_default_views() {
+function watershednow_getinvolved_views_default_views() {
   $views = array();
 
   // Exported view: donations
@@ -491,18 +491,18 @@ function watershednow_action_views_default_views() {
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
   $handler = $view->new_display('default', 'Defaults', 'default');
   $handler->override_option('relationships', array(
-    'field_action_pages_nid' => array(
+    'field_get_involved_nid' => array(
       'label' => 'Associated action pages',
       'required' => 0,
       'delta' => '-1',
-      'id' => 'field_action_pages_nid',
-      'table' => 'node_data_field_action_pages',
-      'field' => 'field_action_pages_nid',
+      'id' => 'field_get_involved_nid',
+      'table' => 'node_data_field_get_involved',
+      'field' => 'field_get_involved_nid',
       'relationship' => 'none',
     ),
   ));
   $handler->override_option('fields', array(
-    'field_action_pages_nid' => array(
+    'field_get_involved_nid' => array(
       'label' => '',
       'alter' => array(
         'alter_text' => 0,
@@ -535,9 +535,9 @@ function watershednow_action_views_default_views() {
         'multiple_reversed' => 0,
       ),
       'exclude' => 0,
-      'id' => 'field_action_pages_nid',
-      'table' => 'node_data_field_action_pages',
-      'field' => 'field_action_pages_nid',
+      'id' => 'field_get_involved_nid',
+      'table' => 'node_data_field_get_involved',
+      'field' => 'field_get_involved_nid',
       'relationship' => 'none',
     ),
   ));
@@ -545,7 +545,7 @@ function watershednow_action_views_default_views() {
     'delta' => array(
       'order' => 'ASC',
       'id' => 'delta',
-      'table' => 'node_data_field_action_pages',
+      'table' => 'node_data_field_get_involved',
       'field' => 'delta',
       'relationship' => 'none',
     ),
@@ -615,7 +615,7 @@ function watershednow_action_views_default_views() {
       'id' => 'status_extra',
       'table' => 'node',
       'field' => 'status_extra',
-      'relationship' => 'field_action_pages_nid',
+      'relationship' => 'field_get_involved_nid',
     ),
   ));
   $handler->override_option('access', array(

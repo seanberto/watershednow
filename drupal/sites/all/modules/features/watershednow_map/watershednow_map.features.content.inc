@@ -6,9 +6,9 @@
 function watershednow_map_content_default_fields() {
   $fields = array();
 
-  // Exported field: field_action_pages
-  $fields['map_feature-field_action_pages'] = array(
-    'field_name' => 'field_action_pages',
+  // Exported field: field_get_involved
+  $fields['map_feature-field_get_involved'] = array(
+    'field_name' => 'field_get_involved',
     'type_name' => 'map_feature',
     'display_settings' => array(
       'label' => array(
