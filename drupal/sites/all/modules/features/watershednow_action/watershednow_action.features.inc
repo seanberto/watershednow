@@ -19,9 +19,20 @@ function watershednow_action_ctools_plugin_api() {
 function watershednow_action_node_info() {
   $items = array(
     'donation' => array(
-      'name' => t('Donation page'),
+      'name' => t('Donation campaign'),
       'module' => 'features',
-      'description' => t('A donation page provides a simple form for users to make a contribution via PayPal.'),
+      'description' => t('A donation campaign provides a simple form for users to make a contribution via PayPal.'),
+      'has_title' => '1',
+      'title_label' => t('Title'),
+      'has_body' => '0',
+      'body_label' => '',
+      'min_word_count' => '0',
+      'help' => '',
+    ),
+    'event' => array(
+      'name' => t('Event'),
+      'module' => 'features',
+      'description' => t('Events are posted to an event calendar and are signups enabled.'),
       'has_title' => '1',
       'title_label' => t('Title'),
       'has_body' => '0',

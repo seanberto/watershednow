@@ -21,7 +21,7 @@ function watershednow_blog_content_default_fields() {
         'exclude' => 0,
       ),
       'full' => array(
-        'format' => 'default',
+        'format' => 'hidden',
         'exclude' => 0,
       ),
       '4' => array(
@@ -44,34 +44,35 @@ function watershednow_blog_content_default_fields() {
     'widget_active' => '1',
     'type' => 'nodereference',
     'required' => '0',
-    'multiple' => '1',
+    'multiple' => '5',
     'module' => 'nodereference',
     'active' => '1',
     'referenceable_types' => array(
       'donation' => 'donation',
+      'event' => 'event',
       'take_action' => 'take_action',
-      'event' => 0,
-      'map_point' => 0,
       'page' => 0,
       'update' => 0,
       'update_feed' => 0,
+      'map_feature' => 0,
       'webform' => 0,
     ),
     'advanced_view' => '--',
     'advanced_view_args' => '',
     'widget' => array(
       'autocomplete_match' => 'contains',
-      'size' => 60,
+      'size' => '60',
       'default_value' => array(
         '0' => array(
           'nid' => NULL,
+          '_error_element' => 'default_value_widget][field_action_pages][0][nid][nid',
         ),
       ),
       'default_value_php' => NULL,
-      'label' => 'Associated action pages',
+      'label' => 'Associated "Get Involved" opportunities',
       'weight' => '-2',
-      'description' => 'Select those "Take Action" and donation pages associated with this update.',
-      'type' => 'nodereference_buttons',
+      'description' => 'Select up to 5 donation, take action, or event opportunities associated with this update. Start typing the title of the page to find those available. You can drag-and-drop selected pages to change their order in the list.',
+      'type' => 'nodereference_autocomplete',
       'module' => 'nodereference',
     ),
   );
@@ -167,11 +168,11 @@ function watershednow_blog_content_default_fields() {
         'format' => 'above',
       ),
       'teaser' => array(
-        'format' => 'image_plain',
+        'format' => 'hidden',
         'exclude' => 0,
       ),
       'full' => array(
-        'format' => 'image_plain',
+        'format' => 'hidden',
         'exclude' => 0,
       ),
       '4' => array(
@@ -248,7 +249,7 @@ function watershednow_blog_content_default_fields() {
 
   // Translatables
   // Included for use with string extractors like potx.
-  t('Associated action pages');
+  t('Associated "Get Involved" opportunities');
   t('Attachments');
   t('Image assets');
 
