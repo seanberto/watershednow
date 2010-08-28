@@ -3,7 +3,7 @@
 /**
  * Implementation of hook_views_default_views().
  */
-function drupalrivers_action_views_default_views() {
+function watershednow_action_views_default_views() {
   $views = array();
 
   // Exported view: donations

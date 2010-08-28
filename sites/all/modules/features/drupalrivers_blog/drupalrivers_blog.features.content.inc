@@ -3,7 +3,7 @@
 /**
  * Implementation of hook_content_default_fields().
  */
-function drupalrivers_blog_content_default_fields() {
+function watershednow_blog_content_default_fields() {
   $fields = array();
 
   // Exported field: field_action_pages

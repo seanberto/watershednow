@@ -1,12 +1,12 @@
 <?php
-// $Id: drupalrivers.profile,v 1.22 2007/12/17 12:43:34 goba Exp $
+// $Id: watershednow.profile,v 1.22 2007/12/17 12:43:34 goba Exp $
 
 /**
  * Implementation of hook_profile_details().
  */
-function drupalrivers_profile_details() {
+function watershednow_profile_details() {
   return array(
-    'name' => 'Drupal for Rivers',
+    'name' => 'Watershed Now!',
     'description' => 'Select this profile to build a Drupal CMS developed for watershed organizations.'
   );
 }
@@ -14,7 +14,7 @@ function drupalrivers_profile_details() {
 /**
  * Implementation of hook_profile_modules().
  */
-function drupalrivers_profile_modules() {
+function watershednow_profile_modules() {
   
   // When enabling a feature via an installation profile, dependancies are not automatically enabled. Have to enable them here.
   // @TODO: Programmatically check features' dependencies so that we only have to manage dependencies in one place.
@@ -87,11 +87,11 @@ function drupalrivers_profile_modules() {
 		// Event Sigups
 		'signup',
 		// Drupal Rivers features
-		'drupalrivers_common',
-		'drupalrivers_blog',
-		'drupalrivers_events',
-		'drupalrivers_action',
-		'drupalrivers_map',
+		'watershednow_common',
+		'watershednow_blog',
+		'watershednow_events',
+		'watershednow_action',
+		'watershednow_map',
 		// Development (NOTE: Comment out for production installs.)
 		'devel',
 		'diff',
@@ -108,18 +108,18 @@ function drupalrivers_profile_modules() {
 /**
  * Implementation of hook_profile_task_list().
  */
-function drupalrivers_profile_task_list() {
+function watershednow_profile_task_list() {
 }
 
 /**
  * Implementation of hook_profile_tasks
  */
-function drupalrivers_profile_tasks(&$task, $url) {
+function watershednow_profile_tasks(&$task, $url) {
   
-  install_include(drupalrivers_profile_modules()); // Call all enabled modules' include files.
+  install_include(watershednow_profile_modules()); // Call all enabled modules' include files.
   
   $default_roles = array('web admin', 'staff'); // Adding roles and perms.
-  $default_perms = _drupalrivers_define_perms(); // Grabbing array of permissions.
+  $default_perms = _watershednow_define_perms(); // Grabbing array of permissions.
   foreach ($default_roles as $role) {
     install_add_role($role);
     $rid = install_get_rid($role); // Get the RID so we can add perms.
@@ -138,7 +138,7 @@ function drupalrivers_profile_tasks(&$task, $url) {
   install_remove_permissions('2', $default_perms['to_remove']);  
 
   // Configure Input formats and WYSIWYG editor
-  _drupalrivers_fiters_wysiwyg();
+  _watershednow_fiters_wysiwyg();
   
   // Setup basic contact form
   $category = 'website feedback';
@@ -148,7 +148,7 @@ function drupalrivers_profile_tasks(&$task, $url) {
   install_menu_create_menu_item('contact', 'Contact Us', 'Get in touch with us.', 'secondary_links');
 
   // Create a few placeholder nodes and add them to the menu structure.
-  // @TODO: Find the correct input filter. Right now, we rely on _drupalrivers_filters_wysiwyg() being called first..
+  // @TODO: Find the correct input filter. Right now, we rely on _watershednow_filters_wysiwyg() being called first..
   $pages = array();
   
   $page = new stdClass;
@@ -178,7 +178,7 @@ function drupalrivers_profile_tasks(&$task, $url) {
   // Set default theme. This must happen after drupal_flush_all_caches(), which
   // will run system_theme_data() without detecting themes in the install
   // profile directory.
-  _drupalrivers_system_theme_data();
+  _watershednow_system_theme_data();
   db_query("UPDATE {blocks} SET status = 0, region = ''"); // disable all DB blocks
   db_query("UPDATE {system} SET status = 0 WHERE type = 'theme' and name ='%s'", 'garland');
   db_query("UPDATE {system} SET status = 0 WHERE type = 'theme' and name ='%s'", 'watershed');
@@ -191,7 +191,7 @@ function drupalrivers_profile_tasks(&$task, $url) {
 /*
  * Defining default permissions for all roles.
  */
-function _drupalrivers_define_perms() {
+function _watershednow_define_perms() {
   $default_perms = array();
   
   $default_perms['anonymous'] = array(
@@ -279,7 +279,7 @@ function _drupalrivers_define_perms() {
  * Allows the profile to alter the site-configuration form. This is
  * called through custom invocation, so $form_state is not populated.
  */
-function drupalrivers_form_alter(&$form, $form_state, $form_id) {
+function watershednow_form_alter(&$form, $form_state, $form_id) {
   if ($form_id == 'install_configure') {
     $form['site_information']['site_name']['#default_value'] = $_SERVER['HTTP_HOST'];
     $form['site_information']['site_mail']['#default_value'] = 'admin@'. $_SERVER['HTTP_HOST'];
@@ -298,7 +298,7 @@ function drupalrivers_form_alter(&$form, $form_state, $form_id) {
  * @FIXME: Also, should use install_get_rid() to make sure that RIDs are consistent with those
  * created for "web admin" and "staff" roles. Fragile as is.
  */
-function _drupalrivers_fiters_wysiwyg() {
+function _watershednow_fiters_wysiwyg() {
   
   // Setting up Better Formats
   db_query("DELETE FROM {better_formats_defaults}");
@@ -375,9 +375,9 @@ function _drupalrivers_fiters_wysiwyg() {
  * is populated during install prior to active install profile awareness.
  * This workaround makes enabling themes in profiles/[profile]/themes possible.
  */
-function _drupalrivers_system_theme_data() {
+function _watershednow_system_theme_data() {
   global $profile;
-  $profile = 'drupalrivers';
+  $profile = 'watershednow';
 
   $themes = drupal_system_listing('\.info$', 'themes');
   $engines = drupal_system_listing('\.engine$', 'themes/engines');

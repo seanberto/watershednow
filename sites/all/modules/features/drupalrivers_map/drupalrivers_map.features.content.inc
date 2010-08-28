@@ -3,13 +3,13 @@
 /**
  * Implementation of hook_content_default_fields().
  */
-function drupalrivers_map_content_default_fields() {
+function watershednow_map_content_default_fields() {
   $fields = array();
 
   // Exported field: field_action_pages
-  $fields['map_point-field_action_pages'] = array(
+  $fields['map_feature-field_action_pages'] = array(
     'field_name' => 'field_action_pages',
-    'type_name' => 'map_point',
+    'type_name' => 'map_feature',
     'display_settings' => array(
       'label' => array(
         'format' => 'above',
@@ -50,7 +50,7 @@ function drupalrivers_map_content_default_fields() {
       'donation' => 'donation',
       'take_action' => 'take_action',
       'event' => 0,
-      'map_point' => 0,
+      'map_feature' => 0,
       'page' => 0,
       'update' => 0,
       'update_feed' => 0,
@@ -76,9 +76,9 @@ function drupalrivers_map_content_default_fields() {
   );
 
   // Exported field: field_attachments
-  $fields['map_point-field_attachments'] = array(
+  $fields['map_feature-field_attachments'] = array(
     'field_name' => 'field_attachments',
-    'type_name' => 'map_point',
+    'type_name' => 'map_feature',
     'display_settings' => array(
       'label' => array(
         'format' => 'above',
@@ -155,9 +155,9 @@ function drupalrivers_map_content_default_fields() {
   );
 
   // Exported field: field_image_assets
-  $fields['map_point-field_image_assets'] = array(
+  $fields['map_feature-field_image_assets'] = array(
     'field_name' => 'field_image_assets',
-    'type_name' => 'map_point',
+    'type_name' => 'map_feature',
     'display_settings' => array(
       'label' => array(
         'format' => 'above',

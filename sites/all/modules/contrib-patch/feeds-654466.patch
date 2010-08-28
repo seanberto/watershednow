@@ -1,7 +1,7 @@
-diff --git a/profiles/drupalrivers/modules/contrib/feeds/feeds.install b/profiles/drupalrivers/modules/contrib/feeds/feeds.install
+diff --git a/profiles/watershednow/modules/contrib/feeds/feeds.install b/profiles/watershednow/modules/contrib/feeds/feeds.install
 index 7911884..98832ef 100644
---- a/profiles/drupalrivers/modules/contrib/feeds/feeds.install
-+++ b/profiles/drupalrivers/modules/contrib/feeds/feeds.install
+--- a/profiles/watershednow/modules/contrib/feeds/feeds.install
++++ b/profiles/watershednow/modules/contrib/feeds/feeds.install
 @@ -492,3 +492,28 @@ function feeds_update_6009() {
    db_create_table($ret, 'feeds_push_subscriptions', $table);
    return $ret;
@@ -32,10 +32,10 @@ index 7911884..98832ef 100644
 +  return $ret;
 +}
 \ No newline at end of file
-diff --git a/profiles/drupalrivers/modules/contrib/feeds/feeds.module b/profiles/drupalrivers/modules/contrib/feeds/feeds.module
+diff --git a/profiles/watershednow/modules/contrib/feeds/feeds.module b/profiles/watershednow/modules/contrib/feeds/feeds.module
 index 515688b..839e4a8 100644
---- a/profiles/drupalrivers/modules/contrib/feeds/feeds.module
-+++ b/profiles/drupalrivers/modules/contrib/feeds/feeds.module
+--- a/profiles/watershednow/modules/contrib/feeds/feeds.module
++++ b/profiles/watershednow/modules/contrib/feeds/feeds.module
 @@ -244,7 +244,7 @@ function feeds_feeds_plugins() {
   */
  function feeds_nodeapi(&$node, $op, $form) {
@@ -45,10 +45,10 @@ index 515688b..839e4a8 100644
    // Keep a copy of title and feeds array between 'validate' and subsequent
    // stages. This allows for automatically populating the title of the node form
    // and modifying the $form['feeds'] array on node validation just like on the
-diff --git a/profiles/drupalrivers/modules/contrib/feeds/views/feeds.views.inc b/profiles/drupalrivers/modules/contrib/feeds/views/feeds.views.inc
+diff --git a/profiles/watershednow/modules/contrib/feeds/views/feeds.views.inc b/profiles/watershednow/modules/contrib/feeds/views/feeds.views.inc
 index 42f5760..16acf84 100644
---- a/profiles/drupalrivers/modules/contrib/feeds/views/feeds.views.inc
-+++ b/profiles/drupalrivers/modules/contrib/feeds/views/feeds.views.inc
+--- a/profiles/watershednow/modules/contrib/feeds/views/feeds.views.inc
++++ b/profiles/watershednow/modules/contrib/feeds/views/feeds.views.inc
 @@ -20,7 +20,7 @@ function feeds_views_data() {
    $data['feeds_source']['table'] = array(
      'group' => 'Feeds source',

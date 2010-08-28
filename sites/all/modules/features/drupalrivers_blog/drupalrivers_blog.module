@@ -1,6 +1,6 @@
 <?php
 
-include_once('drupalrivers_blog.features.inc');
+include_once('watershednow_blog.features.inc');
 
 /**
  * (Snippet taken from Managing News.)
@@ -10,7 +10,7 @@ include_once('drupalrivers_blog.features.inc');
  * The hook_form_[form_id]_alter() syntax is not used here as it will
  * get called prior to Feeds.
  */
-function drupalrivers_blog_form_alter(&$form, $form_state, $form_id) {
+function watershednow_blog_form_alter(&$form, $form_state, $form_id) {
   if ($form_id == 'update_feed_node_form') {
     // Unset the URL field title.
     unset($form['feeds']['FeedsHTTPFetcher']['source']['#title']);
@@ -43,7 +43,7 @@ function drupalrivers_blog_form_alter(&$form, $form_state, $form_id) {
  * @see http://drupal.org/node/111744 if you want to help get something
  * sensible into core.
  */
-function drupalrivers_blog_db_rewrite_sql($query, $primary_table, $primary_field, $args) {
+function watershednow_blog_db_rewrite_sql($query, $primary_table, $primary_field, $args) {
   if ($query == '' && $primary_table == 'n' && $primary_field = 'nid' && empty($args)) {
     $excluded_types = array(
       'update_feed',

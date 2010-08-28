@@ -7,7 +7,7 @@ function thinkshout_menu() {
   $items = array();
 
   $items['admin/settings/dashboard'] = array(
-    'title' => 'DrupalRivers Dashboard',
+    'title' => 'Watershed Now Dashboard',
     'page callback' => '_thinkshout_dashboard',
     'access arguments' => array('administer site configuration'),
     'type' => MENU_NORMAL_ITEM,

@@ -3,7 +3,7 @@
 /**
  * Implementation of hook_ctools_plugin_api().
  */
-function drupalrivers_events_ctools_plugin_api() {
+function watershednow_events_ctools_plugin_api() {
   list($module, $api) = func_get_args();
   if ($module == "strongarm" && $api == "strongarm") {
     return array("version" => 1);
@@ -13,7 +13,7 @@ function drupalrivers_events_ctools_plugin_api() {
 /**
  * Implementation of hook_node_info().
  */
-function drupalrivers_events_node_info() {
+function watershednow_events_node_info() {
   $items = array(
     'event' => array(
       'name' => t('Event'),

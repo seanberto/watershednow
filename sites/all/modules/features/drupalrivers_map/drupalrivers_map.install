@@ -8,8 +8,8 @@
  * machine-readable taxonomy system in Drupal core.
  *
  */
-function drupalrivers_map_enable() {
-  $content_type = 'map_point';
+function watershednow_map_enable() {
+  $content_type = 'map_feature';
   $vocabulary = array( // Our default map point vocabulary w/ settings.
     'name' => t('Map point types'),
     'tags' => 0,

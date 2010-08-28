@@ -3,7 +3,7 @@
 /**
  * Implementation of hook_ctools_plugin_api().
  */
-function drupalrivers_common_ctools_plugin_api() {
+function watershednow_common_ctools_plugin_api() {
   list($module, $api) = func_get_args();
   if ($module == "boxes" && $api == "box") {
     return array("version" => 1);
@@ -19,7 +19,7 @@ function drupalrivers_common_ctools_plugin_api() {
 /**
  * Implementation of hook_imagecache_default_presets().
  */
-function drupalrivers_common_imagecache_default_presets() {
+function watershednow_common_imagecache_default_presets() {
   $items = array(
     'thumbnail_large' => array(
       'presetname' => 'thumbnail_large',
@@ -88,7 +88,7 @@ function drupalrivers_common_imagecache_default_presets() {
 /**
  * Implementation of hook_node_info().
  */
-function drupalrivers_common_node_info() {
+function watershednow_common_node_info() {
   $items = array(
     'page' => array(
       'name' => t('Page'),

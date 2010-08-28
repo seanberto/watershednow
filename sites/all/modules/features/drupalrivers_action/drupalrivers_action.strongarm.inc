@@ -3,7 +3,7 @@
 /**
  * Implementation of hook_strongarm().
  */
-function drupalrivers_action_strongarm() {
+function watershednow_action_strongarm() {
   $export = array();
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
@@ -288,14 +288,14 @@ function drupalrivers_action_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'webform_default_from_address';
-  $strongarm->value = 'admin@drupalrivers.dev';
+  $strongarm->value = 'admin@watershednow.dev';
 
   $export['webform_default_from_address'] = $strongarm;
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'webform_default_from_name';
-  $strongarm->value = 'drupalrivers.dev';
+  $strongarm->value = 'watershednow.dev';
 
   $export['webform_default_from_name'] = $strongarm;
   $strongarm = new stdClass;

@@ -3,7 +3,7 @@
 /**
  * Implementation of hook_views_default_views().
  */
-function drupalrivers_blog_views_default_views() {
+function watershednow_blog_views_default_views() {
   $views = array();
 
   // Exported view: updates
