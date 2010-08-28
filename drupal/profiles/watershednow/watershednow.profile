@@ -33,7 +33,6 @@ function watershednow_profile_modules() {
     // Views
     'views',
     'views_calc',
-    'draggableviews',
     // CTools
     'ctools',
     // Context
