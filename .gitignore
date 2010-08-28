@@ -15,5 +15,6 @@ nbproject*
 cc_key/uc_credit.key
 backup
 sites/default/files
+watershednow_dev.sql
 drupalrivers_dev.sql
 *.tmproj
