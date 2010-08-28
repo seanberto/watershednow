@@ -51,7 +51,7 @@ function watershednow_common_content_default_fields() {
       'donation' => 'donation',
       'take_action' => 'take_action',
       'event' => 0,
-      'map_point' => 0,
+      'map_feature' => 0,
       'page' => 0,
       'update' => 0,
       'update_feed' => 0,
