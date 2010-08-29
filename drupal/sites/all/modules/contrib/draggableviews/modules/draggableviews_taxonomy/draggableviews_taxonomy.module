@@ -1,0 +1,38 @@
+<?php
+// $Id: draggableviews_taxonomy.module,v 1.1.2.1 2009/08/19 14:17:58 sevi Exp $
+
+/**
+ * @file
+ * DraggableViews taxonomy module provides taxonomy support for both order fields and parent fields.
+ */
+
+/**
+ * Display help and module information
+ * @param path which path of the site we're displaying help
+ * @param arg array that holds the current path as would be returned from arg() function
+ * @return help text for the path
+ */
+function draggableviews_taxonomy_help($path, $arg) {
+  $output = '';
+  switch ($path) {
+    case "admin/help#draggableviews_taxonomy":
+      $output  = '<p>'. t("Taxonomy support for both order fields and parent fields.") .'</p>';
+      $output .= '<p>'. t("Hint: Use Views relations to turn the Taxonomy: Term ID field into a parent field.") .'</p>';
+      break;
+  }
+  return $output;
+}
+
+/**
+ * Implementing hook_draggableviews_handlers
+ */
+function draggableviews_taxonomy_draggableviews_handlers() {
+  return array(
+    'taxonomy' => array(
+      'file' => 'draggableviews_handler_taxonomy.inc',
+      'title' => t('Taxonomy'),
+      'description' => 'Taxonomy handler.',
+      'handler' => 'draggableviews_handler_taxonomy',
+    ),
+  );
+}

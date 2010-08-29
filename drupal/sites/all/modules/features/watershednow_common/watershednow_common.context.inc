@@ -82,6 +82,12 @@ function watershednow_common_context_default_contexts() {
   $context->reactions = array(
     'block' => array(
       'blocks' => array(
+        'menu_block-1' => array(
+          'module' => 'menu_block',
+          'delta' => 1,
+          'region' => 'right',
+          'weight' => 0,
+        ),
         'boxes-customizable_footer' => array(
           'module' => 'boxes',
           'delta' => 'customizable_footer',

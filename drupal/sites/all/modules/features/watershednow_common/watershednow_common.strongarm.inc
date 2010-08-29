@@ -110,84 +110,6 @@ function watershednow_common_strongarm() {
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'content_extra_weights_donation';
-  $strongarm->value = array(
-    'title' => '-5',
-    'revision_information' => '2',
-    'author' => '3',
-    'options' => '4',
-    'comment_settings' => '5',
-    'menu' => '1',
-    'path' => '6',
-  );
-
-  $export['content_extra_weights_donation'] = $strongarm;
-  $strongarm = new stdClass;
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'content_extra_weights_event';
-  $strongarm->value = array(
-    'title' => '-5',
-    'revision_information' => '5',
-    'author' => '6',
-    'options' => '7',
-    'comment_settings' => '8',
-    'menu' => '4',
-    'path' => '9',
-    'signup_node_info' => '2',
-    'signup_node_list' => '3',
-  );
-
-  $export['content_extra_weights_event'] = $strongarm;
-  $strongarm = new stdClass;
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'content_extra_weights_page';
-  $strongarm->value = array(
-    'title' => '-5',
-    'revision_information' => '2',
-    'author' => '1',
-    'options' => '3',
-    'comment_settings' => '5',
-    'menu' => '0',
-    'path' => '4',
-  );
-
-  $export['content_extra_weights_page'] = $strongarm;
-  $strongarm = new stdClass;
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'content_extra_weights_take_action';
-  $strongarm->value = array(
-    'webform' => '1',
-    'title' => '-5',
-    'revision_information' => '4',
-    'author' => '3',
-    'options' => '5',
-    'comment_settings' => '7',
-    'menu' => '2',
-    'path' => '6',
-  );
-
-  $export['content_extra_weights_take_action'] = $strongarm;
-  $strongarm = new stdClass;
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'content_extra_weights_update';
-  $strongarm->value = array(
-    'title' => '-5',
-    'revision_information' => '2',
-    'author' => '1',
-    'options' => '3',
-    'comment_settings' => '5',
-    'menu' => '0',
-    'path' => '4',
-  );
-
-  $export['content_extra_weights_update'] = $strongarm;
-  $strongarm = new stdClass;
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
   $strongarm->name = 'content_schema_version';
   $strongarm->value = 6009;
 
@@ -210,7 +132,7 @@ function watershednow_common_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'context_reaction_block_disable_core';
-  $strongarm->value = '1';
+  $strongarm->value = '0';
 
   $export['context_reaction_block_disable_core'] = $strongarm;
   $strongarm = new stdClass;
@@ -402,6 +324,71 @@ function watershednow_common_strongarm() {
   $strongarm->value = '';
 
   $export['logintoboggan_redirect_on_register'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'menu_block_1_admin_title';
+  $strongarm->value = 'Section links';
+
+  $export['menu_block_1_admin_title'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'menu_block_1_depth';
+  $strongarm->value = '0';
+
+  $export['menu_block_1_depth'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'menu_block_1_expanded';
+  $strongarm->value = 0;
+
+  $export['menu_block_1_expanded'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'menu_block_1_follow';
+  $strongarm->value = 'active';
+
+  $export['menu_block_1_follow'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'menu_block_1_level';
+  $strongarm->value = '2';
+
+  $export['menu_block_1_level'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'menu_block_1_parent';
+  $strongarm->value = 'primary-links:0';
+
+  $export['menu_block_1_parent'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'menu_block_1_sort';
+  $strongarm->value = 0;
+
+  $export['menu_block_1_sort'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'menu_block_1_title_link';
+  $strongarm->value = 0;
+
+  $export['menu_block_1_title_link'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'menu_block_ids';
+  $strongarm->value = array(
+    0 => 1,
+  );
+
+  $export['menu_block_ids'] = $strongarm;
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;

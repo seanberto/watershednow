@@ -6,11 +6,12 @@
 function watershednow_helper_menu() {
   $items = array();
 
-  $items['admin/settings/dashboard'] = array(
+  $items['admin/dashboard'] = array(
     'title' => 'Watershed Now Dashboard',
     'page callback' => '_watershednow_helper_dashboard',
     'access arguments' => array('administer site configuration'),
     'type' => MENU_NORMAL_ITEM,
+    'weight' => -20,
   );
 
   return $items;
@@ -36,15 +37,14 @@ function watershednow_helper_form_alter(&$form, $form_state, $form_id) {
       $form['site_footer']['#access'] = FALSE;
       $form['anonymous']['#access'] = FALSE;
       break;
+    case 'system_themes_form':
+    // Hide cruddy themes that we don't want folks to use, as well as admin themes that are fixed.
+      $hidden_themes = array('bluemarine', 'chameleon', 'garland', 'minnelli', 'marvin', 'pushbutton', 'cube', 'rubik', 'tao');
+      foreach ($hidden_themes as $theme) {
+        unset($form[$theme]);
+        unset($form['status']['#options'][$theme]);
+        unset($form['theme_default']['#options'][$theme]);
+      }
+      break;
   }
-  // if ($form['#id'] == 'node-form') {
-  //   // Hiding the ridiculous body splitting shiz
-  //   if (!empty($form['body_field'])) {
-  //     $form['body_field']['teaser_js']['#type'] = 'hidden';
-  //     $form['body_field']['teaser_include']['#type'] = 'hidden';
-  //     if (!empty($form['body_field']['body']['#rows']) && $form['body_field']['body']['#rows'] > 10) {
-  //       $form['body_field']['body']['#rows'] = 10;
-  //     }
-  //   }
-  // }
 }

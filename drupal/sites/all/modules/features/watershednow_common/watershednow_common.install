@@ -1,0 +1,13 @@
+<?php
+
+/**
+ *  Implementation of hook_install().
+ */
+function watershednow_common_install() {
+  $module = 'watershednow_common';
+  $delta = '1';
+  $enabled_themes = list_themes(); // Array of enabled themes so that we enable this block for all themes.
+  foreach ($enabled_themes as $theme) {
+    db_query("INSERT INTO {blocks} (module, delta, theme) VALUES ('%s', '%s', '%s')", $module, $delta, $theme);
+  }
+}

@@ -1,0 +1,165 @@
+<?php
+// $Id: draggableviews.install,v 1.6.2.10 2010/01/11 10:36:31 sevi Exp $
+
+/**
+ * @file
+ * Draggableviews defines a new database schema
+ * for saving the collapsed/expand state of views.
+ */
+
+/**
+ * Implementation of hook_schema().
+ */
+function draggableviews_schema() {
+  $schema['draggableviews_collapsed'] = array(
+    'description' => t('The table that knows whether sub-lists are collapsed or expanded.'),
+    'fields' => array(
+      'uid' => array(
+        'description' => t('The user.'),
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'parent_nid' => array(
+        'description' => t('The parent node.'),
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'view_name' => array(
+        'description' => t('The view id.'),
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'collapsed' => array(
+        'description' => t('The state.'),
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+    ),
+    'primary key' => array('uid', 'parent_nid', 'view_name'),
+  );
+
+  $schema['draggableviews_structure'] = array(
+    'description' => t('The table saves the order settings of an draggableview.'),
+    'fields' => array(
+      'view_name' => array(
+        'description' => t('Makes the order unique for each view.'),
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'nid' => array(
+        'description' => t('The node id.'),
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'delta' => array(
+        'description' => t('Makes the order unique for each level.'),
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'args' => array(
+        'description' => t('Makes the order unique for a given set of arguments'),
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'value' => array(
+        'description' => t('The value.'),
+        'type' => 'int',
+        'unsigned' => FALSE,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+    ),
+    'primary key' => array('nid', 'view_name', 'delta', 'args'),
+  );
+  return $schema;
+}
+
+/**
+ * Implementation of hook_install().
+ */
+function draggableviews_install() {
+  drupal_install_schema('draggableviews');
+}
+
+/**
+ * Implementation of hook_uninstall().
+ */
+function draggableviews_uninstall() {
+  drupal_uninstall_schema('draggableviews');
+  variable_del('draggableviews_repaired_msg');
+}
+
+/**
+ * Add a schema for structure information
+ */
+function draggableviews_update_6300() {
+  $ret = array();
+  $schemas = draggableviews_schema();
+  db_create_table($ret, 'draggableviews_structure', $schemas['draggableviews_structure']);
+  return $ret;
+}
+
+/**
+ * Add a schema for structure information
+ */
+function draggableviews_update_6301() {
+  $ret = array();
+  db_drop_primary_key($ret, 'draggableviews_collapsed');
+  db_add_field($ret, 'draggableviews_collapsed', 'vid', array('type' => 'int', 'not null' => TRUE, 'unsigned' => TRUE));
+  db_add_primary_key($ret, 'draggableviews_collapsed', array('uid', 'vid', 'parent_nid'));
+  return $ret;
+}
+
+/**
+ * Alter schema to add arguments field
+ */
+function draggableviews_update_6400() {
+  $ret = array();
+  $ret[] = update_sql('ALTER TABLE {draggableviews_structure} DROP PRIMARY KEY');
+  db_add_field($ret, 'draggableviews_structure', 'args', array('type' => 'varchar', 'length' => 255));
+  db_add_primary_key($ret, 'draggableviews_structure', array('nid', 'vid', 'delta', 'args'));
+  return $ret;
+}
+
+/**
+ * Alter schema to add arguments field
+ */
+function draggableviews_update_6401() {
+  $ret = array();
+  db_drop_primary_key($ret, 'draggableviews_structure');
+  db_add_field($ret, 'draggableviews_structure', 'view_name', array('type' => 'varchar', 'length' => 32, 'not null' => TRUE, 'default' => ''));
+  // Update code.
+  $result = db_query('SELECT vid FROM {draggableviews_structure}');
+  while($row = db_fetch_object($result)) {
+    $view = db_fetch_object(db_query('SELECT name FROM {views_view} WHERE vid=%d', $row->vid));
+    db_query("UPDATE {draggableviews_structure} SET view_name='%s' WHERE vid=%d", $view->name, $row->vid);
+  }
+  db_drop_field($ret, 'draggableviews_structure', 'vid');
+  db_add_primary_key($ret, 'draggableviews_structure', array('nid', 'view_name', 'delta', 'args'));
+
+  db_drop_primary_key($ret, 'draggableviews_collapsed');
+  db_add_field($ret, 'draggableviews_collapsed', 'view_name', array('type' => 'varchar', 'length' => 32, 'not null' => TRUE, 'default' => ''));
+  // Update code.
+  $result = db_query('SELECT vid FROM {draggableviews_collapsed}');
+  while($row = db_fetch_object($result)) {
+    $view = db_fetch_object(db_query('SELECT name FROM {views_view} WHERE vid=%d', $row->vid));
+    db_query("UPDATE {draggableviews_collapsed} SET view_name='%s' WHERE vid=%d", $view->name, $row->vid);
+  }
+  db_drop_field($ret, 'draggableviews_collapsed', 'vid');
+  db_add_primary_key($ret, 'draggableviews_collapsed', array('uid', 'parent_nid', 'view_name'));
+
+  return $ret;
+}
