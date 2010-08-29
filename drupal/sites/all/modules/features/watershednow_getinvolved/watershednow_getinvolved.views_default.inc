@@ -484,7 +484,8 @@ function watershednow_getinvolved_views_default_views() {
     ),
   ));
   $handler->override_option('access', array(
-    'type' => 'none',
+    'type' => 'perm',
+    'perm' => 'administer simple payments',
   ));
   $handler->override_option('cache', array(
     'type' => 'none',
@@ -1204,7 +1205,7 @@ function watershednow_getinvolved_views_default_views() {
     'weight' => 0,
     'name' => 'navigation',
   ));
-  $handler = $view->new_display('page', 'Page', 'page_2');
+  $handler = $view->new_display('page', 'Page - Draggable', 'page_2');
   $handler->override_option('fields', array(
     'title' => array(
       'label' => 'Title',
@@ -1398,6 +1399,32 @@ function watershednow_getinvolved_views_default_views() {
     'weight' => 0,
     'name' => 'navigation',
   ));
+  $handler = $view->new_display('web_widgets', 'Web widget', 'web_widgets_1');
+  $handler->override_option('style_options', array(
+    'mission_description' => FALSE,
+    'description' => '',
+  ));
+  $handler->override_option('path', 'take_action/web_widget');
+  $handler->override_option('menu', array(
+    'type' => 'none',
+    'title' => '',
+    'description' => '',
+    'weight' => 0,
+    'name' => 'navigation',
+  ));
+  $handler->override_option('tab_options', array(
+    'type' => 'none',
+    'title' => '',
+    'description' => '',
+    'weight' => 0,
+    'name' => 'navigation',
+  ));
+  $handler->override_option('displays', array(
+    'page_1' => 'page_1',
+    'default' => 0,
+    'page_2' => 0,
+  ));
+  $handler->override_option('sitename_title', FALSE);
 
   $views[$view->name] = $view;
 

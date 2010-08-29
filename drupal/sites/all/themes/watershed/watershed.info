@@ -28,5 +28,6 @@ stylesheets[print][] = css/print.css
              
 settings[watershed_zen_tabs]             = 1
 settings[watershed_wireframe]            = 0
+settings[watershed_breadcrumb]           = 1
 settings[watershed_block_editing]        = 0
 settings[watershed_rebuild_registry]     = 0

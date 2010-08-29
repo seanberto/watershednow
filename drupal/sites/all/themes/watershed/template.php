@@ -10,6 +10,11 @@ if (theme_get_setting('watershed_zen_tabs')) {
   drupal_add_css( drupal_get_path('theme', 'watershed') .'/css/tabs.css', 'theme', 'screen');
 }
 
+// Add "wireframing CSS" to sketch out layout
+if (theme_get_setting('watershed_wireframe')) {
+  drupal_add_css(drupal_get_path('theme', 'watershed') .'/css/wireframing.css', 'theme');
+}
+
 /*
  *	 This function creates the body classes that are relative to each page
  *	
@@ -381,7 +386,7 @@ function watershed_id_safe($string) {
  */
 
 function watershed_breadcrumb($breadcrumb) {
-  if (!empty($breadcrumb)) {
+  if (theme_get_setting('watershed_breadcrumb') && !empty($breadcrumb)) {
     return '<div class="breadcrumb">'. implode(' » ', $breadcrumb) .'</div>';
   }
 }

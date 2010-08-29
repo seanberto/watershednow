@@ -8,17 +8,14 @@ function watershednow_helper_menu() {
 
   $items['admin/dashboard'] = array(
     'title' => 'Watershed Now Dashboard',
-    'page callback' => '_watershednow_helper_dashboard',
+    'page callback' => 'watershednow_helper_dashboard',
     'access arguments' => array('administer site configuration'),
     'type' => MENU_NORMAL_ITEM,
+    'file' => 'watershednow_helper.admin.inc',
     'weight' => -20,
   );
 
   return $items;
-}
-
-function _watershednow_helper_dashboard() {
-  return 'Placeholder';
 }
 
 /**

@@ -1,0 +1,17 @@
+#header, #footer { background-color: #efefef; }
+#sidebar-first {	background: #e7edff; }
+#sidebar-second {
+  min-height: 400px;
+  background: #ffd075;
+}
+#navigation { background-color: #feffa5; }
+
+#content-top {
+  min-height: 100px;
+  background-color: #CCFF88;
+}
+
+#content-inner {
+  min-height: 400px;
+  background-color: #bdf;
+}

@@ -19,6 +19,14 @@ function watershed_settings($saved_settings, $subtheme_defaults = array()) {
     '#description'   => t('Replace the default tabs by the Zen Tabs.'),
     '#prefix'        => '<strong>' . t('Zen Tabs:') . '</strong>',
   );
+  
+  $form['watershed_breadcrumb'] = array(
+    '#type'          => 'checkbox',
+    '#title'         => t('Enable Breadcrumb trail'),
+    '#default_value' => $settings['watershed_breadcrumb'],
+    '#description'   => t('Enable breadcrumb trail..'),
+    '#prefix'        => '<strong>' . t('Enable Breadcrumb:') . '</strong>',
+  );
 
   $form['watershed_wireframe'] = array(
     '#type'          => 'checkbox',

@@ -1,0 +1,225 @@
+<?php
+// $Id: web_widgets.module,v 1.1.2.5 2010/06/24 21:44:22 yhahn Exp $
+/**
+ * @file
+ *   web_widgets module main. Contains the views api hook and theming functions.
+ */
+
+/**
+ * Implementation of hook_views_api().
+ */
+function web_widgets_views_api() {
+  return array(
+    'api' => 2,
+    'path' => drupal_get_path('module', 'web_widgets') .'/views',
+  );
+}
+
+/**
+ * Implementation of hook_theme().
+ */
+function web_widgets_theme() {
+  $theme = array(
+    'web_widgets_embed_code' => array(
+      'arguments' => array('code' => NULL),
+    ),
+    'web_widgets_tracking_code' => array(
+      'arguments' => array('id' => NULL),
+    ),
+  );
+  $style_files = array_keys(web_widgets_get_styles());
+  foreach ($style_files as $style) {
+    require_once web_widgets_get_style_inc($style);
+    $definition = call_user_func('web_widgets_style_'. $style);
+    if (is_array($definition['theme'])) {
+      $theme += $definition['theme'];
+    }
+  }
+  return $theme;
+}
+
+/**
+ * Get a list of styles from the subdirectories.
+ *
+ * @return
+ *   Associative array where the keys of the array are style id strings and
+ *   the values are human readable style names.
+ */
+function web_widgets_get_styles() {
+  $styles = array();
+  $module_main = drupal_get_path('module', 'web_widgets');
+  $dir = opendir($module_main);
+  while (($style = readdir($dir)) !== FALSE) {
+    if (is_dir($module_main .'/'. $style) && is_file(web_widgets_get_style_inc($style))) {
+      require_once web_widgets_get_style_inc($style);
+      $def = 'web_widgets_style_'. $style;
+      $definition = $def();
+      $styles[$style] = isset($definition['human_readable']) ? $definition['human_readable'] : $style;
+    }
+  }
+  return $styles;
+}
+
+/**
+ * Renders the embed code for a given widget style.
+ *
+ * @param $style
+ *   One of the widget styles returned by widgets_get_styles().
+ * @param $path
+ *   Path that returns a widget.
+ * @param $width
+ *   Width of the widget (not respected by all styles).
+ * @param $height
+ *   Height of the widget (not respected by all styles).
+ * @return
+ *   HTML that displays the widget embed code.
+ */
+function web_widgets_render_embed_code($style, $path, $width, $height) {
+  require_once web_widgets_get_style_inc($style);
+  $code = theme('web_widgets_'. $style, $path, $width, $height);
+  return theme('web_widgets_embed_code', $code, $style);
+}
+
+/**
+ * Renders a given content as a widget. This function returns the
+ * actual content of a widget wrapped in style specific markup.
+ *
+ * Warning: you cannot use all styles. Exception is: uwa
+ *
+ * @param $style
+ *   One of the widget styles returned by widgets_get_styles().
+ * @param $content
+ *   Content to render as widget.
+ * @param $add_target
+ *   If TRUE, the anchors tags will be modified so they will open in new window.
+ * @return
+ *   HTML wrapped in style specific markup.
+ */
+function web_widgets_render_widget($style, $content, $title, $add_target = TRUE) {
+  require_once web_widgets_get_style_inc($style);
+  if ($add_target === TRUE) {
+    $content = _web_widgets_rewrite_anchors($content);
+  }
+  module_invoke_all('web_widgets_render_widget', $content, $title);
+  return theme('web_widgets_'. $style .'_wrapper', $content, $title);
+}
+
+/**
+ * Stores the fact that if we're inside web_widget processing.
+ */
+function web_widgets_inside_widget($in = NULL) {
+  static $base_path;
+  if ($in === TRUE) {
+    $base_path = $GLOBALS['base_path'];
+    $options = array(
+      'language' => new stdClass(),
+      'absolute' => TRUE,
+      'purl' => array('disabled' => TRUE),
+    );
+    $GLOBALS['base_path'] = url('', $options);
+  }
+  elseif ($in === FALSE) {
+    $GLOBALS['base_path'] = $base_path;
+  }
+  static $inside = FALSE;
+  if (is_null($in)) {
+    return $inside;
+  }
+  else {
+    $inside = $in;
+  }
+}
+
+/**
+ * Retrieve the path to a style include file.
+ *
+ * @param $style
+ *   One of the widget styles returned by widgets_get_styles().
+ * @return
+ *   Path to widget style .inc file relative to Drupal's root directory.
+ */
+function web_widgets_get_style_inc($style) {
+  return drupal_get_path('module', 'web_widgets') .'/'. $style .'/web_widgets_style_'. $style .'.inc';
+}
+
+/**
+ * Extend all anchor tags by target attribute.
+ * 
+ * @content
+ *   HTML code.
+ */
+function _web_widgets_rewrite_anchors($content) {
+  return preg_replace_callback('/(<a[^>]*>)/', "_web_widgets_add_attrib", $content);
+}
+
+/**
+ * Helper function for preg_replace_callback.
+ * @see _web_widgets_rewrite_anchors()
+ *
+ * @param $matches
+ *   Regexp matches
+ */
+function _web_widgets_add_attrib($matches) {
+  return str_replace('>', ' target="_top">', $matches[0]);
+}
+
+/**
+ * Shows the widget code to the user.
+ * Usually appears when the widget display is attached to a page display.
+ * In most cases you don't want to call this function directly, but use
+ * web_widgets_render_embed_code() to render embed code.
+ *
+ * @param $code
+ *   The code that can be copy/pasted from this site to another site.
+ * @param $style
+ *   The embed style of the widget.
+ * @return
+ *   HTML that displays the widget embed code.
+ */
+function theme_web_widgets_embed_code($code, $style) {
+  $styles = web_widgets_get_styles();
+  $style_name = $styles[$style];
+
+  static $num = 0;
+  $form = array(
+    '#type' => 'textfield',
+    '#title' => t('Embed code'),
+    '#description' => t('Copy and paste this code to your website.'),
+    '#id' => 'web_widgets_'. $num++,
+    '#name' => 'web_widgets',
+    '#value' => $code,
+    '#parents' => array('none'),
+    '#maxlength' => FALSE,
+  );
+  if ($style == 'uwa') {
+    $form['#type'] = 'item';
+    $form['#value'] = l($code, $code);
+    $form['#title'] = t('@style widget', array('@style' => $style_name));
+    $form['#description'] = t('Embed your widget on NetVibes or iGoogle.');
+  }
+  else if ($style == 'google_gadget') {
+    $form['#title'] = t('@style widget', array('@style' => $style_name));
+    $form['#description'] = t('Copy and paste this code to your iGoogle page.');
+  }
+  return drupal_render($form);
+}
+
+/**
+ * Enables the tracking of the 
+ *
+ * @param $id
+ *   Web Property ID from Google Analytics
+ */
+function theme_web_widgets_tracking_code($id) {
+  return '
+<script type="text/javascript">
+    var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+    document.write(unescape("%3Cscript src=\'" + gaJsHost + "google-analytics.com/ga.js\' type=\'text/javascript\'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+  try {
+    var pageTracker = _gat._getTracker("'. $id .'");
+    pageTracker._trackPageview();
+  } catch(err) {}
+</script>';
+}
