@@ -1,109 +1,54 @@
-# German translation of cck (6.x-2.5)
-# Copyright (c) 2009 by the German translation team
+# $Id: general.de.po,v 1.1.2.17 2009/06/16 17:19:19 hass Exp $
+#
+# LANGUAGE translation of Drupal (general)
+# Copyright YEAR NAME <EMAIL@ADDRESS>
 # Generated from files:
-#  text.module,v 1.95.2.30 2009/07/18 01:18:07 markuspetrux
-#  userreference.module,v 1.106.2.45 2009/07/19 13:03:57 markuspetrux
-#  content_copy_export_form.tpl.php,v 1.1.2.2 2008/10/28 02:11:49 yched
-#  content_copy.module,v 1.27.2.24 2009/08/02 21:04:53 markuspetrux
-#  content.admin.inc,v 1.181.2.74 2009/07/19 13:03:56 markuspetrux
-#  content-admin-field-overview-form.tpl.php,v 1.1.2.6 2009/06/26 18:02:45 yched
-#  fieldgroup.module,v 1.79.2.50 2009/07/12 20:50:31 markuspetrux
-#  content_handler_relationship.inc,v 1.1.2.3 2008/10/24 12:31:58 yched
-#  content_handler_sort.inc,v 1.1.2.6 2008/10/25 00:36:41 yched
-#  content_handler_field.inc,v 1.1.2.17 2009/07/22 20:46:55 markuspetrux
-#  content-admin-display-overview-form.tpl.php,v 1.1.2.3 2008/10/09 20:58:26 karens
-#  nodereference.module,v 1.138.2.59 2009/07/19 13:03:56 markuspetrux
-#  content.rules.inc,v 1.1.2.6 2009/04/30 09:56:07 fago
-#  nodereference.rules.inc,v 1.1.2.2 2008/10/06 15:02:03 karens
-#  userreference.rules.inc,v 1.1.2.2 2008/10/06 15:02:03 karens
-#  content_field.inc,v 1.1.2.9 2009/07/18 01:18:07 markuspetrux
-#  content_fieldgroup.inc,v 1.1.2.4 2009/07/18 01:18:07 markuspetrux
-#  node_from_noderef.inc,v 1.1.2.3 2009/07/20 17:34:17 markuspetrux
-#  user_from_userref.inc,v 1.1.2.3 2009/07/21 20:06:12 markuspetrux
-#  content.module,v 1.301.2.112 2009/08/03 20:40:26 markuspetrux
-#  number.module,v 1.91.2.36 2009/07/18 01:18:07 markuspetrux
-#  content.crud.inc,v 1.76.2.17 2009/07/14 22:17:05 yched
-#  content.info,v 1.6 2007/07/04 23:46:29 yched
-#  content.views.inc,v 1.1.2.26 2009/07/14 22:17:05 yched
-#  content_copy.info,v 1.6 2008/04/23 18:01:48 dww
-#  content_permissions.info,v 1.2 2008/04/23 18:01:52 dww
-#  fieldgroup.info,v 1.6.2.1 2008/09/22 18:25:21 karens
-#  nodereference.info,v 1.8 2008/04/23 18:02:07 dww
-#  number.info,v 1.7 2008/04/23 18:02:16 dww
-#  optionwidgets.info,v 1.7 2008/04/23 18:02:24 dww
-#  text.info,v 1.9 2008/04/23 18:02:31 dww
-#  userreference.info,v 1.8 2008/04/23 18:02:38 dww
-#  optionwidgets.module,v 1.69.2.24 2009/08/03 20:40:26 markuspetrux
+#  content.module,v 1.301.2.3 2008/06/14 02:24:00 yched
+#  nodereference.module,v 1.138.2.1 2008/06/04 12:56:58 karens
+#  content.crud.inc,v 1.76.2.1 2008/06/04 11:53:57 karens
+#  content_copy.module,v 1.27 2008/05/29 22:27:04 karens
+#  content.admin.inc,v 1.181.2.2 2008/06/14 02:50:08 yched
+#  example_field.php,v 1.5 2008/04/23 08:24:06 karens
+#  simple_field.php,v 1.5 2008/04/23 08:24:06 karens
+#  text.module,v 1.95.2.2 2008/06/14 02:50:08 yched
+#  userreference.module,v 1.106 2008/06/01 22:00:36 karens
+#  number.module,v 1.91.2.3 2008/06/14 02:50:08 yched
+#  fieldgroup.module,v 1.79.2.1 2008/06/13 21:41:06 yched
+#  optionwidgets.module,v 1.69 2008/06/03 12:25:45 karens
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: cck (6.x-2.5)\n"
-"POT-Creation-Date: 2009-12-06 15:33+0100\n"
-"PO-Revision-Date: 2009-12-06 23:01+0100\n"
-"Last-Translator: Thomas Zahreddin <tz@it-arts.org>\n"
-"Language-Team: German <tz@it-arts.org>\n"
+"Project-Id-Version: German translation of CCK\n"
+"POT-Creation-Date: 2009-06-16 19:00+0200\n"
+"PO-Revision-Date: 2009-06-16 19:15+0100\n"
+"Last-Translator: Alexander Haß\n"
+"Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
 "X-Poedit-Language: German\n"
-"X-Poedit-Country: Germany\n"
-"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-Country: GERMANY\n"
 
-#: content.module:501
-#: modules/content_multigroup/content_multigroup.node_form.inc:827
-msgid "This field is required."
-msgstr "Dieses Feld wird benötigt."
-
-#: content.module:508
-#: modules/content_multigroup/content_multigroup.node_form.inc:842
+#: content.module:499
+#: modules/content_multigroup/content_multigroup.module:903
 msgid "Order"
 msgstr "Reihenfolge"
 
-#: content.module:511
-#: includes/content.admin.inc:177;203;913
-#: modules/content_multigroup/content_multigroup.node_form.inc:844
-#: modules/fieldgroup/fieldgroup.module:206
-msgid "Remove"
-msgstr "Entfernen"
-
-#: content.module:1983
+#: content.module:1857
 #: modules/nodereference/nodereference.module:268
 msgid "Teaser"
 msgstr "Anrisstext"
 
-#: content.module:1987
+#: content.module:1861
 #: modules/nodereference/nodereference.module:263
 msgid "Full node"
 msgstr "Vollständiger Beitrag"
 
-#: content.module:615;622
-#: includes/content.crud.inc:646;690
+#: content.module:595;602;0
+#: includes/content.crud.inc:589;633
 msgid "content"
 msgstr "Inhalt"
-
-#: content.info:0
-#: includes/content.rules.inc:19;212
-#: includes/views/content.views.inc:181;262;315
-msgid "Content"
-msgstr "Inhalt"
-
-#: content.info:0
-msgid "Allows administrators to define new content types."
-msgstr "Erlaubt dem Administrator, neue Inhaltstypen zu definieren."
-
-#: content.info:0
-#: modules/content_copy/content_copy.info:0
-#: modules/content_multigroup/content_multigroup.info:0
-#: modules/content_permissions/content_permissions.info:0
-#: modules/fieldgroup/fieldgroup.info:0
-#: modules/nodereference/nodereference.info:0
-#: modules/number/number.info:0
-#: modules/optionwidgets/optionwidgets.info:0
-#: modules/text/text.info:0
-#: modules/userreference/userreference.info:0
-msgid "CCK"
-msgstr "CCK"
 
 #: includes/content.admin.inc:16
 #: modules/content_copy/content_copy_export_form.tpl.php:11
@@ -118,7 +63,7 @@ msgid "Type"
 msgstr "Typ"
 
 #: includes/content.admin.inc:16
-#: modules/fieldgroup/fieldgroup.module:155
+#: modules/fieldgroup/fieldgroup.module:158
 msgid "Description"
 msgstr "Beschreibung"
 
@@ -127,90 +72,94 @@ msgstr "Beschreibung"
 msgid "Operations"
 msgstr "Operationen"
 
-#: includes/content.admin.inc:252;296;326;822;1003
+#: includes/content.admin.inc:171;197;895
+#: modules/fieldgroup/fieldgroup.module:209
+msgid "Remove"
+msgstr "Entfernen"
+
+#: includes/content.admin.inc:244;285;315;804;985
+#: includes/panels/content_types/content_field.inc:97
 #: includes/views/handlers/content_handler_field.inc:56
 #: modules/content_copy/content_copy_export_form.tpl.php:10
-#: modules/fieldgroup/fieldgroup.module:114
+#: modules/fieldgroup/fieldgroup.module:117
 #: theme/content-admin-display-overview-form.tpl.php:13
 #: theme/content-admin-field-overview-form.tpl.php:10
 msgid "Label"
 msgstr "Bezeichnung"
 
-#: includes/content.admin.inc:366;691
-#: modules/fieldgroup/fieldgroup.module:174;360
+#: includes/content.admin.inc:344
+#: modules/content_multigroup/content_multigroup.module:126
+msgid "Type of group."
+msgstr "Typ der Gruppe."
+
+#: includes/content.admin.inc:352;677
+#: modules/fieldgroup/fieldgroup.module:177;341
 msgid "Save"
 msgstr "Speichern"
 
-#: includes/content.admin.inc:599;647
-#: includes/panels/content_types/content_field.inc:146
-#: modules/content_multigroup/content_multigroup.admin.inc:292
-#: modules/content_multigroup/panels/content_types/content_multigroup.inc:102
-#: modules/fieldgroup/panels/content_types/content_fieldgroup.inc:108
+#: includes/content.admin.inc:585;633
+#: includes/panels/content_types/content_field.inc:101
+#: modules/content_multigroup/content_multigroup.module:352
 msgid "Above"
 msgstr "Oberhalb"
 
-#: includes/content.admin.inc:600
-#: includes/panels/content_types/content_field.inc:147
+#: includes/content.admin.inc:586
+#: includes/panels/content_types/content_field.inc:102
 msgid "Inline"
 msgstr "Inline"
 
-#: includes/content.admin.inc:601;628;648;656
-#: modules/content_multigroup/content_multigroup.admin.inc:293
+#: includes/content.admin.inc:587;614;634;642
+#: modules/content_multigroup/content_multigroup.module:353;360
 msgid "<Hidden>"
 msgstr "<Versteckt>"
 
-#: includes/content.admin.inc:639;682
+#: includes/content.admin.inc:625;668
 #: theme/content-admin-display-overview-form.tpl.php:17
 msgid "Exclude"
 msgstr "Ausschließen"
 
-#: includes/content.admin.inc:913
-#: modules/fieldgroup/fieldgroup.module:206
+#: includes/content.admin.inc:895
+#: modules/fieldgroup/fieldgroup.module:209
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: includes/content.admin.inc:1051
-#: modules/fieldgroup/fieldgroup.module:142
+#: includes/content.admin.inc:1031
+#: modules/fieldgroup/fieldgroup.module:145
 msgid "Help text"
 msgstr "Hilfetext"
 
-#: includes/content.admin.inc:1101
-#: modules/number/number.module:124
+#: includes/content.admin.inc:1081
+#: modules/number/number.module:123
 #: modules/text/text.module:86
 msgid "PHP code"
 msgstr "PHP-Code"
 
-#: includes/content.admin.inc:1116;1129
+#: includes/content.admin.inc:1096;1109
 #: includes/content.rules.inc:99
-#: modules/number/number.module:131;140
+#: modules/number/number.module:130;139
 #: modules/text/text.module:93;102
 msgid "Code"
-msgstr "Code"
+msgstr "Kürzel"
 
-#: includes/content.admin.inc:1130
-#: modules/number/number.module:141
+#: includes/content.admin.inc:1110
+#: modules/number/number.module:140
 #: modules/text/text.module:103
 msgid "&lt;none&gt;"
 msgstr "&lt;Keine&gt;"
 
-#: includes/content.admin.inc:1131
-#: modules/number/number.module:142
+#: includes/content.admin.inc:1111
+#: modules/number/number.module:141
 #: modules/text/text.module:104
 msgid "You're not allowed to input PHP code."
 msgstr "Keine Berechtigung zur Eingabe von PHP-Code vorhanden."
 
-#: includes/content.admin.inc:1143
-#: modules/content_multigroup/content_multigroup.admin.inc:421
-msgid "Required"
-msgstr "Erforderlich"
-
-#: includes/content.admin.inc:1154
-#: modules/content_multigroup/content_multigroup.admin.inc:15
+#: includes/content.admin.inc:1134
+#: modules/content_multigroup/content_multigroup.module:73
 msgid "Unlimited"
-msgstr "Unbeschränkt"
+msgstr "Unbegrenzt"
 
-#: includes/content.admin.inc:1170
-#: modules/content_copy/content_copy.module:248
+#: includes/content.admin.inc:1151
+#: modules/content_copy/content_copy.module:251
 msgid "Save field settings"
 msgstr "Feldeinstellungen speichern"
 
@@ -221,128 +170,28 @@ msgstr "Feldeinstellungen speichern"
 msgid "Field"
 msgstr "Feld"
 
-#: includes/panels/content_types/content_field.inc:34;54
-#: modules/content_multigroup/panels/content_types/content_multigroup.inc:40;47
-#: modules/fieldgroup/panels/content_types/content_fieldgroup.inc:40;47
+#: includes/panels/content_types/content_field.inc:45
+#: modules/fieldgroup/fieldgroup.panels.inc:31
+#: modules/fieldgroup/panels/content_types/content_fieldgroup.inc:43
 #: modules/nodereference/panels/relationships/node_from_noderef.inc:17
 #: modules/userreference/panels/relationships/user_from_userref.inc:17
 msgid "Node"
 msgstr "Beitrag"
 
-#: includes/panels/content_types/content_field.inc:145
-#: modules/content_multigroup/panels/content_types/content_multigroup.inc:101
-#: modules/fieldgroup/panels/content_types/content_fieldgroup.inc:107
-msgid "Block title"
-msgstr "Blocktitel"
+#: modules/content_multigroup/content_multigroup.module:356
+#: modules/fieldgroup/fieldgroup.module:266
+msgid "none"
+msgstr "Keine"
 
-#: modules/content_copy/content_copy.info:0
-msgid "Content Copy"
-msgstr "Content Copy"
+#: modules/fieldgroup/fieldgroup.panels.inc:10;27
+#: modules/fieldgroup/panels/content_types/content_fieldgroup.inc:14
+msgid "Content fieldgroup"
+msgstr "Inhaltsfeldgruppe"
 
-#: modules/content_copy/content_copy.info:0
-msgid "Enables ability to import/export field definitions."
-msgstr "Aktiviert die Möglichkeit zum Importieren und Exportieren von Felddefinitionen."
-
-#: modules/content_multigroup/content_multigroup.admin.inc:296
-#: modules/content_multigroup/panels/content_types/content_multigroup.inc:113;127
-#: modules/fieldgroup/panels/content_types/content_fieldgroup.inc:119
-msgid "Simple"
-msgstr "Einfach"
-
-#: modules/content_multigroup/content_multigroup.admin.inc:297
-#: modules/content_multigroup/panels/content_types/content_multigroup.inc:114;128
-#: modules/fieldgroup/panels/content_types/content_fieldgroup.inc:120
-msgid "Fieldset"
-msgstr "Feldgruppe"
-
-#: modules/content_multigroup/content_multigroup.admin.inc:298
-#: modules/content_multigroup/panels/content_types/content_multigroup.inc:129
-msgid "Fieldset - collapsible"
-msgstr "Feldgruppe - Zusammenklappbar"
-
-#: modules/content_multigroup/content_multigroup.admin.inc:299
-#: modules/content_multigroup/panels/content_types/content_multigroup.inc:130
-msgid "Fieldset - collapsed"
-msgstr "Feldgruppe - Zusammengeklappt"
-
-#: modules/content_multigroup/content_multigroup.admin.inc:300
-#: modules/content_multigroup/panels/content_types/content_multigroup.inc:131
-msgid "Horizontal line"
-msgstr "Horizontale Line"
-
-#: modules/content_multigroup/content_multigroup.admin.inc:301
-#: modules/content_multigroup/panels/content_types/content_multigroup.inc:132
-msgid "Table - Single column"
-msgstr "Einspaltige Anzeige"
-
-#: modules/content_multigroup/content_multigroup.admin.inc:302
-#: modules/content_multigroup/panels/content_types/content_multigroup.inc:133
-msgid "Table - Multiple columns"
-msgstr "Tabelle: Mehrspaltig"
-
-#: modules/content_multigroup/content_multigroup.info:0
-msgid "Content Multigroup"
-msgstr "Inhalt Mehrfachgruppe"
-
-#: modules/content_multigroup/content_multigroup.info:0
-msgid "Combine multiple CCK fields into repeating field collections that work in unison."
-msgstr "Mehrere CCK Felder zu einer wiederkehrenden Sammlung kombinieren."
-
-#: modules/content_multigroup/panels/content_types/content_multigroup.inc:14
-#: modules/content_multigroup/views/content_multigroup.views.inc:62
-msgid "Content multigroup"
-msgstr "Inhalt Mehrfachgruppe"
-
-#: modules/content_multigroup/panels/content_types/content_multigroup.inc:46
-#: modules/fieldgroup/panels/content_types/content_fieldgroup.inc:46
-msgid "All fields from this field group on the referenced node."
-msgstr "Alle Felder dieser Feldgruppe auf dem referenzierten Beitrag."
-
-#: modules/content_multigroup/panels/content_types/content_multigroup.inc:109
-#: modules/fieldgroup/panels/content_types/content_fieldgroup.inc:115
-msgid "Configure how the field group label is going to be displayed. This option takes no effect when \"Override title\" option is enabled, the specified block title is displayed instead."
-msgstr ""
-
-#: modules/content_multigroup/panels/content_types/content_multigroup.inc:115
-#: modules/fieldgroup/panels/content_types/content_fieldgroup.inc:121
-msgid "Fieldset - Collapsible"
-msgstr "Feldgruppe - Zusammenklappbar"
-
-#: modules/content_multigroup/panels/content_types/content_multigroup.inc:116
-#: modules/fieldgroup/panels/content_types/content_fieldgroup.inc:122
-msgid "Fieldset - Collapsed"
-msgstr "Feldgruppe - Zusammengeklappt"
-
-#: modules/content_multigroup/panels/content_types/content_multigroup.inc:123
-#: modules/fieldgroup/panels/content_types/content_fieldgroup.inc:129
-msgid "This option allows you to configure the field group format."
-msgstr ""
-
-#: modules/content_multigroup/panels/content_types/content_multigroup.inc:145
-#: modules/fieldgroup/panels/content_types/content_fieldgroup.inc:134
-msgid "Empty text"
-msgstr "Leerer Text"
-
-#: modules/content_multigroup/panels/content_types/content_multigroup.inc:146
-#: modules/fieldgroup/panels/content_types/content_fieldgroup.inc:135
+#: modules/fieldgroup/fieldgroup.panels.inc:112
+#: modules/fieldgroup/panels/content_types/content_fieldgroup.inc:102
 msgid "Text to display if group has no data. Note that title will not display unless overridden."
-msgstr "Der bei einer Gruppe ohne Daten anzuzeigende Text. Der Titel wird nur angezeigt, wenn dieser überschrieben wird."
-
-#: modules/content_permissions/content_permissions.info:0
-msgid "Content Permissions"
-msgstr "Zugriffsrechte"
-
-#: modules/content_permissions/content_permissions.info:0
-msgid "Set field-level permissions for CCK fields."
-msgstr "Zugriffsberechtigungen für einzelne CCK-Felder setzen."
-
-#: modules/fieldgroup/fieldgroup.info:0
-msgid "Fieldgroup"
-msgstr "Feldgruppe"
-
-#: modules/fieldgroup/fieldgroup.info:0
-msgid "Create display groups for CCK fields."
-msgstr "Feldgruppen für CCK-Felder anlegen."
+msgstr "Der bei einer Gruppe ohne Daten anzuzeigende Text. Der Titel wird nur angezeigt, wenn dieser Übersteuert wird."
 
 #: modules/nodereference/nodereference.module:97
 #: modules/userreference/userreference.module:94
@@ -407,74 +256,45 @@ msgstr "Enthält"
 msgid "Size of textfield"
 msgstr "Größe des Textfeldes"
 
-#: modules/nodereference/nodereference.info:0
-msgid "Node Reference"
-msgstr "Beitragsreferenz"
-
-#: modules/nodereference/nodereference.info:0
-msgid "Defines a field type for referencing one node from another."
-msgstr "Definiert einen Feldtyp, um einen Beitrag von einem anderen zu referenzieren."
-
-#: modules/number/number.module:110
+#: modules/number/number.module:109
 #: modules/text/text.module:72
 msgid "Allowed values"
 msgstr "Zulässige Werte"
 
-#: modules/number/number.module:116
+#: modules/number/number.module:115
 #: modules/text/text.module:78
 msgid "Allowed values list"
 msgstr "Zulässige Werteliste"
 
-#: modules/number/number.module:120
+#: modules/number/number.module:119
 #: modules/text/text.module:82
 msgid "The possible values this field can contain. Enter one value per line, in the format key|label. The key is the value that will be stored in the database, and it must match the field storage type (%type). The label is optional, and the key will be used as the label if no label is specified.<br />Allowed HTML tags: @tags"
 msgstr "Die möglichen Werte, die dieses Feld enthalten kann. Geben Sie pro Zeile einen Wert im Format „Schlüssel|Bezeichnung“ ein. Der Schüssel ist der Wert, welcher in der Datenbank gespeichert wird und muss dem Datentyp (%type) des Feldes entsprechen. Der Schlüssel wird als Bezeichnung verwendet, wenn die optionale Bezeichnung nicht angegeben wird.<br />Zulässige HTML-Tags: @tags"
 
-#: modules/number/number.module:134
+#: modules/number/number.module:133
 #: modules/text/text.module:96
 msgid "Advanced usage only: PHP code that returns a keyed array of allowed values. Should not include &lt;?php ?&gt; delimiters. If this field is filled out, the array returned by this code will override the allowed values list above."
 msgstr "Nur erweiterte Verwendung: PHP-Code der ein Array mit Schlüsseln der zulässigen Werte zurückliefert. Dieser sollte keine &lt;?php ?&gt; Trennzeichen enthalten. Sollte dieses Feld ausgefüllt werden, wird das von diesem Code zurückgegebene Array die zulässige Werteliste oberhalb übersteuern."
 
-#: modules/number/number.module:142
+#: modules/number/number.module:141
 #: modules/text/text.module:104
 msgid "This PHP code was set by an administrator and will override the allowed values list above."
-msgstr "Dieser PHP-Code wurde von einem Administrator festgelegt und wird die obige zulässige Werteliste überschreiben."
+msgstr "Dieser PHP-Code wurde von einem Administrator festgelegt und wird die obige zulässige Werteliste übersteuern."
 
-#: modules/number/number.module:182
+#: modules/number/number.module:181
 #: modules/text/text.module:133
 msgid "@label (!name) - Allowed values"
 msgstr "@label (!name) - Zulässige Werte"
 
-#: modules/number/number.module:239
+#: modules/number/number.module:238
 #: modules/text/text.module:157
 msgid "%name: illegal value."
 msgstr "%name: ungültiger Wert."
 
-#: modules/number/number.module:357
+#: modules/number/number.module:356
 #: modules/text/text.module:257
 msgid "Text field"
 msgstr "Textfeld"
-
-#: modules/number/number.info:0
-msgid "Number"
-msgstr "Zahl"
-
-#: modules/number/number.info:0
-msgid "Defines numeric field types."
-msgstr "Definiert einen numerischen Feldtyp."
-
-#: modules/optionwidgets/optionwidgets.info:0
-msgid "Option Widgets"
-msgstr "Options-Steuerelemente"
-
-#: modules/optionwidgets/optionwidgets.info:0
-msgid "Defines selection, check box and radio button widgets for text and numeric fields."
-msgstr "Definiert Auswahlfeld-, Ankreuzfeld- und Auswahlknopf-Steuerelemente für Texte und numerische Felder."
-
-#: modules/text/text.module:41
-#: modules/text/text.info:0
-msgid "Text"
-msgstr "Text"
 
 #: modules/text/text.module:55;202
 #: modules/userreference/userreference.module:237
@@ -485,16 +305,4 @@ msgstr "Einfacher Text"
 #: modules/userreference/userreference.module:232
 msgid "Default"
 msgstr "Standard"
-
-#: modules/text/text.info:0
-msgid "Defines simple text field types."
-msgstr "Definiert einfache Typen von Textfeldern."
-
-#: modules/userreference/userreference.info:0
-msgid "User Reference"
-msgstr "Benutzerreferenz"
-
-#: modules/userreference/userreference.info:0
-msgid "Defines a field type for referencing a user from a node."
-msgstr "Definiert einen Feldtyp mit dem von einem Beitrag aus auf einen Benutzer verwiesen werden kann."
 

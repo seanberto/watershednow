@@ -1,4 +1,4 @@
-# $Id: general.sv.po,v 1.1.2.1.2.1 2009/08/25 11:21:43 markuspetrux Exp $
+# $Id: general.sv.po,v 1.1.2.2 2009/08/25 11:21:34 markuspetrux Exp $
 #
 # Swedish translation of Drupal (general)
 # Generated from files:

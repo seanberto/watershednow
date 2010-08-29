@@ -48,8 +48,6 @@ function watershednow_profile_modules() {
     'content',
     'number',
     'text',
-    'fieldgroup',
-    'content_multigroup',
     'filefield',
     'imagefield',
     'emfield',
@@ -69,6 +67,7 @@ function watershednow_profile_modules() {
 		'pathauto',
 		'token',
 		'transliteration',
+		'googleanalytics',
 		// User interface and WYSIWYG
 		'better_formats',
 		'insert',
@@ -85,11 +84,17 @@ function watershednow_profile_modules() {
 		'simple_donations',
 		// Event Sigups
 		'signup',
-		// Drupal Rivers features
+		// Open Layers
+		'openlayers',
+		'openlayers_cck',
+		'openlayers_views',
+		'openlayers_geocoder',
+		// Customizations
+		'watershednow_helper',
+		// Watershed Now features
 		'watershednow_common',
 		'watershednow_blog',
-		'watershednow_events',
-		'watershednow_action',
+		'watershednow_getinvolved',
 		'watershednow_map',
 		// Development (NOTE: Comment out for production installs.)
 		'devel',
@@ -97,6 +102,7 @@ function watershednow_profile_modules() {
 		'context_ui',
 		'feeds_ui',
 		'imagecache_ui',
+		'openlayers_ui',
 		'views_ui',
 		'variable_dump',
   );
@@ -152,23 +158,41 @@ function watershednow_profile_tasks(&$task, $url) {
   
   $page = new stdClass;
   $page->title = 'About Us';
-  $page->body = 'This is a placeholder about us page. Here readers can learn more about this website and the orgaization behind it.';
+  $page->body = 'This is a placeholder "about us" page. Here readers can learn more about this website and the orgaization behind it.';
   $page->format = 2;
-  $page->menu = 'secondary_links';
+  $page->menu = 'primary_links';
   $page->menuitem_description = 'Learn more about us';
+  $page->parent_title = NULL;
   $pages['about'] = $page;
   
   $page = new stdClass;
   $page->title = 'Staff';
   $page->body = 'This is a placeholder page about our staff';
   $page->format = 2;
-  $page->menu = 'secondary_links';
-  $page->menuitem_description = 'Get to know our staff.';
+  $page->menu = 'primary_links';
+  $page->menuitem_description = 'Get to know our staff. Feel free to rename or even delete this page. It\'s provided here to show how subpages work.';
+  $page->parent_title = 'About Us';
   $pages['staff'] = $page;
+  
+  $page = new stdClass;
+  $page->title = 'History';
+  $page->body = 'This is a placeholder page about our organizational history. Feel free to rename or even delete this page. It\'s provided here to show how subpages work.';
+  $page->format = 2;
+  $page->menu = 'primary_links';
+  $page->menuitem_description = 'Get to know our w.';
+  $page->parent_title = 'About Us';
+  $pages['history'] = $page;
   
   foreach ($pages as $node) {
     $created_node = install_create_node($node->title, $node->body);
-    install_menu_create_menu_item('node/' . $created_node->nid, $created_node->title, $node->menuitem_description, $node->menu);    
+    if (!empty($node->parent_title)) {
+      $parent_item = install_menu_get_items(NULL, $node->parent_title);
+      $plid = $parent_item[0]['mlid'];
+    } else {
+      $plid = 0;
+    }
+    
+    install_menu_create_menu_item('node/' . $created_node->nid, $created_node->title, $node->menuitem_description, $node->menu, $plid);    
   }
 
 	// Borrowing from openatrium.profile to set default theme to watershed.

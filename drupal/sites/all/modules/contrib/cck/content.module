@@ -1,5 +1,5 @@
 <?php
-// $Id: content.module,v 1.301.2.106.2.19 2010/08/25 18:34:05 karens Exp $
+// $Id: content.module,v 1.301.2.120 2010/08/11 23:27:10 pwolanin Exp $
 /**
  * @file
  * Allows administrators to associate custom fields to content types.
@@ -266,8 +266,8 @@ function content_load(&$node) {
  *
  */
 function content_validate(&$node, $form = NULL) {
-  _content_field_invoke_default('validate', $node, $form);
   _content_field_invoke('validate', $node, $form);
+  _content_field_invoke_default('validate', $node, $form);
 }
 
 /**
@@ -477,15 +477,6 @@ function content_add_more_submit_proxy($form, &$form_state) {
 }
 
 /**
- * Proxy function to call content_multiple_value_after_build(), because it might
- * not be included yet when the form is processed and invokes the callback.
- */
-function content_multiple_value_after_build_proxy($elements, &$form_state) {
-  module_load_include('inc', 'content', 'includes/content.node_form');
-  return content_multiple_value_after_build($elements, $form_state);
-}
-
-/**
  * Theme an individual form element.
  *
  * Combine multiple values into a table with drag-n-drop reordering.
@@ -505,11 +496,8 @@ function theme_content_multiple_values($element) {
         'data' => t('!title: !required', array('!title' => $element['#title'], '!required' => $required)),
         'colspan' => 2
       ),
-      array('data' => t('Order'), 'class' => 'content-multiple-weight-header'),
+      t('Order'),
     );
-    if ($field['multiple'] == 1) {
-      $header[] = array('data' => '<span>'. t('Remove') .'</span>', 'class' => 'content-multiple-remove-header');
-    }
     $rows = array();
 
     // Sort items according to '_weight' (needed when the form comes back after
@@ -517,31 +505,24 @@ function theme_content_multiple_values($element) {
     $items = array();
     foreach (element_children($element) as $key) {
       if ($key !== $element['#field_name'] .'_add_more') {
-        $items[$element[$key]['#delta']] = &$element[$key];
+        $items[] = &$element[$key];
       }
     }
-    uasort($items, '_content_sort_items_value_helper');
+    usort($items, '_content_sort_items_value_helper');
 
     // Add the items as table rows.
-    foreach ($items as $delta => $item) {
+    foreach ($items as $key => $item) {
       $item['_weight']['#attributes']['class'] = $order_class;
       $delta_element = drupal_render($item['_weight']);
-      if ($field['multiple'] == 1) {
-        $remove_element = drupal_render($item['_remove']);
-      }
       $cells = array(
         array('data' => '', 'class' => 'content-multiple-drag'),
         drupal_render($item),
         array('data' => $delta_element, 'class' => 'delta-order'),
       );
-      $row_class = 'draggable';
-      if ($field['multiple'] == 1) {
-        if (!empty($item['_remove']['#default_value'])) {
-          $row_class .= ' content-multiple-removed-row';
-        }
-        $cells[] = array('data' => $remove_element, 'class' => 'content-multiple-remove-cell');
-      }
-      $rows[] = array('data' => $cells, 'class' => $row_class);
+      $rows[] = array(
+        'data' => $cells,
+        'class' => 'draggable',
+      );
     }
 
     $output .= theme('table', $header, $rows, array('id' => $table_id, 'class' => 'content-multiple-table'));
@@ -549,7 +530,6 @@ function theme_content_multiple_values($element) {
     $output .= drupal_render($element[$element['#field_name'] .'_add_more']);
 
     drupal_add_tabledrag($table_id, 'order', 'sibling', $order_class);
-    drupal_add_js(drupal_get_path('module', 'content') .'/js/content.node_form.js');
   }
   else {
     foreach (element_children($element) as $key) {
@@ -706,14 +686,12 @@ function content_associate_fields($module) {
 function content_field($op, &$node, $field, &$items, $teaser, $page) {
   switch ($op) {
     case 'validate':
-      // If the field is configured for multiple values and these are handled
-      // by content module, we need to filter out items flagged for removal and
-      // count non-empty items to enforce field requirement settings.
-      if ($field['multiple'] >= 1 && content_handle('widget', 'multiple values', $field) == CONTENT_HANDLE_CORE) {
-        module_load_include('inc', 'content', 'includes/content.node_form');
-        // Note that the $teaser argument for nodeapi('validate') is the $form.
-        content_multiple_value_nodeapi_validate($node, $field, $items, $teaser);
-      }
+      // TODO: here we could validate that the number of multiple data is correct ?
+      // We're controlling the number of fields to fill out and saving empty
+      // ones if a specified number is requested, so no reason to do any validation
+      // here right now, but if later create a method to indicate whether
+      // 'required' means all values must be filled out, we can come back
+      // here and check that they're not empty.
       break;
 
     case 'presave':
@@ -744,7 +722,7 @@ function content_field($op, &$node, $field, &$items, $teaser, $page) {
         $items = _content_sort_items($field, $items);
       }
 
-      // Filter out items flagged for removal.
+      // Filter out empty values.
       $items = content_set_empty($field, $items);
 
       break;
@@ -752,14 +730,14 @@ function content_field($op, &$node, $field, &$items, $teaser, $page) {
     case 'view':
       $addition = array();
 
-      // Previewed nodes bypass the 'presave' op, so we need to do some massaging.
-      if ($node->build_mode == NODE_BUILD_PREVIEW) {
+      // Previewed nodes bypass the 'presave' op, so we need to some massaging.
+      if ($node->build_mode == NODE_BUILD_PREVIEW && content_handle('widget', 'multiple values', $field) == CONTENT_HANDLE_CORE) {
         if (content_handle('widget', 'multiple values', $field) == CONTENT_HANDLE_CORE) {
           // Reorder items to account for drag-n-drop reordering.
           $items = _content_sort_items($field, $items);
         }
 
-        // Filter out items flagged for removal.
+        // Filter out empty values.
         $items = content_set_empty($field, $items);
       }
 
@@ -798,10 +776,10 @@ function content_field($op, &$node, $field, &$items, $teaser, $page) {
         );
 
         // Fill-in items.
-        foreach (array_keys($items) as $weight => $delta) {
+        foreach ($items as $delta => $item) {
           $element['items'][$delta] = array(
-            '#item' => $items[$delta],
-            '#weight' => $weight,
+            '#item' => $item,
+            '#weight' => $delta,
           );
         }
 
@@ -910,7 +888,7 @@ function content_field($op, &$node, $field, &$items, $teaser, $page) {
 }
 
 /**
- * Helper function to filter out items flagged for removal.
+ * Helper function to filter out empty values.
  *
  * On order to keep marker rows in the database, the function ensures
  * that the right number of 'all columns NULL' values is kept.
@@ -921,22 +899,20 @@ function content_field($op, &$node, $field, &$items, $teaser, $page) {
  *   returns filtered and adjusted item array
  */
 function content_set_empty($field, $items) {
-  // Prepare an empty item.
-  $empty = array();
-  foreach (array_keys($field['columns']) as $column) {
-    $empty[$column] = NULL;
-  }
-
-  // Filter out items flagged for removal.
+  // Filter out empty values.
   $filtered = array();
   $function = $field['module'] .'_content_is_empty';
   foreach ((array) $items as $delta => $item) {
-    if (empty($item['_remove'])) {
-      $filtered[] = ($function($item, $field) ? $empty : $item);
+    if (!$function($item, $field)) {
+      $filtered[] = $item;
     }
   }
 
   // Make sure we store the right number of 'empty' values.
+  $empty = array();
+  foreach (array_keys($field['columns']) as $column) {
+    $empty[$column] = NULL;
+  }
   $pad = $field['multiple'] > 1 ? $field['multiple'] : 1;
   $filtered = array_pad($filtered, $pad, $empty);
 
@@ -951,7 +927,7 @@ function _content_sort_items($field, $items) {
   if ($field['multiple'] >= 1 && isset($items[0]['_weight'])) {
     usort($items, '_content_sort_items_helper');
     foreach ($items as $delta => $item) {
-      if (is_array($item) && isset($item['_weight'])) {
+      if (is_array($items[$delta])) {
         unset($items[$delta]['_weight']);
       }
     }
@@ -1032,27 +1008,7 @@ function content_storage($op, $node) {
             if (!isset($additions[$field_name])) {
               $additions[$field_name] = array();
             }
-
-            // Preserve deltas when loading items from database.
-            if (isset($row['delta'])) {
-              // Make sure multiple value fields have consecutive deltas.
-              if ($row['delta'] > 0 && !isset($additions[$field_name][$row['delta']-1])) {
-                $empty = array();
-                foreach (array_keys($db_info['columns']) as $column) {
-                  $empty[$column] = NULL;
-                }
-                $next_delta = !empty($additions[$field_name]) ? (max(array_keys($additions[$field_name])) + 1) : 0;
-                for ($delta = $next_delta; $delta < $row['delta']; $delta++) {
-                  if (!isset($additions[$field_name][$delta])) {
-                    $additions[$field_name][$delta] = $empty;
-                  }
-                }
-              }
-              $additions[$field_name][$row['delta']] = $item;
-            }
-            else {
-              $additions[$field_name][] = $item;
-            }
+            $additions[$field_name][] = $item;
           }
         }
       }
@@ -1109,34 +1065,14 @@ function content_storage($op, $node) {
           if ($op == 'update') {
             db_query('DELETE FROM {'. $db_info['table'] .'} WHERE vid = %d', $node->vid);
           }
-          // Collect records for non-empty items.
-          $function = $field['module'] .'_content_is_empty';
-          $records = array();
           foreach ($node->$field['field_name'] as $delta => $item) {
-            if (!$function($item, $field)) {
-              $record = array();
-              foreach ($db_info['columns'] as $column => $attributes) {
-                $record[$attributes['column']] = $item[$column];
-              }
-              $record['nid'] = $node->nid;
-              $record['vid'] = $node->vid;
-              $record['delta'] = $delta;
-              $records[] = $record;
-            }
-          }
-          // If there was no non-empty item, insert delta 0 with NULL values.
-          if (empty($records)) {
             $record = array();
             foreach ($db_info['columns'] as $column => $attributes) {
-              $record[$attributes['column']] = NULL;
+              $record[$attributes['column']] = $item[$column];
             }
             $record['nid'] = $node->nid;
             $record['vid'] = $node->vid;
-            $record['delta'] = 0;
-            $records[] = $record;
-          }
-          // Insert the collected records for this field into database.
-          foreach ($records as $record) {
+            $record['delta'] = $delta;
             content_write_record($db_info['table'], $record);
           }
         }
@@ -2553,7 +2489,7 @@ function content_content_extra_fields($type_name) {
       'description' => t('Comment module form.'),
       'weight' => 30
     );
-  }
+  }  
   if (module_exists('locale') && variable_get("language_content_type_$type_name", 0)) {
     $extra['language'] = array(
       'label' => t('Language'),
@@ -2738,32 +2674,6 @@ function content_inactive_fields($type_name = NULL) {
     if (!in_array($field['field_name'], $active)) {
       $inactive[$field['type_name']][$field['field_name']] = content_field_instance_expand($field);
     }
-  }
-  if (!empty($type_name)) {
-    return $inactive[$type_name];
-  }
-  return $inactive;
-}
-
-/**
- * Helper function to identify inactive instances.
- * This will be the same results as content_inactive_fields(),
- * EXCEPT that his function will return inactive instances even 
- * if the fields have other (shared) instances that are still active.
- */
-function content_inactive_instances($type_name = NULL) {
-  module_load_include('inc', 'content', 'includes/content.crud');
-  if (!empty($type_name)) {
-    $param = array('type_name' => $type_name);
-    $inactive = array($type_name => array());
-  }
-  else {
-    $param = array();
-    $inactive = array();
-  }
-  $all = content_field_instance_read($param, TRUE);
-  foreach ($all as $field) {
-    $inactive[$field['type_name']][$field['field_name']] = content_field_instance_expand($field);
   }
   if (!empty($type_name)) {
     return $inactive[$type_name];

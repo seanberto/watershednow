@@ -1,18 +1,18 @@
-# $Id: modules-optionwidgets.pot,v 1.1.2.11.2.1 2009/08/17 12:27:13 markuspetrux Exp $
+# $Id: modules-optionwidgets.pot,v 1.1.2.13 2009/08/17 12:26:44 markuspetrux Exp $
 #
 # LANGUAGE translation of Drupal (modules-optionwidgets)
 # Copyright YEAR NAME <EMAIL@ADDRESS>
 # Generated from files:
-#  optionwidgets.module,v 1.69.2.21 2008/10/25 02:04:44 yched
+#  optionwidgets.module,v 1.69.2.23 2009/03/18 21:00:58 yched
 #  optionwidgets.info,v 1.7 2008/04/23 18:02:24 dww
-#  text.module,v 1.95.2.28 2008/12/30 00:00:54 yched
+#  text.module,v 1.95.2.29 2009/04/29 20:51:53 karens
 #  text.info,v 1.9 2008/04/23 18:02:31 dww
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2009-03-09 22:08+0100\n"
+"POT-Creation-Date: 2009-06-16 19:00+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -41,15 +41,15 @@ msgstr ""
 msgid "Single on/off checkbox"
 msgstr ""
 
-#: modules/optionwidgets/optionwidgets.module:326
+#: modules/optionwidgets/optionwidgets.module:331
 msgid "%name: this field cannot hold more than @count values."
 msgstr ""
 
-#: modules/optionwidgets/optionwidgets.module:411
+#: modules/optionwidgets/optionwidgets.module:416
 msgid "N/A"
 msgstr ""
 
-#: modules/optionwidgets/optionwidgets.module:415
+#: modules/optionwidgets/optionwidgets.module:420
 msgid "- None -"
 msgstr ""
 

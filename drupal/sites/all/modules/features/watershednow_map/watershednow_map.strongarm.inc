@@ -74,7 +74,7 @@ function watershednow_map_strongarm() {
   $strongarm->name = 'content_extra_weights_map_feature';
   $strongarm->value = array(
     'title' => '-3',
-    'body_field' => '-2',
+    'body_field' => '-1',
     'revision_information' => '3',
     'author' => '4',
     'options' => '5',

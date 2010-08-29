@@ -1,16 +1,16 @@
-# $Id: modules-text.pot,v 1.1.2.11 2009/03/09 21:50:00 hass Exp $
+# $Id: modules-text.pot,v 1.1.2.12 2009/06/16 17:05:12 hass Exp $
 #
 # LANGUAGE translation of Drupal (modules-text)
 # Copyright YEAR NAME <EMAIL@ADDRESS>
 # Generated from files:
-#  text.module,v 1.95.2.28 2008/12/30 00:00:54 yched
+#  text.module,v 1.95.2.29 2009/04/29 20:51:53 karens
 #  text.info,v 1.9 2008/04/23 18:02:31 dww
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2009-03-09 22:08+0100\n"
+"POT-Creation-Date: 2009-06-16 19:00+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -23,39 +23,35 @@ msgstr ""
 msgid "Store text in the database."
 msgstr ""
 
-#: modules/text/text.module:54
+#: modules/text/text.module:55
 msgid "Filtered text (user selects input format)"
 msgstr ""
 
-#: modules/text/text.module:57
+#: modules/text/text.module:58
 msgid "Text processing"
 msgstr ""
 
-#: modules/text/text.module:63
+#: modules/text/text.module:64
 msgid "Maximum length"
 msgstr ""
 
-#: modules/text/text.module:67
+#: modules/text/text.module:68
 msgid "The maximum length of the field in characters. Leave blank for an unlimited size."
 msgstr ""
 
-#: modules/text/text.module:159
+#: modules/text/text.module:160
 msgid "%name: the value may not be longer than %max characters."
 msgstr ""
 
-#: modules/text/text.module:206
+#: modules/text/text.module:207
 msgid "Trimmed"
 msgstr ""
 
-#: modules/text/text.module:264
+#: modules/text/text.module:265
 msgid "Text area (multiple rows)"
 msgstr ""
 
-#: modules/text/text.module:316
-msgid "Size of textfield"
-msgstr ""
-
-#: modules/text/text.module:325
+#: modules/text/text.module:326
 msgid "Rows"
 msgstr ""
 

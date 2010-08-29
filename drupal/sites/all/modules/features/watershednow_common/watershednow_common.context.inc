@@ -29,6 +29,46 @@ function watershednow_common_context_default_contexts() {
   $context = new stdClass;
   $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
   $context->api_version = 3;
+  $context->name = 'sidebar_content';
+  $context->description = 'Add sidebar content to applicable nodes.';
+  $context->tag = 'section';
+  $context->conditions = array(
+    'node' => array(
+      'values' => array(
+        'donation' => 'donation',
+        'event' => 'event',
+        'page' => 'page',
+        'take_action' => 'take_action',
+        'update' => 'update',
+      ),
+      'options' => array(
+        'node_form' => '0',
+      ),
+    ),
+  );
+  $context->reactions = array(
+    'block' => array(
+      'blocks' => array(
+        'watershednow_common-0' => array(
+          'module' => 'watershednow_common',
+          'delta' => 0,
+          'region' => 'right',
+          'weight' => 0,
+        ),
+      ),
+    ),
+  );
+  $context->condition_mode = 0;
+
+  // Translatables
+  // Included for use with string extractors like potx.
+  t('Add sidebar content to applicable nodes.');
+  t('section');
+
+  $export['sidebar_content'] = $context;
+  $context = new stdClass;
+  $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
+  $context->api_version = 3;
   $context->name = 'sitewide';
   $context->description = 'Sitewide context triggered on all pages';
   $context->tag = 'sitewide';

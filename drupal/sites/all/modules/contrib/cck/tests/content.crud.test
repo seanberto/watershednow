@@ -1,5 +1,5 @@
 <?php
-// $Id: content.crud.test,v 1.4.2.16.2.1 2009/06/06 23:44:57 markuspetrux Exp $
+// $Id: content.crud.test,v 1.4.2.16 2008/12/08 12:41:08 yched Exp $
 
 // TODO:
 // - Test search indexing
@@ -1234,70 +1234,3 @@ class ContentOptionWidgetTest extends ContentCrudTestCase {
 
 }
 
-class ContentEmptyDeltaTest extends ContentCrudTestCase {
-  function getInfo() {
-    return array(
-      'name' => t('Empty deltas'),
-      'description' => t('Test leaving empty values on a multivalue field and then removing them.'),
-      'group' => t('CCK'),
-    );
-  }
-
-  function setUp() {
-    parent::setUp();
-    $this->loginWithPermissions();
-    $this->acquireContentTypes(1);
-  }
-
-  function testEmptyTextField() {
-    // Create a content type with a multivalue text field.
-    $type = $this->content_types[0];
-    $type_url = str_replace('_', '-', $type->type);
-    $value1 = $this->randomName(5);
-    $value2 = $this->randomName(5);
-    $value3 = $this->randomName(5);
-    $field = $this->createFieldText(array('text_processing' => 0, 'multiple' => 1));
-    $field_name = $field['field_name'];
-
-    // Create a node with three values set.
-    $edit = array(
-      'title' => $this->randomName(20),
-      'body' => $this->randomName(20),
-      'type' => $type->name,
-    );
-    $edit[$field_name][0]['value'] = $value1;
-    $edit[$field_name][1]['value'] = $value2;
-    $edit[$field_name][2]['value'] = $value3;
-    $node = $this->drupalCreateNode($edit);
-    $max_delta = max(array_keys($node->{$field_name}));
-    $this->assertEqual($max_delta, 2, 'Three values saved, highest delta is 2');
-    $this->drupalGet('node/'. $node->nid);
-    $this->assertText($value1, 'First value displayed');
-    $this->assertText($value2, 'Second value displayed');
-    $this->assertText($value3, 'Third value displayed');
-
-    // Set second value to an empty string.
-    $node->{$field_name}[1]['value'] = '';
-    node_save($node);
-    $node = node_load($node->nid, NULL, TRUE);
-    $this->assertIdentical($node->{$field_name}[1]['value'], NULL, 'Second value is empty');
-    $max_delta = max(array_keys($node->{$field_name}));
-    $this->assertEqual($max_delta, 2, 'Three values saved, highest delta is 2');
-    $this->drupalGet('node/'. $node->nid);
-    $this->assertText($value1, 'First value displayed');
-    $this->assertNoText($value2, 'Second value not displayed');
-    $this->assertText($value3, 'Third value displayed');
-
-    // Remove the second value.
-    $node->{$field_name}[1]['_remove'] = 1;
-    node_save($node);
-    $node = node_load($node->nid, NULL, TRUE);
-    $this->assertEqual($node->{$field_name}[1]['value'], $value3, 'Third value has moved to delta 1');
-    $max_delta = max(array_keys($node->{$field_name}));
-    $this->assertEqual($max_delta, 1, 'Two values saved, highest delta is 1');
-    $this->drupalGet('node/'. $node->nid);
-    $this->assertText($value1, 'First value displayed');
-    $this->assertNoText($value2, 'Second value not displayed');
-    $this->assertText($value3, 'Third value displayed');
-  }
-}

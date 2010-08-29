@@ -1,13 +1,13 @@
-# $Id: content.pot,v 1.1.2.10 2009/03/09 21:49:59 hass Exp $
+# $Id: content.pot,v 1.1.2.11 2009/06/16 17:05:11 hass Exp $
 #
 # LANGUAGE translation of Drupal (root)
 # Copyright YEAR NAME <EMAIL@ADDRESS>
 # Generated from files:
-#  content.module,v 1.301.2.99 2009/03/05 22:58:57 karens
-#  content.install,v 1.85.2.30 2008/11/07 16:24:58 yched
+#  content.module,v 1.301.2.106 2009/06/02 12:24:04 yched
+#  content.install,v 1.85.2.31 2009/04/23 18:37:10 yched
 #  content.info,v 1.6 2007/07/04 23:46:29 yched
-#  content.rules.inc,v 1.1.2.4 2008/10/24 11:11:48 fago
-#  content.views.inc,v 1.1.2.22 2009/01/14 13:19:47 karens
+#  content.rules.inc,v 1.1.2.6 2009/04/30 09:56:07 fago
+#  content.views.inc,v 1.1.2.25 2009/04/11 14:50:53 yched
 #  content_copy.info,v 1.6 2008/04/23 18:01:48 dww
 #  content_permissions.info,v 1.2 2008/04/23 18:01:52 dww
 #  fieldgroup.info,v 1.6.2.1 2008/09/22 18:25:21 karens
@@ -21,7 +21,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2009-03-09 22:08+0100\n"
+"POT-Creation-Date: 2009-06-16 19:00+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -66,127 +66,131 @@ msgstr ""
 msgid "For more information, see the online handbook entry for <a href=\"@handbook-cck\">CCK</a> or the <a href=\"@project-cck\">CCK project page</a>."
 msgstr ""
 
-#: content.module:486
+#: content.module:492
 msgid "This field is required."
 msgstr ""
 
-#: content.module:490
+#: content.module:496
 msgid "!title: !required"
 msgstr ""
 
-#: content.module:1843
+#: content.module:1854
 msgid "Basic"
 msgstr ""
 
-#: content.module:1856;1859
+#: content.module:1867;1870
 msgid "RSS"
 msgstr ""
 
-#: content.module:1869
+#: content.module:1880
 msgid "Search"
 msgstr ""
 
-#: content.module:1872
+#: content.module:1883
 msgid "Search Index"
 msgstr ""
 
-#: content.module:1876
+#: content.module:1887
 msgid "Search Result"
 msgstr ""
 
-#: content.module:2324;2331
+#: content.module:1897;1900
+msgid "Print"
+msgstr ""
+
+#: content.module:2348;2355
 msgid "Node module form."
 msgstr ""
 
-#: content.module:2338
+#: content.module:2362
 msgid "Language"
 msgstr ""
 
-#: content.module:2339
+#: content.module:2363
 msgid "Locale module form."
 msgstr ""
 
-#: content.module:2345
+#: content.module:2369
 msgid "Menu settings"
 msgstr ""
 
-#: content.module:2346
+#: content.module:2370
 msgid "Menu module form."
 msgstr ""
 
-#: content.module:2352
+#: content.module:2376
 msgid "Taxonomy"
 msgstr ""
 
-#: content.module:2353
+#: content.module:2377
 msgid "Taxonomy module form."
 msgstr ""
 
-#: content.module:2359
+#: content.module:2383
 msgid "Book"
 msgstr ""
 
-#: content.module:2360
+#: content.module:2384
 msgid "Book module form."
 msgstr ""
 
-#: content.module:2366
+#: content.module:2390
 msgid "Poll title"
 msgstr ""
 
-#: content.module:2367
+#: content.module:2391
 msgid "Poll module title."
 msgstr ""
 
-#: content.module:2371
+#: content.module:2395
 msgid "Poll choices"
 msgstr ""
 
-#: content.module:2372
+#: content.module:2396
 msgid "Poll module choices."
 msgstr ""
 
-#: content.module:2376
+#: content.module:2400
 msgid "Poll settings"
 msgstr ""
 
-#: content.module:2377
+#: content.module:2401
 msgid "Poll module settings."
 msgstr ""
 
-#: content.module:2383
+#: content.module:2407
 msgid "File attachments"
 msgstr ""
 
-#: content.module:2384
+#: content.module:2408
 msgid "Upload module form."
 msgstr ""
 
-#: content.module:589
+#: content.module:595
 msgid "Updating field type %type with module %module."
 msgstr ""
 
-#: content.module:596
+#: content.module:602
 msgid "Updating widget type %type with module %module."
 msgstr ""
 
-#: content.module:63
+#: content.module:60
 msgid "Use PHP input for field settings (dangerous - grant with care)"
 msgstr ""
 
-#: content.module:82
+#: content.module:79
 msgid "Fields"
 msgstr ""
 
-#: content.module:104
+#: content.module:101
 msgid "Manage fields"
 msgstr ""
 
-#: content.module:113
+#: content.module:110
 msgid "Display fields"
 msgstr ""
 
-#: content.module:144
+#: content.module:141
 msgid "Remove field"
 msgstr ""
 
@@ -218,7 +222,7 @@ msgstr ""
 msgid "CCK integration with Views module requires Views 6.x-2.0-rc2 or greater."
 msgstr ""
 
-#: content.info:0 includes/content.rules.inc:19;200 includes/views/content.views.inc:178;254
+#: content.info:0 includes/content.rules.inc:19;212 includes/views/content.views.inc:180;261
 msgid "Content"
 msgstr ""
 

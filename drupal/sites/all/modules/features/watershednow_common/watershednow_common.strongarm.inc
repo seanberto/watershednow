@@ -110,6 +110,38 @@ function watershednow_common_strongarm() {
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'content_extra_weights_donation';
+  $strongarm->value = array(
+    'title' => '-5',
+    'revision_information' => '2',
+    'author' => '3',
+    'options' => '4',
+    'comment_settings' => '5',
+    'menu' => '1',
+    'path' => '6',
+  );
+
+  $export['content_extra_weights_donation'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'content_extra_weights_event';
+  $strongarm->value = array(
+    'title' => '-5',
+    'revision_information' => '5',
+    'author' => '6',
+    'options' => '7',
+    'comment_settings' => '8',
+    'menu' => '4',
+    'path' => '9',
+    'signup_node_info' => '2',
+    'signup_node_list' => '3',
+  );
+
+  $export['content_extra_weights_event'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'content_extra_weights_page';
   $strongarm->value = array(
     'title' => '-5',
@@ -122,6 +154,37 @@ function watershednow_common_strongarm() {
   );
 
   $export['content_extra_weights_page'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'content_extra_weights_take_action';
+  $strongarm->value = array(
+    'webform' => '1',
+    'title' => '-5',
+    'revision_information' => '4',
+    'author' => '3',
+    'options' => '5',
+    'comment_settings' => '7',
+    'menu' => '2',
+    'path' => '6',
+  );
+
+  $export['content_extra_weights_take_action'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'content_extra_weights_update';
+  $strongarm->value = array(
+    'title' => '-5',
+    'revision_information' => '2',
+    'author' => '1',
+    'options' => '3',
+    'comment_settings' => '5',
+    'menu' => '0',
+    'path' => '4',
+  );
+
+  $export['content_extra_weights_update'] = $strongarm;
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
@@ -440,7 +503,7 @@ function watershednow_common_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'pathauto_node_bulkupdate';
-  $strongarm->value = 0;
+  $strongarm->value = FALSE;
 
   $export['pathauto_node_bulkupdate'] = $strongarm;
   $strongarm = new stdClass;
@@ -461,14 +524,14 @@ function watershednow_common_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'pathauto_node_page_pattern';
-  $strongarm->value = '[title-raw]';
+  $strongarm->value = '';
 
   $export['pathauto_node_page_pattern'] = $strongarm;
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'pathauto_node_pattern';
-  $strongarm->value = '[title-raw]';
+  $strongarm->value = 'content/[title-raw]';
 
   $export['pathauto_node_pattern'] = $strongarm;
   $strongarm = new stdClass;
@@ -580,7 +643,7 @@ function watershednow_common_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'pathauto_punctuation_hyphen';
-  $strongarm->value = '1';
+  $strongarm->value = 1;
 
   $export['pathauto_punctuation_hyphen'] = $strongarm;
   $strongarm = new stdClass;
@@ -650,7 +713,7 @@ function watershednow_common_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'pathauto_punctuation_quotes';
-  $strongarm->value = '0';
+  $strongarm->value = 0;
 
   $export['pathauto_punctuation_quotes'] = $strongarm;
   $strongarm = new stdClass;
@@ -734,14 +797,14 @@ function watershednow_common_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'pathauto_taxonomy_applytofeeds';
-  $strongarm->value = '';
+  $strongarm->value = FALSE;
 
   $export['pathauto_taxonomy_applytofeeds'] = $strongarm;
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'pathauto_taxonomy_bulkupdate';
-  $strongarm->value = 0;
+  $strongarm->value = FALSE;
 
   $export['pathauto_taxonomy_bulkupdate'] = $strongarm;
   $strongarm = new stdClass;
@@ -776,7 +839,7 @@ function watershednow_common_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'pathauto_user_bulkupdate';
-  $strongarm->value = 0;
+  $strongarm->value = FALSE;
 
   $export['pathauto_user_bulkupdate'] = $strongarm;
   $strongarm = new stdClass;
@@ -797,7 +860,7 @@ function watershednow_common_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'pathauto_verbose';
-  $strongarm->value = 0;
+  $strongarm->value = FALSE;
 
   $export['pathauto_verbose'] = $strongarm;
   $strongarm = new stdClass;
@@ -855,7 +918,7 @@ function watershednow_common_strongarm() {
     'toggle_secondary_links' => 1,
     'toggle_node_info_donation' => 0,
     'toggle_node_info_event' => 0,
-    'toggle_node_info_map_point' => 0,
+    'toggle_node_info_map_feature' => 0,
     'toggle_node_info_page' => 0,
     'toggle_node_info_take_action' => 0,
     'toggle_node_info_update' => 0,

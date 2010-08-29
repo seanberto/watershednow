@@ -1,5 +1,0 @@
-core = "6.x"
-description = "Collection of useful theme overrides and alters to Drupal defaults."
-name = "thinkshout"
-core = "6.x"
-version = "6.x-1.0"

@@ -1,0 +1,50 @@
+<?php
+
+/**
+ * Implementation of hook_menu().
+ */
+function watershednow_helper_menu() {
+  $items = array();
+
+  $items['admin/settings/dashboard'] = array(
+    'title' => 'Watershed Now Dashboard',
+    'page callback' => '_watershednow_helper_dashboard',
+    'access arguments' => array('administer site configuration'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+
+  return $items;
+}
+
+function _watershednow_helper_dashboard() {
+  return 'Placeholder';
+}
+
+/**
+ * Implementation of hook_form_alter().
+ *
+ * Borrowing heavily from Development Seed.
+ */
+function watershednow_helper_form_alter(&$form, $form_state, $form_id) {
+  switch ($form_id) {
+    case 'system_site_information_settings':
+    // Allow for custom page title on site front page
+      $form['site_name']['#title'] = 'Website Name';
+      $form['site_name']['#description'] = 'The name of this website - Generally recommended to be your organization\'s name.';
+      $form['site_slogan']['#access'] = FALSE;
+      $form['site_mission']['#access'] = FALSE;
+      $form['site_footer']['#access'] = FALSE;
+      $form['anonymous']['#access'] = FALSE;
+      break;
+  }
+  // if ($form['#id'] == 'node-form') {
+  //   // Hiding the ridiculous body splitting shiz
+  //   if (!empty($form['body_field'])) {
+  //     $form['body_field']['teaser_js']['#type'] = 'hidden';
+  //     $form['body_field']['teaser_include']['#type'] = 'hidden';
+  //     if (!empty($form['body_field']['body']['#rows']) && $form['body_field']['body']['#rows'] > 10) {
+  //       $form['body_field']['body']['#rows'] = 10;
+  //     }
+  //   }
+  // }
+}

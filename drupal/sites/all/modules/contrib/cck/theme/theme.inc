@@ -1,5 +1,5 @@
 <?php
-// $Id: theme.inc,v 1.1.2.13.2.1 2009/06/07 00:31:35 markuspetrux Exp $
+// $Id: theme.inc,v 1.1.2.13 2009/04/28 23:06:37 yched Exp $
 
 /**
  * @file
@@ -94,7 +94,7 @@ function template_preprocess_content_field_overview_form(&$vars) {
     $js_fields[$field_name] = array('label' => $field['widget']['label'], 'type' => $field['type'], 'widget' => $field['widget']['type']);
   }
   drupal_add_js(array('contentWidgetTypes' => content_widget_type_options(), 'contentFields' => $js_fields), 'setting');
-  drupal_add_js(drupal_get_path('module', 'content') .'/js/content.admin.js');
+  drupal_add_js(drupal_get_path('module', 'content') .'/content.js');
 }
 
 /**

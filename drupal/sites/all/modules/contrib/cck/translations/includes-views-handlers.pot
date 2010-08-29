@@ -1,10 +1,10 @@
-# $Id: includes-views-handlers.pot,v 1.1.2.4.2.1 2009/11/20 21:58:14 thomaszahreddin Exp $
+# $Id: includes-views-handlers.pot,v 1.1.2.5 2009/06/16 17:05:11 hass Exp $
 #
 # LANGUAGE translation of Drupal (includes-views-handlers)
 # Copyright YEAR NAME <EMAIL@ADDRESS>
 # Generated from files:
-#  content_handler_field.inc,v 1.1.2.17 2009/07/22 20:46:55 markuspetrux
-#  content_handler_field_multiple.inc,v 1.1.2.22 2009/07/22 20:45:17 markuspetrux
+#  content_handler_field.inc,v 1.1.2.15 2009/03/30 22:54:16 yched
+#  content_handler_field_multiple.inc,v 1.1.2.18 2009/05/07 15:06:36 yched
 #  content_handler_relationship.inc,v 1.1.2.3 2008/10/24 12:31:58 yched
 #  content_handler_sort.inc,v 1.1.2.6 2008/10/25 00:36:41 yched
 #
@@ -12,7 +12,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2009-10-21 18:11+0200\n"
+"POT-Creation-Date: 2009-06-16 19:00+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -57,16 +57,8 @@ msgstr ""
 msgid "starting from @count"
 msgstr ""
 
-#: includes/views/handlers/content_handler_field_multiple.inc:90
-msgid "(first item is 0)"
-msgstr ""
-
-#: includes/views/handlers/content_handler_field_multiple.inc:93
-msgid "Reversed"
-msgstr ""
-
-#: includes/views/handlers/content_handler_field_multiple.inc:99
-msgid "(start from last values)"
+#: includes/views/handlers/content_handler_field_multiple.inc:92
+msgid "Reversed (start from last values)"
 msgstr ""
 
 #: includes/views/handlers/content_handler_relationship.inc:40 includes/views/handlers/content_handler_sort.inc:41

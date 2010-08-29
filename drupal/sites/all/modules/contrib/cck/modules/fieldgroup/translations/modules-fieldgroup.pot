@@ -1,17 +1,17 @@
-# $Id: modules-fieldgroup.pot,v 1.1.2.11 2009/03/09 21:50:00 hass Exp $
+# $Id: modules-fieldgroup.pot,v 1.1.2.12 2009/06/16 17:05:12 hass Exp $
 #
 # LANGUAGE translation of Drupal (modules-fieldgroup)
 # Copyright YEAR NAME <EMAIL@ADDRESS>
 # Generated from files:
 #  fieldgroup.panels.inc,v 1.1.2.5 2009/01/10 22:47:06 yched
 #  fieldgroup.info,v 1.6.2.1 2008/09/22 18:25:21 karens
-#  fieldgroup.module,v 1.79.2.45 2009/02/28 23:56:17 yched
+#  fieldgroup.module,v 1.79.2.48 2009/04/29 20:51:52 karens
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2009-03-09 22:08+0100\n"
+"POT-Creation-Date: 2009-06-16 19:00+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -20,12 +20,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: modules/fieldgroup/fieldgroup.panels.inc:10;27
-msgid "Content fieldgroup"
-msgstr ""
-
 #: modules/fieldgroup/fieldgroup.panels.inc:30
 msgid "All fields from a fieldgroup on the referenced node."
+msgstr ""
+
+#: modules/fieldgroup/fieldgroup.panels.inc:32
+msgid "Node context"
 msgstr ""
 
 #: modules/fieldgroup/fieldgroup.panels.inc:91
@@ -36,103 +36,99 @@ msgstr ""
 msgid "Fieldgroup"
 msgstr ""
 
-#: modules/fieldgroup/fieldgroup.panels.inc:112
-msgid "Text to display if group has no data. Note that title will not display unless overridden."
-msgstr ""
-
 #: modules/fieldgroup/fieldgroup.panels.inc:128
 msgid "\"@s\" fieldgroup @name"
 msgstr ""
 
-#: modules/fieldgroup/fieldgroup.module:124
+#: modules/fieldgroup/fieldgroup.module:130
 msgid "Form settings"
 msgstr ""
 
-#: modules/fieldgroup/fieldgroup.module:125
+#: modules/fieldgroup/fieldgroup.module:131
 msgid "These settings apply to the group in the node editing form."
 msgstr ""
 
-#: modules/fieldgroup/fieldgroup.module:129
+#: modules/fieldgroup/fieldgroup.module:135
 msgid "Style"
 msgstr ""
 
-#: modules/fieldgroup/fieldgroup.module:132
+#: modules/fieldgroup/fieldgroup.module:138
 msgid "always open"
 msgstr ""
 
-#: modules/fieldgroup/fieldgroup.module:133
+#: modules/fieldgroup/fieldgroup.module:139
 msgid "collapsible"
 msgstr ""
 
-#: modules/fieldgroup/fieldgroup.module:134
+#: modules/fieldgroup/fieldgroup.module:140
 msgid "collapsed"
 msgstr ""
 
-#: modules/fieldgroup/fieldgroup.module:142
+#: modules/fieldgroup/fieldgroup.module:148
 msgid "Instructions to present to the user on the editing form."
 msgstr ""
 
-#: modules/fieldgroup/fieldgroup.module:147
+#: modules/fieldgroup/fieldgroup.module:153
 msgid "Display settings"
 msgstr ""
 
-#: modules/fieldgroup/fieldgroup.module:148
+#: modules/fieldgroup/fieldgroup.module:154
 msgid "These settings apply to the group on node display."
 msgstr ""
 
-#: modules/fieldgroup/fieldgroup.module:155
+#: modules/fieldgroup/fieldgroup.module:161
 msgid "A description of the group."
 msgstr ""
 
-#: modules/fieldgroup/fieldgroup.module:200
+#: modules/fieldgroup/fieldgroup.module:206
 msgid "Are you sure you want to remove the group %label?"
 msgstr ""
 
-#: modules/fieldgroup/fieldgroup.module:202
+#: modules/fieldgroup/fieldgroup.module:208
 msgid "This action cannot be undone."
 msgstr ""
 
-#: modules/fieldgroup/fieldgroup.module:211
+#: modules/fieldgroup/fieldgroup.module:217
 msgid "The group %group_name has been removed."
 msgstr ""
 
-#: modules/fieldgroup/fieldgroup.module:353
+#: modules/fieldgroup/fieldgroup.module:359
 msgid "You need to provide a label."
 msgstr ""
 
-#: modules/fieldgroup/fieldgroup.module:358
+#: modules/fieldgroup/fieldgroup.module:364
 msgid "You need to provide a group name."
 msgstr ""
 
-#: modules/fieldgroup/fieldgroup.module:372
+#: modules/fieldgroup/fieldgroup.module:378
 msgid "The group name %group_name is invalid. The name must include only lowercase unaccentuated letters, numbers, and underscores."
 msgstr ""
 
-#: modules/fieldgroup/fieldgroup.module:375
+#: modules/fieldgroup/fieldgroup.module:381
 msgid "The group name %group_name is too long. The name is limited to 32 characters, including the 'group_' prefix."
 msgstr ""
 
-#: modules/fieldgroup/fieldgroup.module:381
+#: modules/fieldgroup/fieldgroup.module:387
 msgid "The group name %group_name already exists."
 msgstr ""
 
-#: modules/fieldgroup/fieldgroup.module:400;403
+#: modules/fieldgroup/fieldgroup.module:406;409
 msgid "Add new group:"
 msgstr ""
 
-#: modules/fieldgroup/fieldgroup.module:418
+#: modules/fieldgroup/fieldgroup.module:424
 msgid "Add new group: you need to provide a label."
 msgstr ""
 
-#: modules/fieldgroup/fieldgroup.module:419
+#: modules/fieldgroup/fieldgroup.module:425
 msgid "Add new group: you need to provide a group name."
 msgstr ""
 
-#: modules/fieldgroup/fieldgroup.module:648
+#: modules/fieldgroup/fieldgroup.module:654
 msgid "Standard group"
 msgstr ""
 
-#: modules/fieldgroup/fieldgroup.module:39;46
+#: modules/fieldgroup/fieldgroup.module:45;52
 msgid "Edit group"
 msgstr ""
 

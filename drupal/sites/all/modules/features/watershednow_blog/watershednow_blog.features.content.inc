@@ -6,77 +6,6 @@
 function watershednow_blog_content_default_fields() {
   $fields = array();
 
-  // Exported field: field_get_involved
-  $fields['update-field_get_involved'] = array(
-    'field_name' => 'field_get_involved',
-    'type_name' => 'update',
-    'display_settings' => array(
-      'weight' => '-2',
-      'parent' => '',
-      'label' => array(
-        'format' => 'hidden',
-      ),
-      'teaser' => array(
-        'format' => 'hidden',
-        'exclude' => 0,
-      ),
-      'full' => array(
-        'format' => 'hidden',
-        'exclude' => 0,
-      ),
-      '4' => array(
-        'format' => 'default',
-        'exclude' => 0,
-      ),
-      '2' => array(
-        'format' => 'default',
-        'exclude' => 0,
-      ),
-      '3' => array(
-        'format' => 'default',
-        'exclude' => 0,
-      ),
-      'token' => array(
-        'format' => 'default',
-        'exclude' => 0,
-      ),
-    ),
-    'widget_active' => '1',
-    'type' => 'nodereference',
-    'required' => '0',
-    'multiple' => '5',
-    'module' => 'nodereference',
-    'active' => '1',
-    'referenceable_types' => array(
-      'donation' => 'donation',
-      'event' => 'event',
-      'take_action' => 'take_action',
-      'page' => 0,
-      'update' => 0,
-      'update_feed' => 0,
-      'map_feature' => 0,
-      'webform' => 0,
-    ),
-    'advanced_view' => '--',
-    'advanced_view_args' => '',
-    'widget' => array(
-      'autocomplete_match' => 'contains',
-      'size' => '60',
-      'default_value' => array(
-        '0' => array(
-          'nid' => NULL,
-          '_error_element' => 'default_value_widget][field_get_involved][0][nid][nid',
-        ),
-      ),
-      'default_value_php' => NULL,
-      'label' => 'Associated "Get Involved" opportunities',
-      'weight' => '-2',
-      'description' => 'Select up to 5 donation, take action, or event opportunities associated with this update. Start typing the title of the page to find those available. You can drag-and-drop selected pages to change their order in the list.',
-      'type' => 'nodereference_autocomplete',
-      'module' => 'nodereference',
-    ),
-  );
-
   // Exported field: field_attachments
   $fields['update-field_attachments'] = array(
     'field_name' => 'field_attachments',
@@ -157,6 +86,77 @@ function watershednow_blog_content_default_fields() {
     ),
   );
 
+  // Exported field: field_get_involved
+  $fields['update-field_get_involved'] = array(
+    'field_name' => 'field_get_involved',
+    'type_name' => 'update',
+    'display_settings' => array(
+      'weight' => '-3',
+      'parent' => '',
+      'label' => array(
+        'format' => 'hidden',
+      ),
+      'teaser' => array(
+        'format' => 'hidden',
+        'exclude' => 0,
+      ),
+      'full' => array(
+        'format' => 'hidden',
+        'exclude' => 0,
+      ),
+      '4' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '2' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '3' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+    'widget_active' => '1',
+    'type' => 'nodereference',
+    'required' => '0',
+    'multiple' => '5',
+    'module' => 'nodereference',
+    'active' => '1',
+    'referenceable_types' => array(
+      'donation' => 'donation',
+      'event' => 'event',
+      'take_action' => 'take_action',
+      'page' => 0,
+      'update' => 0,
+      'update_feed' => 0,
+      'map_feature' => 0,
+      'webform' => 0,
+    ),
+    'advanced_view' => '--',
+    'advanced_view_args' => '',
+    'widget' => array(
+      'autocomplete_match' => 'contains',
+      'size' => '60',
+      'default_value' => array(
+        '0' => array(
+          'nid' => NULL,
+          '_error_element' => 'default_value_widget][field_get_involved][0][nid][nid',
+        ),
+      ),
+      'default_value_php' => NULL,
+      'label' => 'Associated "Get Involved" opportunities',
+      'weight' => '-3',
+      'description' => 'Select up to 5 donation, take action, or event opportunities associated with this update. Start typing the title of the page to find those available. You can drag-and-drop selected pages to change their order in the list.',
+      'type' => 'nodereference_autocomplete',
+      'module' => 'nodereference',
+    ),
+  );
+
   // Exported field: field_image_assets
   $fields['update-field_image_assets'] = array(
     'field_name' => 'field_image_assets',
@@ -165,7 +165,7 @@ function watershednow_blog_content_default_fields() {
       'weight' => '6',
       'parent' => '',
       'label' => array(
-        'format' => 'above',
+        'format' => 'hidden',
       ),
       'teaser' => array(
         'format' => 'hidden',
@@ -247,11 +247,76 @@ function watershednow_blog_content_default_fields() {
     ),
   );
 
+  // Exported field: field_sidebar
+  $fields['update-field_sidebar'] = array(
+    'field_name' => 'field_sidebar',
+    'type_name' => 'update',
+    'display_settings' => array(
+      'weight' => '-2',
+      'parent' => '',
+      'label' => array(
+        'format' => 'hidden',
+      ),
+      'teaser' => array(
+        'format' => 'hidden',
+        'exclude' => 0,
+      ),
+      'full' => array(
+        'format' => 'hidden',
+        'exclude' => 0,
+      ),
+      '4' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '2' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '3' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+    'widget_active' => '1',
+    'type' => 'text',
+    'required' => '0',
+    'multiple' => '0',
+    'module' => 'text',
+    'active' => '1',
+    'text_processing' => '1',
+    'max_length' => '400',
+    'allowed_values' => '',
+    'allowed_values_php' => '',
+    'widget' => array(
+      'rows' => '2',
+      'size' => 60,
+      'default_value' => array(
+        '0' => array(
+          'value' => '',
+          'format' => '1',
+          '_error_element' => 'default_value_widget][field_sidebar][0][value',
+        ),
+      ),
+      'default_value_php' => NULL,
+      'label' => 'Sidebar content',
+      'weight' => '-2',
+      'description' => 'Optionally, can enter up to 400 characters of additional content to be displayed in the sidebar on this update.',
+      'type' => 'text_textarea',
+      'module' => 'text',
+    ),
+  );
+
   // Translatables
   // Included for use with string extractors like potx.
   t('Associated "Get Involved" opportunities');
   t('Attachments');
   t('Image assets');
+  t('Sidebar content');
 
   return $fields;
 }

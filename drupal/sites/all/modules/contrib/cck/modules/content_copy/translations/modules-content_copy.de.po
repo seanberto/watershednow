@@ -1,4 +1,4 @@
-# $Id: modules-content_copy.de.po,v 1.2.2.8.2.1 2009/12/06 22:46:35 thomaszahreddin Exp $
+# $Id: modules-content_copy.de.po,v 1.2.2.8 2008/11/05 12:24:00 hass Exp $
 # German translation of CCK
 # Copyright 2006 Lukas Gangoly <lukas.gangoly@univie.ac.at>
 # Copyright 2006 Jakob Petsovits <jpetso@gmx.at>
@@ -17,8 +17,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: German translation of CCK\n"
 "POT-Creation-Date: 2008-11-05 12:54+0100\n"
-"PO-Revision-Date: 2009-12-06 22:12+0100\n"
-"Last-Translator: Thomas Zahreddin <tz@it-arts.org>\n"
+"PO-Revision-Date: 2008-11-05 13:17+0100\n"
+"Last-Translator: Alexander Haß\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -85,10 +85,11 @@ msgstr "Fügen Sie den Text aus einem Inhaltsexport in dieses Feld ein."
 msgid "Import"
 msgstr "Importieren"
 
-# pre-loaded?
+# "vorgeladen" sounds strange
 #: modules/content_copy/content_copy.module:324
+#, fuzzy
 msgid "A file has been pre-loaded for import."
-msgstr "Eine Datei wurde für den Import voraus geladen."
+msgstr "Eine Datei wurde für den Import vorgeladen."
 
 #: modules/content_copy/content_copy.module:350
 msgid "The import data is not valid import text."

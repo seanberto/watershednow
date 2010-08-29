@@ -2,13 +2,13 @@
 #
 # LANGUAGE translation of Drupal (includes-panels-content_types)
 # Copyright YEAR NAME <EMAIL@ADDRESS>
-# Generated from file: content_field.inc,v 1.1.2.9 2009/07/18 01:18:07 markuspetrux
+# Generated from file: content_field.inc,v 1.1.2.4 2009/06/02 15:05:27 yched
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2009-10-21 18:11+0200\n"
+"POT-Creation-Date: 2009-06-16 19:00+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -21,31 +21,35 @@ msgstr ""
 msgid "Content field"
 msgstr ""
 
-#: includes/panels/content_types/content_field.inc:36
-msgid "Field: @widget_label (@field_name) - @field_type"
+#: includes/panels/content_types/content_field.inc:37
+msgid "@type: (@field_type) @field"
 msgstr ""
 
-#: includes/panels/content_types/content_field.inc:41
+#: includes/panels/content_types/content_field.inc:44
 msgid "Field on the referenced node."
 msgstr ""
 
-#: includes/panels/content_types/content_field.inc:142
-msgid "Field label"
+#: includes/panels/content_types/content_field.inc:100
+msgid "Block title"
 msgstr ""
 
-#: includes/panels/content_types/content_field.inc:149
-msgid "Configure how the label is going to be displayed. This option takes no effect when \"Override title\" option is enabled, the specified block title is displayed instead."
+#: includes/panels/content_types/content_field.inc:103
+msgid "Hidden"
 msgstr ""
 
-#: includes/panels/content_types/content_field.inc:172
-msgid "Field formatter"
+#: includes/panels/content_types/content_field.inc:105
+msgid "Configure how the label is going to be displayed."
 msgstr ""
 
-#: includes/panels/content_types/content_field.inc:175
+#: includes/panels/content_types/content_field.inc:128
+msgid "Formatter"
+msgstr ""
+
+#: includes/panels/content_types/content_field.inc:131
 msgid "Select a formatter."
 msgstr ""
 
-#: includes/panels/content_types/content_field.inc:203
-msgid "\"@s\" field: @widget_label (@field_name) - @field_type"
+#: includes/panels/content_types/content_field.inc:147
+msgid "\"@s\" field (@name)"
 msgstr ""
 

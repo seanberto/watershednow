@@ -11,6 +11,9 @@ function watershednow_map_ctools_plugin_api() {
   elseif ($module == "context" && $api == "context") {
     return array("version" => 3);
   }
+  elseif ($module == "openlayers" && $api == "openlayers_presets") {
+    return array("version" => 1);
+  }
   elseif ($module == "strongarm" && $api == "strongarm") {
     return array("version" => 1);
   }
@@ -34,4 +37,13 @@ function watershednow_map_node_info() {
     ),
   );
   return $items;
+}
+
+/**
+ * Implementation of hook_views_api().
+ */
+function watershednow_map_views_api() {
+  return array(
+    'api' => '2',
+  );
 }

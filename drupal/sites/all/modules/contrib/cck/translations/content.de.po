@@ -1,4 +1,4 @@
-# $Id: content.de.po,v 1.1.2.15.2.2 2009/12/06 22:46:35 thomaszahreddin Exp $
+# $Id: content.de.po,v 1.1.2.16 2009/06/16 17:19:19 hass Exp $
 # German translation of CCK
 # Copyright 2006 Lukas Gangoly <lukas.gangoly@univie.ac.at>
 # Copyright 2006 Jakob Petsovits <jpetso@gmx.at>
@@ -16,9 +16,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: German translation of CCK\n"
-"POT-Creation-Date: 2009-03-09 22:08+0100\n"
-"PO-Revision-Date: 2009-12-06 22:39+0100\n"
-"Last-Translator: Thomas Zahreddin <tz@it-arts.org>\n"
+"POT-Creation-Date: 2009-06-16 19:00+0200\n"
+"PO-Revision-Date: 2009-06-16 19:14+0100\n"
+"Last-Translator: Alexander Haß\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -34,7 +34,7 @@ msgstr "Das Content-Modul ist eine erforderliche Komponente des Content Construc
 
 #: content.module:22
 msgid "When adding a custom field to a content type, you determine its type (whether it will contain text, numbers, or references to other objects) and how it will be displayed (either as a text field or area, a select box, checkbox, radio button, or autocompleting field). A field may have multiple values (i.e., a \"person\" may have multiple e-mail addresses) or a single value (i.e., an \"employee\" has a single employee identification number). As you add and edit fields, CCK automatically adjusts the structure of the database as necessary. CCK also provides a number of other features, including intelligent caching for your custom data, an import and export facility for content type definitions, and integration with other contributed modules."
-msgstr "Beim Hinzufügen eines benutzerdefiniertes Feldes zu einem Inhaltstyp, wird der Typ festgelegt (ob dieser Text enthält, Zahlen oder Referenzen auf andere Objekte) und wie dieser Angezeigt wird (entweder als Textfeld oder -bereich, Auswahlfeld, Ankreuzfeld, Auswahlknopf oder Autovervollständigungsfeld). Ein Feld kann mehrere Werte enthalten (d.h., eine „Person“ kann mehrere E-Mail-Adressen haben) oder ein einfacher Wert (d.h., ein \"Mitarbeiter\" hat eine Mitarbeiteridentifikationsnummer). Sollten Felder hinzugefügt und bearbeitet werden, passt CCK automatisch die Datenbank an die erforderliche Struktur an. CCK ermöglich auch eine Anzahl von anderen Funktionen, inklusive intelligenten Caching für benutzerdefinierte Daten, eine Import- und Export-Möglichkeit von festgelegten Inhaltstypen und die Integration von weiteren Modulen."
+msgstr "Beim Hinzufügen eines benutzerdefiniertes Feldes zu einem Inhaltstyp, wird der Typ festgelegt (ob dieser Text enthält, Zahlen oder Referenzen auf andere Objekte) und wie dieser Angezeigt wird (entweder als Textfeld oder -bereich, Auswahlfeld, Ankreuzfeld, Auswahlknopf oder Autovervollständigungsfeld). Ein Feld kann mehrere Werte enthalten (d.h., eine „Person“ kann mehrere E-Mail-Adressen haben) oder ein einfacher Wert (d.h., ein „Mitarbeiter“ hat eine Mitarbeiteridentifikationsnummer). Sollten Felder hinzugefügt und bearbeitet werden, passt CCK automatisch die Datenbank an die erforderliche Struktur an. CCK ermöglich auch eine Anzahl von anderen Funktionen, inklusive intelligenten Caching für benutzerdefinierte Daten, eine Import- und Export-Möglichkeit von festgelegten Inhaltstypen und die Integration von weiteren Modulen."
 
 #: content.module:23
 msgid "Custom field types are provided by a set of optional modules included with CCK (each module provides a different type). The <a href=\"@modules\">modules page</a> allows you to enable or disable CCK components. A default installation of CCK includes:"
@@ -50,7 +50,7 @@ msgstr "<em>Text</em>, welches Textfeldtypen hinzufügt. Ein Textfeld kann nur K
 
 #: content.module:27
 msgid "<em>nodereference</em>, which creates custom references between Drupal nodes. By adding a <em>nodereference</em> field and two different content types, for instance, you can easily create complex parent/child relationships between data (multiple \"employee\" nodes may contain a <em>nodereference</em> field linking to an \"employer\" node)."
-msgstr "<em>Beitragsreferenz</em>, welches benutzerdefinierte Referenzen zwischen Drupal-Beiträgen erstellt. Durch Hinzufügen eines <em>Beitragsreferenz</em>-Feldes und zwei unterschiedlichen Inhaltstypen können Beispielsweise auf einfachem Weg komplexe Übergeordnet/Untergeordnet-Beziehungen zwischen Daten erstellt werden (mehrere „Mitarbeiterbeiträge“ können ein <em>Beitragsreferenz</em>-Feld enthalten, das auf einen \"Arbeitgeberbeitrag\" verweist)."
+msgstr "<em>Beitragsreferenz</em>, welches benutzerdefinierte Referenzen zwischen Drupal-Beiträgen erstellt. Durch Hinzufügen eines <em>Beitragsreferenz</em>-Feldes und zwei unterschiedlichen Inhaltstypen können Beispielsweise auf einfachem Weg komplexe Übergeordnet/Untergeordnet-Beziehungen zwischen Daten erstellt werden (mehrere „Mitarbeiterbeiträge“ können ein <em>Beitragsreferenz</em>-Feld enthalten, das auf einen „Arbeitgeberbeitrag“ verweist)."
 
 #: content.module:28
 msgid "<em>userreference</em>, which creates custom references to your sites' user accounts. By adding a <em>userreference</em> field, you can create complex relationships between your site's users and posts. To track user involvement in a post beyond Drupal's standard <em>Authored by</em> field, for instance, add a <em>userreference</em> field named \"Edited by\" to a content type to store a link to an editor's user account page."
@@ -64,127 +64,132 @@ msgstr "<em>Feldgruppe</em>, welches zusammenklappbare Feldgruppen erstellt, die
 msgid "For more information, see the online handbook entry for <a href=\"@handbook-cck\">CCK</a> or the <a href=\"@project-cck\">CCK project page</a>."
 msgstr "Nähere Informationen bezüglich der Konfiguration und Anpassung gibt es auf der Handbuch-Seite zum <a href=\"@handbook-cck\">CCK-Modul</a> oder auf der <a href=\"@project-cck\">CCK-Projektseite</a>."
 
-#: content.module:486
+#: content.module:492
 msgid "This field is required."
 msgstr "Dieses Feld wird benötigt."
 
-#: content.module:490
+#: content.module:496
 msgid "!title: !required"
 msgstr "!title: !required"
 
-#: content.module:1843
+#: content.module:1854
 msgid "Basic"
 msgstr "Basis"
 
-#: content.module:1856;1859
+#: content.module:1867;1870
 msgid "RSS"
 msgstr "RSS"
 
-#: content.module:1869
+#: content.module:1880
 msgid "Search"
 msgstr "Suchen"
 
-#: content.module:1872
+#: content.module:1883
 msgid "Search Index"
 msgstr "Suchindex"
 
-#: content.module:1876
+#: content.module:1887
 msgid "Search Result"
 msgstr "Suchergebnis"
 
-#: content.module:2324;2331
+#: content.module:1897;1900
+#, fuzzy
+msgid "Print"
+msgstr "Drucken"
+
+#: content.module:2348;2355
 msgid "Node module form."
 msgstr "Formular des Beitrag-Moduls."
 
-#: content.module:2338
+#: content.module:2362
 msgid "Language"
 msgstr "Sprache"
 
-#: content.module:2339
+#: content.module:2363
 msgid "Locale module form."
 msgstr "Formular des Locale-Moduls."
 
-#: content.module:2345
+#: content.module:2369
 msgid "Menu settings"
 msgstr "Menüeinstellungen"
 
-#: content.module:2346
+#: content.module:2370
 msgid "Menu module form."
 msgstr "Formular des Menü-Moduls."
 
-#: content.module:2352
+#: content.module:2376
 msgid "Taxonomy"
 msgstr "Taxonomie"
 
-#: content.module:2353
+#: content.module:2377
 msgid "Taxonomy module form."
 msgstr "Formular des Taxonomie-Moduls."
 
-#: content.module:2359
+#: content.module:2383
 msgid "Book"
 msgstr "Buch"
 
-#: content.module:2360
+#: content.module:2384
 msgid "Book module form."
 msgstr "Formular des Buch-Moduls."
 
-#: content.module:2366
+#: content.module:2390
 msgid "Poll title"
 msgstr "Umfragetitel"
 
-#: content.module:2367
+#: content.module:2391
 msgid "Poll module title."
 msgstr "Umfragemodultitel"
 
-#: content.module:2371
+#: content.module:2395
 msgid "Poll choices"
-msgstr "Antwortmöglichkeiten für Umfragen"
+msgstr ""
 
-#: content.module:2372
+#: content.module:2396
 msgid "Poll module choices."
-msgstr "Antwortmöglichkeiten für Umfragen"
+msgstr ""
 
-#: content.module:2376
+#: content.module:2400
 msgid "Poll settings"
 msgstr "Umfrageeinstellungen"
 
-#: content.module:2377
+#: content.module:2401
 msgid "Poll module settings."
 msgstr "Umfragemoduleinstellungen"
 
-#: content.module:2383
+#: content.module:2407
 msgid "File attachments"
 msgstr "Dateianhänge"
 
-#: content.module:2384
+#: content.module:2408
 msgid "Upload module form."
 msgstr "Formular des Upload-Moduls."
 
-#: content.module:589
+#: content.module:595
 msgid "Updating field type %type with module %module."
 msgstr "Feldtyp %type wird mit Modul %module aktualisiert."
 
-#: content.module:596
+#: content.module:602
 msgid "Updating widget type %type with module %module."
 msgstr "Widget %type wird mit Modul %module aktualisiert."
 
-#: content.module:63
+#: content.module:60
 msgid "Use PHP input for field settings (dangerous - grant with care)"
 msgstr "PHP-Eingabe für Feldeinstellungen verwenden (Gefährlich - mit Vorsicht zu gewähren)"
 
-#: content.module:82
+#: content.module:79
 msgid "Fields"
 msgstr "Felder"
 
-#: content.module:104
+#: content.module:101
 msgid "Manage fields"
 msgstr "Felder verwalten"
 
-#: content.module:113
+#: content.module:110
 msgid "Display fields"
 msgstr "Felder anzeigen"
 
-#: content.module:144
+#: content.module:141
 msgid "Remove field"
 msgstr "Feld löschen"
 
@@ -217,8 +222,8 @@ msgid "CCK integration with Views module requires Views 6.x-2.0-rc2 or greater."
 msgstr "Die CCK-Integration mit dem Views-Modul erfordert Views 6.x-2.0-rc2 oder höher."
 
 #: content.info:0
-#: includes/content.rules.inc:19;200
-#: includes/views/content.views.inc:178;254
+#: includes/content.rules.inc:19;212
+#: includes/views/content.views.inc:180;261
 msgid "Content"
 msgstr "Inhalt"
 
@@ -237,8 +242,4 @@ msgstr "Erlaubt dem Administrator, neue Inhaltstypen zu definieren."
 #: modules/userreference/userreference.info:0
 msgid "CCK"
 msgstr "CCK"
-
-#, fuzzy
-#~ msgid "Print"
-#~ msgstr "Drucken"
 

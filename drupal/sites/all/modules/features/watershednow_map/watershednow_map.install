@@ -21,8 +21,26 @@ function watershednow_map_enable() {
   );
   $terms = array( // Our default terms within the map point type vocabulary.
     'boat ramp',
-    'kayak launch',
-    'dock',
+    'river access (without a ramp)',
+    'marina',
+    'public land',
+    'paddle trip/water trail',
+    'hiking opportunity/land trail',
+    'point of interest',
+    'fishing spot',
+    'outfitter/guide service',
+    'camping',
+    'lodging',
+    'food/supplies',
+    'restaurant',
+    'water level gauge',
+    'river mile marker',
+    'river hazard',
+    'polluted waters',
+    'restoration',
+    'monitoring',
+    'conservation project',
+    'pollution report',
   );
   // First, check to see if vocabulary already exists.
   $vid = db_result(db_query_range("SELECT vid FROM {vocabulary} WHERE name = '%s'", $vocabulary['name'], 0, 1));

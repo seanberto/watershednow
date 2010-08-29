@@ -1,4 +1,4 @@
-# $Id: modules-content_copy.pot,v 1.1.2.10 2009/03/09 21:49:59 hass Exp $
+# $Id: modules-content_copy.pot,v 1.1.2.11 2009/06/16 17:05:12 hass Exp $
 #
 # LANGUAGE translation of Drupal (modules-content_copy)
 # Copyright YEAR NAME <EMAIL@ADDRESS>
@@ -11,7 +11,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2009-03-09 22:08+0100\n"
+"POT-Creation-Date: 2009-06-16 19:00+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"

@@ -1,82 +1,80 @@
-# German translation of cck (6.x-2.5)
-# Copyright (c) 2009 by the German translation team
+# $Id: includes-views-handlers.de.po,v 1.1.2.3 2008/11/05 12:24:00 hass Exp $
+# German translation of CCK
+# Copyright 2006 Lukas Gangoly <lukas.gangoly@univie.ac.at>
+# Copyright 2006 Jakob Petsovits <jpetso@gmx.at>
 # Generated from files:
-#  content_handler_field.inc,v 1.1.2.17 2009/07/22 20:46:55 markuspetrux
-#  content_handler_field_multiple.inc,v 1.1.2.22 2009/07/22 20:45:17 markuspetrux
-#  content_handler_relationship.inc,v 1.1.2.3 2008/10/24 12:31:58 yched
-#  content_handler_sort.inc,v 1.1.2.6 2008/10/25 00:36:41 yched
+#  field.php,v 1.3 2006/04/16 13:47:13 luke
+#  text.module,v 1.34 2006/06/12 19:59:53 luke
+#  number.module,v 1.28 2006/05/02 13:52:16 luke
+#  content_admin.inc,v 1.16 2006/06/12 19:36:54 luke
+#  content.module,v 1.64 2006/06/12 19:36:54 luke
+#  nodereference.module,v 1.28 2006/06/12 19:36:54 luke
+#  optionwidgets.module,v 1.8 2006/05/01 15:45:29 luke
+#  userreference.module,v 1.24 2006/05/05 14:10:44 luke
+#  weburl.module,v 1.8 2006/06/12 19:36:54 luke
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: cck (6.x-2.5)\n"
-"POT-Creation-Date: 2009-10-21 18:11+0200\n"
-"PO-Revision-Date: 2009-10-21 19:44+0100\n"
-"Last-Translator: Thomas Zahreddin <thomas@voicehero.net>\n"
-"Language-Team: German\n"
+"Project-Id-Version: German translation of CCK\n"
+"POT-Creation-Date: 2008-11-05 12:54+0100\n"
+"PO-Revision-Date: 2008-11-05 13:23+0100\n"
+"Last-Translator: Alexander Haß\n"
+"Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
+"X-Poedit-Language: German\n"
+"X-Poedit-Country: GERMANY\n"
+"X-Poedit-SourceCharset: utf-8\n"
 
-#: includes/views/handlers/content_handler_field.inc:59
+#: includes/views/handlers/content_handler_field.inc:56
 msgid "None"
-msgstr "Keine"
+msgstr "Keines"
 
-#: includes/views/handlers/content_handler_field.inc:60
+#: includes/views/handlers/content_handler_field.inc:57
 msgid "Widget label (@label)"
 msgstr "Steuerelement (@label)"
 
-#: includes/views/handlers/content_handler_field.inc:61
+#: includes/views/handlers/content_handler_field.inc:58
 msgid "Custom"
 msgstr "Benutzerdefiniert"
 
-#: includes/views/handlers/content_handler_field.inc:67
+#: includes/views/handlers/content_handler_field.inc:64
 msgid "Custom label"
 msgstr "Benutzerdefinierte Bezeichnung"
 
-#: includes/views/handlers/content_handler_field.inc:83
+#: includes/views/handlers/content_handler_field.inc:80
 msgid "Format"
 msgstr "Format"
 
-#: includes/views/handlers/content_handler_field_multiple.inc:63
+#: includes/views/handlers/content_handler_field_multiple.inc:56
 msgid "Group multiple values"
 msgstr "Mehrfachwerte gruppieren"
 
-#: includes/views/handlers/content_handler_field_multiple.inc:66
+#: includes/views/handlers/content_handler_field_multiple.inc:59
 msgid "If unchecked, each item in the field will create a new row, which may appear to cause duplicates. This setting is not compatible with click-sorting in table displays."
-msgstr "Wenn nicht aktiviert, wird jeder Eintrag in diesem Feld eine neue Zeile erstellen, welche zu Duplikaten führen kann. Diese Einstellung ist inkompatibel mit der Klick-Sortierung in Tabellen-Anzeigen."
+msgstr ""
 
-#: includes/views/handlers/content_handler_field_multiple.inc:70
+#: includes/views/handlers/content_handler_field_multiple.inc:63
 msgid "Show @count value(s)"
 msgstr "@count Werte anzeigen"
 
-#: includes/views/handlers/content_handler_field_multiple.inc:81
+#: includes/views/handlers/content_handler_field_multiple.inc:74
 msgid "starting from @count"
 msgstr "Beginnt bei @count"
 
-#: includes/views/handlers/content_handler_field_multiple.inc:90
-#, fuzzy
-msgid "(first item is 0)"
-msgstr "Erstes Element geöffnet"
-
-#: includes/views/handlers/content_handler_field_multiple.inc:93
-msgid "Reversed"
-msgstr ""
-
-#: includes/views/handlers/content_handler_field_multiple.inc:99
-#, fuzzy
-msgid "(start from last values)"
+#: includes/views/handlers/content_handler_field_multiple.inc:85
+msgid "Reversed (start from last values)"
 msgstr "Umgedreht (Beginnt bei den letzten Werten)"
 
 #: includes/views/handlers/content_handler_relationship.inc:40
 #: includes/views/handlers/content_handler_sort.inc:41
-#, fuzzy
 msgid "All"
 msgstr "Alle"
 
 #: includes/views/handlers/content_handler_relationship.inc:48
 #: includes/views/handlers/content_handler_sort.inc:49
-#, fuzzy
 msgid "Delta"
 msgstr "Delta"
 
