@@ -1,0 +1,17 @@
+/* Styles applied to Watershed Now! dashboard. */
+
+th.sort-alpha {
+  color: #3399CC;
+}
+
+th.hover {
+  cursor: pointer;
+}
+
+th.sorted-asc {
+  background: url('/misc/arrow-asc.png') no-repeat right;
+}
+
+th.sorted-desc {
+  background: url('/misc/arrow-desc.png') no-repeat right;
+}

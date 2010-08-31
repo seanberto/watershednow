@@ -1,13 +1,31 @@
 <?php
 
 /**
+ * Implmentation of hook_init().
+ */
+function watershednow_helper_init() {
+  drupal_add_css((drupal_get_path('module', 'watershednow_helper')) . '/css/watershednow_helper.css');
+  drupal_add_js((drupal_get_path('module', 'watershednow_helper')) . '/js/watershednow_helper.js');
+}
+
+/**
+ * Implementation of hook_help().
+ */
+function watershednow_helper_help($path, $arg) {
+  switch ($path) {
+    case 'admin/dashboard':
+      return 'Welcome to the Watershed Now! Dashboard. Here you will find quick links and other tools for managing your site. If you get stuck, consider reaching out to the maintainers of Watershed Now!, <a href="http://thinkshout.com/contact" target="_blank">ThinkShout.com</a>.';
+  }
+}
+
+/**
  * Implementation of hook_menu().
  */
 function watershednow_helper_menu() {
   $items = array();
 
   $items['admin/dashboard'] = array(
-    'title' => 'Watershed Now Dashboard',
+    'title' => 'Watershed Now! Dashboard',
     'page callback' => 'watershednow_helper_dashboard',
     'access arguments' => array('administer site configuration'),
     'type' => MENU_NORMAL_ITEM,
