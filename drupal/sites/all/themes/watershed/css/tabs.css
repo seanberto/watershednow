@@ -25,7 +25,7 @@ ul.primary {
   list-style: none;
   white-space: nowrap;
   line-height: normal;
-  background: url(images/tabs/tab-bar.png) repeat-x left bottom;
+  background: url(../images/tabs/tab-bar.png) repeat-x left bottom;
 }
 
 ul.primary li {
@@ -44,7 +44,7 @@ ul.primary li a {
   text-decoration: none;
   color: #777;
   background-color: transparent;
-  background: url(images/tabs/tab-left.png) no-repeat left -38px;
+  background: url(../images/tabs/tab-left.png) no-repeat left -38px;
 }
 
 ul.primary li a .tab {
@@ -54,17 +54,17 @@ ul.primary li a .tab {
   padding: 4px 13px 0 6px;
   border-width: 0;
   line-height: 20px;
-  background: url(images/tabs/tab-right.png) no-repeat right -38px;
+  background: url(../images/tabs/tab-right.png) no-repeat right -38px;
 }
 
 ul.primary li a:hover {
   border-width: 0;
   background-color: transparent;
-  background: url(images/tabs/tab-left.png) no-repeat left -76px;
+  background: url(../images/tabs/tab-left.png) no-repeat left -76px;
 }
 
 ul.primary li a:hover .tab {
-  background: url(images/tabs/tab-right.png) no-repeat right -76px;
+  background: url(../images/tabs/tab-right.png) no-repeat right -76px;
 }
 
 ul.primary li.active a,
@@ -72,12 +72,12 @@ ul.primary li.active a:hover {
   border-width: 0;
   color: #000;
   background-color: transparent;
-  background: url(images/tabs/tab-left.png) no-repeat left 0;
+  background: url(../images/tabs/tab-left.png) no-repeat left 0;
 }
 
 ul.primary li.active a .tab,
 ul.primary li.active a:hover .tab {
-  background: url(images/tabs/tab-right.png) no-repeat right 0;
+  background: url(../images/tabs/tab-right.png) no-repeat right 0;
 }
 
 ul.secondary {
@@ -86,7 +86,7 @@ ul.secondary {
   border-bottom: 1px solid #c0c0c0;
   list-style: none;
   white-space: nowrap;
-  background: url(images/tabs/tab-secondary-bg.png) repeat-x left bottom;
+  background: url(../images/tabs/tab-secondary-bg.png) repeat-x left bottom;
 }
 
 ul.secondary li {
@@ -104,7 +104,7 @@ ul.secondary a {
   border: 1px solid #c0c0c0;
   text-decoration: none;
   color: #777;
-  background: url(images/tabs/tab-secondary.png) repeat-x left -56px;
+  background: url(../images/tabs/tab-secondary.png) repeat-x left -56px;
 }
 
 ul.secondary a .tab {
@@ -116,12 +116,12 @@ ul.secondary a .tab {
 }
 
 ul.secondary a:hover {
-  background: url(images/tabs/tab-secondary.png) repeat-x left bottom;
+  background: url(../images/tabs/tab-secondary.png) repeat-x left bottom;
 }
 
 ul.secondary a.active,
 ul.secondary a.active:hover {
   border: 1px solid #c0c0c0;
   color: #000;
-  background: url(images/tabs/tab-secondary.png) repeat-x left top;
+  background: url(../images/tabs/tab-secondary.png) repeat-x left top;
 }

@@ -1,9 +1,9 @@
 <?php
 
-function watershed_settings($saved_settings, $subtheme_defaults = array()) {
+function dolores_settings($saved_settings, $subtheme_defaults = array()) {
 
   // Get the default values from the .info file.
-  $defaults = watershed_theme_get_default_settings('watershed');
+  $defaults = dolores_theme_get_default_settings('dolores');
 
   // Merge the saved variables and their default values.
   $settings = array_merge($defaults, $saved_settings);
@@ -12,67 +12,26 @@ function watershed_settings($saved_settings, $subtheme_defaults = array()) {
    * Create the form using Forms API
    */
 
-  $form['watershed_search_help'] = array(
+  $form['dolores_search_help'] = array(
     '#type'          => 'textfield',
-    '#description'         => t('Help text displayed in search box'),
-    '#default_value' => $settings['watershed_search_help'],
+    '#description'   => t('Help text displayed in search box'),
+    '#default_value' => $settings['dolores_search_help'],
     '#prefix'        => '<strong>' . t('Search box - help text:') . '</strong>',
   );
 
-  $form['watershed_search_button'] = array(
+  $form['dolores_search_button'] = array(
     '#type'          => 'textfield',
-    '#description'         => t('Button text displayed with search box'),
-    '#default_value' => $settings['watershed_search_button'],
+    '#description'   => t('Button text displayed with search box'),
+    '#default_value' => $settings['dolores_search_button'],
     '#prefix'        => '<strong>' . t('Search box - button text:') . '</strong>',
   );
 
-  $form['watershed_zen_tabs'] = array(
-    '#type'          => 'checkbox',
-    '#title'         => t('Use Zen Tabs'),
-    '#default_value' => $settings['watershed_zen_tabs'],
-    '#description'   => t('Replace the default tabs by the Zen Tabs.'),
-    '#prefix'        => '<strong>' . t('Zen Tabs:') . '</strong>',
-  );
-
-  $form['watershed_breadcrumb'] = array(
-    '#type'          => 'checkbox',
-    '#title'         => t('Enable Breadcrumb trail'),
-    '#default_value' => $settings['watershed_breadcrumb'],
-    '#description'   => t('Enable breadcrumb trail..'),
-    '#prefix'        => '<strong>' . t('Enable Breadcrumb:') . '</strong>',
-  );
-
-  $form['watershed_wireframe'] = array(
-    '#type'          => 'checkbox',
-    '#title'         => t('Display borders around main layout elements'),
-    '#default_value' => $settings['watershed_wireframe'],
-    '#description'   => t('<a href="!link">Wireframes</a> are useful when prototyping a website.', array('!link' => 'http://www.boxesandarrows.com/view/html_wireframes_and_prototypes_all_gain_and_no_pain')),
-    '#prefix'        => '<strong>' . t('Wireframes:') . '</strong>',
-  );
-
-  $form['watershed_block_editing'] = array(
-    '#type'          => 'checkbox',
-    '#title'         => t('Show block editing on hover'),
-    '#description'   => t('When hovering over a block, privileged users will see block editing links.'),
-    '#default_value' => $settings['watershed_block_editing'],
-    '#prefix'        => '<strong>' . t('Block Edit Links:') . '</strong>',
-  );
-
-  $form['themedev']['watershed_rebuild_registry'] = array(
-    '#type'          => 'checkbox',
-    '#title'         => t('Rebuild theme registry on every page.'),
-    '#default_value' => $settings['watershed_rebuild_registry'],
-    '#description'   => t('During theme development, it can be very useful to continuously <a href="!link">rebuild the theme registry</a>. WARNING: this is a huge performance penalty and must be turned off on production websites.', array('!link' => 'http://drupal.org/node/173880#theme-registry')),
-    '#prefix'        => '<div id="div-watershed-registry"><strong>' . t('Theme registry:') . '</strong>',
-    '#suffix'        => '</div>',
-  );
-  
   // Return the form
   return $form;
 }
 
 
-function _watershed_theme(&$existing, $type, $theme, $path) {
+function _dolores_theme(&$existing, $type, $theme, $path) {
   // Each theme has two possible preprocess functions that can act on a hook.
   // This function applies to every hook.
   $functions[0] = $theme . '_preprocess';
@@ -94,10 +53,10 @@ function _watershed_theme(&$existing, $type, $theme, $path) {
 
   // Since we are rebuilding the theme registry and the theme settings' default
   // values may have changed, make sure they are saved in the database properly.
-  watershed_theme_get_default_settings($theme);
+  dolores_theme_get_default_settings($theme);
 
   // If we are auto-rebuilding the theme registry, warn about feature.
-  if (theme_get_setting('watershed_rebuild_registry')) {
+  if (theme_get_setting('dolores_rebuild_registry')) {
     drupal_set_message(t('The theme registry has been rebuilt. <a href="!link">Turn off</a> this feature on production websites.', array('!link' => base_path() . 'admin/build/themes/settings/' . $GLOBALS['theme'])), 'warning');
   }
 
@@ -106,7 +65,7 @@ function _watershed_theme(&$existing, $type, $theme, $path) {
 }
 
 
-function watershed_theme_get_default_settings($theme) {
+function dolores_theme_get_default_settings($theme) {
   $themes = list_themes();
 
   // Get the default values from the .info file.

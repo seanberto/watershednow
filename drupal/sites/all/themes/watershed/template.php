@@ -400,15 +400,21 @@ function watershed_preprocess_search_theme_form(&$vars, $hook) {
   $vars['form']['search_theme_form']['#title'] = t('');
 
   // Set a default value for the search box
-  $vars['form']['search_theme_form']['#value'] = t('Explore our watershed');
+  $search_help = theme_get_setting('watershed_search_help');
+  $vars['form']['search_theme_form']['#value'] = $search_help;
 
   // Add a custom class to the search box
   $vars['form']['search_theme_form']['#attributes'] = array('class' => t('NormalTextBox txtSearch'),
-  'onfocus' => "if (this.value == 'Explore our watershed') {this.value = '';}",
-  'onblur' => "if (this.value == '') {this.value = 'Explore our watershed';}");
+  'onfocus' => "if (this.value == '" . $search_help . "') {this.value = '';}",
+  'onblur' => "if (this.value == '') {this.value = '" . $search_help . "';}");
 
-  // Change the text on the submit button
-  $vars['form']['submit']['#value'] = t('Go');
+// Change the text on the submit button
+  $button_text = theme_get_setting('watershed_search_button');
+  if ($button_text != '') {
+    $vars['form']['submit']['#value'] = $button_text;
+  } else {
+    $vars['form']['submit']['#value'] = t('Go');
+  }
 
   // Rebuild the rendered version (search form only, rest remains unchanged)
   unset($vars['form']['search_theme_form']['#printed']);

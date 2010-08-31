@@ -33,9 +33,6 @@
               <a href="<?php print $front_page ?>" title="<?php print t('Home'); ?>" rel="home"><span><?php print $site_name; ?></span></a>
             </h1>
           <?php endif; ?>
-          <?php if (!empty($site_slogan)): ?>
-            <div id="site-slogan"><?php print $site_slogan; ?></div>
-          <?php endif; ?>
         </div> <!-- /name-and-slogan -->
 
       </div> <!-- /logo-title -->
@@ -57,16 +54,20 @@
       <div id="content">
         <div id="content-inner" class="inner column center">
 
-          <?php if ($content_top): ?>
-            <div id="content-top">
-              <?php print $content_top; ?>
-            </div> <!-- /#content-top -->
+          <?php if ($callout): ?>
+            <div id="callout">
+              <?php print $callout; ?>
+            </div> <!-- /#callout -->
           <?php endif; ?>
 
-          <?php if ($breadcrumb || $title || $mission || $messages || $help || $tabs || $message_block): ?>
+          <?php if ($breadcrumb || $title || $mission || $messages || $help || $tabs || $notes): ?>
             <div id="content-header">
 
               <?php print $breadcrumb; ?>
+              
+              <?php if ($content_top): ?>
+                <div id="content-top"><?php print $content_top; ?></div>
+              <?php endif; ?>
 
               <?php if ($title): ?>
                 <h1 class="title"><?php print $title; ?></h1>
@@ -80,8 +81,12 @@
 
               <?php print $help; ?>
               
-              <?php if ($message_block): ?>
-                <div id="message_block"><?php print $message_block; ?></div>
+              <?php if ($notes): ?>
+                <div id="notes"><?php print $notes; ?></div>
+              <?php endif; ?>
+              
+              <?php if ($preface): ?>
+                <div id="preface"><?php print $preface; ?></div>
               <?php endif; ?>
 
               <?php if ($tabs): ?>
@@ -133,11 +138,11 @@
 
       <!-- ______________________ FOOTER _______________________ -->
 
-      <?php if(!empty($footer_message) || !empty($footer_first) || !empty($footer_second)): ?>
+      <?php if(!empty($footer_message) || !empty($footer) || !empty($footer_second)): ?>
         <div id="footer">
-          <?php print $footer_message; ?>
-          <?php print $footer_first; ?>
+          <?php print $footer; ?>
           <?php print $footer_second; ?>
+          <?php print $footer_message; ?>
         </div> <!-- /footer -->
       <?php endif; ?>
 

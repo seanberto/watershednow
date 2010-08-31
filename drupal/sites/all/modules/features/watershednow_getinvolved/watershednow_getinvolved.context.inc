@@ -65,7 +65,7 @@ function watershednow_getinvolved_context_default_contexts() {
         'boxes-donate' => array(
           'module' => 'boxes',
           'delta' => 'donate',
-          'region' => 'content_top',
+          'region' => 'preface',
           'weight' => 0,
         ),
       ),
@@ -98,7 +98,7 @@ function watershednow_getinvolved_context_default_contexts() {
         'boxes-events' => array(
           'module' => 'boxes',
           'delta' => 'events',
-          'region' => 'content_top',
+          'region' => 'preface',
           'weight' => 0,
         ),
       ),
@@ -131,7 +131,7 @@ function watershednow_getinvolved_context_default_contexts() {
         'boxes-take_action' => array(
           'module' => 'boxes',
           'delta' => 'take_action',
-          'region' => 'content_top',
+          'region' => 'preface',
           'weight' => 0,
         ),
       ),

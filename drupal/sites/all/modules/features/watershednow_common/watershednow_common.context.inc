@@ -91,7 +91,7 @@ function watershednow_common_context_default_contexts() {
         'boxes-customizable_footer' => array(
           'module' => 'boxes',
           'delta' => 'customizable_footer',
-          'region' => 'footer_second',
+          'region' => 'footer',
           'weight' => 0,
         ),
       ),
