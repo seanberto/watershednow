@@ -4,10 +4,9 @@
  *  Implementation of hook_install().
  */
 function watershednow_common_install() {
-  $module = 'watershednow_common';
+  // Unfortunately, we have to manually create the Menu block for displaying secondary navigation.
+  // Menu block configuration has been strongarmed in feature definition.
+  $module = 'menu_block';
   $delta = '1';
-  $enabled_themes = list_themes(); // Array of enabled themes so that we enable this block for all themes.
-  foreach ($enabled_themes as $theme) {
-    db_query("INSERT INTO {blocks} (module, delta, theme) VALUES ('%s', '%s', '%s')", $module, $delta, $theme);
-  }
+  db_query("INSERT INTO {blocks} (module, delta VALUES ('%s', '%s')", $module, $delta);
 }

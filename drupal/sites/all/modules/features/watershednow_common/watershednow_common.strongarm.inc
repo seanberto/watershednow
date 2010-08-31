@@ -363,7 +363,7 @@ function watershednow_common_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'menu_block_1_parent';
-  $strongarm->value = 'primary-links:0';
+  $strongarm->value = 'secondary-links:0';
 
   $export['menu_block_1_parent'] = $strongarm;
   $strongarm = new stdClass;
@@ -927,7 +927,7 @@ function watershednow_common_strongarm() {
   $strongarm->value = array(
     'watershed_zen_tabs' => 1,
     'watershed_wireframe' => 0,
-    'watershed_block_editing' => 1,
+    'watershed_block_editing' => 0,
     'watershed_rebuild_registry' => 0,
     'mission' => '',
     'default_logo' => 1,
