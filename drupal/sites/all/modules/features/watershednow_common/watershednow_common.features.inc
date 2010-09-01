@@ -99,7 +99,7 @@ function watershednow_common_node_info() {
       'has_body' => '0',
       'body_label' => '',
       'min_word_count' => '0',
-      'help' => '',
+      'help' => '"Pages" contain general information about your organization. They can be included in the menu structure and describe your organization, programs, conservation efforts, etc.',
     ),
   );
   return $items;

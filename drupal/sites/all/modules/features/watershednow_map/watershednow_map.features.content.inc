@@ -148,7 +148,7 @@ function watershednow_map_content_default_fields() {
         ),
       ),
       'default_value_php' => NULL,
-      'label' => 'Associated action pages',
+      'label' => 'Associated "Get Involved" opportunities',
       'weight' => 0,
       'description' => 'Select those "Take Action" and donation pages associated with this watershed feature.',
       'type' => 'nodereference_buttons',

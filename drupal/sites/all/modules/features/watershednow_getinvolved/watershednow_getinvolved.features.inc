@@ -30,7 +30,7 @@ function watershednow_getinvolved_node_info() {
       'has_body' => '0',
       'body_label' => '',
       'min_word_count' => '0',
-      'help' => '',
+      'help' => '"Donation pages" are created for specific fundraising initiatives. They contain a simple donation link that goes to PayPal. When donations are made payment information is sent back to this site for tracking purposes.',
     ),
     'event' => array(
       'name' => t('Event'),
@@ -41,7 +41,7 @@ function watershednow_getinvolved_node_info() {
       'has_body' => '0',
       'body_label' => '',
       'min_word_count' => '0',
-      'help' => '',
+      'help' => '"Events" have a start date/time and optionally an end date/time. They are listed on the events calendar. They can also be enabled to accept sign-ups with registration limits.',
     ),
     'take_action' => array(
       'name' => t('Take action page'),
@@ -52,7 +52,7 @@ function watershednow_getinvolved_node_info() {
       'has_body' => '0',
       'body_label' => '',
       'min_word_count' => '0',
-      'help' => '',
+      'help' => '"Take action pages" are used to create survey forms and e-petitions. Create an "take action" page to gather site visitor information and/or to send petition letters to representatives. Form results can be downloaded as spreadsheet data.',
     ),
   );
   return $items;
