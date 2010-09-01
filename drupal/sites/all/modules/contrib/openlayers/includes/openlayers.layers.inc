@@ -1,5 +1,5 @@
 <?php
-// $Id: openlayers.layers.inc,v 1.9.2.24 2010/08/06 13:59:09 tmcw Exp $
+// $Id: openlayers.layers.inc,v 1.9.2.23 2010/06/09 12:57:17 tmcw Exp $
 
 /**
  * @file
@@ -222,10 +222,10 @@ function _openlayers_openlayers_layers() {
     'layer_type' => 'openlayers_layer_type_wms',
     'url' => 'http://oam.hypercube.telascience.org/tiles',
     'params' => array(
-      'isBaseLayer' => FALSE,
       'layers' => 'osm-4326-hybrid',
     ),
     'options' => array(
+      'isBaseLayer' => FALSE,
       'buffer' => 1,
     ),
   );
@@ -241,9 +241,7 @@ function _openlayers_openlayers_layers() {
     'baselayer' => TRUE,
     'layer_type' => 'openlayers_layer_type_wms',
     'base_url' => 'http://labs.metacarta.com/wms-c/Basic.py',
-    'params' => array(
-      'isBaseLayer' => TRUE,
-    ),
+    'params' => array(),
     'options' => array(
       'layers' => array('basic'),
       'maxExtent' => openlayers_get_extent('4326'),

@@ -1,5 +1,5 @@
 <?php
-// $Id: openlayers_ui.presets.inc,v 1.1.2.28 2010/08/04 17:33:23 tmcw Exp $
+// $Id: openlayers_ui.presets.inc,v 1.1.2.23 2010/06/07 20:41:40 tmcw Exp $
 
 /**
  * @file
@@ -24,7 +24,6 @@ function openlayers_ui_presets_clone($preset) {
  */
 function openlayers_ui_presets_form(&$form_state, $preset = NULL, $edit = FALSE) {
   openlayers_include();
-  ctools_include('dependent');
   drupal_add_js(drupal_get_path('module', 'openlayers_ui') . '/js/openlayers_ui.presets.js', 'module');
   drupal_add_css(drupal_get_path('module', 'openlayers_ui') . '/openlayers_ui.css');
 
@@ -132,14 +131,6 @@ function openlayers_ui_presets_form(&$form_state, $preset = NULL, $edit = FALSE)
       $defaults['proxy_host'] : '',
   );
 
-  $form['info']['hide_empty_map'] = array(
-    '#type' => 'checkbox',
-    '#title' => t('Hide empty map'),
-    '#description' => t("Show views empty text or hide the map if there are 
-    no map overlays with features. Otherwise an empty map is displayed."),
-    '#default_value' => isset($defaults['hide_empty_map']) ? $defaults['hide_empty_map'] : FALSE,  
-  );
-  
   // Center
   $form['center'] = array(
     '#title' => t('Center & Bounds'),
@@ -170,6 +161,9 @@ function openlayers_ui_presets_form(&$form_state, $preset = NULL, $edit = FALSE)
     '#attributes' => array('class' => 'openlayers-form-zoom'),
     '#size' => 25,
   );
+
+  ctools_include('dependent');
+
   $form['center']['restrict'] = array(
     '#type' => 'fieldset',
     '#title' => t('Restrict Extent')
@@ -358,11 +352,13 @@ function openlayers_ui_presets_form(&$form_state, $preset = NULL, $edit = FALSE)
   // End AHAH Wrapper
   $form['layerstyles']['ahah-end'] = array('#value' => '</div>');
 
+  // Save button
   $form['buttons'] = array('#tree' => FALSE);
   $form['buttons']['openlayers_save'] = array(
     '#type' => 'submit',
     '#value' => t('Save')
   );
+  // Cancel button
   $form['buttons']['openlayers_cancel'] = array(
     '#type' => 'submit',
     '#value' => t('Cancel')
@@ -539,7 +535,6 @@ function openlayers_ui_presets_form_process($values = array()) {
     'image_path',
     'css_path',
     'proxy_host',
-    'hide_empty_map',
     'center',
     'behaviors',
     'layers',
@@ -547,11 +542,13 @@ function openlayers_ui_presets_form_process($values = array()) {
     'layer_activated',
     'layer_switcher',
     'projections',
-    'styles'
+    'styles',
+    'options',
   );
 
   // TODO: eliminate this process, too much disconnect between
   // forms and data
+  // TODO: fix 'options' key warning in admin after saving
   $processed = array();
   foreach ($keys as $key) {
     switch ($key) {

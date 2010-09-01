@@ -1,5 +1,5 @@
 <?php
-// $Id: openlayers_views.theme.inc,v 1.3.2.3 2010/07/11 17:55:08 tmcw Exp $
+// $Id: openlayers_views.theme.inc,v 1.3.2.2 2010/06/06 19:18:43 tmcw Exp $
 
 /**
  * @file
@@ -25,11 +25,4 @@ function theme_openlayers_views_group_display_item($name = '', $description = ''
   } 
 
   return $output;
-}
-
-/**
- * Theme function for openlayers_views_render_feature
- */
-function theme_openlayers_views_render_feature($feature ='', $record = '') {
-  return $feature;
 }

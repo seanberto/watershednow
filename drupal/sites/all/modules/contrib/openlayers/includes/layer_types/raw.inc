@@ -1,5 +1,5 @@
 <?php
-// $Id: raw.inc,v 1.1.2.3 2010/08/16 21:25:09 tmcw Exp $
+// $Id: raw.inc,v 1.1.2.2 2010/05/30 21:46:15 zzolo Exp $
 
 /**
  * @file
@@ -14,7 +14,6 @@ class openlayers_layer_type_raw extends openlayers_layer_type {
       'layer_type' => 'openlayers_layer_type_raw',
       'layer_handler' => 'openlayers_raw',
       'vector' => TRUE,
-      'baselayer' => FALSE,
     );
   }
 

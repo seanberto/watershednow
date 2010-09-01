@@ -1,5 +1,5 @@
 <?php
-// $Id: openlayers_test.module,v 1.2.2.15 2010/06/27 15:57:01 zzolo Exp $
+// $Id: openlayers_test.module,v 1.2.2.13 2010/05/02 10:27:31 zzolo Exp $
 
 /**
  * @file
@@ -220,21 +220,12 @@ function openlayers_test_openlayers_presets() {
  */
 function openlayers_test_page() {
   $output = '';
-  $js_test_link = l(t('JS Testing Page.'), 
-    drupal_get_path('module', 'openlayers_test') . '/js/index.html');
-  
-  // Add link to JS testing page for easy access.  
-  $output .= '
-    <h3>' . t('Info') . '</h3>
-    <ul>
-      <li>' . $js_test_link . '</li>
-    </ul>';
 
   // Render all presets
   $presets = openlayers_presets();
   foreach ($presets as $name => $preset) {
     $output .= '
-      <h3>' . $preset->title . '</h3>
+      </h3> ' . $preset->title . '</h3>
       ' . openlayers_render_map($preset->data) . '
     ';
   }

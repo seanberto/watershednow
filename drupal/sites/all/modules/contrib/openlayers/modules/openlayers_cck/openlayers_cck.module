@@ -1,5 +1,5 @@
 <?php
-// $Id: openlayers_cck.module,v 1.54.2.35 2010/08/27 11:50:44 zzolo Exp $
+// $Id: openlayers_cck.module,v 1.54.2.31 2010/05/15 21:31:37 zzolo Exp $
 
 /**
  * @file
@@ -288,7 +288,7 @@ function openlayers_cck_widget_settings($op, $widget) {
             $widget['openlayers_behaviors'][$key] : array();
           $behavior = new $class($options, $map);
           $form['openlayers_behaviors'][$key]['options'] = 
-            $behavior->options_form($options['options']);
+            $behavior->options_form($options);
         }
       }
 
@@ -365,34 +365,6 @@ function openlayers_cck_wkt_element_process($element, $edit, &$form_state, &$for
     '#delta' => $element['#delta'],
     '#columns' => $element['#columns'],
   );
-  
-  // Settings to show/hide WKT field.  Because of how
-  // drupal_add_js merges arrays (specifically PHP),
-  // we only send the text stuff once.
-  static $sent = FALSE;
-  if (!$sent) {
-    drupal_add_js(array(
-      'openlayers_cck' => array(
-        'wkt_hide' => array(
-          'text_show' => t('Show WKT field'),
-          'text_hide' => t('Hide WKT field'),
-        ),
-      ),
-    ), 'setting');
-    $sent = TRUE;
-  }
-  $field_id = str_replace('_', '-', $field_name);
-  drupal_add_js(array(
-    'openlayers_cck' => array(
-      'wkt_hide' => array(
-        'fields' => array(
-          $field_id => $field_id,
-        ),
-      ),
-    ),
-  ), 'setting');
-  drupal_add_js(drupal_get_path('module', 'openlayers_cck') .
-    '/js/openlayers_cck.js');
 
   // Set #element_validate in a way that it will not wipe out other
   // validation functions already set by other modules.
@@ -467,6 +439,7 @@ function openlayers_cck_field_formatter_info() {
  */
 function _openlayers_cck_render_element_map($field_name = '', 
   $field_label = '', $values = array(), $field = array()) {
+
   $field_id = 'edit-' . str_replace('_', '-', $field_name) . '-openlayers-wkt';
   
   // Get map to use for field
@@ -483,22 +456,11 @@ function _openlayers_cck_render_element_map($field_name = '',
 
   $map['id'] = OPENLAYERS_CCK_WIDGET_MAP_ID_PREFIX . '-' . $field_name;
 
-  if ($field['multiple'] == 0) {
-    $limit = 1;
-  }
-  elseif ($field['multiple'] > 1) {
-    $limit = $field['multiple'];
-  }
-  else {
-    $limit = 0;
-  }
-
   // Make sure that our display projection matches the database projection
   // TODO: rewrite
   $map['behaviors']['openlayers_behavior_drawfeatures'] = array(
     'element_id' => $field_id,
-    'feature_types' => $field['openlayers_cck_feature_types'],
-    'feature_limit' => $limit,
+    'feature_types' => $field['openlayers_cck_feature_types']
   );
 
   return openlayers_render_map($map);

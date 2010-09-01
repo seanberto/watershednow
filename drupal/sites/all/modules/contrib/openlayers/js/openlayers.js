@@ -1,4 +1,4 @@
-// $Id: openlayers.js,v 1.47.2.36 2010/08/06 20:35:15 tmcw Exp $
+// $Id: openlayers.js,v 1.47.2.32 2010/06/09 12:57:17 tmcw Exp $
 /*jslint white: false */
 /*jslint forin: true */
 /*global OpenLayers Drupal $ document jQuery window */
@@ -22,6 +22,23 @@ document.namespaces;
 Drupal.settings.openlayers = {};
 Drupal.settings.openlayers.maps = {};
 
+/**
+ * This should move down and be a part of another object
+  * and get docs.
+ */
+function relate_path(path, base_path) {
+  // Check for a full URL or an absolute path.
+  if (path.indexOf('://') >= 0 || path.indexOf('/') == 0) {
+    return path;
+  }
+  else {
+    return base_path + path;
+  }
+}
+
+/**
+ * object from feature
+ */
 /**
  * Minimal OpenLayers map bootstrap.
  * All additional operations occur in additional Drupal behaviors.
@@ -53,8 +70,7 @@ Drupal.behaviors.openlayers = function(context) {
 
           // TODO: work around this scary code
           if (map.projection === '900913') {
-            options.maxExtent = new OpenLayers.Bounds(
-              -20037508.34, -20037508.34, 20037508.34, 20037508.34);
+            options.maxExtent = new OpenLayers.Bounds(-20037508.34, -20037508.34, 20037508.34, 20037508.34);
           }
           if (map.projection === '4326') {
             options.maxExtent = new OpenLayers.Bounds(-180, -90, 180, 90);
@@ -63,18 +79,18 @@ Drupal.behaviors.openlayers = function(context) {
           options.maxResolution = 1.40625;
           options.controls = [];
   
-          // Change image, CSS, and proxy paths if specified
+          // Change image path if specified
           if (map.image_path) {
-            OpenLayers.ImgPath = Drupal.openlayers.relatePath(map.image_path, 
-              Drupal.settings.basePath);
+            OpenLayers.ImgPath = relate_path(map.image_path, Drupal.settings.basePath);
           }
+  
+          // Change css path if specified
           if (map.css_path) {
-            options.theme = Drupal.openlayers.relatePath(map.css_path, 
-              Drupal.settings.basePath);
+            options.theme = relate_path(map.css_path, Drupal.settings.basePath);
           }
+  
           if (map.proxy_host) {
-            OpenLayers.ProxyHost = Drupal.openlayers.relatePath(map.proxy_host, 
-              Drupal.settings.basePath);
+            OpenLayers.ProxyHost = relate_path(map.proxy_host, Drupal.settings.basePath);
           }
   
           // Initialize openlayers map
@@ -110,20 +126,6 @@ Drupal.behaviors.openlayers = function(context) {
  * Collection of helper methods.
  */
 Drupal.openlayers = {
-
-  /**
-   * Determine path based on format.
-   */
-  'relatePath': function(path, basePath) {
-    // Check for a full URL or an absolute path.
-    if (path.indexOf('://') >= 0 || path.indexOf('/') == 0) {
-      return path;
-    }
-    else {
-      return basePath + path;
-    }
-  },
-
   /**
    * Redraw Vectors.
    * This is necessary because various version of IE cannot draw vectors on
@@ -161,7 +163,7 @@ Drupal.openlayers = {
       if (options.layer_handler !== undefined && Drupal.openlayers.layer[options.layer_handler] !== undefined) {
         var layer = Drupal.openlayers.layer[options.layer_handler](map.layers[name].title, map, options);
 
-        layer.visibility = !!(!map.layer_activated || map.layer_activated[name]);
+        layer.visibility = (!map.layer_activated || map.layer_activated[name]);
 
         if (layer.isBaseLayer === false) {
           layer.displayInLayerSwitcher = (!map.layer_switcher || map.layer_switcher[name]);
@@ -234,18 +236,9 @@ Drupal.openlayers = {
           }
 
           // Add attribute data
-          if (feature.attributes) {
-            // Attributes belong to features, not single component geometries
-            // of them. But we're creating a geometry for each component for
-            // better performance and clustering support. Let's call these
-            // "pseudofeatures".
-            //
-            // In order to identify the real feature each geometry belongs to
-            // we then add a 'fid' parameter to the "pseudofeature".
-            // NOTE: 'drupalFID' is only unique within a single layer.
+          if (feature.attributes){
             newFeature.attributes = feature.attributes;
             newFeature.data = feature.attributes;
-            newFeature.drupalFID = key; 
           }
 
           // Add style information
@@ -264,6 +257,9 @@ Drupal.openlayers = {
       layer.addFeatures(newFeatures);
     }
   },
+  /**
+   * getStyleMap
+   */
   'getStyleMap': function(map, layername) {
     if (map.styles) {
       var stylesAdded = {};

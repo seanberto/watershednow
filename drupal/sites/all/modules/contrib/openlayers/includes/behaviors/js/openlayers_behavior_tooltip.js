@@ -1,25 +1,21 @@
-// $Id: openlayers_behavior_tooltip.js,v 1.1.2.2 2010/06/27 13:55:25 zzolo Exp $
+// $Id: openlayers_behavior_tooltip.js,v 1.1.2.1 2010/02/03 18:13:45 tmcw Exp $
 
 /**
- * Javascript Drupal Theming function for inside of Tooltips
+ * Helper function for generating content inside popups
  *
- * To override
+ * This function can be overridden by 
+ * other implementors just by redefining it.
  *
  * @param feature
  *  OpenLayers feature object
  * @return
  *  Formatted HTML
  */
-Drupal.theme.prototype.openlayersTooltip = function(feature) {
-  var output =
-    '<div class="openlayers-popup openlayers-tooltip-name">' +
-      feature.attributes.name +
-    '</div>' +
-    '<div class="openlayers-popup openlayers-tooltip-description">' +
-      feature.attributes.description +
-    '</div>';
-  return output;
+function openlayers_behavior_tooltip_popup_content(feature) {
+  return "<div class='openlayers-popup'>" + feature.attributes.name +"</div>" +
+         "<div class='openlayers-popup'>" + feature.attributes.description +"</div>";
 }
+
 
 /**
  * OpenLayers Tooltip Behavior
@@ -27,54 +23,35 @@ Drupal.theme.prototype.openlayersTooltip = function(feature) {
 Drupal.behaviors.openlayers_behavior_tooltip = function(context) {
   var layers, data = $(context).data('openlayers');
   if (data && data.map.behaviors['openlayers_behavior_tooltip']) {
-    var map = data.openlayers;
-    var options = data.map.behaviors['openlayers_behavior_tooltip'];
-    var layers = [];
+      map = data.openlayers;
 
-    // For backwards compatiability, if layers is not
-    // defined, then include all vector layers
-    if (typeof options.layers == 'undefined' || options.layers.length == 0) {
+      // TODO: just select layers you want, instead of all vector layers
       layers = map.getLayersByClass('OpenLayers.Layer.Vector');
-    }
-    else {
-      for (var i in options.layers) {
-        var selectedLayer = map.getLayersBy('drupalID', options.layers[i]);
-        if (typeof selectedLayer[0] != 'undefined') {
-          layers.push(selectedLayer[0]);
-        }
-      }
-    }
 
-    // Define feature select events for selected layers.
-    popupSelect = new OpenLayers.Control.SelectFeature(layers, 
-      {
-        hover: true,
-        clickout: false,
-        multiple: false,
-        onSelect: function (feature) {
-          // Create FramedCloud popup for tooltip.
-          popup = new OpenLayers.Popup.FramedCloud(
-            'tooltip', 
-            feature.geometry.getBounds().getCenterLonLat(),
-            null,
-            Drupal.theme('openlayersTooltip', feature),
-            null, 
-            true
-          );
-          feature.popup = popup;
-          feature.layer.map.addPopup(popup);
-        },
-        onUnselect: function (feature) {
-          // Remove popup.
-          feature.layer.map.removePopup(feature.popup);
-          feature.popup.destroy();
-          feature.popup = null;
+      popup_select = new OpenLayers.Control.SelectFeature(layers, 
+          {
+            hover: true,
+            clickout: false,
+            multiple: false,
+            onSelect: function(feature) {
+              popup = new OpenLayers.Popup.FramedCloud(
+                'tooltip', 
+                feature.geometry.getBounds().getCenterLonLat(),
+                null,
+                openlayers_behavior_tooltip_popup_content(feature),
+                null, 
+                true);
+              feature.popup = popup;
+              feature.layer.map.addPopup(popup);
+          },
+          onUnselect: function(feature) {
+            feature.layer.map.removePopup(feature.popup);
+            feature.popup.destroy();
+            feature.popup = null;
+          }
         }
-      }
-    );
-    
-    // Actiate the popups
-    map.addControl(popupSelect);
-    popupSelect.activate();
+      );
+    map.addControl(popup_select);
+    popup_select.activate();
   }
 }

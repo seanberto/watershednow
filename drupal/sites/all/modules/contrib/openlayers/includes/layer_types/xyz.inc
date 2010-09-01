@@ -1,5 +1,5 @@
 <?php
-// $Id: xyz.inc,v 1.1.2.11 2010/08/16 21:25:09 tmcw Exp $
+// $Id: xyz.inc,v 1.1.2.10 2010/05/30 21:46:15 zzolo Exp $
 
 /**
  * @file
@@ -29,7 +29,6 @@ class openlayers_layer_type_xyz extends openlayers_layer_type {
       'serverResolutions' => openlayers_get_resolutions('900913'),
       'maxExtent' => openlayers_get_extent('900913'),
       'layer_handler' => 'xyz',
-      'baselayer' => TRUE,
     );
   }
 

@@ -1,5 +1,5 @@
 <?php
-// $Id: osm.inc,v 1.1.2.14 2010/08/16 21:25:09 tmcw Exp $
+// $Id: osm.inc,v 1.1.2.13 2010/04/29 20:58:37 tmcw Exp $
 
 /**
  * @file
@@ -31,7 +31,6 @@ class openlayers_layer_type_osm extends openlayers_layer_type {
       'layer_handler' => 'xyz',
       'layer_type' => 'osm',
       'type' => 'png',
-      'baselayer' => TRUE,
     );
   }
 

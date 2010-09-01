@@ -1,5 +1,5 @@
 <?php
-// $Id: openlayers_views_style_data.inc,v 1.1.2.22 2010/08/16 13:58:21 tmcw Exp $
+// $Id: openlayers_views_style_data.inc,v 1.1.2.20 2010/06/14 18:36:35 tmcw Exp $
 
 /**
  * @file
@@ -32,6 +32,7 @@ class openlayers_views_style_data extends views_plugin_style {
     parent::options_form($form, $form_state);
 
     $fields = array();
+    $data_source_options = array();
 
     // Get list of fields in this view & flag available geodata fields
     $handlers = $this->display->handler->get_handlers('field');
@@ -48,24 +49,13 @@ class openlayers_views_style_data extends views_plugin_style {
 
     // Go through fields
     foreach ($handlers as $field_id => $handler) {
-        if ($handler->content_field['type'] == 'openlayers_wkt' &&
-          $handler->options['format'] !== 'openlayers_wkt'
-        ) {
-          form_set_error('', t('WKT Field %field not available 
-            because it is formatted as a map. Set its format to WKT Value to 
-            make it available.', array('%field' => $handler->definition['title'])));
-        }
-        else {
-          $fields[$field_id] = $handler->definition['title'];
-        }
+        $fields[$field_id] = $handler->definition['title'];
     }
 
     // Default data source
-    $data_source_options = array(
-      'other_latlon' => t('Other: Lat/Lon Point'),
-      'other_boundingbox' => t('Other: Bounding Box'),
-      'openlayers_wkt' => t('OpenLayers WKT')
-    );
+    $data_source_options['other_latlon'] = t('Other: Lat/Lon Point');
+    $data_source_options['other_boundingbox'] = t('Other: Bounding Box');
+    $data_source_options['openlayers_wkt'] = t('OpenLayers WKT');
 
     // Data Source options
     $form['data_source'] = array(
@@ -299,7 +289,7 @@ class openlayers_views_style_data extends views_plugin_style {
 
         // Only add features with WKT data
         if (!empty($feature['wkt'])) {
-          $features[] = theme('openlayers_views_render_feature', $feature, $record);
+          $features[] = $feature;
         }
         $this->view->row_index++;
       }
@@ -365,8 +355,10 @@ class openlayers_views_style_data extends views_plugin_style {
             $feature['projection'] = '4326';
           }
 
-          array_push($excluded_fields, $top_field, $right_field,
-            $left_field, $bottom_field);
+          $excluded_fields[] = $top_field;
+          $excluded_fields[] = $right_field;
+          $excluded_fields[] = $left_field;
+          $excluded_fields[] = $bottom_field;
         }
 
         // Add the name and description attributes
@@ -405,7 +397,7 @@ class openlayers_views_style_data extends views_plugin_style {
 
         // Only add features with WKT data
         if (!empty($feature['wkt'])) {
-          $features[] = theme('openlayers_views_render_feature', $feature, $record);
+          $features[] = $feature;
         }
       }
       return $features;

@@ -4,9 +4,9 @@ description = The OpenLayers Filters module provides input filters to allow for 
 core = 6.x
 package = OpenLayers
 dependencies[] = openlayers
-; Information added by drupal.org packaging script on 2010-08-27
-version = "6.x-2.x-dev"
+; Information added by drupal.org packaging script on 2010-06-27
+version = "6.x-2.0-alpha8"
 core = "6.x"
 project = "openlayers"
-datestamp = "1282911268"
+datestamp = "1277642108"
 

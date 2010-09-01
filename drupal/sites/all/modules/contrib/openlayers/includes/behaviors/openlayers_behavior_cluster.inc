@@ -1,5 +1,5 @@
 <?php
-// $Id: openlayers_behavior_cluster.inc,v 1.1.2.3 2010/07/21 09:38:30 strk Exp $
+// $Id: openlayers_behavior_cluster.inc,v 1.1.2.2 2010/06/07 20:41:40 tmcw Exp $
 
 /**
  * @file
@@ -15,7 +15,6 @@ class openlayers_behavior_cluster extends openlayers_behavior {
    */
   function options_init() {
     return array(
-      'clusterlayer' => array(),
       'distance' => '20',
       'threshold' => NULL,
     );
@@ -36,19 +35,18 @@ class openlayers_behavior_cluster extends openlayers_behavior {
     $vector_layers = array();
     foreach ($this->map['layers'] as $id => $name) {
       $layer = openlayers_layer_load($id);
-      if (isset($layer->data['vector']) && $layer->data['vector'] == TRUE) {
+      if ($layer->data['layer_type'] == 'openlayers_views_vector') {
         $vector_layers[$id] = $name;
       }
     }
 
     return array(
       'clusterlayer' => array(
-        '#title' => t('Layers'),
-        '#type' => 'checkboxes',
+        '#type' => 'select',
         '#options' => $vector_layers,
-        '#description' => t('Select layers to cluster.'),
-        '#default_value' => isset($defaults['clusterlayer']) ? 
-        $defaults['clusterlayer'] : array(),
+        '#description' => t('Select layer to cluster'),
+        '#default_value' => isset($defaults['clusterlayer']) ?
+        $defaults['clusterlayer'] : NULL,
       ),
       'distance' => array(
         '#type' => 'textfield',
