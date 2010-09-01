@@ -75,13 +75,13 @@ function watershednow_map_strongarm() {
   $strongarm->value = array(
     'title' => '-3',
     'body_field' => '-1',
-    'revision_information' => '3',
-    'author' => '4',
-    'options' => '5',
-    'comment_settings' => '7',
-    'menu' => '2',
+    'revision_information' => '5',
+    'author' => '6',
+    'options' => '7',
+    'comment_settings' => '9',
+    'menu' => '4',
     'taxonomy' => '-4',
-    'path' => '6',
+    'path' => '8',
   );
 
   $export['content_extra_weights_map_feature'] = $strongarm;

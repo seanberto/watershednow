@@ -54,6 +54,8 @@ function watershednow_profile_modules() {
 		'imagefield',
 		'emfield',
 		'emvideo',
+		'media_flickr',
+		'link',
 		'optionwidgets',
 		'nodereference',
 		// Date
@@ -97,6 +99,7 @@ function watershednow_profile_modules() {
 		'watershednow_common',
 		'watershednow_blog',
 		'watershednow_getinvolved',
+		'watershednow_multimedia',
 		'watershednow_map',
 		// Development (NOTE: Comment out for production installs.)
 		'devel',

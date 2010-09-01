@@ -1,0 +1,130 @@
+<?php
+// $Id: media_flickr_xspf.module,v 1.1.2.7 2009/12/03 19:07:28 aaron Exp $
+
+/**
+ *  @file
+ *  Create Flickr playlists for the Media: Flickr module,
+ *  for use with the JW Image Rotator file.
+ */
+
+/**
+ *  Define required constants.
+ */
+
+/**
+ *  These determine what information to pull in from Flickr for the 'title'
+ *  attribute of the feed, to be displayed as a caption for each photo.
+ */
+define('MEDIA_FLICKR_XSPF_CAPTION_TYPE_NONE', 0);
+define('MEDIA_FLICKR_XSPF_CAPTION_TYPE_TITLE', 1);
+define('MEDIA_FLICKR_XSPF_CAPTION_TYPE_DESCRIPTION', 2);
+define('MEDIA_FLICKR_XSPF_CAPTION_TYPE_BOTH', 3);
+define('MEDIA_FLICKR_XSPF_CAPTION_TYPE_DESCRIPTION_FALLBACK_TO_TITLE', 4);
+
+/**
+ * Implementation of hook_menu().
+ */
+function media_flickr_xspf_menu() {
+  $items = array();
+
+  $items['media/flickr/photoset/%media_flickr_photoset/xspf'] = array(
+    'page callback' => 'media_flickr_xspf_page',
+    'page arguments' => array(3),
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+
+  return $items;
+}
+
+/**
+ *  Page callback for /media/flickr/[photoset]/xspf.
+ *
+ *  Displays an XSPF playlist for the photoset.
+ */
+function media_flickr_xspf_page($photoset, $delay = 10, $width = 0, $height = 0, $captions = MEDIA_FLICKR_XSPF_CAPTION_TYPE_TITLE) {
+  drupal_set_header('Content-Type: text/xml; charset=utf-8');
+
+  $output = array();
+  $output[] = '<playlist version="1" xmlns="http://xspf.org/ns/0/">';
+  $info = media_flickr_sets_request('flickr.photosets.getInfo', array('photoset_id' => $photoset['id']));
+  $title = $info['photoset']['title']['_content'];
+  $attributes = array(
+    'title' => t('@title', array('@title' => $title)),
+  );
+  $output[] = format_xml_elements($attributes) . '<trackList>';
+
+
+  $items = array();
+  $size = media_flickr_guess_size($width, $height);
+  $photos = media_flickr_photoset_load_photos($photoset, $size);
+  foreach ($photoset['photoset']['photo'] as $photoid => $photo) {
+    // media_flickr_photo_load($photoid);
+    switch ($captions) {
+      case MEDIA_FLICKR_XSPF_CAPTION_TYPE_DESCRIPTION:
+        $title = t('@description', array('@description' => $photo['photo']['description']['_content']));
+        break;
+      case MEDIA_FLICKR_XSPF_CAPTION_TYPE_BOTH:
+        $title = t('@title - @description', array('@title' => $photo['photo']['title']['_content'], '@description' => $photo['photo']['description']['_content']));
+        break;
+      case MEDIA_FLICKR_XSPF_CAPTION_TYPE_NONE:
+        $title = '';
+        break;
+      case MEDIA_FLICKR_XSPF_CAPTION_TYPE_DESCRIPTION_FALLBACK_TO_TITLE:
+        $title = t('@description', array('@description' => $photo['photo']['description']['_content']));
+        if ($title === '') {
+          $title = t('@title', array('@title' => $photo['photo']['title']['_content']));
+        }
+        break;
+      case MEDIA_FLICKR_XSPF_CAPTION_TYPE_TITLE:
+      default:
+        $title = t('@title', array('@title' => $photo['photo']['title']['_content']));
+        break;
+    }
+    $url = url($photos[$photoid], array('absolute' => TRUE));
+    $items[] = array(
+      'title' => $title,
+      'creator' => '',
+      'location' => $url,
+      'info' => '',
+      'image' => $url,
+      'duration' => $delay,
+      array(
+        'key' => 'meta',
+        'value' => $delay,
+        'attributes' => array(
+          'rel' => 'duration',
+        ),
+      ),
+    );
+  }
+  if (!empty($items)) {
+    foreach($items as $item){
+      // Add another item.
+      $output[] = media_flickr_xspf_item($item);
+    }
+  }
+  $output[] = '</trackList>';
+  $output[] = '</playlist>';
+
+  print implode("\n", $output);
+}
+
+/**
+ * Create a playlist item for an xml file.
+ *
+ * @param array $item
+ *   Keys are:
+ *   - 'key': the tag name.
+ *   - 'value': the tag value.
+ *   - 'attributes': an array of attributues, e.g., array('rel' => 'rel')) to be applied
+ *     to the tag. Will be run through drupal_attributes().
+ * @return
+ *   An XML string.
+ */
+function media_flickr_xspf_item($item) {
+  $output = array();
+  $output[] = '<track>';
+  $output[] = format_xml_elements($item) . '</track>';
+  return implode("\n", $output);
+}

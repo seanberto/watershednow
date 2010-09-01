@@ -1,0 +1,395 @@
+<?php
+// $Id: media_flickr.install,v 1.1.2.5 2009/06/25 21:17:25 aaron Exp $
+
+/**
+ *  @file
+ *  Installation file for Media: Flickr.
+ */
+
+/**
+ * Implementation of hook_install().
+ */
+function media_flickr_install() {
+  // Create tables.
+  $success = drupal_install_schema('media_flickr');
+  if ($success) {
+    drupal_set_message(st("Media: Flickr's tables have been installed successfully."));
+  }
+  else {
+    drupal_set_message(st('The installation of the Media: Flickr module failed.'), 'error');
+  }
+}
+
+function media_flickr_uninstall() {
+  // Remove tables.
+  drupal_uninstall_schema('media_flickr');
+
+  // Remove all variables that live in our namespace.
+  db_query("DELETE FROM {variable} WHERE name LIKE 'media_flickr_%'");
+}
+
+/**
+ *  Create the new tables required.
+ */
+function media_flickr_update_6000() {
+  $schema['media_flickr'] = array(
+    'description' => t('Stores data for individual flickr images.'),
+    'fields' => array(
+      'code' => array(
+        'default'     => '',
+        'description' => t('The flickr photo code.'),
+        'length'      => 255,
+        'not null'    => TRUE,
+        'type'        => 'varchar',
+      ),
+      'title' => array(
+        'default'     => '',
+        'description' => t('The flickr title.'),
+        'length'      => 255,
+        'not null'    => TRUE,
+        'type'        => 'varchar',
+      ),
+      'owner' => array(
+        'default'     => '',
+        'description' => t('The flickr photo owner.'),
+        'length'      => 255,
+        'not null'    => TRUE,
+        'type'        => 'varchar',
+      ),
+      'description' => array(
+        'default'     => '',
+        'description' => t('The flickr photo description.'),
+        'type' => 'text',
+        'not null' => TRUE,
+        'size' => 'big',
+      ),
+      'url' => array(
+        'default'     => '',
+        'description' => t('The URL to the original flickr photo page.'),
+        'length'      => 255,
+        'not null'    => TRUE,
+        'type'        => 'varchar',
+      ),
+    ),
+    'primary key'     => array('code'),
+  );
+  $schema['media_flickr_sizes'] = array(
+    'description' => t('Stores file information and data for individual flickr images, possibly including a local file.'),
+    'fields' => array(
+      'code' => array(
+        'default'     => '',
+        'description' => t('The flickr photo code.'),
+        'length'      => 255,
+        'not null'    => TRUE,
+        'type'        => 'varchar',
+      ),
+      'size' => array(
+        'description' => t("The size of this image, from 0-5, corresponding to Flickr's sizes."),
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'fid' => array(
+        'description' => t("The {file}.fid of this photo's local file, if set."),
+        'not null'    => TRUE,
+        'type'        => 'int',
+        'unsigned'    => TRUE,
+      ),
+    ),
+    'primary key'     => array('code'),
+    'indexes'         => array('fid' => array('fid'), 'size' => array('size')),
+  );
+  $schema['media_flickr_sets'] = array(
+    'description' => t('Stores photos for flickr photosets.'),
+    'fields' => array(
+      'photoset' => array(
+        'default'     => '',
+        'description' => t('The flickr photoset code.'),
+        'length'      => 255,
+        'not null'    => TRUE,
+        'type'        => 'varchar',
+      ),
+      'code' => array(
+        'default'     => '',
+        'description' => t('The flickr photo code.'),
+        'length'      => 255,
+        'not null'    => TRUE,
+        'type'        => 'varchar',
+      ),
+    ),
+    'primary key'     => array('photoset'),
+    'indexes'         => array('code' => array('code')),
+  );
+  $ret = array();
+  if (!db_table_exists('media_flickr')) {
+    db_create_table($ret, 'media_flickr', $schema['media_flickr']);
+  }
+  if (!db_table_exists('media_flickr_sizes')) {
+    db_create_table($ret, 'media_flickr_sizes', $schema['media_flickr_sizes']);
+  }
+  if (!db_table_exists('media_flickr_sets')) {
+    db_create_table($ret, 'media_flickr_sets', $schema['media_flickr_sets']);
+  }
+  return $ret;
+}
+
+/**
+ *  Had primary keys rather than indices.
+ */
+function media_flickr_update_6001() {
+  $ret = array();
+  db_drop_primary_key($ret, 'media_flickr_sizes');
+  db_drop_primary_key($ret, 'media_flickr_sets');
+  db_add_index($ret, 'media_flickr_sizes', 'code', array('code'));
+  db_add_index($ret, 'media_flickr_sets', 'photoset', array('photoset'));
+  return $ret;
+}
+
+/**
+ *  Added a new menu item for remote flickr feeds.
+ */
+function media_flickr_update_6002() {
+  $ret = array();
+  menu_rebuild();
+  return $ret;
+}
+
+/**
+ *  Add media_flickr_node table.
+ */
+function media_flickr_update_6003() {
+  $schema['media_flickr_node'] = array(
+    'description' => t('Node/field references for flickr photosets.'),
+    'fields' => array(
+      'nid' => array(
+        'description' => t("The {node}.nid for this photoset."),
+        'not null'    => TRUE,
+        'type'        => 'int',
+        'unsigned'    => TRUE,
+      ),
+      'field' => array(
+        'default'     => '',
+        'description' => t('The field machine name this photoset is stored in.'),
+        'length'      => 255,
+        'not null'    => TRUE,
+        'type'        => 'varchar',
+      ),
+      'photoset' => array(
+        'default'     => '',
+        'description' => t('The flickr photoset code.'),
+        'length'      => 255,
+        'not null'    => TRUE,
+        'type'        => 'varchar',
+      ),
+    ),
+    'indexes'         => array('nid' => array('nid'), 'field' => array('field'), 'photoset' => array('photoset')),
+  );
+  $ret = array();
+
+  if (!db_table_exists('media_flickr_node')) {
+    db_create_table($ret, 'media_flickr_node', $schema['media_flickr_node']);
+  }
+  return $ret;
+}
+
+/**
+ *  Add delta to media_flickr_node table.
+ */
+function media_flickr_update_6004() {
+  $ret = array();
+  switch ($GLOBALS['db_type']) {
+    case 'pgsql':
+      db_add_column($ret, 'media_flickr_node', 'delta', 'int', array('not null' => TRUE, 'default' => 0));
+      break;
+    case 'mysql':
+    case 'mysqli':
+      $ret[] = update_sql("ALTER TABLE {media_flickr_node} ADD delta int NOT NULL default 0");
+      break;
+  }
+  return $ret;
+}
+
+/**
+ *  Create the media_flickr_photoset_count table.
+ */
+function media_flickr_update_6005() {
+  $schema['media_flickr_photoset_count'] = array(
+    'description' => t('Node instance counts for flickr photosets.'),
+    'fields' => array(
+      'photoset' => array(
+        'default'     => '',
+        'description' => t('The flickr photoset code.'),
+        'length'      => 255,
+        'not null'    => TRUE,
+        'type'        => 'varchar',
+      ),
+      'instances'     => array(
+        'description' => t("The number of items this photoset appears in."),
+        'not null'    => TRUE,
+        'type'        => 'int',
+        'unsigned'    => TRUE,
+      ),
+    ),
+    'primary key'     => array('photoset'),
+  );
+
+  $ret = array();
+
+  if (!db_table_exists('media_flickr_photoset_count')) {
+    db_create_table($ret, 'media_flickr_photoset_count', $schema['media_flickr_photoset_count']);
+  }
+  return $ret;
+}
+
+/**
+ *  We added a new theme.
+ */
+function media_flickr_update_6006() {
+  $ret = array();
+  drupal_rebuild_theme_registry();
+  return $ret;
+}
+
+/**
+ * Implementation of hook_schema().
+ */
+function media_flickr_schema() {
+  $schema['media_flickr'] = array(
+    'description' => t('Stores data for individual flickr images.'),
+    'fields' => array(
+      'code' => array(
+        'default'     => '',
+        'description' => t('The flickr photo code.'),
+        'length'      => 255,
+        'not null'    => TRUE,
+        'type'        => 'varchar',
+      ),
+      'title' => array(
+        'default'     => '',
+        'description' => t('The flickr title.'),
+        'length'      => 255,
+        'not null'    => TRUE,
+        'type'        => 'varchar',
+      ),
+      'owner' => array(
+        'default'     => '',
+        'description' => t('The flickr photo owner.'),
+        'length'      => 255,
+        'not null'    => TRUE,
+        'type'        => 'varchar',
+      ),
+      'description' => array(
+        'default'     => '',
+        'description' => t('The flickr photo description.'),
+        'type' => 'text',
+        'not null' => TRUE,
+        'size' => 'big',
+      ),
+      'url' => array(
+        'default'     => '',
+        'description' => t('The URL to the original flickr photo page.'),
+        'length'      => 255,
+        'not null'    => TRUE,
+        'type'        => 'varchar',
+      ),
+    ),
+    'primary key'     => array('code'),
+  );
+  $schema['media_flickr_sizes'] = array(
+    'description' => t('Stores file information and data for individual flickr images, possibly including a local file.'),
+    'fields' => array(
+      'code' => array(
+        'default'     => '',
+        'description' => t('The flickr photo code.'),
+        'length'      => 255,
+        'not null'    => TRUE,
+        'type'        => 'varchar',
+      ),
+      'size' => array(
+        'description' => t("The size of this image, from 0-5, corresponding to Flickr's sizes."),
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'fid' => array(
+        'description' => t("The {file}.fid of this photo's local file, if set."),
+        'not null'    => TRUE,
+        'type'        => 'int',
+        'unsigned'    => TRUE,
+      ),
+    ),
+    'indexes'         => array('code' => array('code'), 'fid' => array('fid'), 'size' => array('size')),
+  );
+  $schema['media_flickr_sets'] = array(
+    'description' => t('Stores photos for flickr photosets.'),
+    'fields' => array(
+      'photoset' => array(
+        'default'     => '',
+        'description' => t('The flickr photoset code.'),
+        'length'      => 255,
+        'not null'    => TRUE,
+        'type'        => 'varchar',
+      ),
+      'code' => array(
+        'default'     => '',
+        'description' => t('The flickr photo code.'),
+        'length'      => 255,
+        'not null'    => TRUE,
+        'type'        => 'varchar',
+      ),
+    ),
+    'indexes'         => array('photoset' => array('photoset'), 'code' => array('code')),
+  );
+  $schema['media_flickr_node'] = array(
+    'description' => t('Node/field references for flickr photosets.'),
+    'fields' => array(
+      'nid' => array(
+        'description' => t("The {node}.nid for this photoset."),
+        'not null'    => TRUE,
+        'type'        => 'int',
+        'unsigned'    => TRUE,
+      ),
+      'field' => array(
+        'default'     => '',
+        'description' => t('The fieldname this photoset is stored in.'),
+        'length'      => 255,
+        'not null'    => TRUE,
+        'type'        => 'varchar',
+      ),
+      'delta' => array(
+        'description' => t("The field delta for this photoset."),
+        'not null'    => TRUE,
+        'type'        => 'int',
+        'default'     => 0,
+      ),
+      'photoset' => array(
+        'default'     => '',
+        'description' => t('The flickr photoset code.'),
+        'length'      => 255,
+        'not null'    => TRUE,
+        'type'        => 'varchar',
+      ),
+    ),
+    'indexes'         => array('nid' => array('nid'), 'field' => array('field'), 'photoset' => array('photoset')),
+  );
+  $schema['media_flickr_photoset_count'] = array(
+    'description' => t('Node instance counts for flickr photosets.'),
+    'fields' => array(
+      'photoset' => array(
+        'default'     => '',
+        'description' => t('The flickr photoset code.'),
+        'length'      => 255,
+        'not null'    => TRUE,
+        'type'        => 'varchar',
+      ),
+      'instances'     => array(
+        'description' => t("The number of items this photoset appears in."),
+        'not null'    => TRUE,
+        'type'        => 'int',
+        'unsigned'    => TRUE,
+      ),
+    ),
+    'primary key'     => array('photoset'),
+  );
+  return $schema;
+}

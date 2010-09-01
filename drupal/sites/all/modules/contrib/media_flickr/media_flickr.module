@@ -1,0 +1,340 @@
+<?php
+// $Id: media_flickr.module,v 1.1.2.9 2009/12/03 19:07:28 aaron Exp $
+
+define('MEDIA_FLICKR_RESTPOINT', 'http://api.flickr.com/services/rest/');
+define('MEDIA_FLICKR_API_APPLICATION_URL', 'http://www.flickr.com/services/api/keys');
+define('MEDIA_FLICKR_MAIN_URL', 'http://www.flickr.com/');
+
+/**
+ *  @file
+ *  Embedded Video Field provider file for Flickr.com photosets.
+ */
+
+/**
+ * Implementation of hook_menu().
+ */
+function media_flickr_menu() {
+  $items = array();
+
+  $items['media/flickr/remote/%media_flickr_photoset'] = array(
+    'page callback' => 'media_flickr_remote_page',
+    'page arguments' => array(3),
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+
+  return $items;
+}
+
+/**
+ *  Implements hook_load().
+ *
+ *  Load the XML data for a Flickr photoset.
+ */
+function media_flickr_photoset_load($photoset) {
+  static $xml;
+
+  // Reset our static array.
+  if (is_null($xml)) {
+    $xml = array();
+  }
+
+  // If we try to load this with an already loaded photoset,
+  // then attempt to grab the ID from that.
+  if (is_array($photoset)) {
+    $photoset = $photoset['photoset']['id'];
+  }
+
+  // If we haven't retrieved the XML from flickr, then do so now.
+  if (is_null($xml[$photoset])) {
+    if ($cache = cache_get('media_flickr:photoset:'. $photoset)) {
+      $xml[$photoset] = $cache->data;
+    }
+    else {
+      // If we aren't storing the photoset in any field, then don't allow this page load.
+      if (!db_result(db_query("SELECT instances FROM {media_flickr_photoset_count} WHERE photoset = '%s'", $photoset))) {
+        $xml[$photoset] = FALSE;
+      }
+      else {
+        // Grab the cached photoset XML from flickr.
+        $xml[$photoset] = media_flickr_sets_request('flickr.photosets.getPhotos', array('photoset_id' => $photoset));
+        if ($xml[$photoset]['stat'] != 'ok') {
+          $xml[$photoset] = FALSE;
+        }
+        else {
+          // Associate each photo in its array by Flickr's photo ID.
+          $photos = array();
+          foreach ($xml[$photoset]['photoset']['photo'] as $photo) {
+            $photos[$photo['id']] = media_flickr_photo_load($photo['id']);
+          }
+          $xml[$photoset]['photoset']['photo'] = $photos;
+        }
+      }
+      cache_set('media_flickr:photoset:'. $photoset, $xml[$photoset], 'cache', time() + variable_get('media_flickr_cache_time', 3600));
+    }
+  }
+
+  // Return the static XML for the photoset, or FALSE if not available.
+  return $xml[$photoset];
+}
+
+/**
+ *  Implements hook_load().
+ *
+ *  Load the XML data for a flickr photo.
+ */
+function media_flickr_photo_load($photoid) {
+  static $xml;
+
+  // Reset our static array.
+  if (is_null($xml)) {
+    $xml = array();
+  }
+
+  // If we try to load this with an already loaded photo,
+  // then attempt to grab the ID from that.
+  if (is_array($photoid)) {
+    $photoid = $photoid['photo']['id'];
+  }
+
+    // If we haven't retrieved the XML from flickr, then do so now.
+  if (is_null($xml[$photoid])) {
+    if ($cache = cache_get('media_flickr:photoid:'. $photoid)) {
+      $xml[$photoset] = $cache->data;
+    }
+    else {
+      // Grab the cached photoset XML from flickr.
+      $xml[$photoid] = media_flickr_sets_request('flickr.photos.getInfo', array('photo_id' => $photoid));
+      if ($xml[$photoid]['stat'] != 'ok') {
+        $xml[$photoid] = FALSE;
+      }
+      cache_set('media_flickr:photoid:'. $photoid, $xml[$photoid], 'cache', time() + variable_get('media_flickr_cache_time', 3600));
+    }
+  }
+
+  // Return the static XML for the photoset, or FALSE if not available.
+  return $xml[$photoid];
+}
+
+/**
+ *  Returns an array of all URLs for photos associated with a photoset,
+ *  associated by photo code. These will be of the Flickr specified size (1-5),
+ *  and may be local or remote, based on settings and availability.
+ *
+ *  @param $photoset
+ *    The Flickr photoset id.
+ *  @param $size
+ *    Optional. A number from 1-5 (small to large).
+ */
+function media_flickr_photoset_load_photos($photoset, $size = 5) {
+  module_load_include('inc', 'media_flickr', 'media_flickr.utilities');
+  return _media_flickr_photoset_load_photos($photoset, $size);
+}
+
+/**
+ *  Pass Flickr's remote XML for a photoset as a local file. This allows us
+ *  to grab an XML without registering an external cookie.
+ */
+function media_flickr_remote_page($photoset) {
+  drupal_set_header('Content-Type: text/xml; charset=utf-8');
+  readfile(url("http://api.flickr.com/services/feeds/photoset.gne", array('query' => "set={$photoset['photoset']['id']}&nsid={$photoset['photoset']['owner']}")));
+  exit();
+}
+
+/**
+ *  Implements hook_emfield_providers().
+ */
+function media_flickr_emfield_providers($module, $provider = NULL) {
+  // This will return a listing of all provider files supported by the module.
+  return drupal_system_listing("$provider\.inc$", drupal_get_path('module', 'media_flickr') ."/providers/$module", 'name', 0);
+}
+
+/**
+ *  This will return the appropriate array key for the image size we wish.
+ */
+function media_flickr_guess_size($width = 0, $height = 0) {
+  $max = max($width, $height);
+
+  if ($max) {
+    foreach (array('0' => 75, '1' => 100, '2' => 240, '3' => 500, '4' => 1024) as $size => $value) {
+      if ($max <= $value) {
+        return $size;
+      }
+    }
+  }
+
+  // If we don't have width or height set, then get the original size.
+  return '5';
+}
+
+/**
+ *  This will log an error if we don't have a key yet.
+ *  In addition, if the user is an admin, we'll display an error.
+ */
+function media_flickr_error_check() {
+  static $checked;
+  if (is_null($checked)) {
+    if (variable_get('emimage_flickr_api_key', '') == '') {
+      global $user;
+      $error = 'You do not yet have a Flickr API key set. You will need to !apply and enter your key at the !settings before Flickr images may be displayed.';
+      $arguments = array('!apply' => l(t('apply for a Flickr API key'), MEDIA_FLICKR_API_APPLICATION_URL), '!settings' => l(t('Embedded Media Field administration page'), 'admin/content/emfield'));
+      if (user_access('administer site configuration')) {
+        drupal_set_message(t($error, $arguments), 'error');
+      }
+      watchdog('media_flickr', $error, $arguments);
+      $checked = FALSE;
+    }
+    else {
+      $checked = TRUE;
+    }
+  }
+  return $checked;
+}
+
+/**
+ *  This is a wrapper for emfield_request_xml that includes flickr's api key.
+ */
+function media_flickr_sets_request($method, $args = array(), $cached = TRUE) {
+  // Display an error if we don't have an API key yet.
+  if (!media_flickr_error_check()) {
+    return array();
+  }
+
+  $args['api_key'] = trim(variable_get('emimage_flickr_api_key', ''));
+  if ($secret = trim(variable_get('emimage_flickr_api_secret', ''))) {
+    $args['secret'] = md5($secret);
+  }
+  $args['method'] = $method;
+  $args['format'] = 'php_serial';
+
+  $xml = emfield_request_xml('flickr', MEDIA_FLICKR_RESTPOINT, $args, $cached, FALSE, FALSE, TRUE);
+  return $xml;
+}
+
+/**
+ *  Based on the Photo ID of a Flickr image, this will return the URL to the
+ *  image itself.
+ *  @param $photo_code
+ *    The Flickr photo code.
+ *  @param $width
+ *  @param $height
+ *    We use this to guess the actual size provided by Flickr.
+ *  @param $cached
+ *    If TRUE, then we'll cache the remote URL if the attempt to save the file
+ *    locally fails.
+ */
+function media_flickr_photo_url($photo_code, $width = 0, $height = 0, $cached = TRUE) {
+  module_load_include('inc', 'media_flickr', 'media_flickr.utilities');
+  return _media_flickr_photo_url($photo_code, $width = 0, $height = 0, $cached = TRUE);
+}
+
+function media_flickr_photo_url_from_size($photo_code, $size = 5) {
+  module_load_include('inc', 'media_flickr', 'media_flickr.utilities');
+  return _media_flickr_photo_url_from_size($photo_code, $size);
+}
+
+/**
+ *  This returns a cached photo stream from the Flickr farm servers.
+ */
+function media_flickr_photo_remote_url($photo_code, $size) {
+  $getsize = media_flickr_sets_request('flickr.photos.getSizes', array('photo_id' => $photo_code));
+
+  // For small images, there may not be the sizes 0..4 that
+  // media_flickr_guess_size assumes, so:
+  $size = min($size, count($getsize['sizes']['size'])-1);
+
+  return $getsize['sizes']['size'][$size]['source'];
+}
+
+function media_flickr_store_local($photo_code, $size) {
+  module_load_include('inc', 'media_flickr', 'media_flickr.utilities');
+  return _media_flickr_store_local($photo_code, $size);
+}
+
+function media_flickr_emfield_widget_settings_extra($op, $widget) {
+  module_load_include('inc', 'media_flickr', 'media_flickr.cck');
+  return _media_flickr_emfield_widget_settings_extra($op, $widget);
+}
+
+function media_flickr_emfield_field_extra($op, &$node, $field, &$items, $teaser, $page, $module) {
+  if (($op == 'insert' || $op == 'update') && ($field['module'] == 'emvideo')) {
+    foreach ($items as $delta => $item) {
+      if ($item['value'] && ($item['provider'] == 'flickr_sets')) {
+        media_flickr_record_photoset($item['value'], array('node' => $node, 'field' => $field, 'delta' => $delta, 'item' => $item));
+      }
+    }
+  }
+}
+
+/**
+ *  Record any associated metadata with a specific photo.
+ *  @param $id
+ *    The Photo ID from Flickr.
+ *  @param $options
+ *    Reserved for future use. Contains instanciated node information, etc.
+ */
+function media_flickr_record_photo($id, $options = array()) {
+  $instances = db_result(db_query("SELECT COUNT(*) FROM {media_flickr} WHERE code = '%s'", $id));
+  // If the photo already exists, then we'll update the metadata in the db.
+  $update = $instances ? array('code') : array();
+
+  // Load the metadata from the Flickr XML.
+  $photo = media_flickr_photo_load($id);
+
+  // Write any metadata associated with an individual photo.
+  $record = array(
+    'code' => $id,
+    'title' => $photo['photo']['title']['_content'],
+    'owner' => $photo['photo']['owner']['username'],
+    'description' => $photo['photo']['description']['_content'],
+    'url' => $photo['photo']['urls']['url'][0]['_content'],
+  );
+  drupal_write_record('media_flickr', $record, $update);
+
+  // @TODO: record each instance per node.
+  // This is stored in the $options array, but not currently used.
+}
+
+/**
+ *  Record the photoset and all its photos.
+ *  @param $id
+ *    Flickr's Photoset ID.
+ *  @param $options
+ *    Reserved for future use. Contains instanciated node information, etc.
+ */
+function media_flickr_record_photoset($id, $options = array()) {
+  $instances = db_result(db_query("SELECT instances FROM {media_flickr_photoset_count} WHERE photoset = '%s'", $id));
+  // @TODO: check for 0.
+  if (!$instances) {
+    $record = array(
+      'photoset' => $id,
+      'instances' => 1,
+    );
+    drupal_write_record('media_flickr_photoset_count', $record);
+  }
+
+  // Now we want to associate individual photos with their photoset.
+  $photoset = media_flickr_photoset_load($id);
+
+  // Remove already recorded photos from this array so we can record any not
+  // already in place.
+  $results = db_query("SELECT code FROM {media_flickr_sets} WHERE photoset = '%s'", $id);
+  while ($result = db_fetch_array($results)) {
+    unset($photoset['photoset']['photo'][$result['code']]);
+  }
+
+  // Now record any remaining photos that are not yet associated.
+  foreach ($photoset['photoset']['photo'] as $code => $photo) {
+    // This records the association between photoset & photo.
+    $record = array(
+      'photoset' => $id,
+      'code' => $code,
+    );
+    drupal_write_record('media_flickr_sets', $record);
+
+    // Now record the metadata associated with a photo.
+    media_flickr_record_photo($code);
+  }
+  // @TODO: record each instance per node.
+  // This is stored in the $options array, but not currently used.
+}

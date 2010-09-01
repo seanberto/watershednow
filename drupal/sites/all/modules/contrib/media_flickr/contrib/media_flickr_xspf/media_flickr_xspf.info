@@ -1,0 +1,16 @@
+; $Id: media_flickr_xspf.info,v 1.1.2.1 2009/06/24 22:10:50 aaron Exp $
+
+name = Media: Flickr - XSPF Playlist
+description = XSPF Playlist Creator for Flickr.com photosets.
+core = 6.x
+dependencies[] = media_flickr
+package = Media
+
+
+
+; Information added by drupal.org packaging script on 2010-02-01
+version = "6.x-1.11"
+core = "6.x"
+project = "media_flickr"
+datestamp = "1265060713"
+

@@ -33,7 +33,7 @@ function watershednow_map_node_info() {
       'has_body' => '1',
       'body_label' => t('Description'),
       'min_word_count' => '0',
-      'help' => '"Map features" represent a collection of points, polygons and polylines placed on a map.',
+      'help' => t('"Map features" represent a collection of points, polygons and polylines placed on a map.'),
     ),
   );
   return $items;

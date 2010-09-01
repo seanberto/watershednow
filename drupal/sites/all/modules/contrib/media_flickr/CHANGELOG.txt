@@ -1,0 +1,93 @@
+// $Id: CHANGELOG.txt,v 1.1.2.30 2010/02/01 20:01:19 aaron Exp $
+
+Changelog for Media: Flickr
+
+#697292 by zigazou: Fix valid XHTML 1 markup for the slideshow.
+by aaron: Fix IE security popup; see http://jira.atlassian.com/browse/CONF-6284.
+
+================
+ DRUPAL-6--1-10
+================
+
+by aaron: Fix wmode to transparent in fallback image rotator display.
+
+===============
+ DRUPAL-6--1-9
+===============
+
+by aaron: Add single Flickr images.
+
+===============
+ DRUPAL-6--1-8
+===============
+
+by aaron: Allow captions to be derived from title or description.
+
+===============
+ DRUPAL-6--1-7
+===============
+
+by aaron: Honor setting for full screen.
+by aaron: Save settings for shuffle & show icons.
+by aaron: Proper description for shuffle.
+by aaron: Add settings for shuffle & show icons.
+by aaron: Honor setting for shownavigation.
+
+===============
+ DRUPAL-6--1-6
+===============
+
+by aaron: Fix broken link for views.
+by aaron: Fix module requirement for Media: Flickr XSPF Playlist.
+by aaron: Add a text element to the object when embedding directly.
+by aaron: Implement hook_PROVIDER_data_version.
+
+===============
+ DRUPAL-6--1-5
+===============
+
+#554998 by aaron: Error messages for unsupported URLs.
+by aaron: Embed Imageflow player even w/o swfobject.js.
+
+===============
+ DRUPAL-6--1-4
+===============
+
+by aaron: Better performance for queries when viewing photoset.
+
+DRUPAL-6--1-3
+-------------
+
+ * Rebuild the theme (aaron).
+ * Add support for JW Image Rotator (aaron).
+
+DRUPAL-6--1-2
+-------------
+
+ * Message re. emfield & jw flash player (aaron).
+ * New tables created.
+ * Limit photoset XSPF feeds to those actually entered into system (aaron).
+ * Create media_flick_node table (aaron).
+ * Limit remote storage per page load (aaron).
+ * Separate functions into utility include files (aaron).
+ * Rebuild menu in update (aaron).
+ * Add new widget settings (aaron).
+ * Add new menu item for remote flickr feeds (aaron).
+ * Fix table indices and keys (aaron).
+ * Complete adding options to widget settings (aaron).
+ * Separate options into video/preview size (aaron).
+ * Add checkbox for local storage (aaron).
+ * Begin adding new widget settings for slideshow player options (aaron).
+ * Allow switching between jw flash & flickr slideshow (aaron).
+ * Allow local storage of remote flickr photos (aaron).
+ * Add custom player functionality (aaron).
+
+DRUPAL-6--1-1
+-------------
+
+ * Fix width/height and &amp; (aaron).
+
+DRUPAL-6--1-0
+-------------
+
+ * Create initial module (aaron).
