@@ -15,8 +15,9 @@ regions[notes] = Notes
 regions[preface] = Content preface
 regions[content_bottom] = Content bottom
 ; We use regions[footer] for first footer b/c most themes use this region.
-regions[footer] = First footer
+regions[footer_first] = First footer
 regions[footer_second] = Second footer
+regions[footer] = Footer
 
 features[] = logo
 features[] = name

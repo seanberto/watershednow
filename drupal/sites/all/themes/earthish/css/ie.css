@@ -1,0 +1,19 @@
+/* Created by Ishmael Sanchez, www.ishmaelsanchez.com */
+/* $Id: ie.css,v 1.2 2010/03/03 06:56:08 ishmaelsanchez Exp $ */
+
+/**
+ * Target Internet Explorer with different version hacks
+ * Place all your IE specific CSS here
+ * Target IE6 and below with the _
+ * Target IE7 and below with *
+ */
+
+#primary li a, #primary li a:link, #primary li a:visited {
+  _width:125px;
+}
+
+/** Main Column **/
+#content {
+  *left:0;
+}
+
