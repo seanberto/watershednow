@@ -1,0 +1,65 @@
+# $Id: switchtheme.pot,v 1.1.2.2 2008/06/04 22:35:15 sun Exp $
+#
+# LANGUAGE translation of Drupal (general)
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+# Generated from files:
+#  switchtheme.module,v 1.10.2.1 2008/04/20 20:31:28 sun
+#  switchtheme.info,v 1.4 2007/07/05 20:00:21 karens
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2008-06-05 00:34+0200\n"
+"PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
+"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: switchtheme.module:15
+msgid "Creates a switch theme block to allow users to switch themes on the fly. The block can be enabled by role and the admin can define labels to use for each available theme."
+msgstr ""
+
+#: switchtheme.module:18
+msgid "Set a label for each enabled theme. This is what will be displayed to the user in the selection box."
+msgstr ""
+
+#: switchtheme.module:54
+msgid "Switchtheme configuration"
+msgstr ""
+
+#: switchtheme.module:55
+msgid "Set the labels for the themes in the switchtheme block."
+msgstr ""
+
+#: switchtheme.module:94
+msgid "Switch theme form"
+msgstr ""
+
+#: switchtheme.module:95;104
+msgid "Random theme"
+msgstr ""
+
+#: switchtheme.module:99
+msgid "Theme"
+msgstr ""
+
+#: switchtheme.module:133
+msgid "Change the way this site looks."
+msgstr ""
+
+#: switchtheme.module:136
+msgid "Switch"
+msgstr ""
+
+#: switchtheme.info:0
+msgid "Switchtheme"
+msgstr ""
+
+#: switchtheme.info:0
+msgid "Adds a block to allow users to switch between enabled themes."
+msgstr ""
+

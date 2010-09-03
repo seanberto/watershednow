@@ -1,0 +1,11 @@
+; $Id: switchtheme.info,v 1.4.2.1 2008/09/18 23:21:10 sun Exp $
+name = Switchtheme
+description = Allows switching the theme in various means.
+core = 6.x
+
+; Information added by drupal.org packaging script on 2009-07-06
+version = "6.x-1.1"
+core = "6.x"
+project = "switchtheme"
+datestamp = "1246902510"
+

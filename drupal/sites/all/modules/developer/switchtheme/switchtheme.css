@@ -1,0 +1,17 @@
+/* $Id: switchtheme.css,v 1.2.2.1 2008/04/20 20:31:28 sun Exp $ */
+
+#switchtheme-switch-form div {
+  width: 100%;
+}
+#switchtheme-switch-form div.form-item {
+  float: left;
+  width: auto;
+  margin: 0;
+  padding: 0;
+}
+#switchtheme-switch-form #edit-submit {
+  float: left;
+  width: auto;
+  margin-left: 3px;
+}
+

@@ -1,0 +1,79 @@
+# $Id: es.po,v 1.1.2.2 2008/06/04 22:38:16 sun Exp $
+#
+# LANGUAGE translation of Drupal (general)
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+# Generated from files:
+#  switchtheme.module,v 1.10.2.1 2008/04/20 20:31:28 sun
+#  switchtheme.info,v 1.4 2007/07/05 20:00:21 karens
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Drupal 6.x\n"
+"POT-Creation-Date: 2008-06-03 22:21+0200\n"
+"PO-Revision-Date: 2008-06-03 22:28+0100\n"
+"Last-Translator: Gusgsm <gusgsm@gmail.com>\n"
+"Language-Team: Gusgsm <gusgsm@elpais.es>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-Language: Spanish\n"
+"X-Poedit-Country: SPAIN\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#: switchtheme.module:15
+msgid "Creates a switch theme block to allow users to switch themes on the fly. The block can be enabled by role and the admin can define labels to use for each available theme."
+msgstr "Crea un bloque de cambio de temas para permitir a los usuarios cambiar temas sobre la marcha. El bloque lo puede activar dependiendo del rol y los administradores pueden definir etiquetas para su uso con cada uno de los temas disponibles."
+
+#: switchtheme.module:18
+msgid "Set a label for each enabled theme. This is what will be displayed to the user in the selection box."
+msgstr "Fija una etiqueta para cada uno de los temas activados. Esto es lo que los usuarios verán en la persiana de selección."
+
+#: switchtheme.module:54
+msgid "Switchtheme configuration"
+msgstr "Configuración del módulo de cambio de temas"
+
+#: switchtheme.module:55
+msgid "Set the labels for the themes in the switchtheme block."
+msgstr "Fija las etiquetas de los temas en el bloque de cambio de temas."
+
+#: switchtheme.module:94
+msgid "Switch theme form"
+msgstr "Formulario de cambio de tema"
+
+#: switchtheme.module:95;104
+msgid "Random theme"
+msgstr "Tema aleatorio"
+
+#: switchtheme.module:99
+msgid "Theme"
+msgstr "Tema"
+
+#: switchtheme.module:133
+msgid "Change the way this site looks."
+msgstr "Cambiar el aspecto de este sitio."
+
+#: switchtheme.module:136
+msgid "Switch"
+msgstr "Cambiar tema"
+
+#: switchtheme.module:26
+msgid "administer switch"
+msgstr "administrar cambio de tema"
+
+#: switchtheme.module:26
+msgid "switch theme"
+msgstr "cambiar tema"
+
+#: switchtheme.module:0
+msgid "switchtheme"
+msgstr "módulo de cambio de temas"
+
+#: switchtheme.info:0
+msgid "Switchtheme"
+msgstr "Módulo de cambio de temas"
+
+#: switchtheme.info:0
+msgid "Adds a block to allow users to switch between enabled themes."
+msgstr "Añadir un bloque que permite a los usuarios elegir uno de los temas activados."
+
