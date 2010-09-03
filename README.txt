@@ -1,3 +1,11 @@
+== PROTOTYPING BRANCH ==
+
+NOTE: This is the "prototyping" branch of Watershed Now! Do no use for building production sites. This branch is meant for
+quick prototyping of new features, as well as for pushing out quick demos of the site. Config is often stored in the database
+of this branch, so it will not run as an installation profile.
+
+===================================================
+
 Watershed Now! is a Drupal distribution developed to support the common content management, social media, online advocacy, fundraising, and geo-mapping needs of river conservation organizations.
 
 This distribution is maintained by ThinkShout.com with active support from Water Words That Work and LevelOS. It is currently being developed in collaboration with River Network and Waterkeeper Alliance member organizations such as Yadkin Riverkeeper and the White Oak-New Riverkeeper.
