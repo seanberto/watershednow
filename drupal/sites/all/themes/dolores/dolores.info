@@ -6,12 +6,16 @@ project = "watershed"
 engine = phptemplate
 
 regions[header] = Header
+; We call sidebars "left" and "right" b/c those are phptemplate defaults.
+regions[left] = First sidebar
+regions[right] = Second sidebar
+regions[callout] = Callout
 regions[content_top] = Content top
-regions[message_block] = Message block
-regions[left] = Left sidebar
-regions[right] = Right sidebar
+regions[notes] = Notes
+regions[preface] = Content preface
 regions[content_bottom] = Content bottom
-regions[footer_first] = First footer
+; We use regions[footer] for first footer b/c most themes use this region.
+regions[footer] = First footer
 regions[footer_second] = Second footer
 
 features[] = logo
@@ -23,4 +27,15 @@ features[] = secondary_links
 
 stylesheets[all][] = css/dolores.css
 
-settings[watershed_search_help] = 'Explore our watershed'
+; Background color, defined by DesignKit
+designkit[color][background][title] = "Background"
+designkit[color][background][description] = "Background color."
+designkit[color][background][default] = "#EDEDED"
+
+; Header background image, defined by DesignKit
+designkit[image][header_image][title] = "Site logo"
+designkit[image][header_image][description] = "Header logo."
+designkit[image][header_image][imagecache] = "imagecache_scale:960"
+
+settings[dolores_search_help] = 'Explore our watershed'
+settings[dolores_search_button] = 'Go'
