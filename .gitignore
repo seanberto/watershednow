@@ -13,8 +13,8 @@ db_load_prod.sh
 db_dump_dev.sh
 nbproject*
 cc_key/uc_credit.key
-backup
-sites/default/files
+drupal/backup*
+drupal/sites/default/files*
 watershednow_dev.sql
 drupalrivers_dev.sql
 *.tmproj
