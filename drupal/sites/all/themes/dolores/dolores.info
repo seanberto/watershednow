@@ -33,9 +33,8 @@ designkit[color][background][description] = "Background color."
 designkit[color][background][default] = "#EDEDED"
 
 ; Header background image, defined by DesignKit
-designkit[image][header_image][title] = "Site logo"
-designkit[image][header_image][description] = "Header logo."
-designkit[image][header_image][imagecache] = "imagecache_scale:960"
+designkit[image][header_image][title] = "Header background image"
+designkit[image][header_image][description] = "Upload an image 960px wide by 150px tall."
 
 settings[dolores_search_help] = 'Explore our watershed'
 settings[dolores_search_button] = 'Go'

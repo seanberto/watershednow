@@ -23,11 +23,15 @@ body {
     $cols = $col1 . ' ' . $col2 . ' ' . $col3 . ' ' . $col4 . ' ' . $col5;
   ?>;
   border-color: <?php print $col5 ?>;
-  border-width: 1px;
+  border-width: 3px;
   -moz-border-bottom-colors: <?php print $cols ?>;
   -moz-border-top-colors: <?php print $cols ?>;
   -moz-border-left-colors: <?php print $cols ?>;
   -moz-border-right-colors: <?php print $cols ?>;
+}
+
+#header {
+  background-image: url(<?php print ($header_image ? $header_image :  '../images/header_image') ?>);
 }
  
 </style>
