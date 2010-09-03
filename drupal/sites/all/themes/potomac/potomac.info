@@ -1,0 +1,27 @@
+; $Id:
+
+name = Potomac
+description = Potomac is based upon <a href="http://wpthemes.info/" target="_blank">Sadish Bala's'</a> Misty Look WordPress theme. Ported to Drupal by <a href="http://kiterminal.com">kiterminal</a> as <a href="drupal.org/project/mistylook" target="_blank">Misty Look</a>.
+core = 6.x
+
+engine = phptemplate
+
+regions[header] = Header
+; We call sidebars "left" and "right" b/c those are phptemplate defaults.
+regions[left] = First sidebar
+regions[right] = Second sidebar
+regions[callout] = Callout
+regions[content_top] = Content top
+regions[notes] = Notes
+regions[preface] = Content preface
+regions[content_bottom] = Content bottom
+; We use regions[footer] for first footer b/c most themes use this region.
+regions[footer_first] = First footer
+regions[footer_second] = Second footer
+regions[footer] = Footer
+
+
+features[] = name
+features[] = search
+features[] = primary_links
+features[] = secondary_links
