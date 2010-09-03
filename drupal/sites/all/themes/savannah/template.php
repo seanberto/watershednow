@@ -1,12 +1,11 @@
 <?php
-// $Id: template.php,v 1.2 2010/03/03 06:56:07 ishmaelsanchez Exp $
 
 /**
  * Implementation of preprocess_page().
  *
  * @param $vars
  */
-function earthish_preprocess_page(&$vars) {
+function savannah_preprocess_page(&$vars) {
   // Add a new template suggestion to allow page-[node type].tpl.php 
   if(isset($vars['node'])) {
     $vars['template_files'][] = 'page-' . $vars['node']->type;
@@ -49,7 +48,7 @@ function earthish_preprocess_page(&$vars) {
 /**
  * Register user theme functions
  */
-function earthish_theme(){ // No theme function defined for the user login block
+function savannah_theme(){ // No theme function defined for the user login block
   return array(
     // Register theming function, it's user login block and not user login form
     'user_login_block' => array(
@@ -60,7 +59,7 @@ function earthish_theme(){ // No theme function defined for the user login block
   );
 }
 
-function earthish_preprocess_user_login_block(&$vars) {
+function savannah_preprocess_user_login_block(&$vars) {
   // Let's modify the output
   $vars['form']['submit']['#value'] = "Login";
   $vars['form']['name']['#size'] = "12";
@@ -71,7 +70,7 @@ function earthish_preprocess_user_login_block(&$vars) {
 /**
  * Override Search
  */
-function earthish_preprocess_search_theme_form(&$vars, $hook) {
+function savannah_preprocess_search_theme_form(&$vars, $hook) {
 	// Modify values of the search form
 	unset($vars['form']['search_theme_form']['#title']);
 	$vars['form']['submit']['#value'] = "Find";
@@ -85,7 +84,7 @@ function earthish_preprocess_search_theme_form(&$vars, $hook) {
 	$vars['search_form'] = implode($vars['search']);
 }
 
-function earthish_comment_submitted($comment) {
+function savannah_comment_submitted($comment) {
   return t('!datetime by !username',
     array(
       '!username' => theme('username', $comment),
@@ -93,7 +92,7 @@ function earthish_comment_submitted($comment) {
     ));
 }
 
-function earthish_node_submitted($node) {
+function savannah_node_submitted($node) {
   return t('!datetime by !username',
     array(
       '!username' => theme('username', $node),

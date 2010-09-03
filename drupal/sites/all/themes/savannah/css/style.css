@@ -51,6 +51,10 @@ html, body, #bg-image, #bg-image table, #bg-image td {
   /*text-indent:-1000em;*/ /* Uncomment to use image based header*/
 }
 
+h1#site-name {
+  margin-top: 0.25em;
+}
+
 #content h2 {margin:1em 0 .5em;}
 
 #top-bar {
@@ -98,11 +102,9 @@ html, body, #bg-image, #bg-image table, #bg-image td {
 	height:25px;
   letter-spacing:1px;
 	line-height:25px;
-	padding:0 5px 0 5px;
+	padding:0 15px 0 5px;
 	outline:none;
   text-decoration:none;
-  /*text-indent:-1000em;*/ /* Uncomment to use image based primary */
-	width:100px; /* Refine based on text size */
 }
 
 #primary li a:hover, #primary li a:focus, #primary li a:active {
@@ -151,14 +153,14 @@ html, body, #bg-image, #bg-image table, #bg-image td {
   top:70px;
   z-index:100;
   background-color: #FFF;
-/*  width: 900px;
-*/
   width: 70%;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
 }
 
 .content-wrapper {
-  margin:0 0 15px 0;
-  padding:0 0 10px;
+  margin:0;
+  padding:0;
   overflow: hidden;
 }
 
@@ -231,7 +233,7 @@ input:hover {
 
 #footer-bottom {
   background:#ccc;
-  bottom:5px;
+/*  bottom:5px; */
   clear:both;
   /*height: px  Uncomment and define based on content */
   padding:.5em .75em;
@@ -241,6 +243,17 @@ input:hover {
 
 #footer-bottom a {color:#777;}
 #footer-links {}
+
+#footer-second li a.active {
+  color: #87B564;
+  text-decoration: underline;
+}
+
+#footer-second ul.links li {
+  display: block;
+  font-size: 1.3em;
+  margin-top: 0.25em;
+}
 
 /*** Drupal Pager ***/
 .item-list {padding:.25em 0;}
@@ -340,6 +353,10 @@ body#tinymce {background:none;}
   display:inline;
   list-style:none;
   margin:0;
+}
+
+.box-editor { /* TODO: Place inline boxes editor on top. */
+
 }
 
 /*** Reusable styles ***/

@@ -1,4 +1,11 @@
-Theme created by Ishmael Sanchez, www.ishmaelsanchez.com
+"Savannah" is a variation on Ishmael Sanchez's wonderful "Earthish" theme.
+It has been customized to work with the block placement of Watershed Now!.
+It's been changed so much that forking from Earthish was necessary, but we
+give incredible thanks to Ishmael for this work. Please support him.
+
+=============================================================================
+
+Earthish Theme created by Ishmael Sanchez, www.ishmaelsanchez.com
 
 General information
 ===================

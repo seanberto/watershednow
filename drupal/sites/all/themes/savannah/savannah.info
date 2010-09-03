@@ -1,8 +1,6 @@
-; $Id: earthish.info,v 1.3 2010/04/10 23:59:10 ishmaelsanchez Exp $
-
 ; The name and description of the theme used on the admin/build/themes page.
-name        = Earthish
-description = a theme for websites that want to be more horizontally orientated.
+name        = Savannah
+description = A variation on Ishmael Sanchez's <a href="http://drupal.org/project/earthish" target="_blank">Earthish</a> theme.
 
 ; The screenshot used on the admin/build/themes page.
 screenshot = images/screenshot.png
@@ -44,12 +42,3 @@ regions[content_bottom] = Content bottom
 regions[footer_first] = First footer
 regions[footer_second] = Second footer
 regions[footer] = Footer
-
-
-
-; Information added by drupal.org packaging script on 2010-04-11
-version = "6.x-1.2"
-core = "6.x"
-project = "earthish"
-datestamp = "1270944306"
-
