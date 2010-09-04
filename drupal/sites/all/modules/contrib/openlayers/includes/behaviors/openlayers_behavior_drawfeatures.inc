@@ -1,5 +1,5 @@
 <?php
-// $Id: openlayers_behavior_drawfeatures.inc,v 1.1.2.2 2010/05/07 21:57:45 tmcw Exp $
+// $Id: openlayers_behavior_drawfeatures.inc,v 1.1.2.3 2010/08/08 22:14:22 tmcw Exp $
 
 /**
  * @file
@@ -17,6 +17,7 @@ class openlayers_behavior_drawfeatures extends openlayers_behavior {
     return array(
       'element_id' => '',
       'feature_types' => array(),
+      'feature_limit' => 0,
     );
   }
 
@@ -34,6 +35,14 @@ class openlayers_behavior_drawfeatures extends openlayers_behavior {
         '#options' => $features,
         '#description' => t('Select what features are available to draw.'),
         '#default_value' => isset($defaults['feature_types']) ? $defaults['feature_types'] : array(),
+      ),
+      'feature_limit' => array(
+        '#title' => t('Number of features'),
+        '#type' => 'textfield',
+        '#description' => t('The number of features that are allowed to be 
+          drawn. Leave blank or at 0 for unlimited.'),
+        '#default_value' => isset($defaults['feature_limit']) ? 
+          $defaults['feature_limit'] : 0,
       ),
       'element_id' => array(
         '#type' => 'textfield',

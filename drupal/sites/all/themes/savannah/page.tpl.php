@@ -45,7 +45,7 @@
               </div> <!-- content-top -->
             <?php endif; ?>
          
-            <?php if ($title && !$is_front): ?>
+            <?php if ($title): ?>
               <h1 class="title">
                 <?php print $title; ?>
               </h1>

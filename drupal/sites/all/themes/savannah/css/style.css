@@ -182,6 +182,7 @@ body.no-sidebars .content-box {
   margin-top: 25px;
   float: right;
   width: 25%;
+  padding: 0 10px 10px 0;
 }
 
 textarea:hover, textarea:focus {border:1px solid #999;}

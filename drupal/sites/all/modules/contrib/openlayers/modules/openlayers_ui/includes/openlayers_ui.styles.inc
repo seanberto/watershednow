@@ -1,5 +1,5 @@
 <?php
-// $Id: openlayers_ui.styles.inc,v 1.1.2.7 2010/06/25 15:47:04 tmcw Exp $
+// $Id: openlayers_ui.styles.inc,v 1.1.2.10 2010/08/16 13:25:20 tmcw Exp $
 
 /**
  * @file
@@ -28,6 +28,7 @@ function openlayers_ui_styles_form(&$form_state, $style = NULL, $edit = FALSE) {
       'desc' => t('The radius of a vector point or the size of
         an icon. Note that, when using icons, this value should be half the
         width of the icon image.'),
+      'type' => 'integer',
     ),
     'fillColor' => array(
       'default' => '#EE9900',
@@ -50,6 +51,7 @@ function openlayers_ui_styles_form(&$form_state, $style = NULL, $edit = FALSE) {
         polygons and point marks, it is used as an outline to 
         the feature. On lines, this is the representation of the 
         feature.  This is a value in pixels.'),
+      'type' => 'integer',
     ),
     'fillOpacity' => array(
       'default' => 1,
@@ -58,6 +60,7 @@ function openlayers_ui_styles_form(&$form_state, $style = NULL, $edit = FALSE) {
         color of circles or other shapes. It is not used if an 
         externalGraphic is applied to a point.  This should be a value
         between 0 and 1.'),
+      'type' => 'float',
     ),
     'strokeOpacity' => array(
       'default' => 1,
@@ -65,6 +68,7 @@ function openlayers_ui_styles_form(&$form_state, $style = NULL, $edit = FALSE) {
         On polygons and point marks, it is used as an outline to the 
         feature. On lines, this is the representation of the feature.
         This should be a value between 0 and 1.'),
+      'type' => 'float',
     ),
     'strokeLinecap' => array(
       'default' => 'round',
@@ -104,6 +108,7 @@ function openlayers_ui_styles_form(&$form_state, $style = NULL, $edit = FALSE) {
         This is an alternative to the pointRadius symbolizer property 
         to be used when your graphic has different sizes in the X and 
         Y direction.  This should be in pixels.'),
+      'type' => 'integer',
     ),
     'graphicHeight' => array(
       'default' => '',
@@ -111,23 +116,27 @@ function openlayers_ui_styles_form(&$form_state, $style = NULL, $edit = FALSE) {
         This is an alternative to the pointRadius symbolizer property 
         to be used when your graphic has different sizes in the X and 
         Y direction.  This should be in pixels.'),
+      'type' => 'integer',
     ),
     'graphicOpacity' => array(
       'default' => '1',
       'desc' => t('Opacity of an external graphic.  This should be a 
-      value between 0 and 1. Grahics that are already semitransparent,
-      like alpha PNGs, should have this set to 1, or rendering problems in 
-      Internet Explorer will ensue.'),
+        value between 0 and 1. Grahics that are already semitransparent,
+        like alpha PNGs, should have this set to 1, or rendering problems in 
+        Internet Explorer will ensue.'),
+      'type' => 'float',
     ),
     'graphicXOffset' => array(
       'default' => '',
       'desc' => t('Where the X value of the "center" of an 
       externalGraphic should be.  This should be in pixels.'),
+      'type' => 'integer',
     ),
     'graphicYOffset' => array(
       'default' => '',
       'desc' => t('Where the Y value of the "center" of an 
       externalGraphic should be.  This should be in pixels.'),
+      'type' => 'integer',
     ),
     'graphicName' => array(
       'default' => '',
@@ -148,6 +157,12 @@ function openlayers_ui_styles_form(&$form_state, $style = NULL, $edit = FALSE) {
         'none' => t('None (off)'),
       ),
     ),
+  );
+  
+  // Pass style data along
+  $form['style_data'] = array(
+    '#type' => 'value',
+    '#value' => $properties,
   );
 
   // Style object basics
@@ -202,6 +217,27 @@ function openlayers_ui_styles_form(&$form_state, $style = NULL, $edit = FALSE) {
  * Submit handler for layers.
  */
 function openlayers_ui_styles_form_submit(&$form, &$form_state) {
+  $style_data = $form_state['values']['style_data'];
+  
+  // Cast and unset values so JS can handle them better,
+  // Unless vluase is in form ${attribute}
+  foreach ($form_state['values']['data'] as $key => $value) {
+    if ($form_state['values']['data'][$key] === '') {
+      unset($form_state['values']['data'][$key]);
+    }
+    elseif (isset($style_data[$key]['type']) &&
+      strpos($form_state['values']['data'][$key], '${') !== 0) {
+      if ($style_data[$key]['type'] == 'integer') {
+        $form_state['values']['data'][$key] = 
+          (int) $form_state['values']['data'][$key];
+      }
+      elseif ($style_data[$key]['type'] == 'float') {
+        $form_state['values']['data'][$key] = 
+          (float) $form_state['values']['data'][$key];
+      }
+    }
+  }
+  
   $style = new stdClass();
   $style->name = $form_state['values']['name'];
   $style->title = $form_state['values']['title'];
@@ -209,6 +245,7 @@ function openlayers_ui_styles_form_submit(&$form, &$form_state) {
   $style->data = $form_state['values']['data'];
 
   $success = openlayers_style_save($style);
+  
 
   // Redirect to edit page
   if ($success) {
@@ -219,64 +256,3 @@ function openlayers_ui_styles_form_submit(&$form, &$form_state) {
     form_set_error('openlayers', t('Error trying to save style.'));
   }
 }
-
-// /**
-//  * Import a preset from cut & paste
-//  */
-// function openlayers_ui_styles_import_form(&$form_state) {
-//   $form['name'] = array(
-//     '#type' => 'textfield',
-//     '#title' => t('Style name'),
-//     '#description' => t('Enter the name to use for this style if it is different from the source style. Leave blank to use the name of the style.'),
-//   );
-//
-//   $form['style'] = array(
-//     '#type' => 'textarea',
-//     '#title' => t('Paste style code here'),
-//     '#required' => TRUE,
-//   );
-//
-//   $form['submit'] = array(
-//     '#type' => 'submit',
-//     '#value' => t('Import'),
-//     '#submit' => array('openlayers_ui_style_import_submit'),
-//     '#validate' => array('openlayers_ui_style_import_validate'),
-//   );
-//   return $form;
-// }
-//
-// /**
-//  * Validate handler to import a preset
-//  */
-// function openlayers_ui_styles_import_validate($form, &$form_state) {
-//   $view = '';
-//   ob_start();
-//   eval($form_state['values']['style']);
-//   ob_end_clean();
-//
-//   if (!is_object($style)) {
-//     return form_error($form['style'], t('Unable to interpret preset code.'));
-//   }
-//
-//   // View name must be alphanumeric or underscores, no other punctuation.
-//   if (!empty($form_state['values']['name']) && preg_match('/[^a-zA-Z0-9_]/', $form_state['values']['name'])) {
-//     form_error($form['name'], t('Preset name must be alphanumeric or underscores only.'));
-//   }
-//
-//   if ($form_state['values']['name']) {
-//     $preset->name = $form_state['values']['name'];
-//   }
-//
-//   /*
-//    * TODO: replace with style code
-//   if ($test && $test->type != t('Default')) {
-//     form_set_error('', t('A preset by that name already exists; please choose a different name'));
-//   }
-//   */
-//
-//   // TODO: The import process should test layer existence
-//   $form_state['style'] = &$style;
-//   $a = array();
-//   $form = openlayers_ui_styles_form($a);
-//   openlayers_ui_styles_form_submit(&$form, &$form_state);
-// }

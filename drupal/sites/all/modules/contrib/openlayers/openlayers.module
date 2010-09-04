@@ -1,5 +1,5 @@
 <?php
-// $Id: openlayers.module,v 1.69.2.75 2010/06/10 11:06:50 zzolo Exp $
+// $Id: openlayers.module,v 1.69.2.81 2010/08/11 14:42:55 tmcw Exp $
 
 /**
  * @defgroup openlayers OpenLayers provides an API and
@@ -155,6 +155,21 @@ function openlayers_render_map($map = array(), $preset_name = '') {
   // Run map through build process
   $map = openlayers_build_map($map);
 
+  // Given hide_empty_map flag, check if the map has any features 
+  // defined. If not, assume it is an empty map and shouldn't be displayed.
+  if (isset($map['hide_empty_map']) && $map['hide_empty_map'] == TRUE) {
+    $empty = TRUE;
+    $layers = $map['layers'];
+    foreach ($layers as $layer) {
+      if (isset($layer['features']) && count($layer['features'])) {
+        $empty = FALSE;
+      }
+    }
+    if ($empty) {
+      return '';
+    }
+  }
+  
   // Return themed map if no errors found
   if (empty($map['errors'])) {
     $js = array('openlayers' => array('maps' => array($map['id'] => $map)));
@@ -550,7 +565,14 @@ function openlayers_preset_load($name = '', $reset = FALSE) {
   
   $presets = ctools_export_load_object(
     'openlayers_map_presets', 'names', array($name));
-  return !empty($presets[$name]) ? $presets[$name] : FALSE;
+  if (empty($presets[$name])) {
+    return FALSE;
+  }
+  else {
+    $preset = $presets[$name];
+    $preset->data['preset_name'] = $name;
+    return $preset;
+  }
 }
 
 /**
@@ -661,9 +683,6 @@ function openlayers_object_delete($ol_object, $type) {
  *   FALSE if passed. Array of descriptive errors if fail.
  */
 function openlayers_error_check_map($map, $log_errors = TRUE) {
-  // @TODO: Instead of manually specifying projections,
-  // we should do a lookup on the projections in a big table to
-  // get variables that it should be checked against.
   $errors = array();
 
   // Check for layers

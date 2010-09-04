@@ -1,5 +1,5 @@
 <?php
-// $Id: wms.inc,v 1.1.2.13 2010/05/30 21:46:15 zzolo Exp $
+// $Id: wms.inc,v 1.1.2.18 2010/09/01 18:56:33 tmcw Exp $
 
 /**
  * @file
@@ -16,7 +16,11 @@ class openlayers_layer_type_wms extends openlayers_layer_type {
       if (isset($this->data['options']['srs'])) {
         $pts = explode(':', $this->data['options']['srs']);
         $this->data['projection'] = array($pts[1]);
+        $this->data['params']['resolutions'] = openlayers_get_resolutions($pts[1]);
+        $this->data['params']['projection'] = $this->data['options']['srs']; 
+        $this->data['params']['maxextent'] =  openlayers_get_extent($pts[1]);
       }
+      $this->data['baselayer'] = $this->data['params']['isBaseLayer'];
       $this->data += $this->options_init();
     }
     else {
@@ -29,9 +33,6 @@ class openlayers_layer_type_wms extends openlayers_layer_type {
    */
   function options_init() {
     return array(
-      'serverResolutions' => openlayers_get_resolutions('900913'),
-      'maxExtent' => openlayers_get_extent('900913'),
-      'projection' => array('900913'),
       'layer_handler' => 'wms',
       'baselayer' => FALSE
     );
@@ -55,6 +56,7 @@ class openlayers_layer_type_wms extends openlayers_layer_type {
           '#type' => 'checkbox',
           '#default_value' => isset($this->data['params']['isBaseLayer']) ? 
             $this->data['params']['isBaseLayer'] : TRUE,
+          '#return_value' => 'true',
           '#title' => t('BaseLayer'),
           '#description' => t('Uncheck to make this map an overlay')
         ),
@@ -97,14 +99,26 @@ class openlayers_layer_type_wms extends openlayers_layer_type {
           '#type' => 'checkbox',
           '#default_value' => isset($this->data['options']['TRANSPARENT']) ?
             $this->data['options']['TRANSPARENT'] : FALSE,
+          '#return_value' => 'true',
           '#title' => t('Transparent'),
           '#description' => t('When a PNG, make the background color transparent')
+        ),
+         'exceptions' => array(
+          '#type' => 'select',
+          '#title' => t('Exceptions'),
+          '#options' => array(
+            'application/vnd.ogc.se_xml' => 'application/vnd.ogc.se_xml',
+            'application/vnd.ogc.se_inimage' => 'application/vnd.ogc.se_inimage'),
+          '#default_value' => isset($this->data['options']['exceptions']) ?
+            $this->data['options']['exceptions'] : 'application/vnd.ogc.se_inimage',
+          '#description' => t('Select the exception handler')
         ),
         'format' => array(
           '#type' => 'select',
           '#title' => t('File Format'),
           '#options' => array(
             'image/png' => 'image/png',
+            'image/gif' => 'image/gif',
             'image/jpeg' => 'image/jpeg'),
           '#default_value' => isset($this->data['options']['format']) ?
             $this->data['options']['format'] : 'image/png'
