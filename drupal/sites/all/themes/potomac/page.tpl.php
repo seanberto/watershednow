@@ -82,7 +82,13 @@
         <div class="tabs"><?php print $tabs; ?></div>
       <?php endif; ?>
 
-        <?php print $content ?>
+      <?php print $content ?>
+      
+      <?php if ($content_bottom): ?>
+        <div id="content-bottom"><?php print $content_bottom; ?></div>
+      <?php endif; ?>
+      <?php print $feed_icons ?>
+        
       </div> <!-- /main-wrapper -->
 
       <?php if ($left ||$right): ?>

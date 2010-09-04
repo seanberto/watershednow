@@ -70,6 +70,7 @@
                 <?php print $content_bottom; ?>
               </div> <!-- content-bottom -->
             <?php endif; ?>
+            <?php print $feed_icons; ?>
           </div> <!-- /content-inner -->
           
         </div><!-- content-box -->

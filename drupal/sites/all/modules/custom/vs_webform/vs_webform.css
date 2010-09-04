@@ -1,0 +1,7 @@
+.webform-component-vs-webform { width:38em; }
+.vs-webform-jumper { width:42%; height:300px; float:right; padding:0; margin:0; clear:right;}
+.vs-webform-candidate-wrapper { width:100%; height:300px; clear:both;  padding-right:1em; overflow:auto; float:left; }
+.vs-webform-candidate-wrapper-has-jumper { width:55%; clear:left; }
+#webform-component-representatives .description {
+  clear: both;
+}
