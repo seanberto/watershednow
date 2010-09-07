@@ -8,6 +8,7 @@
 # Git Ignore File added by Sean Larkin to ignore unnecessary files and directories.
 settings.php
 .DS_Store
+scripts*
 pass
 db_load_prod.sh
 db_dump_dev.sh
