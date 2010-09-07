@@ -173,6 +173,10 @@ h1#site-name {
   overflow: hidden;
 }
 
+#content-inner {
+  margin-right: 15px;
+}
+
 body.no-sidebars .content-box {
   width: 95%; /* If no sidebars, push out main content area. */
   margin-right: -95%;
@@ -315,6 +319,17 @@ input:hover {
 .block ul li {list-style:none;}
 body#tinymce {background:none;}
 
+/** Sidebar left */
+
+#sidebars h2 {
+  font-size: 1.2em;
+}
+
+.views-field-view-node {
+  font-style: italic;
+  font-size: 0.8em;
+}
+
 /*** Login block ***/
 #block-user-0 {
   display:block;
@@ -360,6 +375,13 @@ body#tinymce {background:none;}
 
 }
 
+blockquote {
+  background-image:url(../images/blockquote.gif);
+  background-position:left top;
+  background-repeat:no-repeat;
+  padding-left:50px;
+}
+
 /*** Reusable styles ***/
 .bold {font-weight:bold;}
 .clear {clear:both;}
@@ -368,3 +390,101 @@ body#tinymce {background:none;}
 .italic {font-style:italic;}
 .invisible {display:none;}
 .uppercase {text-transform:uppercase;}
+
+
+/** Watershed Map Slideshow */
+
+#gallery-links {
+  clear: both;
+  margin-bottom: 0;
+  margin-left: 0;
+  margin-right: 0;
+  margin-top: 10px;
+  padding-bottom: 0;
+  padding-left: 0;
+  padding-right: 0;
+  padding-top: 0;
+}
+#gallery-links li {
+  -moz-background-clip: border;
+  -moz-background-inline-policy: continuous;
+  -moz-background-origin: padding;
+  -moz-border-radius-bottomleft: 5px;
+  -moz-border-radius-bottomright: 5px;
+  -moz-border-radius-topleft: 5px;
+  -moz-border-radius-topright: 5px;
+  background-attachment: scroll;
+  background-color: transparent;
+  background-image: none;
+  background-position: 0 0;
+  background-repeat: repeat;
+  float: left;
+  list-style-image: none;
+  list-style-position: outside;
+  list-style-type: none;
+  margin-bottom: 0;
+  margin-left: 0;
+  margin-right: 3px;
+  margin-top: 0;
+  padding-bottom: 0;
+  padding-left: 0;
+  padding-right: 0;
+  padding-top: 0;
+}
+#gallery-links a {
+  outline-color: -moz-use-text-color;
+  outline-style: none;
+  outline-width: medium;
+}
+.loading {
+  -moz-background-clip: border;
+  -moz-background-inline-policy: continuous;
+  -moz-background-origin: padding;
+  background-attachment: scroll;
+  background-color: transparent;
+  background-image: url(images/loading.gif);
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+}
+.gallery-selected {
+  opacity: 0.5;
+  outline-color: -moz-use-text-color;
+  outline-style: none;
+  outline-width: medium;
+}
+#gallery-title .help {
+  font-size: 0.8em;
+  font-style: italic;
+}
+#gallery-title h3 {
+  color: #000000;
+  font-size: 1.2em;
+  margin-bottom: 0.2em;
+}
+
+/** Theme Switcher Block (DeleteMe: Only for demo site) */
+
+#block-boxes-customizable_footer {
+  width: 13%;
+  height: 8%;
+  min-height: 75px;
+}
+
+#block-switchtheme-0 {
+  text-align: right;
+  margin-top: -80px;
+  margin-right: 20px;
+}
+
+#switchtheme-switch-form div.form-item {
+  float: none;
+}
+
+#block-switchtheme-0 h3 {
+  font-size: 0.9em;
+  font-style: italic;
+}
+
+span.replace {
+  display: none;
+}

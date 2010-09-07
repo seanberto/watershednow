@@ -16,3 +16,58 @@ function watershednow_map_views_pre_render(&$view) {
       }
     }
 }
+
+/**
+ * Implementation of hook_nodeapi().
+ */
+function watershednow_map_nodeapi(&$node, $op, $teaser = NULL, $page = NULL) {
+  switch ($op) {
+    case 'view':
+      if (($node->type == 'map_feature') && $node->field_image_uploads && !empty($node->field_image_uploads) && $page) {
+        $images = $node->field_image_uploads;
+        $count = count($images);
+        if ($count > 0 && $images['0'] != NULL) {
+          $output = '';
+          if($count){
+            $modpath = drupal_get_path('module', 'watershednow_map');
+            drupal_add_js( $modpath .'/js/gallery.js');
+            drupal_add_js( $modpath .'/js/slimbox/slimbox2.js');
+            drupal_add_css( $modpath .'/js/slimbox/slimbox2.css');
+
+            $first = $images[0];
+            $output = '<div id="gallery-images"><div id="main-gallery-image">';
+            $output .= '<a href="'. imagecache_create_url('lightbox', $first['filepath']) .'" rel="lightbox">';
+            $output .= theme('imagecache', 'web', $first['filepath'], $first['data']['title'], $first['data']['description'], array('class'=> 'image-border'));
+            $output .= '</a>';
+            $output .= '<div id="gallery-title"><div class="help">(click to magnify)</div><h3 class="image-title">' . $first['data']['description'] . '</h3><div class="image-description">' . $first['data']['title'] . '</div></div>';
+            $output .= '</div>';
+
+            $i = 0;
+            while ($i < $count) {
+              $class = '';
+              if($i == 0){
+                $class = ' class="gallery-selected" ';
+              }
+
+              $fullpath = imagecache_create_url('lightbox', $images[$i]['filepath']);
+              $thumbs[] = '<a '. $class .'path="'. $fullpath . '" href="' . imagecache_create_url('web', $images[$i]['filepath']) . '" title="' . $images[$i]['data']['title'] . '">' .
+                theme('imagecache', 'thumbnail_small', $images[$i]['filepath'],'', $images[$i]['data']['title']) . '</a>';
+              $i++;
+            }
+
+            if($count > 1){
+              $output .= theme('item_list', $thumbs, null, 'ul', array('id' => 'gallery-links'));
+            }
+
+            $output .= '<div class="clear-block"></div></div>';
+                        
+            // remove field to avoid default display, and set content variable
+            unset($node->content['field_image_uploads']['field']);
+            $node->content['field_image_uploads']['#value'] = $title . $output;
+          }
+        }
+      }
+      
+      break;
+  }
+}
