@@ -1,4 +1,4 @@
-Watershed Now! is a Drupal distribution developed to support the common content management, social media, online advocacy, fundraising, and geo-mapping needs of river conservation organizations.
+NowWatershed Now is a Drupal distribution developed to support the common content management, social media, online advocacy, fundraising, and geo-mapping needs of river conservation organizations.
 
 This distribution is maintained by ThinkShout.com with active support from Water Words That Work and LevelOS. It is currently being developed in collaboration with River Network and Waterkeeper Alliance member organizations such as Yadkin Riverkeeper and the White Oak-New Riverkeeper.
 
