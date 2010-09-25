@@ -1,0 +1,103 @@
+; Watershed Now Installation Profile .info file.
+; ==============================================
+
+; ----------------------------------------------
+
+; BASIC INFORMATION
+
+name = Watershed Now
+description = Select this profile to build a Drupal CMS developed for watershed organizations.
+core = 6.x
+theme = watershed
+
+; ----------------------------------------------
+
+; MODULES
+; (Note: that module dependencies will be automatically enabled.)
+
+; Core
+dependencies[] = comment
+dependencies[] = contact
+dependencies[] = help
+dependencies[] = menu
+dependencies[] = path
+dependencies[] = search
+dependencies[] = taxonomy
+dependencies[] = update
+
+; Views
+dependencies[] = views_calc
+dependencies[] = draggableviews
+dependencies[] = web_widgets
+
+; Features Related Tools
+dependencies[] = ctools
+dependencies[] = context
+dependencies[] = features
+dependencies[] = strongarm
+dependencies[] = boxes
+
+; Image Management
+dependencies[] = imageapi_gd
+dependencies[] = imagecache
+
+; CCK
+dependencies[] = number
+dependencies[] = text
+dependencies[] = filefield
+dependencies[] = imagefield
+dependencies[] = emfield
+dependencies[] = emvideo
+dependencies[] = media_flickr
+dependencies[] = link
+dependencies[] = optionwidgets
+dependencies[] = nodereference
+
+; Date
+dependencies[] = date_api
+dependencies[] = date
+dependencies[] = date_popup
+dependencies[] = date_timezone
+
+; Other
+dependencies[] = advanced_help
+dependencies[] = logintoboggan
+dependencies[] = menu_block
+dependencies[] = pathauto
+dependencies[] = token
+dependencies[] = transliteration
+dependencies[] = googleanalytics
+
+; User interface and WYSIWYG
+dependencies[] = better_formats
+dependencies[] = insert
+dependencies[] = filefield_sources
+dependencies[] = jquery_ui
+dependencies[] = webform
+dependencies[] = wysiwyg
+dependencies[] = wysiwyg_imagefield
+
+; Donation tools
+dependencies[] = simple_payments
+dependencies[] = simple_payments_paypal
+dependencies[] = simple_donations
+
+; Event Sigups
+dependencies[] = signup
+
+; Open Layers
+dependencies[] = openlayers_cck
+dependencies[] = openlayers_views
+dependencies[] = openlayers_geocoder
+
+; Customizations
+dependencies[] = wn_helper
+
+; Watershed Now Features
+dependencies[] = wn_common
+dependencies[] = wn_blog
+dependencies[] = wn_getinvolved
+dependencies[] = wn_multimedia
+dependencies[] = wn_map
+
+; ----------------------------------------------
