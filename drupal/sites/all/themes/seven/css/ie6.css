@@ -1,0 +1,19 @@
+/* $Id: ie6.css,v 1.2 2009/12/31 03:58:44 mcrittenden Exp $ */
+
+ul.menu li,
+ul.menu li a,
+ul.links li,
+ul.links li a,
+#page {
+  height: 1%;
+}
+
+#page ul.node-type-list li a, #page ul.admin-list li a {
+  height: 1px;
+  position: relative;
+  display: block;
+}
+
+#page ul.node-type-list li div.description a, #page ul.admin-list li div.description a {
+  display: inline;
+}

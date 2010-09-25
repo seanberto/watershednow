@@ -1,5 +1,5 @@
 <?php
-// $Id: web_widgets_plugin_display_web_widgets.inc,v 1.1.2.4 2010/06/15 19:30:25 developmentseed Exp $
+// $Id: web_widgets_plugin_display_web_widgets.inc,v 1.1.2.5 2010/08/01 02:28:43 diggersf Exp $
 /**
  * @file
  * Implementation of widget display.
@@ -95,7 +95,7 @@ class web_widgets_plugin_display_web_widgets extends views_plugin_display_page {
 
     switch ($form_state['section']) {
       case 'displays':
-        $form['#title'] .= t('Attach to');
+        $form['#title'] .= t('Attach embed code to');
         $displays = array();
         foreach ($this->view->display as $display_id => $display) {
           if (!empty($display->handler) && $display->handler->accept_attachments()) {
@@ -104,7 +104,7 @@ class web_widgets_plugin_display_web_widgets extends views_plugin_display_page {
         }
         $form['displays'] = array(
           '#type' => 'checkboxes',
-          '#description' => t('The feed icon will be available only to the selected displays.'),
+          '#description' => t('The embed code will be displayed on the selected displays.'),
           '#options' => $displays,
           '#default_value' => $this->get_option('displays'),
         );
@@ -191,7 +191,7 @@ class web_widgets_plugin_display_web_widgets extends views_plugin_display_page {
 
     $options['displays'] = array(
       'category' => 'page',
-      'title' => t('Attach to'),
+      'title' => t('Attach embed code to'),
       'value' => $attach_to,
     );
 

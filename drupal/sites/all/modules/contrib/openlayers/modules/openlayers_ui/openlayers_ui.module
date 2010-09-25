@@ -1,5 +1,5 @@
 <?php
-// $Id: openlayers_ui.module,v 1.1.2.37 2010/06/21 20:29:36 tmcw Exp $
+// $Id: openlayers_ui.module,v 1.1.2.40 2010/09/05 14:35:10 zzolo Exp $
 
 /**
  * Implementation of hook_help
@@ -108,13 +108,13 @@ function openlayers_ui_menu() {
     'type' => MENU_LOCAL_TASK,
     'weight' => -15,
   );
-  $items['admin/build/openlayers/layers/clone/%openlayers_layer'] = array( 	 
-    'title' => 'Clone layer', 	 
-    'page callback' => 'drupal_get_form', 	 
-    'page arguments' => array('openlayers_ui_layers_form', 5), 	 
-    'access arguments' => array('administer openlayers'), 	 
-    'file' => 'includes/openlayers_ui.layers.inc', 	 	  
-    'type' => MENU_NORMAL_ITEM, 
+  $items['admin/build/openlayers/layers/clone/%openlayers_layer'] = array( 
+    'title' => 'Clone layer',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('openlayers_ui_layers_form', 5),
+    'access arguments' => array('administer openlayers'),
+    'file' => 'includes/openlayers_ui.layers.inc',
+    'type' => MENU_NORMAL_ITEM,
     'tab_parent' => 'admin/build/openlayers/layers',
   );
   $items['admin/build/openlayers/layers/import'] = array(
@@ -209,13 +209,13 @@ function openlayers_ui_menu() {
     'type' => MENU_NORMAL_ITEM,
     'weight' => -10,
   );
-  $items['admin/build/openlayers/styles/clone/%openlayers_style'] = array( 	 
-    'title' => 'Clone style', 	 
-    'page callback' => 'drupal_get_form', 	 
-    'page arguments' => array('openlayers_ui_styles_form', 5), 	 
-    'access arguments' => array('administer openlayers'), 	 
-    'file' => 'includes/openlayers_ui.styles.inc', 	 	  
-    'type' => MENU_LOCAL_TASK, 
+  $items['admin/build/openlayers/styles/clone/%openlayers_style'] = array(
+    'title' => 'Clone style',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('openlayers_ui_styles_form', 5),
+    'access arguments' => array('administer openlayers'),
+    'file' => 'includes/openlayers_ui.styles.inc',
+    'type' => MENU_LOCAL_TASK,
   );
   $items['admin/build/openlayers/styles/%openlayers_style/edit'] = array(
     'title' => 'Edit style',
@@ -280,11 +280,11 @@ function openlayers_ui_menu() {
   );
   $items['admin/build/openlayers/presets/clone/%openlayers_preset'] = array(
     'title' => 'Clone preset',
-    'description' => 'Clone OpenLayers map preset.', 	 
+    'description' => 'Clone OpenLayers map preset.',
     'page callback' => 'openlayers_ui_presets_clone',
     'page arguments' => array(5),
-    'access arguments' => array('administer openlayers'), 	 
-    'file' => 'includes/openlayers_ui.presets.inc', 	 
+    'access arguments' => array('administer openlayers'),
+    'file' => 'includes/openlayers_ui.presets.inc',
     'type' => MENU_LOCAL_TASK, 
   );
   $items['admin/build/openlayers/presets/%openlayers_preset/edit'] = array(
@@ -356,6 +356,10 @@ function openlayers_ui_theme($existing, $type, $theme, $path) {
       'arguments' => array('form' => array()),
       'file' => 'includes/openlayers_ui.theme.inc',
     ),
+    'openlayers_ui_presets_form_behaviors' => array(
+      'arguments' => array('form' => array()),
+      'file' => 'includes/openlayers_ui.theme.inc',
+    ),
   );
 }
 
@@ -396,13 +400,13 @@ function openlayers_ui_object_list($type) {
     $links = array();
     switch ($object->export_type) {
       case (EXPORT_IN_DATABASE | EXPORT_IN_CODE):
-        $row[] = $object->title .' <em><small>(' .t('Overridden'). ')</small></em>';
+        $row[] = $object->title .' <em><small>(' . t('Overridden') . ')</small></em>';
         break;
       case EXPORT_IN_DATABASE:
-        $row[] = $object->title .' <em><small>(' .t('Normal'). ')</small></em>';
+        $row[] = $object->title .' <em><small>(' . t('Normal') . ')</small></em>';
         break;
       case EXPORT_IN_CODE:
-        $row[] = $object->title .' <em><small>(' .t('Default'). ')</small></em>';
+        $row[] = $object->title .' <em><small>(' . t('Default') . ')</small></em>';
         break;
     }
 
@@ -516,9 +520,11 @@ function openlayers_ui_object_export(&$form_state, $type, $object) {
   
   // Use CTools to create export code
   ctools_include('export');
+  $schema = ctools_export_get_schema($api);
+  $identifier = $schema['export']['identifier'];
   $code = '$items = array();' ."\n";
   $code .= ctools_export_object($api, $object, '');
-  $code .= '$items["'. $object->name .'"] = $' . $api . ';' ."\n";
+  $code .= '$items["'. $object->name .'"] = $' . $identifier . ';' ."\n";
   $code .= 'return $items;';
   $rows = substr_count($code, "\n") + 1;
 
@@ -674,7 +680,7 @@ function openlayers_ui_get_style_options() {
 function openlayers_dependency_widget($dependencies) {
   if (is_array($dependencies) > 0) {
     $dependency_form = array();
-    foreach($dependencies as $dependency) {
+    foreach ($dependencies as $dependency) {
       $dependency_form[] = array(
         '#type' => 'markup',
         '#value' => "<div class='openlayers-dependency-flag'>

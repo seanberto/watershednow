@@ -1,5 +1,5 @@
 <?php
-// $Id: openlayers_ui.theme.inc,v 1.1.2.8 2010/03/22 23:55:10 zzolo Exp $
+// $Id: openlayers_ui.theme.inc,v 1.1.2.9 2010/09/05 14:35:11 zzolo Exp $
 
 /**
  * @file
@@ -108,3 +108,21 @@ function theme_openlayers_ui_presets_form_layers($form) {
   return $output;
 }
 
+/**
+ * Drupal theme implementation for Behaviors in the Preset form
+ */
+function theme_openlayers_ui_presets_form_behaviors($form) {
+  $output = '';
+  $rows = array();
+  foreach (element_children($form) as $key) {
+    $row = array();
+    $row[] = drupal_render($form[$key]['enabled']) . 
+      drupal_render($form[$key]['options_set']) . 
+      drupal_render($form[$key]['dependencies']);
+    $rows[] = $row;
+  }
+  
+  // Create table
+  $output .= theme('table', array(t('Behaviors')), $rows);
+  return $output;
+}

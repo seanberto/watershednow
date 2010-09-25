@@ -1,0 +1,6 @@
+core = "6.x"
+description = "Collection of useful theme overrides, form alters, and 'bling' for Watershed Now."
+name = "Watershed Now helper"
+core = "6.x"
+version = "6.x-1.0"
+project = "Watershed Now"

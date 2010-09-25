@@ -1,4 +1,4 @@
-/* $Id: openlayers_ui.css,v 1.1.2.4 2010/05/18 19:25:57 tmcw Exp $
+/* $Id: openlayers_ui.css,v 1.1.2.5 2010/09/05 14:35:10 zzolo Exp $
 
 /**
  * @file
@@ -88,3 +88,21 @@ div.openlayers-panel {
   }
 
   div.openlayers-panel-active { display:block; }
+  
+/**
+ * Behaviors table
+ */
+ /*
+.openlayers-form-behaviors-table .openlayers-form-behaviors-enable {
+  width: 15%;
+}
+.openlayers-form-behaviors-table .openlayers-form-behaviors-title {
+  width: 35%;
+}
+.openlayers-form-behaviors-table .openlayers-form-behaviors-options {
+  width: 50%;
+}
+*/
+div.openlayers-column-right .openlayers-form-behaviors-table .openlayers-form-behaviors-options input.form-text {
+  width: 200px;
+}

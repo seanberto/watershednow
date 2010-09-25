@@ -1,0 +1,91 @@
+<?php
+// $Id: feeds_mapper_emfield.test,v 1.1 2010/09/16 19:20:04 alexb Exp $
+
+/**
+ * @file
+ * Test case for simple CCK field mapper mappers/emfield.inc.
+ */
+
+require_once(drupal_get_path('module', 'feeds') . '/tests/feeds_mapper_test.inc');
+
+/**
+ * Class for testing Feeds <em>emfield</em> mapper.
+ */
+class FeedsMapperEmfieldTestCase extends FeedsMapperTestCase {
+
+  public static function getInfo() {
+    return array(
+      'name' => t('Mapper: Emfield'),
+      'description' => t('Test Feeds Mapper support for Emfield CCK fields. <strong>Requires CCK module and Emfield module</strong>.'),
+      'group' => t('Feeds'),
+    );
+  }
+
+  /**
+   * Set up the test.
+   */
+  function setUp() {
+    // Call parent setup with required modules.
+    parent::setUp('feeds', 'feeds_ui', 'ctools', 'job_scheduler', 'content', 'emfield', 'emvideo');
+
+    // Create user and login.
+    $this->drupalLogin($this->drupalCreateUser(
+        array(
+          'administer content types',
+          'administer feeds',
+          'administer nodes',
+          'administer site configuration'
+        )
+    ));
+  }
+
+  /**
+   * Basic test loading a doulbe entry CSV file.
+   */
+  function test() {
+
+  	// Create content type.
+  	$typename = $this->createContentType(NULL, array(
+      'video' => array(
+        'type' => 'emvideo',
+  	    'widget' => 'emvideo_textfields',
+  	  ),
+    ));
+
+    // Create and configure importer.
+    $this->createImporterConfiguration('Emfield CSV', 'csv');
+    $this->setSettings('csv', NULL, array('content_type' => '','import_period' => FEEDS_SCHEDULE_NEVER,));
+    $this->setPlugin('csv', 'FeedsFileFetcher');
+    $this->setPlugin('csv', 'FeedsCSVParser');
+    $this->setSettings('csv', 'FeedsNodeProcessor', array('content_type' => $typename));
+    $this->addMappings('csv', array(
+      array(
+        'source' => 'title',
+        'target' => 'title',
+      ),
+      array(
+        'source' => 'created',
+        'target' => 'created',
+      ),
+      array(
+        'source' => 'body',
+        'target' => 'body',
+      ),
+      array(
+        'source' => 'video',
+        'target' => 'field_video',
+      ),
+    ));
+
+    // Import CSV file.
+    $this->importFile('csv', $this->absolutePath() .'/tests/feeds/emfield.csv');
+    $this->assertText('Created 2 '. $typename .' nodes.');
+
+    // Check the two imported files.
+    $this->drupalGet('node/1/edit');
+    $this->assertFieldByName('field_video[0][embed]', 'http://www.youtube.com/watch?v=gpkhANg919Y');
+
+    $this->drupalGet('node/2/edit');
+    $this->assertFieldByName('field_video[0][embed]', 'http://www.youtube.com/watch?v=ewAGXAeCXJY');
+  }
+}

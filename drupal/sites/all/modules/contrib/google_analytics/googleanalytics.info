@@ -4,9 +4,9 @@ description = Adds Google Analytics javascript tracking code to all your site's 
 core = 6.x
 package = Statistics
 
-; Information added by drupal.org packaging script on 2009-04-01
-version = "6.x-2.2"
+; Information added by drupal.org packaging script on 2010-09-23
+version = "6.x-2.3"
 core = "6.x"
 project = "google_analytics"
-datestamp = "1238610067"
+datestamp = "1285271163"
 

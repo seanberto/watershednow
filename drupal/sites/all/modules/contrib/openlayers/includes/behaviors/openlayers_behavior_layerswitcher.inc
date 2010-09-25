@@ -1,5 +1,5 @@
 <?php
-// $Id: openlayers_behavior_layerswitcher.inc,v 1.1.2.4 2010/05/18 19:25:57 tmcw Exp $
+// $Id: openlayers_behavior_layerswitcher.inc,v 1.1.2.6 2010/08/31 08:26:28 strk Exp $
 
 /**
  * @file
@@ -16,6 +16,7 @@ class openlayers_behavior_layerswitcher extends openlayers_behavior {
   function options_init() {
     return array(
       'layerswitcher' => '',
+      'ascending' => TRUE,
     );
   }
 
@@ -24,7 +25,14 @@ class openlayers_behavior_layerswitcher extends openlayers_behavior {
   }
 
   function options_form($defaults) {
-    return array();
+    return array(
+      'ascending' => array(
+        '#type' => 'checkbox',
+        '#title' => t('Show layers in ascending order'),
+        '#description' => t('Higher layers shown toward the bottom'),
+        '#default_value' => isset($defaults['ascending']) ? $defaults['ascending'] : TRUE 
+      )
+    );
   }
 
   /**

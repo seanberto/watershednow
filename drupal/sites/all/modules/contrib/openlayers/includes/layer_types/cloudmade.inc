@@ -1,5 +1,5 @@
 <?php
-// $Id: cloudmade.inc,v 1.1.2.17 2010/06/07 20:41:40 tmcw Exp $
+// $Id: cloudmade.inc,v 1.1.2.18 2010/08/30 07:47:43 zzolo Exp $
 
 /**
  * @file
@@ -49,6 +49,7 @@ class openlayers_layer_type_cloudmade extends openlayers_layer_type {
       'styleId' => array(
         '#type' => 'textfield',
         '#title' => t('Style ID'),
+        '#description' => t('Enter the numeric Style ID for a <a href="http://maps.cloudmade.com/editor">Map Style</a> from CloudMade. You can usually find the Style ID in the lower right hand corner of each Map Style box.'),
         '#default_value' => isset($this->data['styleId']) ?
           $this->data['styleId'] : ''
       ),

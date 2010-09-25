@@ -1,0 +1,1616 @@
+/* $Id: pretty.css,v 1.6 2010/03/22 19:34:39 mcrittenden Exp $ */
+
+/* $Id: pretty.css,v 1.6 2010/03/22 19:34:39 mcrittenden Exp $ */
+
+/**
+ * Styles adapted from system.css.
+ */
+
+/*
+** HTML elements
+*/
+body.drag {
+  cursor: move;
+}
+th.active img {
+  display: inline;
+}
+tr.even, tr.odd {
+  background-color: #eee;
+  border-bottom: 1px solid #ccc;
+  padding: 0.1em 0.6em;
+}
+tr.drag {
+  background-color: #fffff0;
+}
+tr.drag-previous {
+  background-color: #ffd;
+}
+td.active {
+  background-color: #ddd;
+}
+td.checkbox, th.checkbox {
+  text-align: center;
+}
+tbody {
+  border-top: 1px solid #ccc;
+}
+tbody th {
+  border-bottom: 1px solid #ccc;
+}
+thead th {
+  text-align: left; /* LTR */
+  padding-right: 1em; /* LTR */
+  border-bottom: 3px solid #ccc;
+}
+
+/*
+** Other common styles
+*/
+.breadcrumb {
+  padding-bottom: .5em
+}
+div.indentation {
+  width: 20px;
+  height: 1.7em;
+  margin: -0.4em 0.2em -0.4em -0.4em; /* LTR */
+  padding: 0.42em 0 0.42em 0.6em; /* LTR */
+  float: left; /* LTR */
+}
+div.tree-child {
+  background: url(../images/tree.png) no-repeat 11px center; /* LTR */
+}
+div.tree-child-last {
+  background: url(../images/tree-bottom.png) no-repeat 11px center; /* LTR */
+}
+div.tree-child-horizontal {
+  background: url(../images/tree.png) no-repeat -11px center;
+}
+.error {
+  color: #e55;
+}
+div.error {
+  border: 1px solid #d77;
+}
+div.error, tr.error {
+  background: #fcc;
+  color: #200;
+  padding: 2px;
+}
+.warning {
+  color: #e09010;
+}
+div.warning {
+  border: 1px solid #f0c020;
+}
+div.warning, table tr.warning {
+  background: #ffd;
+  color: #220;
+  padding: 2px;
+}
+.ok {
+  color: #008000;
+}
+div.ok {
+  border: 1px solid #00aa00;
+}
+div.ok, tr.ok {
+  background: #dfd;
+  color: #020;
+  padding: 2px;
+}
+.item-list .icon {
+  color: #555;
+  float: right; /* LTR */
+  padding-left: 0.25em; /* LTR */
+  clear: right; /* LTR */
+}
+.item-list .title {
+  font-weight: bold;
+}
+.item-list ul {
+  margin: 0 0 0.75em 0;
+  padding: 0;
+}
+.item-list ul li {
+  margin: 0 0 0.25em 1.5em; /* LTR */
+  padding: 0;
+  list-style: disc;
+}
+ol.task-list li.active {
+  font-weight: bold;
+}
+.form-item {
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+tr.odd .form-item, tr.even .form-item {
+  margin-top: 0;
+  margin-bottom: 0;
+  white-space: nowrap;
+}
+tr.merge-down, tr.merge-down td, tr.merge-down th {
+  border-bottom-width: 0 !important;
+}
+tr.merge-up, tr.merge-up td, tr.merge-up th {
+  border-top-width: 0 !important;
+}
+.form-item input.error, .form-item textarea.error, .form-item select.error {
+  border: 2px solid red;
+}
+.form-item .description {
+  font-size: 0.85em;
+}
+.form-item label {
+  display: block;
+  font-weight: bold;
+}
+.form-item label.option {
+  display: inline;
+  font-weight: normal;
+}
+.form-checkboxes, .form-radios {
+  margin: 1em 0;
+}
+.form-checkboxes .form-item, .form-radios .form-item {
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
+}
+.form-type-radio .description, .form-type-checkbox .description {
+  margin-left: 2.4em;
+}
+.marker, .form-required {
+  color: #f00;
+}
+.more-help-link {
+  text-align: right; /* LTR */
+}
+.more-help-link a, a.module-link {
+  padding: 1px 0 1px 20px; /* LTR */
+}
+a.module-link {
+  display: block;
+  white-space: nowrap;
+}
+.more-help-link a, a.module-link-help {
+  background: url(../images/help.png) 0 50% no-repeat; /* LTR */
+}
+a.module-link-permissions {
+  background: url(../images/permissions.png) 0 50% no-repeat; /* LTR */
+}
+a.module-link-configure {
+  background: url(../images/configure.png) 0 50% no-repeat; /* LTR */
+}
+.more-link {
+  text-align: right; /* LTR */
+}
+.module-help {
+  margin-left: 1em; /* LTR */
+  float: right; /* LTR */
+}
+.nowrap {
+  white-space: nowrap;
+}
+.item-list .pager {
+  clear: both;
+  text-align: center;
+}
+.item-list .pager li {
+  background-image:none;
+  display:inline;
+  list-style-type:none;
+  padding: 0.5em;
+}
+.pager-current {
+  font-weight:bold;
+}
+.tips {
+  margin-top: 0;
+  margin-bottom: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  font-size: 0.9em;
+}
+dl.multiselect dd, dl.multiselect dd .form-item, dl.multiselect dd select {
+  font-family: inherit;
+  font-size: inherit;
+  width: 14em;
+}
+dl.multiselect dt, dl.multiselect dd {
+  float: left; /* LTR */
+  line-height: 1.75em;
+  padding: 0;
+  margin: 0 1em 0 0; /* LTR */
+}
+dl.multiselect .form-item {
+  height: 1.75em;
+  margin: 0;
+}
+
+/*
+** Inline items (need to override above)
+*/
+.container-inline div, .container-inline label {
+  display: inline;
+}
+
+/*
+** Autocomplete styles
+*/
+/* Suggestion list */
+#autocomplete {
+  position: absolute;
+  border: 1px solid;
+  overflow: hidden;
+  z-index: 100;
+}
+#autocomplete ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  list-style-image: none;
+}
+#autocomplete li {
+  background: #fff;
+  color: #000;
+  white-space: pre;
+  cursor: default;
+}
+#autocomplete li.selected {
+  background: #0072b9;
+  color: #fff;
+}
+/* Animated throbber */
+html.js input.form-autocomplete {
+  background-image: url(../images/throbber.gif);
+  background-repeat: no-repeat;
+  background-position: 100% 2px; /* LTR */
+}
+html.js input.throbbing {
+  background-position: 100% -18px; /* LTR */
+}
+
+/*
+** Collapsing fieldsets
+*/
+html.js fieldset.collapsed {
+  border-bottom-width: 0;
+  border-left-width: 0;
+  border-right-width: 0;
+  margin-bottom: 0;
+  height: 1em;
+}
+html.js fieldset.collapsed * {
+  display: none;
+}
+html.js fieldset.collapsed legend, html.js fieldset.collapsed legend a span.element-invisible {
+  display: block;
+  overflow: hidden;
+}
+html.js fieldset.collapsible legend a {
+  display: inline;
+  padding-left: 15px; /* LTR */
+  background: url(../images/menu-expanded.png) 5px 75% no-repeat; /* LTR */
+}
+html.js fieldset.collapsible legend span.summary {
+  display: inline;
+  font-size: 0.9em;
+  color: #999;
+  margin-left: 0.5em;
+}
+html.js fieldset.collapsed legend a {
+  background-image: url(../images/menu-collapsed.png); /* LTR */
+  background-position: 5px 50%; /* LTR */
+}
+/* Note: IE-only fix due to '* html' (breaks Konqueror otherwise). */
+* html.js fieldset.collapsed legend,
+* html.js fieldset.collapsed legend *,
+* html.js fieldset.collapsed table * {
+  display: inline;
+}
+/* For Safari 2 to prevent collapsible fieldsets containing tables from dissapearing due to tableheader.js. */
+html.js fieldset.collapsible {
+  position: relative;
+}
+/* Avoid jumping around due to margins collapsing into collapsible fieldset border */
+html.js fieldset.collapsible .fieldset-wrapper {
+  overflow: auto;
+}
+
+/*
+** Resizable text areas
+*/
+.resizable-textarea {
+  width: 95%;
+}
+.resizable-textarea .grippie {
+  height: 9px;
+  overflow: hidden;
+  background: #eee url(../images/grippie.png) no-repeat center 2px;
+  border: 1px solid #ddd;
+  border-top-width: 0;
+  cursor: s-resize;
+}
+html.js .resizable-textarea textarea {
+  margin-bottom: 0;
+  width: 100%;
+  display: block;
+}
+
+/*
+** Table drag and drop.
+*/
+.draggable a.tabledrag-handle {
+  cursor: move;
+  float: left; /* LTR */
+  height: 1.7em;
+  margin: -0.4em 0 -0.4em -0.5em; /* LTR */
+  padding: 0.42em 1.5em 0.42em 0.5em; /* LTR */
+  text-decoration: none;
+}
+a.tabledrag-handle:hover {
+  text-decoration: none;
+}
+a.tabledrag-handle .handle {
+  margin-top: 4px;
+  height: 13px;
+  width: 13px;
+  background: url(../images/draggable.png) no-repeat 0 0;
+}
+a.tabledrag-handle-hover .handle {
+  background-position: 0 -20px;
+}
+
+/*
+** Teaser splitter
+*/
+.joined + .grippie {
+  height: 5px;
+  background-position: center 1px;
+  margin-bottom: -2px;
+}
+/* Keeps inner content contained in Opera 9. */
+.teaser-checkbox {
+  padding-top: 1px;
+}
+.teaser-checkbox div.form-item {
+  float: right; /* LTR */
+  margin: 0 5% 0 0; /* LTR */
+  padding: 0;
+}
+textarea.teaser {
+  display: none;
+}
+html.js .no-js {
+  display: none;
+}
+
+/*
+** Progressbar styles
+*/
+.progress {
+  font-weight: bold;
+}
+.progress .bar {
+  background: #fff url(../images/progress.gif);
+  border: 1px solid #00375a;
+  height: 1.5em;
+  margin: 0 0.2em;
+}
+.progress .filled {
+  background: #0072b9;
+  height: 1.1em;
+  border-bottom: 0.5em solid #004a73;
+  width: 0%;
+}
+.progress .percentage {
+  float: right; /* LTR */
+}
+.progress-disabled {
+  float: left; /* LTR */
+}
+.ajax-progress {
+  float: left; /* LTR */
+}
+.ajax-progress .throbber {
+  width: 15px;
+  height: 15px;
+  margin: 2px;
+  background: transparent url(../images/throbber.gif) no-repeat 0px -18px;
+  float: left; /* LTR */
+}
+tr .ajax-progress .throbber {
+  margin: 0 2px;
+}
+.ajax-progress-bar {
+  width: 16em;
+}
+
+/*
+** Formatting for welcome page
+*/
+#first-time strong {
+  display: block;
+  padding: 1.5em 0 .5em;
+}
+
+/*
+** To be used with tableselect.js
+*/
+tr.selected td {
+  background: #ffc;
+}
+
+/*
+** Floating header for tableheader.js
+*/
+table.sticky-header {
+  margin-top: 0;
+  background: #fff;
+}
+
+/*
+** Installation clean URLs
+*/
+#clean-url.install {
+  display: none;
+}
+
+/*
+** For anything you want to hide on page load when JS is enabled, so
+** that you can use the JS to control visibility and avoid flicker.
+*/
+html.js .js-hide {
+  display: none;
+}
+
+/*
+** Styles for the system modules page (admin/config/modules)
+*/
+#system-modules div.incompatible {
+  font-weight: bold;
+}
+
+/*
+** Styles for the system themes page (admin/appearance)
+*/
+.system-themes-list {
+  margin-bottom: 20px;
+}
+.system-themes-list-disabled {
+  border-top: 1px solid #cdcdcd;
+  padding-top: 20px;
+}
+.system-themes-list h2 {
+  margin: 0;
+}
+.theme-selector {
+  padding-top: 20px;
+}
+.theme-selector .screenshot,
+.theme-selector .no-screenshot {
+  border: 1px solid #e0e0d8;
+  padding: 2px;
+  vertical-align: bottom;
+  width: 294px;
+  height: 219px;
+  line-height: 219px;
+  text-align: center;
+}
+.theme-default .screenshot {
+  border: 1px solid #aaa;
+}
+.system-themes-list-enabled .theme-selector .screenshot,
+.system-themes-list-enabled .theme-selector .no-screenshot {
+  float: left; /* LTR */
+  margin: 0 20px 0 0; /* LTR */
+}
+.system-themes-list-disabled .theme-selector .screenshot,
+.system-themes-list-disabled .theme-selector .no-screenshot {
+  width: 194px;
+  height: 144px;
+  line-height: 144px;
+}
+.theme-selector h3 {
+  font-weight: normal;
+}
+.theme-default h3 {
+  font-weight: bold;
+}
+.system-themes-list-enabled .theme-selector h3 {
+  margin-top: 0;
+}
+.system-themes-list-disabled .theme-selector {
+  width: 300px;
+  float: left; /* LTR */
+  padding: 20px 20px 20px 0; /* LTR */
+}
+.system-themes-list-enabled .theme-info {
+  max-width: 940px;
+}
+.system-themes-list-disabled .theme-info {
+  min-height: 170px;
+}
+.theme-selector .incompatible {
+  margin-top: 10px;
+  font-weight: bold;
+}
+.theme-selector .operations {
+  margin: 10px 0 0 0;
+  padding: 0;
+}
+.theme-selector .operations li {
+  float: left; /* LTR */
+  margin: 0;
+  padding: 0 0.7em;
+  list-style-type: none;
+  border-right: 1px solid #cdcdcd;  /* LTR */
+}
+.theme-selector .operations li.last {
+  padding: 0 0 0 0.7em; /* LTR */
+  border-right: none; /* LTR */
+}
+.theme-selector .operations li.first {
+  padding: 0 0.7em 0 0; /* LTR */
+}
+#system-themes-admin-form {
+  clear: left;
+}
+
+/*
+** Password strength indicator
+*/
+#password-strength {
+  width: 17em;
+  float: right;  /* LTR */
+  margin-top: 1.4em;
+}
+.password-strength-title {
+  display: inline;
+}
+#password-strength-text {
+  float: right; /* LTR */
+  font-weight: bold;
+}
+#password-indicator {
+  background-color: #C4C4C4;
+  height: 0.3em;
+  width: 100%;
+}
+#password-indicator div {
+  height: 100%;
+  width: 0%;
+  background-color: #47C965;
+}
+input.password-confirm, input.password-field {
+  width: 16em;
+  margin-bottom: 0.4em;
+}
+div.password-confirm {
+  display: inline;
+  padding-left: 1em;
+}
+div.password-suggestions {
+  padding: 0.2em 0.5em;
+  margin: 0.7em 0;
+  width: 38.5em;
+  border: 1px solid #B4B4B4;
+}
+div.password-suggestions ul {
+  margin-bottom: 0;
+}
+.password-parent {
+  margin: 0;
+  width: 34.3em;
+}
+
+/*
+** Password confirmation checker
+*/
+.confirm-parent {
+  margin: 0;
+}
+div.password-confirm {
+  visibility: hidden;
+}
+
+/**
+ * Hide elements from all users.
+ *
+ * Used for elements which should not be immediately displayed to any user. An
+ * example would be a collapsible fieldset that will be expanded with a click
+ * from a user. The effect of this class can be toggled with the jQuery show()
+ * and hide() functions.
+ */
+.element-hidden {
+  display: none;
+}
+
+/**
+ * Hide elements visually, but keep them available for screen-readers.
+ *
+ * Used for information required for screen-reader users to understand and use
+ * the site where visual display is undesirable. Information provided in this
+ * manner should be kept concise, to avoid unnecessary burden on the user. Must
+ * not be used for focusable elements (such as links and form elements) as this
+ * causes issues for keyboard only or voice recognition users.
+ */
+.element-invisible {
+  height: 0;
+  overflow: hidden;
+  position: absolute;
+}
+
+/* $Id: pretty.css,v 1.6 2010/03/22 19:34:39 mcrittenden Exp $ */
+
+/**
+ * Override of style.css.
+ */
+
+/**
+ * Generic elements
+ */
+body,
+#page {
+  color: #000;
+  background: #fff;
+  font-style: normal;
+  line-height: 20px;
+  font-size: 0.8em;
+  font-family: Lucida Grande, Lucida Sans Unicode, sans-serif;
+}
+
+a {
+  color: #0074BD;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+hr {
+  display: none;
+}
+
+legend {
+  font-weight: bold;
+}
+
+#page h1,
+#page h2,
+#page h3,
+#page h4,
+#page h5,
+#page h6 {
+  font-size: 15px;
+  font-weight: bold;
+  margin:  10px 0;
+}
+
+#page dl {
+  margin: 0 0 20px;
+}
+
+#page dl dd,
+#page dl dl {
+  margin-left: 20px;
+  margin-bottom: 10px;
+}
+
+/**
+ * Skip link.
+ */
+#skip-link {
+  margin-top: 0;
+  position: absolute;
+  left: 50%;
+  margin-left: -5.25em;
+  width: auto;
+  z-index: 50;
+}
+
+#skip-link a,
+#skip-link a:link,
+#skip-link a:visited {
+  position: absolute;
+  display: block;
+  top: auto;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  -moz-border-radius-bottomleft: 10px;
+  -moz-border-radius-bottomright: 10px;
+  -moz-border-radius-topleft: 0;
+  -moz-border-radius-topright: 0;
+  -webkit-border-top-left-radius: 0;
+  -webkit-border-top-right-radius: 0;
+  -webkit-border-bottom-left-radius: 10px;
+  -webkit-border-bottom-right-radius: 10px;
+  border-radius:0 0 10px 10px;
+  background: #444;
+  color: #fff;
+  font-size: 0.94em;
+  text-decoration: none;
+}
+
+#skip-link a:hover,
+#skip-link a:active,
+#skip-link a:focus {
+  position: static;
+  width: auto;
+  height: auto;
+  overflow: visible;
+  padding: 1px 10px 2px 10px;
+}
+
+/**
+ * Branding.
+ */
+#branding {
+  overflow: hidden;
+  padding: 20px 20px 0 20px;
+  position: relative;
+  background-color: #e0e0d8;
+}
+
+#branding div.breadcrumb {
+  font-size: 11px;
+  padding-bottom: 5px;
+}
+
+#branding div.block {
+  position: relative;
+  float: right;
+  width: 240px;
+  padding-left: 10px;
+  background: #333;
+}
+
+#branding div.block form label {
+  display: none;
+}
+
+#branding div.block form div.form-item {
+  float: left;
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+#branding div.block form input.form-text {
+  width: 140px;
+  margin-right: 10px;
+}
+
+#branding div.block form input.form-submit {
+  text-align: center;
+  width: 80px;
+}
+
+/**
+ * Help.
+ */
+#help {
+  font-size: 0.9em;
+  margin-top: 1em;
+}
+
+#help p {
+  margin: 0 0 10px;
+}
+
+#help div.more-help-link {
+  text-align: right;
+}
+
+/**
+ * Messages.
+ */
+div.messages {
+  padding: 9px;
+  margin: 0.5em 0 0;
+  color: #036;
+  background: #bdf;
+  border: 1px solid #ace;
+}
+
+div.warning {
+  color: #840;
+  background: #fe6;
+  border-color: #ed5;
+}
+
+div.error {
+  color: #fff;
+  background: #e63;
+  border-color: #d52;
+}
+
+div.error p.error {
+  color: #333;
+}
+
+div.status {
+  color: #360;
+  background: #cf8;
+  border-color: #be7;
+}
+
+/**
+ * Page title.
+ */
+#page-title {
+  background: #333;
+  padding-top: 20px;
+}
+
+#branding h1.page-title {
+  color: #000;
+  padding-bottom: 10px;
+  font-size: 18px;
+  font-weight: normal;
+  float: left;
+}
+
+/**
+ * Console.
+ */
+#console {
+  margin: 9px 0 10px;
+}
+
+/**
+ * Tabs.
+ */
+ul.primary {
+  float: right;
+  border-bottom: none;
+  margin: 0 0 -10px 0;
+  padding: 3px 0 0 8px;
+  line-height: 30px;
+  text-transform: uppercase;
+  font-size: 12px;
+}
+
+ul.primary li {
+  display: inline;
+  list-style: none;
+}
+
+ul.primary li a,
+ul.primary li a.active,
+ul.primary li a:active,
+ul.primary li a:visited,
+ul.primary li a:hover {
+  background-color: #a6a7a2;
+  -moz-border-radius: 8px 8px 0 0;
+  -webkit-border-top-left-radius: 8px;
+  -webkit-border-top-right-radius: 8px;
+  border-radius: 8px 8px 0 0;
+  color: #000;
+  font-weight: bold;
+  padding: 7px 20px 5px 20px;
+  border-width: 1px 1px 0 1px;
+  border-style: solid;
+  border-color: #a6a7a2;
+}
+
+ul.primary li.active a,
+ul.primary li.active a.active,
+ul.primary li.active a:active,
+ul.primary li.active a:visited {
+  background-color: #fff;
+  border-color: #c9cac4;
+}
+
+ul.primary li a:hover {
+  color: #fff;
+}
+
+ul.primary li.active a:hover {
+  color: #000;
+}
+
+ul.secondary {
+  float: none;
+  clear: both;
+  font-size: 12px;
+  text-align: right;
+  padding: 5px 10px 4px;
+  line-height: 20px;
+  overflow: hidden;
+  border-bottom: 1px solid #ccc;
+  background: #fff;
+}
+
+ul.secondary li {
+  padding-left: 10px;
+}
+
+ul.secondary li a {
+  color: #05a;
+}
+
+ul.secondary li a,
+ul.secondary li a:hover,
+ul.secondary li.active a,
+ul.secondary li.active a.active {
+  padding: 0 10px;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 7px;
+}
+
+ul.secondary li.active a,
+ul.secondary li.active a.active {
+  color: #fff;
+  background: #666;
+}
+
+/**
+ * Page layout.
+ */
+#page {
+  padding-bottom: 40px;
+  margin-right: 40px;
+  margin-left: 40px;
+  position: relative;
+}
+
+#page {
+  padding: 20px 0;
+  background: #fff;
+  color: #333;
+}
+
+#page ul.menu li,
+#page ul.menu li a,
+#secondary-links ul.links li,
+#secondary-links ul.links li a {
+  float: left;
+}
+
+#page ul.menu li,
+#secondary-links ul.links li {
+  padding: 0 10px 10px 0;
+}
+
+#page ul.menu li a,
+#secondary-links ul.links li a {
+  font-size: 9px;
+  line-height: 10px;
+  background: #777;
+  color: #fff;
+  text-align: center;
+  padding: 5px;
+  height: 55px;
+  width: 80px;
+  overflow: hidden;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+}
+
+#secondary-links ul.links li a:hover {
+  background: #999;
+}
+
+#page ul.menu li a {
+  background: #f8f8f8;
+  color: #05a;
+}
+
+#page ul.menu li a:hover {
+  background: #eee;
+}
+
+#secondary-links ul.links li.active-trail a,
+#secondary-links ul.links li a.active {
+  background: #333;
+}
+
+#page ul.node-type-list li,
+#page ul.admin-list li {
+  position: relative;
+  padding-left: 30px;
+  padding-top: 9px;
+  border-top: 1px solid #ccc;
+  margin-left: 0;
+  margin-bottom: 10px;
+  background: url(../images/list-item.png) no-repeat 0 11px;
+  list-style-type: none;
+  list-style-image: none;
+}
+
+#page ul.admin-list.compact {
+  margin-bottom: 8px;
+}
+
+#page ul.admin-list.compact li {
+  border: 0;
+  background: none;
+  margin-bottom: 2px;
+  padding-top: 2px;
+}
+
+#page ul.admin-list li:last-child {
+  border-bottom: none;
+}
+
+#page ul.node-type-list .label {
+  font-size: 15px;
+}
+
+#page ul.node-type-list li a, #page ul.admin-list li a {
+  margin-left: -30px;
+  padding: 0px 0 4px 30px;
+  min-height: 0;
+}
+
+#page ul.node-type-list li div.description a, #page ul.admin-list li div.description a {
+  margin-left: 0px;
+  padding: 0px;
+  min-height: inherit;
+}
+
+/**
+ * Tables.
+ */
+table {
+  width: 100%;
+  font-size: 12px;
+  margin: 0 0 10px;
+  border: 1px solid #bebfb9;
+  border-top: 0;
+}
+
+table.system-status-report th,
+table td,
+table th {
+  vertical-align: middle;
+  padding: 8px 5px 8px 10px;
+}
+
+table.system-status-report th {
+  padding-left: 30px;
+}
+
+table.system-status-report tr.ok > * {
+  background-color: #dfd;
+}
+
+table.system-status-report tr.info > * {
+  background-color: #bdf;
+}
+
+table.system-status-report tr.warning > * {
+  background-color: #ffd;
+}
+
+table.system-status-report tr.error > * {
+  background-color: #fdd;
+}
+
+tr.even, tr.odd {
+  border-width: 0 1px 0 1px;
+  border-style: solid;
+  border-color: #bebfb9;
+  background: #f3f4ee;
+}
+
+tr.odd {
+  background: #fff;
+}
+
+table th {
+  font-size: 12px;
+  text-transform: uppercase;
+  background: #e1e2dc;
+  font-weight: normal;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #bebfb9;
+  padding: 3px 3px 3px 10px;
+}
+
+table th.active {
+  background: #bdbeb9;
+}
+
+table th a {
+  display: block;
+  position: relative;
+}
+
+table th.active img {
+  position: absolute;
+  top: 3px;
+  right: 3px;
+}
+
+table td.active {
+  background: #e9e9dd;
+}
+
+table tr.odd td.active {
+  background: #f3f4ee;
+}
+
+table tr.selected td.active,
+table tr.selected td {
+  background: #ffc;
+  border-color: #eeb;
+}
+
+/**
+ * Forms.
+ */
+
+/* Fieldsets & Form items */
+fieldset {
+  border: 1px solid #ccc;
+  padding: 30px 13px 13px 14px;
+  margin: 0 0 10px;
+}
+
+fieldset legend span,
+fieldset legend a {
+  position: absolute;
+  margin-top: 9px;
+  margin-left: 13px;
+}
+
+fieldset legend a span {
+  position: relative;
+  margin-top: 0;
+  margin-left: 0;
+}
+
+fieldset.collapsed {
+  background: transparent;
+}
+
+html.js fieldset.collapsed legend,
+html.js fieldset.collapsed legend * {
+  display: block;
+}
+html.js fieldset.collapsed {
+  border-width: 1px;
+  margin-bottom: 10px;
+  padding: 13px;
+}
+
+fieldset fieldset {
+  background: #fff;
+}
+
+fieldset fieldset fieldset {
+  background: #f8f8f8;
+}
+
+html.js fieldset.collapsible .fieldset-wrapper {
+  overflow: visible;
+}
+
+div.form-item {
+  padding: 9px 0;
+  margin: 0 0 10px;
+}
+
+.filter-wrapper div.form-item,
+div.teaser-checkbox div.form-item,
+div.form-item div.form-item,
+fieldset div.form-item {
+  padding: 5px 0;
+  margin: 0;
+  border: 0;
+}
+
+.text-format-wrapper .form-item {
+  padding-bottom: 0;
+}
+
+div.form-item label {
+  margin: 0;
+  padding: 0;
+}
+
+fieldset legend {
+  text-transform: uppercase;
+}
+
+div.form-item label.option {
+  text-transform: none;
+}
+
+div.form-item label.option {
+  font-size: 12px;
+}
+div.form-item label.option input {
+  vertical-align: middle;
+}
+
+/* Filter */
+.filter-wrapper {
+  border-top: 0;
+  width: 95%;
+  padding: 10px 2px;
+}
+
+.filter-wrapper > div {
+  padding-right: 6px;
+  padding-left: 6px;
+}
+
+.filter-wrapper div.form-item,
+.filter-wrapper .filter-guidelines,
+.filter-wrapper .filter-help {
+  font-size: 12px;
+  padding: 0;
+}
+
+ul.tips,
+div.description,
+div.form-item div.description {
+  margin: 5px 0;
+  line-height: 15px;
+  font-size: 12px;
+  color: #666;
+}
+
+body div.form-type-radio div.description, body div.form-type-checkbox div.description {
+  margin-left: 1.5em;
+}
+
+/* Buttons */
+input.form-submit, a.button {
+  cursor: pointer;
+  padding: 4px 17px;
+  color: #5a5a5a;
+  text-align: center;
+  font-weight: normal;
+  font-family: "Lucida Grande", Verdana, sans-serif;
+  border: 1px solid #e4e4e4;
+  border-bottom: 1px solid #b4b4b4;
+  border-left-color: #D2D2D2;
+  border-right-color: #D2D2D2;
+  background: url(../images/buttons.png) 0 0 repeat-x;
+  -moz-border-radius: 20px;
+  -webkit-border-radius: 15px;
+  font-size: 1.1em;
+}
+
+#node-admin-content input.form-submit {
+    margin-left: 1.5em;
+}
+
+a.button:link, a.button:visited, a.button:hover, a.button:active {
+  text-decoration: none;
+  color: #5a5a5a;
+}
+
+div.node-form input#edit-submit,
+div.node-form input#edit-submit-1 {
+  border: 1px solid #8eB7cd;
+  border-left-color: #8eB7cd;
+  border-right-color: #8eB7cd;
+  border-bottom-color: #7691a2;
+  background: url(../images/buttons.png) 0px -40px repeat-x;
+  color: #133B54;
+}
+
+input.form-submit:active {
+  background: #666;
+  color: #fff;
+  border-color: #555;
+  text-shadow: #222 0px -1px 0px;
+}
+
+form input#edit-delete {
+  background: #eee;
+  border-color: #fff #ddd #ccc;
+  text-shadow: none;
+  color: #999;
+}
+
+input.form-autocomplete,
+input.form-text,
+textarea.form-textarea,
+select.form-select {
+  padding: 2px;
+  border: 1px solid #ccc;
+  border-top-color: #999;
+  background: #fff;
+  color: #333;
+}
+
+input.form-text:focus,
+textarea.form-textarea:focus,
+select.form-select:focus {
+  color: #000;
+  border-color: #ace;
+}
+
+.resizable-textarea .grippie {
+  width: 100%;
+  padding: 0 2px;
+}
+
+html.js input.form-autocomplete {
+  background-position: 100% 4px;
+}
+
+html.js input.throbbing {
+  background-position: 100% -16px;
+}
+
+ul.action-links {
+  margin: 1em 0;
+  padding: 0 20px 0 20px;
+  overflow: hidden;
+}
+
+#page ul.action-links {
+  padding: 0;
+}
+
+ul.action-links li {
+  float: left;
+  margin: 0 1em 0 0;
+}
+
+ul.action-links a {
+  padding-left: 15px;
+  background: transparent url(../images/add.png) no-repeat 0 center;
+  line-height: 30px;
+}
+
+/* Exceptions */
+#diff-inline-form select,
+#page div.filter-options select {
+  padding: 0;
+}
+
+/**
+ * System.
+ */
+div.admin .right,
+div.admin .left {
+  width: 49%;
+  margin: 0;
+}
+
+div.admin-panel,
+div.admin-panel .body {
+  padding: 0;
+  clear: left;
+}
+
+div.admin-panel {
+  margin: 0 0 20px;
+  padding: 9px;
+  background: #f8f8f8;
+  border: 1px solid #ccc;
+}
+
+#page div.admin-panel h3 {
+  font-size: 12px;
+  text-transform: uppercase;
+  margin: 0;
+  padding-bottom: 9px;
+}
+
+.container-inline fieldset {
+  display: block;
+}
+
+/* admin/appearance */
+#page #system-themes-page h2 {
+  font-weight: normal;
+  text-transform: uppercase;
+}
+#page .theme-selector h3 {
+  font-weight: normal;
+}
+#page .theme-default h3 {
+  font-weight: bold;
+}
+#page .system-themes-list-enabled .theme-selector h3 {
+  margin-top: 0;
+}
+
+/* admin/content and admin/people */
+#page dl.multiselect,
+#page dl.multiselect dt,
+#page dl.multiselect dd {
+  margin: 0 10px 0 0;
+}
+
+#page dl.multiselect select {
+  font-size: 12px;
+  background: #fff;
+  border: 1px solid #ccc;
+}
+
+/* Update options. */
+div.admin-options {
+  background: #f8f8f8;
+  line-height: 30px;
+  height: 30px;
+  padding: 9px;
+  border: 1px solid #ccc;
+  margin: 0 0 10px;
+}
+
+div.admin-options label {
+  text-transform: uppercase;
+  font: 12px/30px Lucida Grande, Lucida Sans Unicode, sans-serif;
+}
+
+div.admin-options label,
+div.admin-options div.form-item {
+  margin-right: 10px;
+  float: left;
+}
+
+div.admin-options div.form-item {
+  padding: 0;
+  border: 0;
+}
+
+/* Update status */
+.versions table.version {
+  border: none;
+}
+
+/* Maintenance theming */
+body.in-maintenance #sidebar-first {
+  float: right;
+  width: 200px;
+}
+body.in-maintenance #content {
+  float: left;
+  width: 550px;
+  padding-right: 20px;
+}
+body.in-maintenance #page {
+  width: 770px;
+  margin: 0 auto;
+  padding-top: 2em;
+}
+body.in-maintenance #branding h1 {
+  width: 770px;
+  margin: 0 auto;
+  float: none;
+}
+
+body.in-maintenance .form-radios .form-type-radio {
+  padding: 2px 0;
+}
+
+body.in-maintenance .form-submit {
+  display: block;
+}
+
+body.in-maintenance #logo {
+  margin-bottom: 1.5em;
+}
+
+ol.task-list {
+  margin-left: 0; /* LTR */
+  list-style-type: none;
+  list-style-image: none;
+}
+ol.task-list li {
+  padding: 0.5em 1em 0.5em 20px; /* LTR */
+  color: #adadad;
+}
+ol.task-list li.active {
+  background: transparent url(../images/task-item.png) no-repeat 3px 50%; /* LTR */
+  padding: 0.5em 1em 0.5em 20px; /* LTR */
+  color: #000;
+}
+ol.task-list li.done {
+  color: #393;
+  background: transparent url(../images/task-check.png) no-repeat 0px 50%; /* LTR */
+  color: green;
+}
+
+/* Overlay theming */
+.overlay #branding {
+  background-color: #fff;
+  padding-top: 15px;
+}
+.overlay .primary,
+.overlay #branding h1.page-title,
+.overlay #page #left,
+.overlay #page #footer {
+  display: none;
+}
+.overlay #page {
+  margin: 0;
+}
+.overlay #branding div.breadcrumb {
+  float: left;
+  position: relative;
+  z-index: 10;
+}
+.overlay ul.secondary {
+  background: transparent none;
+  margin: -2.4em 0 0;
+  padding: 3px 10px;
+}
+.overlay #content {
+  padding: 0 20px;
+}
+.overlay #page {
+  padding: 0;
+}
+
+/* Shortcut theming */
+div.add-or-remove-shortcuts {
+  float: left;
+  padding-top: 6px;
+  padding-left: 6px;
+}
+
+/* $Id: pretty.css,v 1.6 2010/03/22 19:34:39 mcrittenden Exp $ */
+
+
+/**
+ * Override of misc/vertical-tabs.css.
+ */
+div.vertical-tabs {
+  margin: 10px 0;
+  padding: 9px;
+  border: 1px solid #ccc;
+  background: #f8f8f8;
+}
+
+div.vertical-tabs fieldset {
+  border: 0;
+  padding: 0 0 0 20px;
+}
+
+div.vertical-tabs .vertical-tabs-list {
+  line-height: 10px;
+  font-size: 11px;
+  width: 25%;
+  float: left;
+}
+
+div.vertical-tabs ul li.vertical-tab-button a {
+  display: block;
+  border-right: 1px solid #ccc;
+  padding: 10px 9px 10px 10px;
+  -moz-border-radius-topleft: 5px;
+  -moz-border-radius-bottomleft: 5px;
+  -webkit-border-top-left-radius: 5px;
+  -webkit-border-bottom-left-radius: 5px;
+}
+
+div.vertical-tabs ul li.vertical-tab-button .summary {
+  display: block;
+  font-size: 9px;
+  color: #666;
+  padding-top: 0.5em;
+}
+
+div.vertical-tabs ul li.vertical-tab-button a:hover {
+  background: #fff;
+  text-decoration: none;
+}
+
+div.vertical-tabs ul li.selected a,
+div.vertical-tabs ul li.selected a:hover {
+  background: #ddd;
+}
+
+div.vertical-tabs .vertical-tabs-panes {
+  width: 75%;
+  float: right;
+}
+
+div.vertical-tabs .vertical-tabs-panes legend {
+  display: none;
+}
+

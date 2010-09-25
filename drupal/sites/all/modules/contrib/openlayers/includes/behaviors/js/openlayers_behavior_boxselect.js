@@ -1,4 +1,4 @@
-// $Id: openlayers_behavior_boxselect.js,v 1.1.2.3 2009/09/28 01:11:41 zzolo Exp $
+// $Id: openlayers_behavior_boxselect.js,v 1.1.2.4 2010/08/06 17:00:56 tmcw Exp $
 
 /**
  * @file
@@ -10,6 +10,16 @@ var selections_layer;
  * Box Select Behavior
  */
 Drupal.behaviors.openlayers_behavior_boxselect = function(context) {
+  function setRestrictedExtent(box) {
+    bounding_box = box.geometry.getBounds().toBBOX();
+    $('#edit-center-restrict-restrictedExtent').val(bounding_box);
+    for(i = 0; i < selections_layer.features.length; i++) {
+      if(selections_layer.features[i] != box) {
+        selections_layer.features[i].destroy();
+      }
+    }
+  }
+
   var data = $(context).data('openlayers');
   if (data && data.map.behaviors['openlayers_behavior_boxselect']) {
     selections_layer = new OpenLayers.Layer.Vector('Temporary Box Layer');
@@ -18,7 +28,7 @@ Drupal.behaviors.openlayers_behavior_boxselect = function(context) {
         'keyMask': OpenLayers.Handler.MOD_SHIFT,
         'sides': 4,
         'irregular': true});
-    control.events.on({"featureAdded": setRestrictedExtent});
+    control.events.on({"featureAdded": this.setRestrictedExtent});
     data.openlayers.addLayer(selections_layer);
     data.openlayers.addControl(control);
     if ($('#edit-center-restrict-restrictedExtent').val() != '') {
@@ -28,15 +38,5 @@ Drupal.behaviors.openlayers_behavior_boxselect = function(context) {
       selections_layer.addFeatures([feature]);
     }
     control.activate();
-  }
-}
-
-function setRestrictedExtent(box) {
-  bounding_box = box.geometry.getBounds().toBBOX();
-  $('#edit-center-restrict-restrictedExtent').val(bounding_box);
-  for(i = 0; i < selections_layer.features.length; i++) {
-    if(selections_layer.features[i] != box) {
-      selections_layer.features[i].destroy();
-    }
   }
 }

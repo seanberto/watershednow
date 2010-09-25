@@ -1,0 +1,279 @@
+<?php
+// $Id: feeds_scheduler.test,v 1.3 2010/09/15 19:27:42 alexb Exp $
+
+/**
+ * @file
+ * Feeds tests.
+ */
+
+// Require FeedsWebTestCase class definition.
+require_once(dirname(__FILE__) .'/feeds.test.inc');
+
+/**
+ * Test cron scheduling.
+ */
+class FeedsSchedulerTestCase extends FeedsWebTestCase {
+
+  /**
+   * Describe this test.
+   */
+  public function getInfo() {
+    return array(
+      'name' => t('Scheduler'),
+      'description' => t('Tests for feeds scheduler.'),
+      'group' => t('Feeds'),
+    );
+  }
+
+  /**
+   * Set up test.
+   */
+  public function setUp() {
+    parent::setUp('feeds', 'feeds_ui', 'ctools', 'job_scheduler');
+    $this->loginAdmin();
+    $this->createImporterConfiguration();
+    $this->addMappings('syndication',
+      array(
+        array(
+          'source' => 'title',
+          'target' => 'title',
+          'unique' => FALSE,
+        ),
+        array(
+          'source' => 'description',
+          'target' => 'body',
+          'unique' => FALSE,
+        ),
+        array(
+          'source' => 'timestamp',
+          'target' => 'created',
+          'unique' => FALSE,
+        ),
+        array(
+          'source' => 'url',
+          'target' => 'url',
+          'unique' => TRUE,
+        ),
+        array(
+          'source' => 'guid',
+          'target' => 'guid',
+          'unique' => TRUE,
+        ),
+      )
+    );
+  }
+
+  /**
+   * Test scheduling on cron.
+   */
+  public function testScheduling() {
+    // Create 10 feed nodes. Turn off import on create before doing that.
+    $edit = array(
+      'import_on_create' => FALSE,
+    );
+    $this->drupalPost('admin/build/feeds/edit/syndication/settings', $edit, 'Save');
+    $this->assertText('Do not import on create');
+
+    $nids = $this->createFeedNodes();
+    // This implicitly tests the import_on_create node setting being 0.
+    $this->assertTrue($nids[0] == 1 && $nids[1] == 2, 'Node ids sequential.');
+
+    // Check whether feed got properly added to scheduler.
+    foreach ($nids as $nid) {
+      $this->assertEqual(1, db_result(db_query("SELECT COUNT(*) FROM {job_schedule} WHERE type = 'syndication' AND id = %d AND callback = 'feeds_source_import' AND last <> 0 AND scheduled = 0 AND period = 1800 AND periodic = 1", $nid)));
+    }
+
+    // Take time for comparisons.
+    $time = time();
+    sleep(1);
+
+    // Log out and run cron, no changes.
+    $this->drupalLogout();
+    $this->runCron();
+    $count = db_result(db_query("SELECT COUNT(*) FROM {job_schedule} WHERE last > %d", $time));
+    $this->assertEqual($count, 0, '0 feeds refreshed on cron.');
+
+    // Set next time to 0 to simulate updates.
+    // There should be 2 x job_schedule_num (= 10) feeds updated now.
+    db_query("UPDATE {job_schedule} SET next = 0");
+    $this->runCron();
+    $this->runCron();
+
+    $schedule = array();
+    $count = db_result(db_query("SELECT COUNT(*) FROM {job_schedule} WHERE last > %d", $time));
+    $this->assertEqual($count, 10, '10 feeds refreshed on cron.');
+    $result = db_query("SELECT * FROM {job_schedule}", $time);
+
+    // There should be 100 story nodes in the database.
+    $count = db_result(db_query("SELECT COUNT(*) FROM {node} WHERE type = 'story'"));
+    $this->assertEqual($count, 100, 'There are 100 story nodes aggregated.');
+
+    // Hit twice cron again.
+    $this->runCron();
+    $this->runCron();
+
+    // There should be feeds_schedule_num X 2 (= 20) feeds updated now.
+    $schedule = array();
+    $result = db_query("SELECT id, last, scheduled FROM {job_schedule} WHERE last > %d", $time);
+    while ($row = db_fetch_object($result)) {
+      $schedule[$row->id] = $row;
+    }
+    $this->assertEqual(count($schedule), 20, '20 feeds refreshed on cron.');
+
+    // There should be 200 story nodes in the database.
+    $count = db_result(db_query("SELECT COUNT(*) FROM {node} WHERE type = 'story' AND status = 1"));
+    $this->assertEqual($count, 200, 'There are 200 story nodes aggregated.');
+
+    // There shouldn't be any items with scheduled = 1 now, if so, this would
+    // mean they are stuck.
+    $count = db_result(db_query("SELECT COUNT(*) FROM {job_schedule} WHERE scheduled = 1"));
+    $this->assertEqual($count, 0, 'All items are unscheduled (schedule flag = 0).');
+
+    // Hit cron again twice.
+    $this->runCron();
+    $this->runCron();
+
+    // The import_period setting of the feed configuration is 1800, there
+    // shouldn't be any change to the database now.
+    $equal = TRUE;
+    $result = db_query("SELECT id, last, scheduled FROM {job_schedule} WHERE last > %d", $time);
+    while ($row = db_fetch_object($result)) {
+      $equal = $equal && ($row->last == $schedule[$row->id]->last);
+    }
+    $this->assertTrue($equal, 'Schedule did not change.');
+
+    // Log back in and set refreshing to as often as possible.
+    $this->loginAdmin();
+    $edit = array(
+      'import_period' => 0,
+    );
+    $this->drupalPost('admin/build/feeds/edit/syndication/settings', $edit, 'Save');
+    $this->assertText('Refresh: as often as possible');
+    $this->drupalLogout();
+
+    // Hit cron once, this should cause Feeds to reschedule all entries.
+    $this->runCron();
+    $equal = FALSE;
+    $result = db_query("SELECT id, last, scheduled FROM {job_schedule} WHERE last > %d", $time);
+    while ($row = db_fetch_object($result)) {
+      $equal = $equal && ($row->last == $schedule[$row->id]->last);
+      $schedule[$row->id] = $row;
+    }
+    $this->assertFalse($equal, 'Every feed schedule time changed.');
+
+    // Hit cron again, 4 times now, every item should change again.
+    for ($i = 0; $i < 4; $i++) {
+      $this->runCron();
+    }
+    $equal = FALSE;
+    $result = db_query("SELECT id, last, scheduled FROM {job_schedule} WHERE last > %d", $time);
+    while ($row = db_fetch_object($result)) {
+      $equal = $equal && ($row->last == $schedule[$row->id]->last);
+    }
+    $this->assertFalse($equal, 'Every feed schedule time changed.');
+
+    // There should be 200 story nodes in the database.
+    $count = db_result(db_query("SELECT COUNT(*) FROM {node} WHERE type = 'story' AND status = 1"));
+    $this->assertEqual($count, 200, 'The total of 200 story nodes has not changed.');
+
+    // Set expire settings, check rescheduling.
+    $max_last = db_result(db_query("SELECT MAX(last) FROM {job_schedule} WHERE type = 'syndication' AND callback = 'feeds_source_import' AND period = 0"));
+    $min_last = db_result(db_query("SELECT MIN(last) FROM {job_schedule} WHERE type = 'syndication' AND callback = 'feeds_source_import' AND period = 0"));
+    $this->assertEqual(0, db_result(db_query("SELECT COUNT(*) FROM {job_schedule} WHERE type = 'syndication' AND callback = 'feeds_importer_expire' AND last <> 0 AND scheduled = 0")));
+    $this->loginAdmin();
+    $this->setSettings('syndication', 'FeedsNodeProcessor', array('expire' => 86400));
+    $this->drupalLogout();
+    sleep(1);
+    $this->runCron();
+    // There should be a feeds_importer_expire callback now, and all last fields should be reset.
+    $this->assertEqual(1, db_result(db_query("SELECT COUNT(*) FROM {job_schedule} WHERE type = 'syndication' AND callback = 'feeds_importer_expire' AND last <> 0 AND scheduled = 0 AND period = 3600")));
+    $new_max_last = db_result(db_query("SELECT MAX(last) FROM {job_schedule} WHERE type = 'syndication' AND callback = 'feeds_source_import' AND period = 0"));
+    $new_min_last = db_result(db_query("SELECT MIN(last) FROM {job_schedule} WHERE type = 'syndication' AND callback = 'feeds_source_import' AND period = 0"));
+    $this->assertNotEqual($new_max_last, $max_last);
+    $this->assertNotEqual($new_min_last, $min_last);
+    $this->assertEqual($new_max_last, $new_min_last);
+    $max_last = $new_max_last;
+    $min_last = $new_min_last;
+
+    // Set import settings, check rescheduling.
+    $this->loginAdmin();
+    $this->setSettings('syndication', '', array('import_period' => 3600));
+    $this->drupalLogout();
+    sleep(1);
+    $this->runCron();
+    $new_max_last = db_result(db_query("SELECT MAX(last) FROM {job_schedule} WHERE type = 'syndication' AND callback = 'feeds_source_import' AND period = 3600"));
+    $new_min_last = db_result(db_query("SELECT MIN(last) FROM {job_schedule} WHERE type = 'syndication' AND callback = 'feeds_source_import' AND period = 3600"));
+    $this->assertNotEqual($new_max_last, $max_last);
+    $this->assertNotEqual($new_min_last, $min_last);
+    $this->assertEqual($new_max_last, $new_min_last);
+    $this->assertEqual(0, db_result(db_query("SELECT COUNT(*) FROM {job_schedule} WHERE type = 'syndication' AND callback = 'feeds_source_import' AND period <> 3600")));
+    $this->assertEqual(1, db_result(db_query("SELECT COUNT(*) FROM {job_schedule} WHERE type = 'syndication' AND callback = 'feeds_importer_expire' AND period = 3600 AND last = %d", $new_min_last)));
+
+    // Delete source, delete importer, check schedule.
+    $this->loginAdmin();
+    $nid = array_shift($nids);
+    $this->drupalPost("node/$nid/delete", array(), t('Delete'));
+    $this->assertEqual(0, db_result(db_query("SELECT COUNT(*) FROM {job_schedule} WHERE type = 'syndication' AND callback = 'feeds_source_import' AND id = %d", $nid)));
+    $this->assertEqual(count($nids), db_result(db_query("SELECT COUNT(*) FROM {job_schedule} WHERE type = 'syndication' AND callback = 'feeds_source_import'")));
+    $this->assertEqual(1, db_result(db_query("SELECT COUNT(*) FROM {job_schedule} WHERE type = 'syndication' AND callback = 'feeds_importer_expire' AND id =0")));
+
+    $this->drupalPost('admin/build/feeds/delete/syndication', array(), t('Delete'));
+    $this->assertEqual(0, db_result(db_query("SELECT COUNT(*) FROM {job_schedule} WHERE type = 'syndication' AND callback = 'feeds_importer_expire' AND id =0")));
+    $this->assertEqual(count($nids), db_result(db_query("SELECT COUNT(*) FROM {job_schedule} WHERE type = 'syndication' AND callback = 'feeds_source_import'")));
+  }
+
+  /**
+   * Test batching on cron.
+   */
+  function testBatching() {
+    // Verify that there are 150 nodes total.
+    $nid = $this->createFeedNode('syndication', $GLOBALS['base_url'] .'/'. drupal_get_path('module', 'feeds') .'/tests/feeds/many_items.rss2');
+    $this->assertText('Created 150 Story nodes.');
+    $this->drupalPost('node/'. $nid .'/delete-items', array(), 'Delete');
+    $this->assertText('Deleted 150 nodes.');
+
+    // Set next time to 0 to simulate updates.
+    db_query("UPDATE {job_schedule} SET next = 0");
+    // Hit cron 3 times, assert correct number of story nodes.
+    for ($i = 0; $i < 3; $i++) {
+      $this->runCron(1);
+      // 50 == FEEDS_NODE_BATCH_SIZE
+      $this->assertEqual(50 * ($i + 1), db_result(db_query("SELECT COUNT(*) FROM {node} WHERE type = 'story'")));
+      $this->assertEqual(0, db_result(db_query("SELECT period FROM {job_schedule} WHERE type = 'syndication' AND id = %d", $nid)));
+    }
+    // Run one more time to cause the batch to reset, check period back to 1800.
+    $this->runCron();
+    $this->assertEqual(1800, db_result(db_query("SELECT period FROM {job_schedule} WHERE type = 'syndication' AND id = %d", $nid)));
+
+    // Delete a couple of nodes, then hit cron again. They should not be replaced
+    // as the minimum update time is 30 minutes.
+    $result = db_query_range("SELECT nid FROM {node} WHERE type = 'story'", 0, 2);
+    while ($node = db_fetch_object($result)) {
+      $this->drupalPost("node/{$node->nid}/delete", array(), 'Delete');
+    }
+    $this->assertEqual(148, db_result(db_query("SELECT COUNT(*) FROM {node} WHERE type = 'story'")));
+    $this->runCron();
+    $this->assertEqual(148, db_result(db_query("SELECT COUNT(*) FROM {node} WHERE type = 'story'")));
+  }
+
+  /**
+   * Helper, log in as an admin user.
+   */
+  protected function loginAdmin() {
+    $this->drupalLogin(
+      $this->drupalCreateUser(
+        array(
+          'administer feeds', 'administer nodes',
+        )
+      )
+    );
+  }
+
+  /**
+   * Helper, run cron.
+   */
+  protected function runCron($sleep = 0) {
+    $this->drupalGet($GLOBALS['base_url'] .'/cron.php');
+    sleep($sleep);
+  }
+}

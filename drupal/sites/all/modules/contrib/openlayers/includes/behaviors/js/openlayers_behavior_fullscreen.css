@@ -6,33 +6,20 @@
   left: 0;
   height: 100% !important;
   width: 100% !important;
-}
+  }
 
 .openlayers_behavior_fullscreen_button_panel {
   position: absolute;
-  right: 0;
-}
+  top: 5px;
+  right: 5px;
+  }
 
 .openlayers_behavior_fullscreen_buttonItemInactive {
-  width: 6em;
-  z-index: 10000;
-  padding-left: 5px;
-  height: 20px;
-  background-color: #fff;
-  cursor: pointer;
-  position: absolute;
-  right: 0;
-}
-
+  background:url(openlayers_behavior_fullscreen.png);
+  width:20px;
+  height:20px;
+  }
+ 
 .openlayers_map_fullscreen .openlayers_behavior_fullscreen_buttonItemInactive {
-  width: 8em;
-}
-
-.openlayers_behavior_fullscreen_buttonItemInactive:after {
-  content: "Fullscreen";
-  text-decoration: underline;
-}
-
-.openlayers_map_fullscreen .openlayers_behavior_fullscreen_buttonItemInactive:after {
-  content: "Exit fullscreen";
-}
+  background-position:20px 0;
+  }

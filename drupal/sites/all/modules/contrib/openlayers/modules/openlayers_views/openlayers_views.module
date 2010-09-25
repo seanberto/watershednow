@@ -1,5 +1,5 @@
 <?php
-// $Id: openlayers_views.module,v 1.4.2.17 2010/06/06 18:44:41 zzolo Exp $
+// $Id: openlayers_views.module,v 1.4.2.19 2010/08/16 13:25:20 tmcw Exp $
 
 /**
  * @file
@@ -28,6 +28,13 @@ function openlayers_views_theme($existing, $type, $theme, $path) {
       'arguments' => array(
         'name' => '',
         'description' => '',
+      ),
+      'file' => 'includes/openlayers_views.theme.inc',
+    ),
+    'openlayers_views_render_feature' => array(
+      'arguments' => array(
+        'feature' => '',
+        'record' => '',
       ),
       'file' => 'includes/openlayers_views.theme.inc',
     ),
@@ -80,7 +87,7 @@ function openlayers_views_openlayers_layers() {
       $view->set_display($display);
       if ($data->display_plugin == 'openlayers') {
         //Build Layer
-        $layer = new StdClass();
+        $layer = new stdClass();
         $layer->api_version = 1;
         $layer->name = $view->name . '_' . $display;
         $layer->title = 

@@ -1,5 +1,5 @@
 <?php
-// $Id: googleanalytics.install,v 1.6.2.9 2009/03/08 11:38:26 hass Exp $
+// $Id: googleanalytics.install,v 1.6.2.13 2010/05/28 18:22:20 hass Exp $
 
 /**
  * @file
@@ -52,6 +52,27 @@ function googleanalytics_disable() {
   }
 }
 
+/**
+ * Implementation of hook_requirements().
+ */
+function googleanalytics_requirements($phase) {
+  $requirements = array();
+
+  if ($phase == 'runtime') {
+    // Raise warning if Google user account has not been set yet.
+    if (!preg_match('/^UA-\d{4,}-\d+$/', variable_get('googleanalytics_account', 'UA-'))) {
+      $requirements['googleanalytics'] = array(
+        'title' => t('Google Analytics module'),
+        'description' => t('Google Analytics module has not been configured yet. Please configure its settings from the <a href="@url">Google Analytics settings page</a>.', array('@url' => url('admin/config/system/googleanalytics'))),
+        'severity' => REQUIREMENT_ERROR,
+        'value' => t('Not configured'),
+      );
+    }
+  }
+
+  return $requirements;
+}
+
 
 function googleanalytics_update_1() {
   $ret = array();
@@ -68,11 +89,14 @@ function googleanalytics_update_1() {
   return $ret;
 }
 
+/**
+ * Upgrade old extension variable to new and use old name as enabled/disabled flag.
+ */
 function googleanalytics_update_6000() {
   $ret = array();
 
-  variable_set('googleanalytics_trackfiles_extensions', variable_get('googleanalytics_trackfiles', GA_TRACKFILES_EXTENSIONS));
-  $trackfiles = variable_get('googleanalytics_trackfiles', GA_TRACKFILES_EXTENSIONS) ? TRUE : FALSE;
+  variable_set('googleanalytics_trackfiles_extensions', variable_get('googleanalytics_trackfiles', '7z|aac|avi|csv|doc|exe|flv|gif|gz|jpe?g|js|mp(3|4|e?g)|mov|pdf|phps|png|ppt|rar|sit|tar|torrent|txt|wma|wmv|xls|xml|zip'));
+  $trackfiles = variable_get('googleanalytics_trackfiles', '7z|aac|avi|csv|doc|exe|flv|gif|gz|jpe?g|js|mp(3|4|e?g)|mov|pdf|phps|png|ppt|rar|sit|tar|torrent|txt|wma|wmv|xls|xml|zip') ? TRUE : FALSE;
   variable_set('googleanalytics_trackfiles', $trackfiles);
   $ret[] = array('success' => TRUE, 'query' => 'Updated download tracking settings.');
 
@@ -225,7 +249,7 @@ function googleanalytics_update_6006() {
 
 /**
  * Remove "User identifier" and "User name" from segmentation fields.
- * 
+ *
  * This is a data protection and privacy law change. For more information see Google Analytics
  * terms of use section 8.1 (http://www.google.com/analytics/en-GB/tos.html).
  */
@@ -254,6 +278,20 @@ function googleanalytics_update_6200() {
   variable_del('googleanalytics_legacy_version');
 
   $ret[] = array('success' => TRUE, 'query' => 'Removed legacy support.');
+
+  return $ret;
+}
+
+/**
+ * Update list of default file extensions.
+ */
+function googleanalytics_update_6201() {
+  $ret = array();
+
+  if (variable_get('googleanalytics_trackfiles_extensions', '') == '7z|aac|avi|csv|doc|exe|flv|gif|gz|jpe?g|js|mp(3|4|e?g)|mov|pdf|phps|png|ppt|rar|sit|tar|torrent|txt|wma|wmv|xls|xml|zip') {
+    variable_set('googleanalytics_trackfiles_extensions', '7z|aac|arc|arj|asf|asx|avi|bin|csv|doc|exe|flv|gif|gz|gzip|hqx|jar|jpe?g|js|mp(2|3|4|e?g)|mov(ie)?|msi|msp|pdf|phps|png|ppt|qtm?|ra(m|r)?|sea|sit|tar|tgz|torrent|txt|wav|wma|wmv|wpd|xls|xml|z|zip');
+  }
+  $ret[] = array('success' => TRUE, 'query' => 'The default extensions for download tracking have been updated.');
 
   return $ret;
 }

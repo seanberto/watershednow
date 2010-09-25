@@ -1,5 +1,5 @@
 <?php
-// $Id: googleanalytics.admin.inc,v 1.4.2.12 2009/03/08 11:38:26 hass Exp $
+// $Id: googleanalytics.admin.inc,v 1.4.2.16 2010/08/15 16:52:16 hass Exp $
 
 /**
  * @file
@@ -114,7 +114,7 @@ function googleanalytics_admin_settings_form(&$form_state) {
   // Compile a list of fields to show.
   $fields = variable_get('googleanalytics_segmentation_default_fields', array('roles' => t('User roles')));
   if ($profile_enabled) {
-    $result = db_query('SELECT name, title, type, weight FROM {profile_fields} ORDER BY weight');
+    $result = db_query('SELECT name, title FROM {profile_fields} ORDER BY weight');
     while ($record = db_fetch_object($result)) {
       $fields[$record->name] = $record->title;
     }
@@ -124,9 +124,9 @@ function googleanalytics_admin_settings_form(&$form_state) {
     '#type' => 'select',
     '#title' => t('Add segmentation information to tracking code'),
     '#description' => t('Segment users based on different properties, additionally to the basic IP address based tracking provided by Google Analytics.') . (!$profile_enabled ? ' '. t('<a href="@module_list">Enable the profile module</a> to be able to use profile fields for more granular tracking.', array('@module_list' => url('admin/build/modules'))) : '') .' '. t('Make sure you will not associate (or permit any third party to associate) any data gathered from Your Website(s) (or such third parties\' website(s)) with any personally identifying information from any source as part of Your use (or such third parties\' use) of the Google Analytics service. For more information see section 8.1 in the <a href="@ga_tos">Google Analytics terms of use</a>.', array('@ga_tos' => 'http://www.google.com/analytics/en-GB/tos.html')) .' '. t('Selecting one or more values is supported. To select multiple items, hold down CTRL (PC) or &#8984; (Mac) while selecting fields.'),
-    '#default_value' => variable_get('googleanalytics_segmentation', ''),
+    '#default_value' => variable_get('googleanalytics_segmentation', array()),
     '#options' => $fields,
-    '#size' => (count($fields)>10) ? 10 : count($fields),
+    '#size' => count($fields)>3 ? 10 : 3,
     '#multiple' => TRUE
   );
 
@@ -160,7 +160,7 @@ function googleanalytics_admin_settings_form(&$form_state) {
     '#title' => t('File extensions to track'),
     '#default_value' => variable_get('googleanalytics_trackfiles_extensions', GA_TRACKFILES_EXTENSIONS),
     '#description' => t('A pipe separated list of file extensions that should be tracked when clicked with regular expression support. Example: !extensions', array('!extensions' => GA_TRACKFILES_EXTENSIONS)),
-    '#maxlength' => 256,
+    '#maxlength' => 255,
   );
 
   // Advanced feature configurations.
@@ -252,6 +252,12 @@ function googleanalytics_admin_settings_form(&$form_state) {
 }
 
 function googleanalytics_admin_settings_form_validate($form, &$form_state) {
+  // Trim some text values.
+  $form_state['values']['googleanalytics_account'] = trim($form_state['values']['googleanalytics_account']);
+  $form_state['values']['googleanalytics_pages'] = trim($form_state['values']['googleanalytics_pages']);
+  $form_state['values']['googleanalytics_codesnippet_before'] = trim($form_state['values']['googleanalytics_codesnippet_before']);
+  $form_state['values']['googleanalytics_codesnippet_after'] = trim($form_state['values']['googleanalytics_codesnippet_after']);
+
   if (!preg_match('/^UA-\d{4,}-\d+$/', $form_state['values']['googleanalytics_account'])) {
     form_set_error('googleanalytics_account', t('A valid Google Analytics account number is case sensitive and formatted like UA-xxxxxx-x.'));
   }
@@ -269,9 +275,4 @@ function googleanalytics_admin_settings_form_validate($form, &$form_state) {
   if (preg_match('/(.*)<\/?script(.*)>(.*)/i', $form_state['values']['googleanalytics_codesnippet_after'])) {
     form_set_error('googleanalytics_codesnippet_after', t('Do not include the &lt;script&gt; tags in the javascript code snippets.'));
   }
-
-  // Trim some text area values.
-  $form_state['values']['googleanalytics_pages'] = trim($form_state['values']['googleanalytics_pages']);
-  $form_state['values']['googleanalytics_codesnippet_before'] = trim($form_state['values']['googleanalytics_codesnippet_before']);
-  $form_state['values']['googleanalytics_codesnippet_after'] = trim($form_state['values']['googleanalytics_codesnippet_after']);
 }

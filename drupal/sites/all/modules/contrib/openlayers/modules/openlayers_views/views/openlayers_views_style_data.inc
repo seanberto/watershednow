@@ -1,5 +1,5 @@
 <?php
-// $Id: openlayers_views_style_data.inc,v 1.1.2.20 2010/06/14 18:36:35 tmcw Exp $
+// $Id: openlayers_views_style_data.inc,v 1.1.2.27 2010/09/12 20:26:53 zzolo Exp $
 
 /**
  * @file
@@ -21,7 +21,7 @@ class openlayers_views_style_data extends views_plugin_style {
    */
   function option_definition() {
     $options = parent::option_definition();
-    $options['data_source'] = array('default' => array());
+    $options['data_source'] = 'openlayers_wkt';
     return $options;
   }
 
@@ -32,7 +32,6 @@ class openlayers_views_style_data extends views_plugin_style {
     parent::options_form($form, $form_state);
 
     $fields = array();
-    $data_source_options = array();
 
     // Get list of fields in this view & flag available geodata fields
     $handlers = $this->display->handler->get_handlers('field');
@@ -49,13 +48,17 @@ class openlayers_views_style_data extends views_plugin_style {
 
     // Go through fields
     foreach ($handlers as $field_id => $handler) {
-        $fields[$field_id] = $handler->definition['title'];
+        if ($handler->content_field['type'] == 'openlayers_wkt' &&
+          $handler->options['format'] !== 'openlayers_wkt'
+        ) {
+          form_set_error('', t('WKT Field %field not available 
+            because it is formatted as a map. Set its format to WKT Value to 
+            make it available.', array('%field' => $handler->definition['title'])));
+        }
+        else {
+          $fields[$field_id] = $handler->definition['title'];
+        }
     }
-
-    // Default data source
-    $data_source_options['other_latlon'] = t('Other: Lat/Lon Point');
-    $data_source_options['other_boundingbox'] = t('Other: Bounding Box');
-    $data_source_options['openlayers_wkt'] = t('OpenLayers WKT');
 
     // Data Source options
     $form['data_source'] = array(
@@ -67,10 +70,13 @@ class openlayers_views_style_data extends views_plugin_style {
     );
     $form['data_source']['value'] = array(
       '#type' => 'select',
-      '#multiple' => TRUE,
       '#title' => t('Map Data Sources'),
       '#description' => t('Choose which sources of data that the map will provide features for.'),
-      '#options' => $data_source_options,
+      '#options' => array(
+        'other_latlon' => t('Other: Lat/Lon Point'),
+        'other_boundingbox' => t('Other: Bounding Box'),
+        'openlayers_wkt' => t('OpenLayers WKT')
+      ),
       '#default_value' => $this->options['data_source']['value'],
     );
     // Other Lat and Lon data sources
@@ -207,6 +213,14 @@ class openlayers_views_style_data extends views_plugin_style {
       $fields[$field_id] = $handler->definition;
       $fields[$field_id]['field_alias'] = $handler->field_alias;
     }
+    
+    // Small fix to solve backwards compatability and bad commit
+    // and release.  This should be in an update function.
+    // See: http://drupal.org/node/895082
+    $ds = $data_source['value'];       
+    if (is_array($ds)) {
+      $ds = array_shift(array_keys($data_source['value']));
+    } 
 
     // Build feature. We create one feature per field per row.
 
@@ -217,41 +231,44 @@ class openlayers_views_style_data extends views_plugin_style {
       foreach ($records as $id => $record) {
         $feature = array();
         $feature['attributes']['name'] = $id;
-        if (isset($data_source['value']['other_latlon'])) {
-          $lat_field = $fields[$data_source['other_lat']]['field_alias'];
-          $lon_field = $fields[$data_source['other_lon']]['field_alias'];
-          $lon = current($record)->$lon_field;
-          $lat = current($record)->$lat_field;
-          if (!empty($lat) && !empty($lon)) {
-            $feature['wkt'] = 'POINT(' . $lon . ' ' . $lat . ')';
-            $feature['projection'] = '4326';
-          }
-        }
-        elseif (isset($data_source['value']['openlayers_wkt'])) {
-          $wkt_field = $fields[$data_source['openlayers_wkt']]['field_alias'];
-          $wkt = current($record)->$wkt_field;
-          if ($wkt) {
-            $feature['wkt'] = $wkt;
-            $feature['projection'] = '4326';
-          }
-        }
-        elseif (isset($data_source['value']['other_boundingbox'])) {
-          $top_field = $fields[$data_source['other_top']]['field_alias'];
-          $right_field = $fields[$data_source['other_right']]['field_alias'];
-          $left_field = $fields[$data_source['other_left']]['field_alias'];
-          $bottom_field = $fields[$data_source['other_bottom']]['field_alias'];
-          $top = current($record)->$top_field;
-          $right = current($record)->$right_field;
-          $left = current($record)->$left_field;
-          $bottom = current($record)->$bottom_field;
-          if (!empty($lat) && !empty($lon)) {
-            $feature['wkt'] = 'MULTIPOLYGON(' .
-              $left . ' ' . $top . ', ' .
-              $right . ' ' . $top . ', ' .
-              $right . ' ' . $bottom . ', ' .
-              $left . ' ' . $bottom . ')';
-            $feature['projection'] = '4326';
-          }
+
+        switch ($ds) {
+          case 'other_latlon':
+            $lat_field = $fields[$data_source['other_lat']]['field_alias'];
+            $lon_field = $fields[$data_source['other_lon']]['field_alias'];
+            $lon = current($record)->$lon_field;
+            $lat = current($record)->$lat_field;
+            if (isset($lat) && isset($lon)) {
+              $feature['wkt'] = 'POINT(' . $lon . ' ' . $lat . ')';
+              $feature['projection'] = '4326';
+            }
+            break;
+          case 'openlayers_wkt':
+            $wkt_field = $fields[$data_source['openlayers_wkt']]['field_alias'];
+            $wkt = current($record)->$wkt_field;
+            if ($wkt) {
+              $feature['wkt'] = $wkt;
+              $feature['projection'] = '4326';
+            }
+            break;
+          case 'other_boundingbox':
+            $top_field = $fields[$data_source['other_top']]['field_alias'];
+            $right_field = $fields[$data_source['other_right']]['field_alias'];
+            $left_field = $fields[$data_source['other_left']]['field_alias'];
+            $bottom_field = $fields[$data_source['other_bottom']]['field_alias'];
+            $top = current($record)->$top_field;
+            $right = current($record)->$right_field;
+            $left = current($record)->$left_field;
+            $bottom = current($record)->$bottom_field;
+            if (isset($lat) && isset($lon)) {
+              $feature['wkt'] = 'MULTIPOLYGON(' .
+                $left . ' ' . $top . ', ' .
+                $right . ' ' . $top . ', ' .
+                $right . ' ' . $bottom . ', ' .
+                $left . ' ' . $bottom . ')';
+              $feature['projection'] = '4326';
+            }
+            break;
         }
 
         $descriptions = array();
@@ -289,7 +306,7 @@ class openlayers_views_style_data extends views_plugin_style {
 
         // Only add features with WKT data
         if (!empty($feature['wkt'])) {
-          $features[] = $feature;
+          $features[] = theme('openlayers_views_render_feature', $feature, $record);
         }
         $this->view->row_index++;
       }
@@ -314,51 +331,50 @@ class openlayers_views_style_data extends views_plugin_style {
           }
         }
 
-        if (!empty($data_source['value']['other_latlon'])) {
-          $lat_field = $fields[$data_source['other_lat']]['field_alias'];
-          $lon_field = $fields[$data_source['other_lon']]['field_alias'];
-          $lon = $record->$lon_field;
-          $lat = $record->$lat_field;
-          if (!empty($lat) && !empty($lon)) {
-            $feature['wkt'] = 'POINT(' . $lon . ' ' . $lat . ')';
-            $feature['projection'] = '4326';
-          }
+        switch ($ds) {
+          case 'other_latlon':
+            $lat_field = $fields[$data_source['other_lat']]['field_alias'];
+            $lon_field = $fields[$data_source['other_lon']]['field_alias'];
+            $lon = $record->$lon_field;
+            $lat = $record->$lat_field;
+            if (isset($lat) && isset($lon)) {
+              $feature['wkt'] = 'POINT(' . $lon . ' ' . $lat . ')';
+              $feature['projection'] = '4326';
+            }
 
-          $excluded_fields[] = $lat_field;
-          $excluded_fields[] = $lon_field;
-        }
-        elseif ($data_source['value']['openlayers_wkt']) {
-          $wkt_field = $fields[$data_source['openlayers_wkt']]['field_alias'];
-          $wkt = $record->$wkt_field;
-          if ($wkt) {
-            $feature['wkt'] = $wkt;
-            $feature['projection'] = '4326';
-          }
+            $excluded_fields[] = $lat_field;
+            $excluded_fields[] = $lon_field;
+            break;
+          case 'openlayers_wkt':
+            $wkt_field = $fields[$data_source['openlayers_wkt']]['field_alias'];
+            $wkt = $record->$wkt_field;
+            if ($wkt) {
+              $feature['wkt'] = $wkt;
+              $feature['projection'] = '4326';
+            }
 
-          $excluded_fields[] = $wkt_field;
-        }
-        elseif ($data_source['value']['other_boundingbox']) {
-          $top_field = $fields[$data_source['other_top']]['field_alias'];
-          $right_field = $fields[$data_source['other_right']]['field_alias'];
-          $left_field = $fields[$data_source['other_left']]['field_alias'];
-          $bottom_field = $fields[$data_source['other_bottom']]['field_alias'];
-          $top = $record->$top_field;
-          $right = $record->$right_field;
-          $left = $record->$left_field;
-          $bottom = $record->$bottom_field;
-          if (!empty($top) && !empty($left)) {
-            $feature['wkt'] = 'MULTIPOLYGON(' .
-              $left . ' ' . $top . ', ' .
-              $right . ' ' . $top . ', ' .
-              $right . ' ' . $bottom . ', ' .
-              $left . ' ' . $bottom . ')';
-            $feature['projection'] = '4326';
-          }
+            $excluded_fields[] = $wkt_field;
+            break;
+          case 'other_boundingbox':
+            $top_field = $fields[$data_source['other_top']]['field_alias'];
+            $right_field = $fields[$data_source['other_right']]['field_alias'];
+            $left_field = $fields[$data_source['other_left']]['field_alias'];
+            $bottom_field = $fields[$data_source['other_bottom']]['field_alias'];
+            $top = $record->$top_field;
+            $right = $record->$right_field;
+            $left = $record->$left_field;
+            $bottom = $record->$bottom_field;
+            if (isset($top) && isset($left)) {
+              $feature['wkt'] = 'MULTIPOLYGON(' .
+                $left . ' ' . $top . ', ' .
+                $right . ' ' . $top . ', ' .
+                $right . ' ' . $bottom . ', ' .
+                $left . ' ' . $bottom . ')';
+              $feature['projection'] = '4326';
+            }
 
-          $excluded_fields[] = $top_field;
-          $excluded_fields[] = $right_field;
-          $excluded_fields[] = $left_field;
-          $excluded_fields[] = $bottom_field;
+            array_push($excluded_fields, $top_field, $right_field,
+              $left_field, $bottom_field);
         }
 
         // Add the name and description attributes
@@ -397,7 +413,7 @@ class openlayers_views_style_data extends views_plugin_style {
 
         // Only add features with WKT data
         if (!empty($feature['wkt'])) {
-          $features[] = $feature;
+          $features[] = theme('openlayers_views_render_feature', $feature, $record);
         }
       }
       return $features;

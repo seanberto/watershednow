@@ -1,5 +1,5 @@
 <?php
-// $Id: openlayers_ui.presets.inc,v 1.1.2.23 2010/06/07 20:41:40 tmcw Exp $
+// $Id: openlayers_ui.presets.inc,v 1.1.2.29 2010/09/05 14:35:10 zzolo Exp $
 
 /**
  * @file
@@ -24,6 +24,7 @@ function openlayers_ui_presets_clone($preset) {
  */
 function openlayers_ui_presets_form(&$form_state, $preset = NULL, $edit = FALSE) {
   openlayers_include();
+  ctools_include('dependent');
   drupal_add_js(drupal_get_path('module', 'openlayers_ui') . '/js/openlayers_ui.presets.js', 'module');
   drupal_add_css(drupal_get_path('module', 'openlayers_ui') . '/openlayers_ui.css');
 
@@ -131,6 +132,14 @@ function openlayers_ui_presets_form(&$form_state, $preset = NULL, $edit = FALSE)
       $defaults['proxy_host'] : '',
   );
 
+  $form['info']['hide_empty_map'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Hide empty map'),
+    '#description' => t("Show views empty text or hide the map if there are 
+    no map overlays with features. Otherwise an empty map is displayed."),
+    '#default_value' => isset($defaults['hide_empty_map']) ? $defaults['hide_empty_map'] : FALSE,  
+  );
+  
   // Center
   $form['center'] = array(
     '#title' => t('Center & Bounds'),
@@ -161,9 +170,6 @@ function openlayers_ui_presets_form(&$form_state, $preset = NULL, $edit = FALSE)
     '#attributes' => array('class' => 'openlayers-form-zoom'),
     '#size' => 25,
   );
-
-  ctools_include('dependent');
-
   $form['center']['restrict'] = array(
     '#type' => 'fieldset',
     '#title' => t('Restrict Extent')
@@ -195,6 +201,7 @@ function openlayers_ui_presets_form(&$form_state, $preset = NULL, $edit = FALSE)
   $form['behaviors'] = array(
     '#title' => t('Behaviors'),
     '#description' => t('Configure interactive map behaviors.'),
+    '#theme' => 'openlayers_ui_presets_form_behaviors',
     '#tree' => TRUE,
   );
   $form['behaviors'] = $form['behaviors'] + openlayers_ui_get_behavior_options('map', $defaults);
@@ -352,13 +359,11 @@ function openlayers_ui_presets_form(&$form_state, $preset = NULL, $edit = FALSE)
   // End AHAH Wrapper
   $form['layerstyles']['ahah-end'] = array('#value' => '</div>');
 
-  // Save button
   $form['buttons'] = array('#tree' => FALSE);
   $form['buttons']['openlayers_save'] = array(
     '#type' => 'submit',
     '#value' => t('Save')
   );
-  // Cancel button
   $form['buttons']['openlayers_cancel'] = array(
     '#type' => 'submit',
     '#value' => t('Cancel')
@@ -535,6 +540,7 @@ function openlayers_ui_presets_form_process($values = array()) {
     'image_path',
     'css_path',
     'proxy_host',
+    'hide_empty_map',
     'center',
     'behaviors',
     'layers',
@@ -542,13 +548,11 @@ function openlayers_ui_presets_form_process($values = array()) {
     'layer_activated',
     'layer_switcher',
     'projections',
-    'styles',
-    'options',
+    'styles'
   );
 
   // TODO: eliminate this process, too much disconnect between
   // forms and data
-  // TODO: fix 'options' key warning in admin after saving
   $processed = array();
   foreach ($keys as $key) {
     switch ($key) {
@@ -556,9 +560,8 @@ function openlayers_ui_presets_form_process($values = array()) {
         $processed['behaviors'] = array();
         foreach ($values['behaviors'] as $behavior => $settings) {
           if ($settings['enabled']) {
-            $processed['behaviors'][$behavior] = isset($settings['options']) ?
-              $settings['options'] :
-              array();
+            $processed['behaviors'][$behavior] = isset($settings['options_set']['options']) ?
+              $settings['options_set']['options'] : array();
           }
         }
         break;
@@ -613,26 +616,43 @@ function openlayers_ui_get_behavior_options($type, $defaults) {
       $behavior = new $class($options, $defaults);
 
       if (!isset($plugin['ui_visibility']) || $plugin['ui_visibility']) {
-
+        // Create basic form structure for behavior
         $form[$key] = array(
-          '#tree' => TRUE,
-          '#type' => 'fieldset',
-          '#title' => $plugin['title'],
-          '#description' => $plugin['description'],
           'enabled' => array(
             '#type' => 'checkbox',
-            '#title' => t('Enabled'),
+            '#title' => $plugin['title'],
+            '#description' => $plugin['description'],
             '#default_value' => isset($defaults['behaviors'][$key]),
+            '#id' => $key . '-enabled',
           ),
           'dependencies' => openlayers_dependency_widget(
-            $behavior->js_dependency())
+            $behavior->js_dependency()),
+          'options' => array(),
         );
 
-        $form[$key]['options'] = $behavior->options_form($options);
+        // Create options items
+        $options = $behavior->options_form($options);
+        if (!empty($options)) {
+          // HACK.  In order to use ctools form dependencies, we have to use a hidden
+          // field as it supports processing and IDs.
+          $form[$key]['options_set'][$key . '-prefix'] = array(
+            '#type' => 'hidden',
+            '#id' => $key . '-options',
+            '#prefix' => '<div><fieldset id="' . $key . '-options' .
+              '" class="collapsible">',
+            '#process' => array('ctools_dependent_process'),
+            '#dependency' => array($key . '-enabled' => array(1)),
+            '#weight' => -1000,
+          );
+          $form[$key]['options_set']['options'] = $options;
+          $form[$key]['options_set'][$key . '-suffix'] = array(
+            '#value' => '</fieldset></div>',
+            '#weight' => 1000,
+          );
+        }
       }
     }
   }
-
   return $form;
 }
 

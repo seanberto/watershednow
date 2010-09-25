@@ -1,0 +1,86 @@
+<?php
+// $Id: feeds_fast_news.test,v 1.3 2010/09/15 19:27:42 alexb Exp $
+
+/**
+ * @file
+ * Tests for feeds_fast_news feature.
+ */
+
+// Require FeedsWebTestCase class definition.
+require_once(dirname(__FILE__) .'/../tests/feeds.test.inc');
+
+/**
+ * Test Feed fast configuration.
+ */
+class FeedsExamplesFastFeedTestCase extends FeedsWebTestCase {
+
+  /**
+   * Set up test.
+   */
+  public function setUp() {
+    parent::setUp('feeds', 'feeds_ui', 'ctools', 'job_scheduler', 'features', 'feeds_fast_news', 'data', 'data_ui', 'views', 'views_ui');
+
+    $this->drupalLogin(
+      $this->drupalCreateUser(
+        array(
+          'administer feeds', 'administer nodes', 'administer data tables',
+        )
+      )
+    );
+  }
+
+  /**
+   * Describe this test.
+   */
+  public function getInfo() {
+    return array(
+      'name' => t('Feature: Fast feed'),
+      'description' => t('Test "Fast feed" default configuration <strong>Requires Data, Features and Views.</strong>'),
+      'group' => t('Feeds'),
+    );
+  }
+
+  /**
+   * Run tests.
+   */
+  public function test() {
+
+    // Enable configuration and assert status.
+    $this->drupalGet('admin/build/data');
+    $this->assertText('feeds_data_feed_fast');
+    $this->drupalGet('admin/content/data/view/feeds_data_feed_fast');
+    $this->assertText('Fast feed');
+    $this->assertText('There is no data in this table.');
+
+    // Create feed node.
+    $nid = $this->createFeedNode('feed_fast', NULL, '', 'feed_fast');
+    $this->assertText('Created 10 items.');
+
+    // Verify presence of aggregated items.
+    $this->drupalGet('admin/content/data/view/feeds_data_feed_fast');
+    $this->assertText('Open Atrium Translation Workflow: Two Way Translation Updates');
+    $this->assertText('n a word, nothing. There has been a major improvement on this front. Now your translation');
+    $this->assertLink('http://developmentseed.org/blog/2009/oct/06/open-atrium-translation-workflow-two-way-updating');
+
+    // Delete and re import.
+    $this->drupalPost('node/'. $nid .'/delete-items', array(), 'Delete');
+    $this->assertText('All items have been deleted.');
+    $count = db_result(db_query("SELECT COUNT(*) FROM {feeds_data_feed_fast}"));
+    $this->assertEqual($count, 0, 'Found correct number of items.');
+
+    $this->drupalPost('node/'. $nid .'/delete-items', array(), 'Delete');
+    $this->assertText('There were no items to delete.');
+    $count = db_result(db_query("SELECT COUNT(*) FROM {feeds_data_feed_fast}"));
+    $this->assertEqual($count, 0, 'Found correct number of items.');
+
+    $this->drupalPost('node/'. $nid .'/import', array(), 'Import');
+    $this->assertText('Created 10 items.');
+    $count = db_result(db_query("SELECT COUNT(*) FROM {feeds_data_feed_fast}"));
+    $this->assertEqual($count, 10, 'Found correct number of items.');
+
+    $this->drupalPost('node/'. $nid .'/import', array(), 'Import');
+    $this->assertText('There are no new items.');
+    $count = db_result(db_query("SELECT COUNT(*) FROM {feeds_data_feed_fast}"));
+    $this->assertEqual($count, 10, 'Found correct number of items.');
+  }
+}

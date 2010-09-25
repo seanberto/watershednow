@@ -1,20 +1,27 @@
-// $Id: openlayers_behavior_cluster.js,v 1.1.2.1 2010/06/07 20:21:25 zzolo Exp $
+// $Id: openlayers_behavior_cluster.js,v 1.1.2.3 2010/07/21 09:38:30 strk Exp $
 
 /**
  * @file
  * OpenLayers Behavior implementation for clustering.
+ */
 
 /**
  * OpenLayers Cluster Behavior
  */
 Drupal.behaviors.openlayers_cluster = function(context) {
   var data = $(context).data('openlayers');
-  if (data && data.map.behaviors['openlayers_behavior_cluster']) {
-    var options = data.map.behaviors['openlayers_behavior_cluster'];
+  if (data && data.map.behaviors.openlayers_behavior_cluster) {
+    var options = data.map.behaviors.openlayers_behavior_cluster;
     var map = data.openlayers;
-    var distance = parseInt(options.distance);
-    var threshold = parseInt(options.threshold);
-    var layers = map.getLayersBy('drupalID', options.clusterlayer);
+    var distance = parseInt(options.distance, 10);
+    var threshold = parseInt(options.threshold, 10);
+    var layers = [];
+    for (var i in options.clusterlayer) {
+      var selectedLayer = map.getLayersBy('drupalID', options.clusterlayer[i]);
+      if (typeof selectedLayer[0] != 'undefined') {
+        layers.push(selectedLayer[0]);
+      }
+    }
     
     // Go through chosen layers
     for (var i in layers) {
@@ -30,4 +37,30 @@ Drupal.behaviors.openlayers_cluster = function(context) {
       }
     }
   }
-}
+};
+
+/*
+ * Override of callback used by 'popup' behaviour to support clusters
+ */
+Drupal.theme.openlayersPopup = function(feature) {
+  if(feature.cluster)
+  {
+    var output = '';
+    var visited = []; // to keep track of already-visited items
+    for(var i = 0; i < feature.cluster.length; i++) {
+      var pf = feature.cluster[i]; // pseudo-feature
+      if ( typeof pf.drupalFID != 'undefined' ) {
+        var mapwide_id = feature.layer.drupalID + pf.drupalFID;
+        if (mapwide_id in visited) continue;
+        visited[mapwide_id] = true;
+      }
+      output += '<div class="openlayers-popup openlayers-popup-feature">' +
+        Drupal.theme.prototype.openlayersPopup(pf) + '</div>';
+    }
+    return output;
+  }
+  else
+  {
+    return Drupal.theme.prototype.openlayersPopup(feature);
+  }
+};

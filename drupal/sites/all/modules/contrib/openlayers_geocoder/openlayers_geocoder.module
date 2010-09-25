@@ -1,5 +1,5 @@
 <?php
-// $Id: openlayers_geocoder.module,v 1.7.2.12 2010/08/13 10:52:11 antoniodemarco Exp $
+// $Id: openlayers_geocoder.module,v 1.7.2.14 2010/09/23 14:55:42 antoniodemarco Exp $
 
 /**
  * @file
@@ -27,13 +27,13 @@ function openlayers_geocoder_init() {
  */
 function openlayers_geocoder_menu() {
   $items = array();
-  $items['openlayers/geocoder'] = array(
-    'page callback' => 'openlayers_geocoder_autocomplete',
+  $items['openlayers/geocoder/response'] = array(
+    'page callback' => 'openlayers_geocoder_get_response',
     'access arguments' => array('access content'),
     'type' => MENU_CALLBACK,
   );
-  $items['openlayers/geocoder/coordinates'] = array(
-    'page callback' => 'openlayers_geocoder_coordinates',
+  $items['openlayers/geocoder/response/process'] = array(
+    'page callback' => 'openlayers_geocoder_process_response',
     'access arguments' => array('access content'),
     'type' => MENU_CALLBACK,
   );
@@ -192,7 +192,7 @@ function openlayers_geocoder_widget(&$form, &$form_state, $field, $items, $delta
   $element['openlayers_geocoder_query'] = array(
     '#title' => t('Search address'),
     '#type' => 'textfield',
-    '#autocomplete_path' => 'openlayers/geocoder',
+    '#autocomplete_path' => 'openlayers/geocoder/response',
     '#weight' => isset($field['widget']['position']) ? $field['widget']['position'] : OPENLAYERS_GEOCODER_POSITION_BELOW,
     '#attributes' => array(
       'geoautocomplete' => TRUE,
@@ -200,6 +200,7 @@ function openlayers_geocoder_widget(&$form, &$form_state, $field, $items, $delta
       'dashed' => str_replace('_', '-', $field['field_name']),
     ),
   );
+
 
   $element['#type'] = 'openlayers_wkt_widget';
   $element['#default_value'] = $items;
@@ -224,14 +225,9 @@ function openlayers_geocoder_theme($existing, $type, $theme, $path) {
 }
 
 /**
- * Location list from Google geocoding web service
- *
- * @param $query
- *    Address or location name
- * @return
- *    List of locations
+ * Get response from from Google geocoding web service
  */
-function openlayers_geocoder_autocomplete($query = '') {
+function openlayers_geocoder_get_response($query = '') {
 
   $locations = array();
   if ($response = openlayers_geocoder_response($query)) {
@@ -243,12 +239,10 @@ function openlayers_geocoder_autocomplete($query = '') {
 }
 
 /**
- * Return coordinates of a location.
- *
- * @return
- *    Lat/Lan coordinates
+ * Process a successful response returning location
+ * coordinates and replacement tokens for filed completion
  */
-function openlayers_geocoder_coordinates() {
+function openlayers_geocoder_process_response() {
 
   $location['latitude'] = 0;
   $location['longitude'] = 0;
@@ -258,6 +252,7 @@ function openlayers_geocoder_coordinates() {
 
   $query = $_POST['query'];
   $fieldname = $_POST['fieldname'];
+  $contenttype = $_POST['content_type'];
 
   if ($response = openlayers_geocoder_response($query)) {
 
@@ -269,7 +264,7 @@ function openlayers_geocoder_coordinates() {
     $location['box']['south'] = $result['bounds']['southwest']->lat;
     $location['box']['west'] = $result['bounds']['southwest']->lng;
 
-    $field = content_fields($fieldname);
+    $field = content_fields($fieldname, $contenttype);
     if ($field && $field['widget']['type'] == 'openlayers_geocoder_widget') {
       if (isset($field['widget']['keep_points'])) {
         $location['keep_points'] = $field['widget']['keep_points'];
@@ -292,7 +287,8 @@ function openlayers_geocoder_coordinates() {
 }
 
 /**
- * Query Google geocoding web service
+ * Query Google geocoding web service.
+ * 
  * @param $address
  *    Address or location name
  * @return

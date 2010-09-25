@@ -1,5 +1,5 @@
 <?php
-// $Id: openlayers_geocoder.token.inc,v 1.2.2.4 2010/05/11 05:55:27 antoniodemarco Exp $
+// $Id: openlayers_geocoder.token.inc,v 1.2.2.5 2010/09/23 13:06:55 antoniodemarco Exp $
 
 /**
  * @file
@@ -36,6 +36,7 @@ function openlayers_geocoder_token_list($type = 'all') {
 
   if ($type == 'geocoder') {
 
+    $tokens['geocoder']['formatted_address'] = t('Full formatted address.');
     $tokens['geocoder']['street_address'] = t('Indicates a precise street address.');
     $tokens['geocoder']['route'] = t('Indicates a named route (such as "US 101").');
     $tokens['geocoder']['intersection'] = t('Indicates a major intersection, usually of two major roads.');
@@ -104,7 +105,8 @@ function openlayers_geocoder_token_values($type, $object = NULL, $options = arra
 
     $tokens['latitude'] = $object['location']['lat'];
     $tokens['longitude'] = $object['location']['lng'];
-
+    $tokens['formatted_address'] = $object['address'];
+    
     // Keep v2 tokens for backward compatibility
     $tokens['address'] = $object['components']['street_address'] ? $tokens['street_address'] : '';
     $tokens['thoroughfare'] = $object['components']['route'] ? ($tokens['route'] .' '. $tokens['street_number']) : '';

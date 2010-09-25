@@ -1,4 +1,4 @@
-// $Id: openlayers_behavior_layerswitcher.js,v 1.1.2.3 2009/09/28 01:11:41 zzolo Exp $
+// $Id: openlayers_behavior_layerswitcher.js,v 1.1.2.5 2010/08/31 08:26:28 strk Exp $
 
 /**
  * @file
@@ -12,7 +12,9 @@ Drupal.behaviors.openlayers_behavior_layerswitcher = function(context) {
   var data = $(context).data('openlayers');
   if (data && data.map.behaviors['openlayers_behavior_layerswitcher']) {
     // Add control
-    var control = new OpenLayers.Control.LayerSwitcher();
+    var control = new OpenLayers.Control.LayerSwitcher({
+      'ascending': !!data.map.behaviors['openlayers_behavior_layerswitcher'].ascending
+    });
     data.openlayers.addControl(control);
     control.activate();
   }

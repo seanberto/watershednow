@@ -1,0 +1,56 @@
+<?php
+
+include_once('wn_blog.features.inc');
+
+/**
+ * (Snippet taken from Managing News.)
+ *
+ * Implementation of hook_form_alter().
+ *
+ * The hook_form_[form_id]_alter() syntax is not used here as it will
+ * get called prior to Feeds.
+ */
+function wn_blog_form_alter(&$form, $form_state, $form_id) {
+  if ($form_id == 'update_feed_node_form') {
+    // Unset the URL field title.
+    unset($form['feeds']['FeedsHTTPFetcher']['source']['#title']);
+    // Make the description more specific.
+    $form['feeds']['FeedsHTTPFetcher']['source']['#description'] = t('Enter a URL to a valid RSS or Atom feed.');
+    // Instead, give its fieldset a nice title.
+    $form['feeds']['#title'] = t('Feed URL');
+    $form['feeds']['#title'] .= "\n<span class='form-required'>*</span>";
+    // Move it all the way up top.
+    $form['feeds']['#weight'] = -10;
+
+    // Hide the node's title field in a fieldset. This will expand if the title
+    // can't be populated from feed.
+    $title = $form['title'];
+    unset($title['#title']);
+    $form['title'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Optional feed title'),
+      '#collapsible' => TRUE,
+      '#collapsed' => TRUE,
+    );
+    $form['title']['title'] = $title;
+  }
+}
+
+/**
+ * Rewrite the search query to exclude selected node types.
+ *
+ * @see http://www.lullabot.com/articles/hiding-content-drupals-search-system
+ * @see http://drupal.org/node/111744 if you want to help get something
+ * sensible into core.
+ */
+function wn_blog_db_rewrite_sql($query, $primary_table, $primary_field, $args) {
+  if ($query == '' && $primary_table == 'n' && $primary_field = 'nid' && empty($args)) {
+    $excluded_types = array(
+      'update_feed',
+    );
+    if (!empty($excluded_types)) {
+      $where = " n.type NOT IN ('". join("','", $excluded_types) ."') ";
+      return array('where' => $where);
+    }
+  }
+}

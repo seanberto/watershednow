@@ -5,9 +5,9 @@ description = OpenLayers test module.  There is no reason to install this.
 core = 6.x
 package = OpenLayers
 
-; Information added by drupal.org packaging script on 2010-06-27
-version = "6.x-2.0-alpha8"
+; Information added by drupal.org packaging script on 2010-09-12
+version = "6.x-2.0-alpha10"
 core = "6.x"
 project = "openlayers"
-datestamp = "1277642108"
+datestamp = "1284323807"
 

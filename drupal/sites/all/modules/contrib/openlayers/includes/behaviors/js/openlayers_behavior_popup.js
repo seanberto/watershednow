@@ -1,22 +1,35 @@
-// $Id: openlayers_behavior_popup.js,v 1.1.2.2 2010/02/16 03:44:07 tmcw Exp $
+// $Id: openlayers_behavior_popup.js,v 1.1.2.4 2010/06/28 17:30:19 tmcw Exp $
 
 /**
- * Helper function for generating content inside popups
+ * Global variables to help with scope
  *
- * This function can be overridden by 
- * other implementors just by redefining it.
+ * TODO: Move this to a better place, like the map data().
+ */
+Drupal.openlayers = Drupal.openlayers || {};
+Drupal.openlayers.popup = Drupal.openlayers.popup || {};
+Drupal.openlayers.popup.popupSelect = Drupal.openlayers.popup.popupSelect || {};
+Drupal.openlayers.popup.selectedFeature = Drupal.openlayers.popup.selectedFeature || {};
+
+/**
+ * Javascript Drupal Theming function for inside of Popups
+ *
+ * To override
  *
  * @param feature
  *  OpenLayers feature object
  * @return
  *  Formatted HTML
  */
-function openlayers_behavior_popup_popup_content(feature) {
-  return "<div class='openlayers-popup'>" + feature.attributes.name +"</div>" +
-         "<div class='openlayers-popup'>" + feature.attributes.description +"</div>";
+Drupal.theme.prototype.openlayersPopup = function(feature) {
+  var output =
+    '<div class="openlayers-popup openlayers-popup-name">' +
+      feature.attributes.name +
+    '</div>' +
+    '<div class="openlayers-popup openlayers-popup-description">' +
+      feature.attributes.description +
+    '</div>';
+  return output;
 }
-
-var openlayers_behavior_popup_popup_select, openlayers_behavior_popup_selected_feature;
 
 /**
  * OpenLayers Popup Behavior
@@ -24,40 +37,58 @@ var openlayers_behavior_popup_popup_select, openlayers_behavior_popup_selected_f
 Drupal.behaviors.openlayers_behavior_popup = function(context) {
   var layers, data = $(context).data('openlayers');
   if (data && data.map.behaviors['openlayers_behavior_popup']) {
-      map = data.openlayers;
+    var map = data.openlayers;
+    var options = data.map.behaviors['openlayers_behavior_popup'];
+    var layers = [];
 
-      // TODO: just select layers you want, instead of all vector layers
+    // For backwards compatiability, if layers is not
+    // defined, then include all vector layers
+    if (typeof options.layers == 'undefined' || options.layers.length == 0) {
       layers = map.getLayersByClass('OpenLayers.Layer.Vector');
-
-      popup_select = new OpenLayers.Control.SelectFeature(layers, 
-          {
-            onSelect: function(feature) {
-              popup = new OpenLayers.Popup.FramedCloud(
-                'popup', 
-                feature.geometry.getBounds().getCenterLonLat(),
-                null,
-                openlayers_behavior_popup_popup_content(feature),
-                null, 
-                true,
-                function(evt) {
-                  openlayers_behavior_popup_popup_select.unselect(
-                    openlayers_behavior_popup_selected_feature
-                  );
-                }
-              );
-              feature.popup = popup;
-              feature.layer.map.addPopup(popup);
-              openlayers_behavior_popup_selected_feature = feature;
-          },
-          onUnselect: function(feature) {
-            feature.layer.map.removePopup(feature.popup);
-            feature.popup.destroy();
-            feature.popup = null;
-          }
+    }
+    else {
+      for (var i in options.layers) {
+        var selectedLayer = map.getLayersBy('drupalID', options.layers[i]);
+        if (typeof selectedLayer[0] != 'undefined') {
+          layers.push(selectedLayer[0]);
         }
-      );
-    map.addControl(popup_select);
-    popup_select.activate();
-    openlayers_behavior_popup_popup_select = popup_select;
+      }
+    }
+
+    popupSelect = new OpenLayers.Control.SelectFeature(layers,
+      {
+        onSelect: function (feature) {
+          // Create FramedCloud popup.
+          popup = new OpenLayers.Popup.FramedCloud(
+            'popup',
+            feature.geometry.getBounds().getCenterLonLat(),
+            null,
+            Drupal.theme('openlayersPopup', feature),
+            null,
+            true,
+            function (evt) {
+              Drupal.openlayers.popup.popupSelect.unselect(
+                Drupal.openlayers.popup.selectedFeature
+              );
+            }
+          );
+          
+          // Assign popup to feature and map.
+          feature.popup = popup;
+          feature.layer.map.addPopup(popup);
+          Drupal.openlayers.popup.selectedFeature = feature;
+        },
+        onUnselect: function (feature) {
+          // Remove popup if feature is unselected.
+          feature.layer.map.removePopup(feature.popup);
+          feature.popup.destroy();
+          feature.popup = null;
+        }
+      }
+    );
+
+    map.addControl(popupSelect);
+    popupSelect.activate();
+    Drupal.openlayers.popup.popupSelect = popupSelect;
   }
 }

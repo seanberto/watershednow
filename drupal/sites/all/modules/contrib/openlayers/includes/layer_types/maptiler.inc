@@ -1,5 +1,5 @@
 <?php
-// $Id: maptiler.inc,v 1.1.2.2 2010/05/30 21:46:15 zzolo Exp $
+// $Id: maptiler.inc,v 1.1.2.3 2010/08/02 20:42:27 tmcw Exp $
 
 /**
  * @file
@@ -15,6 +15,7 @@ class openlayers_layer_type_maptiler extends openlayers_layer_type {
     parent::__construct($layer, $map);
     if (isset($this->data)) {
       $this->data += $this->options_init();
+      $this->data['baselayer'] = $this->data['isBaseLayer'];
     }
     else {
       $this->data = $this->options_init();

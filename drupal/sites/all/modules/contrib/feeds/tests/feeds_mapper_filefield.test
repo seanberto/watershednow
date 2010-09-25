@@ -1,0 +1,106 @@
+<?php
+// $Id: feeds_mapper_filefield.test,v 1.9 2010/09/15 19:27:42 alexb Exp $
+
+/**
+ * @file
+ * Test case for Filefield mapper mappers/filefield.inc.
+ */
+
+require_once(drupal_get_path('module', 'feeds') . '/tests/feeds_mapper_test.inc');
+
+/**
+ * Class for testing Feeds FileField mapper.
+ *
+ * @todo Add a test for enclosures returned as array
+ * @todo Add a test for enclosures returned as string
+ * @todo Add a test for enclosures using local file
+ */
+class FeedsMapperFileFieldTestCase extends FeedsMapperTestCase {
+
+  public static function getInfo() {
+    return array(
+      'name' => t('Mapper: FileField'),
+      'description' => t('Test Feeds Mapper support for FileField CCK fields. <strong>Requires CCK and filefield module; requires SimplePie library</strong>.'),
+      'group' => t('Feeds'),
+    );
+  }
+
+  /**
+   * Set up the
+   */
+  public function setUp() {
+    // Call parent setup with the required module
+    parent::setUp('feeds', 'feeds_ui', 'ctools', 'job_scheduler', 'content', 'filefield', 'libraries');
+
+    // Create user and login
+    $this->drupalLogin($this->drupalCreateUser(
+        array(
+          'administer content types',
+          'administer feeds',
+          'administer nodes',
+          'administer site configuration',
+        )
+    ));
+  }
+
+  /**
+   * Basic test loading a single entry CSV file.
+   */
+  public function test() {
+    $static_title = $this->randomName();
+    //Create content type
+    $typename = $this->createContentType(NULL, array(
+      'files' => array(
+        'type' => 'filefield',
+        'settings' => array(
+          'multiple' =>  '1',
+          'file_extensions' => 'jpg'
+        ),
+      ),
+    ));
+
+    // Create importer configuration.
+    $this->createImporterConfiguration(); //Create a default importer configuration
+    $this->setPlugin('syndication', 'FeedsSimplePieParser');
+    $this->setSettings('syndication', 'FeedsNodeProcessor', array('content_type' => $typename)); //Processor settings
+    $this->addMappings('syndication', array(
+      array(
+        'source' => 'title',
+        'target' => 'title'
+      ),
+      array(
+        'source' => 'timestamp',
+        'target' => 'created'
+      ),
+      array(
+        'source' => 'description',
+        'target' => 'body'
+      ),
+      array(
+        'source' => 'enclosures',
+        'target' => 'field_files'
+      ),
+    ));
+
+    $nid = $this->createFeedNode('syndication', $GLOBALS['base_url'] .'/'. drupal_get_path('module', 'feeds') .'/tests/feeds/flickr.xml');
+    $this->assertText('Created 4 '. $typename .' nodes.');
+
+    $filename = array('3596408735_ce2f0c4824_b', '2640019371_495c3f51a2_b', '3686290986_334c427e8c_b', '2640845934_85c11e5a18_b');
+    for($i = 0; $i < 4; $i++) {
+      $this->drupalGet('node/'. ($i+2) .'/edit');
+      $this->assertText($filename[$i]);
+    }
+  }
+
+  /**
+   * Handle file field widgets.
+   */
+  public function selectFieldWidget($fied_name, $field_type) {
+    if ($field_type == 'filefield') {
+      return 'filefield_widget';
+    }
+    else {
+      return parent::selectFieldWidget($fied_name, $field_type);
+    }
+  }
+}

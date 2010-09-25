@@ -1,0 +1,19 @@
+$Id: CHANGELOG.txt,v 1.1.2.1 2010/09/23 14:23:22 antoniodemarco Exp $
+
+OpenLayers Geocoder 6.x-2.x-dev
+-------------------------------
+
+## 2010-09-23
+
+ - End-point openlayers/geocoder changed into openlayers/geocoder/response.
+ - Menu callback openlayers_geocoder_autocomplete() renamed into
+   openlayers_geocoder_get_response().
+ - End-point openlayers/geocoder/coordinates changed into
+   openlayers/geocoder/response/process.
+ - Menu callback openlayers_geocoder_process() renamed into
+   openlayers_geocoder_process_response().
+ - Adding [formatted_address] replacement token.
+ - Removing openlayers_geocoder database table.
+
+
+

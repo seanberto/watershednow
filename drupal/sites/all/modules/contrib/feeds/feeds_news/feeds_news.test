@@ -1,0 +1,149 @@
+<?php
+// $Id: feeds_news.test,v 1.2 2010/09/15 19:27:42 alexb Exp $
+
+/**
+ * @file
+ * Tests for feeds_news feature.
+ */
+
+// Require FeedsWebTestCase class definition.
+require_once(dirname(__FILE__) .'/../tests/feeds.test.inc');
+
+/**
+ * Test Feed configuration.
+ */
+class FeedsExamplesFeedTestCase extends FeedsWebTestCase {
+
+  /**
+   * Set up test.
+   */
+  public function setUp() {
+    parent::setUp('feeds', 'feeds_ui', 'ctools', 'job_scheduler', 'features', 'feeds_news');
+
+    $this->drupalLogin(
+      $this->drupalCreateUser(
+        array(
+          'administer feeds', 'administer nodes',
+        )
+      )
+    );
+  }
+
+  /**
+   * Describe this test.
+   */
+  public function getInfo() {
+    return array(
+      'name' => t('Feature: Feed'),
+      'description' => t('Test "Feed" default configuration. <strong>Requires Features.</strong>'),
+      'group' => t('Feeds'),
+    );
+  }
+
+  /**
+   * Run tests.
+   */
+  public function test() {
+    $nid = $this->createFeedNode('feed', NULL, '', 'feed');
+
+    // Assert results.
+    $count = db_result(db_query("SELECT COUNT(*) FROM {node} WHERE type = 'feed_item'"));
+    $this->assertEqual($count, 10, 'Found the correct number of feed item nodes in database.');
+
+    $count = db_result(db_query("SELECT COUNT(*) FROM {feeds_node_item}"));
+    $this->assertEqual($count, 10, 'Found the correct number of records in feeds_node_item.');
+
+    $count = db_result(db_query("SELECT COUNT(*) FROM {node} WHERE title = 'Open Atrium Translation Workflow: Two Way Translation Updates'"));
+    $this->assertEqual($count, 1, 'Found title.');
+    $count = db_result(db_query("SELECT COUNT(*) FROM {node} WHERE title = 'Week in DC Tech: October 5th Edition'"));
+    $this->assertEqual($count, 1, 'Found title.');
+    $count = db_result(db_query("SELECT COUNT(*) FROM {node} WHERE title = 'Integrating the Siteminder Access System in an Open Atrium-based Intranet'"));
+    $this->assertEqual($count, 1, 'Found title.');
+    $count = db_result(db_query("SELECT COUNT(*) FROM {node} WHERE title = 'Scaling the Open Atrium UI'"));
+    $this->assertEqual($count, 1, 'Found title.');
+
+    $count = db_result(db_query("SELECT COUNT(*) FROM {feeds_node_item} WHERE url = 'http://developmentseed.org/blog/2009/oct/06/open-atrium-translation-workflow-two-way-updating'"));
+    $this->assertEqual($count, 1, 'Found feed_node_item record.');
+    $count = db_result(db_query("SELECT COUNT(*) FROM {feeds_node_item} WHERE url = 'http://developmentseed.org/blog/2009/oct/05/week-dc-tech-october-5th-edition'"));
+    $this->assertEqual($count, 1, 'Found feed_node_item record.');
+    $count = db_result(db_query("SELECT COUNT(*) FROM {feeds_node_item} WHERE guid = '974 at http://developmentseed.org'"));
+    $this->assertEqual($count, 1, 'Found feed_node_item record.');
+    $count = db_result(db_query("SELECT COUNT(*) FROM {feeds_node_item} WHERE guid = '970 at http://developmentseed.org'"));
+    $this->assertEqual($count, 1, 'Found feed_node_item record.');
+
+    // Remove all items
+    $this->drupalPost('node/'. $nid .'/delete-items', array(), 'Delete');
+    $this->assertText('Deleted 10 nodes.');
+
+    // Import again.
+    $this->drupalPost('node/'. $nid .'/import', array(), 'Import');
+    $this->assertText('Created 10 Feed item nodes.');
+
+    // Delete and assert all items gone.
+    $this->drupalPost('node/'. $nid .'/delete-items', array(), 'Delete');
+
+    $count = db_result(db_query("SELECT COUNT(*) FROM {node} WHERE type = 'feed_item'"));
+    $this->assertEqual($count, 0, 'Found the correct number of feed item nodes in database.');
+
+    $count = db_result(db_query("SELECT COUNT(*) FROM {feeds_node_item}"));
+    $this->assertEqual($count, 0, 'Found the correct number of records in feeds_node_item.');
+
+    // Create a batch of nodes.
+    $this->createFeedNodes('feed', 10, 'feed');
+    $count = db_result(db_query("SELECT COUNT(*) FROM {node} WHERE type = 'feed_item'"));
+    $this->assertEqual($count, 100, 'Imported 100 nodes.');
+    $count = db_result(db_query("SELECT COUNT(*) FROM {feeds_node_item}"));
+    $this->assertEqual($count, 100, 'Found 100 records in feeds_node_item.');
+  }
+}
+
+/**
+ * Test OPML import configuration.
+ */
+class FeedsExamplesOPMLTestCase extends FeedsWebTestCase {
+
+  /**
+   * Set up test.
+   */
+  public function setUp() {
+    parent::setUp('feeds', 'feeds_ui', 'ctools', 'job_scheduler', 'feeds_news');
+
+    $this->drupalLogin(
+      $this->drupalCreateUser(
+        array(
+          'administer feeds', 'administer nodes',
+        )
+      )
+    );
+  }
+
+  /**
+   * Describe this test.
+   */
+  public function getInfo() {
+    return array(
+      'name' => t('Feature: OPML import'),
+      'description' => t('Test "OPML import" default configuration.'),
+      'group' => t('Feeds'),
+    );
+  }
+
+  /**
+   * Run tests.
+   */
+  public function test() {
+
+    // Import OPML and assert.
+    $file = $this->generateOPML();
+    $this->importFile('opml', $file);
+    $this->assertText('Created 3 feed nodes.');
+    $count = db_result(db_query("SELECT COUNT(*) FROM {feeds_source}"));
+    $this->assertEqual($count, 4, 'Found correct number of items.');
+
+    // Import a feed and then delete all items from it.
+    $this->drupalPost('node/1/import', array(), 'Import');
+    $this->assertText('Created 10 Feed item nodes.');
+    $this->drupalPost('node/1/delete-items', array(), 'Delete');
+    $this->assertText('Deleted 10 nodes.');
+  }
+}

@@ -1,10 +1,10 @@
 <?php
-// $Id: openlayers_geocoder.theme.inc,v 1.3.2.2 2010/03/17 07:51:51 antoniodemarco Exp $
+// $Id: openlayers_geocoder.theme.inc,v 1.3.2.3 2010/09/23 09:07:11 antoniodemarco Exp $
 
 /**
  * Theme funciton for OpenLayers Geocoder widget autocompletion setting
  */
-function theme_openlayers_geocoder_widget_autocompletion_settings(&$form) {
+function theme_openlayers_geocoder_widget_autocompletion_settings($form) {
   foreach (element_children($form) as $key) {
     if (is_numeric($key)) {
       $row = array();

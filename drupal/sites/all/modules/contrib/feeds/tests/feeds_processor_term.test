@@ -1,0 +1,106 @@
+<?php
+// $Id: feeds_processor_term.test,v 1.3 2010/09/15 19:27:42 alexb Exp $
+
+/**
+ * @file
+ * Tests for plugins/FeedsTermProcessor.inc
+ */
+
+// Require FeedsWebTestCase class definition.
+require_once(dirname(__FILE__) .'/feeds.test.inc');
+
+/**
+ * Test aggregating a feed as data records.
+ */
+class FeedsCSVtoTermsTest extends FeedsWebTestCase {
+
+  /**
+   * Describe this test.
+   */
+  public function getInfo() {
+    return array(
+      'name' => t('CSV import to taxonomy'),
+      'description' => t('Tests a standalone import configuration that uses file fetcher and CSV parser to import taxonomy terms from a CSV file.'),
+      'group' => t('Feeds'),
+    );
+  }
+
+  /**
+   * Set up test.
+   */
+  public function setUp() {
+    parent::setUp('feeds', 'feeds_ui', 'ctools', 'job_scheduler');
+
+    $this->drupalLogin(
+      $this->drupalCreateUser(
+        array(
+          'administer feeds', 'administer taxonomy',
+        )
+      )
+    );
+  }
+
+  /**
+   * Test node creation, refreshing/deleting feeds and feed items.
+   */
+  public function test() {
+
+    // Create an importer.
+    $this->createImporterConfiguration('Term import', 'term_import');
+
+    // Set and configure plugins and mappings.
+    $this->setPlugin('term_import', 'FeedsFileFetcher');
+    $this->setPlugin('term_import', 'FeedsCSVParser');
+    $this->setPlugin('term_import', 'FeedsTermProcessor');
+    $mappings = array(
+      '0' => array(
+        'source' => 'name',
+        'target' => 'name',
+        'unique' => 1,
+      ),
+    );
+    $this->addMappings('term_import', $mappings);
+
+    // Use standalone form.
+    $edit = array(
+      'content_type' => '',
+    );
+    $this->drupalPost('admin/build/feeds/edit/term_import/settings', $edit, 'Save');
+
+    $edit = array(
+      'name' => 'Addams vocabulary',
+    );
+    $this->drupalPost('admin/content/taxonomy/add/vocabulary', $edit, t('Save'));
+
+    $edit = array(
+      'vocabulary' => 1,
+    );
+    $this->drupalPost('admin/build/feeds/edit/term_import/settings/FeedsTermProcessor', $edit, t('Save'));
+
+    // Import and assert.
+    $this->importFile('term_import', $this->absolutePath() .'/tests/feeds/users.csv');
+    $this->assertText('Created 5 terms in Addams vocabulary.');
+    $this->drupalGet('admin/content/taxonomy/1');
+    $this->assertText('Morticia');
+    $this->assertText('Fester');
+    $this->assertText('Gomez');
+    $this->assertText('Pugsley');
+
+    // Import again.
+    $this->importFile('term_import', $this->absolutePath() .'/tests/feeds/users.csv');
+    $this->assertText('There are no new terms.');
+
+    // Add a term manually, delete all terms, this term should still stand.
+    $edit = array(
+      'name' => 'Cousin Itt',
+    );
+    $this->drupalPost('admin/content/taxonomy/1/add/term', $edit, t('Save'));
+    $this->drupalPost('import/term_import/delete-items', array(), t('Delete'));
+    $this->drupalGet('admin/content/taxonomy/1');
+    $this->assertText('Cousin Itt');
+    $this->assertNoText('Morticia');
+    $this->assertNoText('Fester');
+    $this->assertNoText('Gomez');
+    $this->assertNoText('Pugsley');
+  }
+}

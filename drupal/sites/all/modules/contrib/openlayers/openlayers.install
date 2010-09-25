@@ -1,5 +1,5 @@
 <?php
-// $Id: openlayers.install,v 1.12.2.9 2010/04/13 14:55:47 tmcw Exp $
+// $Id: openlayers.install,v 1.12.2.10 2010/09/11 19:08:34 zzolo Exp $
 
 /**
  * @file
@@ -195,6 +195,31 @@ function openlayers_update_6200(&$sandbox) {
     $ret = _openlayers_upgrade_1xto2x();
   }
 
+  return $ret;
+}
+
+/**
+ * Implementation of hook_update_N().
+ */
+function openlayers_update_6201(&$sandbox) {
+  $message = 'Did not alter OpenLayers source.';
+
+  // Due to some changes in the OpenLayers JS in
+  // version 2.10, errors crop up, so we will
+  // manually set to 2.9.  Assume change if
+  // not set or set to http://openlayers.org/api/OpenLayers.js
+  $current = variable_get('openlayers_source', FALSE);
+  if (!$current || $current == 'http://openlayers.org/api/OpenLayers.js') {
+    variable_set('openlayers_source', 'http://openlayers.org/api/2.9/OpenLayers.js');
+    $message = 'Set OpenLayers source to hosted 2.9 version.';
+  }
+  
+  // Add simple note
+  $ret[] = array(
+    'success' => TRUE,
+    'query' => $message,
+  );
+  
   return $ret;
 }
 

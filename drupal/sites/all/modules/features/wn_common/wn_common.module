@@ -1,0 +1,26 @@
+<?php
+
+include_once('wn_common.features.inc');
+
+/**
+ * Implementation of hook_block().
+ */
+function wn_common_block($op = 'list', $delta = 0, $edit = array()) {
+  switch ($op) {
+
+    case 'list':
+      // Placing any sidebar content created at the node level into a sidebar.
+      $blocks[0]['info'] = t('Sidebar content');
+      return $blocks;
+
+    case 'view':
+      if ($delta == 0) { // Build the sidebar block.
+        $node = node_load(arg(1)); // If not empty, grab the sidebar content from the current node.
+        $block['subject'] = t('');
+        $block['content'] = $node->field_sidebar[0]['value'];          
+      }
+
+      return $block;
+  }    
+}
+
