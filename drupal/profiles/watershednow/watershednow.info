@@ -25,6 +25,9 @@ dependencies[] = search
 dependencies[] = taxonomy
 dependencies[] = update
 
+;Admin
+dependencies[] = admin_menu
+
 ; Views
 dependencies[] = views_calc
 dependencies[] = draggableviews
