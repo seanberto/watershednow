@@ -9,6 +9,24 @@ function wn_helper_init() {
   drupal_add_js((drupal_get_path('module', 'wn_helper')) . '/js/wn_helper.js');
 }
 
+
+/**
+ * Implementation of hook_theme().
+ */
+function wn_helper_theme() {
+  $items = array();
+
+  $items['wn_helper_follow_link'] = array(
+    'arguments' => array('link' => NULL, 'title' => NULL),
+  );
+
+  return $items;
+}
+
+function wn_helper_theme_registry_alter(&$theme_registry) {
+  $theme_registry['follow_link']['function'] = 'wn_helper_follow_link';
+}
+
 /**
  * Implementation of hook_help().
  *
@@ -67,4 +85,33 @@ function wn_helper_form_alter(&$form, $form_state, $form_id) {
       }
       break;
   }
+}
+
+
+function wn_helper_follow_link($link, $title) {
+  return theme('wn_helper_follow_link',$link,$title);
+}
+
+/**
+ * Theme function to print an individual link.
+ *
+ * @param $link
+ *   A follow link object.
+ * @param $title
+ *   The translated title of the social network.
+ */
+function theme_wn_helper_follow_link($link, $title) {
+  $classes = array();
+  $classes[] = 'follow-link';
+  $classes[] = "follow-link-{$link->name}";
+  $classes[] = $link->uid ? 'follow-link-user' : 'follow-link-site';
+  $attributes = drupal_attributes(array(
+    'class' => implode(' ', $classes),
+    'href' => $link->url,
+    'title' => follow_link_title($link->uid) .' '. $title,
+    'rel' => 'me external',
+    'target' => '_blank'
+  ));
+
+  return "<a$attributes>$title</a>\n";
 }

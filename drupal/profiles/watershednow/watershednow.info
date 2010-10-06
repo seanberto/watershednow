@@ -96,6 +96,9 @@ dependencies[] = openlayers_geocoder
 ; Customizations
 dependencies[] = wn_helper
 
+; Social Integration
+dependencies[] = follow ; allows admins to add social network links that are reorderable.
+
 ; Watershed Now Features
 dependencies[] = wn_common
 dependencies[] = wn_blog

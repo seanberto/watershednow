@@ -1,0 +1,16 @@
+<?php
+
+/**
+ * Implementation of hook_install().
+ */
+function wn_helper_install() {
+  //we want this helper executed after everything else.
+  db_query("UPDATE {system} SET weight = 99999 WHERE name = 'wn_helper'");
+}
+
+/**
+ * Implementation of hook_uninstall()
+ */
+function wn_helper_uninstall() {
+  //needed so install function will get called again
+}
