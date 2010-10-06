@@ -1,5 +1,5 @@
 <?php
-    
+
 // Auto-rebuild the theme registry during theme development.
 if (theme_get_setting('watershed_rebuild_registry')) {
   drupal_rebuild_theme_registry();
@@ -17,19 +17,21 @@ if (theme_get_setting('watershed_wireframe')) {
 
 /*
  *	 This function creates the body classes that are relative to each page
- *	
+ *
  *	@param $vars
  *	  A sequential array of variables to pass to the theme template.
  *	@param $hook
  *	  The name of the theme function being called ("page" in this case.)
  */
-
 function watershed_preprocess_page(&$vars, $hook) {
 
   // Don't display empty help from node_help().
-  if ($vars['help'] == "<div class=\"help\"><p></p>\n</div>") {
+  if ($vars['help'] == '<div class="help"><p></p>\n</div>') {
     $vars['help'] = '';
   }
+
+  //add mission to all pages
+  $vars['mission'] = variable_get('site_mission', '');
 
   // Classes for body element. Allows advanced theming based on context
   // (home page, node of certain type, etc.)
@@ -84,7 +86,7 @@ function watershed_preprocess_page(&$vars, $hook) {
         } else if (strpos($user_agent, 'MSIE 7.0')) {
           $body_classes[] = 'browser-ie7';
         } else if (strpos($user_agent, 'MSIE 8.0')) {
-          $body_classes[] = 'browser-ie8'; 
+          $body_classes[] = 'browser-ie8';
         } else if (strpos($user_agent, 'Firefox/2')) {
           $body_classes[] = 'browser-firefox2';
         } else if (strpos($user_agent, 'Firefox/3')) {
@@ -95,7 +97,7 @@ function watershed_preprocess_page(&$vars, $hook) {
           $body_classes[] = 'browser-opera';
         }
       }
-  
+
   /* Add template suggestions based on content type
    * You can use a different page template depending on the
    * content type or the node ID
@@ -105,12 +107,12 @@ function watershed_preprocess_page(&$vars, $hook) {
    * For a specific node, use the node ID in the name of the page template
    * like this : page-node-22.tpl.php (if the node ID is 22)
    */
-  
-  if ($vars['node']->type != "") {
-      $vars['template_files'][] = "page-type-" . $vars['node']->type;
+
+  if ($vars['node']->type != '') {
+      $vars['template_files'][] = 'page-type-' . $vars['node']->type;
     }
-  if ($vars['node']->nid != "") {
-      $vars['template_files'][] = "page-node-" . $vars['node']->nid;
+  if ($vars['node']->nid != '') {
+      $vars['template_files'][] = 'page-node-' . $vars['node']->nid;
     }
   $vars['body_classes'] = implode(' ', $body_classes); // Concatenate with spaces
 }
@@ -118,7 +120,7 @@ function watershed_preprocess_page(&$vars, $hook) {
 /*
  *	 This function creates the NODES classes, like 'node-unpublished' for nodes
  *	 that are not published, or 'node-mine' for node posted by the connected user...
- *	
+ *
  *	@param $vars
  *	  A sequential array of variables to pass to the theme template.
  *	@param $hook
@@ -149,7 +151,7 @@ function watershed_preprocess_node(&$vars, $hook) {
     $classes[] = 'node-teaser'; // Node is displayed as teaser.
   }
   $classes[] = 'clearfix';
-  
+
   // Class for node type: "node-type-page", "node-type-story", "node-type-my-custom-type", etc.
   $classes[] = watershed_id_safe('node-type-' . $vars['type']);
   $vars['classes'] = implode(' ', $classes); // Concatenate with spaces
@@ -165,7 +167,7 @@ function watershed_preprocess_node(&$vars, $hook) {
  *   A sequential array of variables to pass to the theme template.
  * @param $hook
  *   The name of the theme function being called ("block" in this case.)
- */ 
+ */
 
 function watershed_preprocess_block(&$vars, $hook) {
     $block = $vars['block'];
@@ -176,12 +178,12 @@ function watershed_preprocess_block(&$vars, $hook) {
     $classes[] = watershed_id_safe('block-' . $vars['block']->region);
     $classes[] = watershed_id_safe('block-id-' . $vars['block']->bid);
     $classes[] = 'clearfix';
-    
+
     // support for Skinr Module
     if (module_exists('skinr')) {
       $classes[] = $vars['skinr'];
     }
-    
+
     $vars['block_classes'] = implode(' ', $classes); // Concatenate with spaces
 
     if (theme_get_setting('watershed_block_editing') && user_access('administer blocks')) {
@@ -292,15 +294,15 @@ function watershed_preprocess_comment(&$vars, $hook) {
   $vars['classes'] = implode(' ', $classes);
 }
 
-/* 	
+/*
  * 	Customize the PRIMARY and SECONDARY LINKS, to allow the admin tabs to work on all browsers
  * 	An implementation of theme_menu_item_link()
- * 	
+ *
  * 	@param $link
  * 	  array The menu item to render.
  * 	@return
  * 	  string The rendered menu item.
- */ 	
+ */
 
 function watershed_menu_item_link($link) {
   if (empty($link['localized_options'])) {
@@ -337,10 +339,10 @@ function watershed_menu_local_tasks() {
   return $output;
 }
 
-/* 	
+/*
  * 	Add custom classes to menu item
- */	
-	
+ */
+
 function watershed_menu_item($link, $has_children, $menu = '', $in_active_trail = FALSE, $extra_class = NULL) {
   $class = ($menu ? 'expanded' : ($has_children ? 'collapsed' : 'leaf'));
   if (!empty($extra_class)) {
@@ -354,21 +356,21 @@ function watershed_menu_item($link, $has_children, $menu = '', $in_active_trail 
   return '<li class="'. $class . ' ' . $css_class . '">' . $link . $menu ."</li>\n";
 }
 
-/*	
+/*
  *	Converts a string to a suitable html ID attribute.
- *	
+ *
  *	 http://www.w3.org/TR/html4/struct/global.html#h-7.5.2 specifies what makes a
  *	 valid ID attribute in HTML. This function:
- *	
+ *
  *	- Ensure an ID starts with an alpha character by optionally adding an 'n'.
  *	- Replaces any character except A-Z, numbers, and underscores with dashes.
  *	- Converts entire string to lowercase.
- *	
+ *
  *	@param $string
  *	  The string
  *	@return
  *	  The converted string
- */	
+ */
 
 function watershed_id_safe($string) {
   // Replace with dashes anything that isn't A-Z, numbers, dashes, or underscores.
@@ -395,7 +397,7 @@ function watershed_breadcrumb($breadcrumb) {
  * Override the default search form layout.
  */
 function watershed_preprocess_search_theme_form(&$vars, $hook) {
-  
+
   // Override the title field.
   $vars['form']['search_theme_form']['#title'] = t('');
 
