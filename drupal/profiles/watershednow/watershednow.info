@@ -12,6 +12,9 @@ theme = watershed
 
 ; ----------------------------------------------
 
+; NOTE: Do not add a coment after the modules name,
+; this will result in an error. See issue http://drupal.org/node/938492
+
 ; MODULES
 ; (Note: that module dependencies will be automatically enabled.)
 
@@ -97,7 +100,8 @@ dependencies[] = openlayers_geocoder
 dependencies[] = wn_helper
 
 ; Social Integration
-dependencies[] = follow ; allows admins to add social network links that are reorderable.
+; allows admins to add social network links that are reorderable.
+dependencies[] = follow
 
 ; Watershed Now Features
 dependencies[] = wn_common
