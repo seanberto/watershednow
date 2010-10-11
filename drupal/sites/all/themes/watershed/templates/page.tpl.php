@@ -140,8 +140,13 @@
 
       <?php if(!empty($footer_message) || !empty($footer) || !empty($footer_second)): ?>
         <div id="footer">
-          <div id="footer-first"><?php print $footer; ?></div><!-- /#footer-first -->
+          <?php print $footer; ?>
+
+          <div class="first" id="footer-first"><?php print $footer_first; ?></div><!-- /#footer-first -->
           <div id="footer-second"><?php print $footer_second; ?></div><!-- /#footer-second -->
+          <div id="footer-third"><?php print $footer; ?></div><!-- /#footer-third -->
+          <div class="last" id="footer-fourth"><?php print $footer_fourth; ?></div><!-- /#footer-fourth -->
+
           <div id="footer-message"><?php print $footer_message; ?></div><!-- /#footer-message -->
         </div> <!-- /footer -->
       <?php endif; ?>

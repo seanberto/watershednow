@@ -104,3 +104,16 @@
 #navigation {
   /* height: 40px;            /* Navigation Height */
 }
+
+
+/*= Footer
+--------------------------------- */
+#footer-first, #footer-second, #footer-third, #footer-fourth {
+  width:23%;
+  float:left;
+  margin-right:1%;
+}
+
+#footer-fourth {
+  margin-right:0;
+}
