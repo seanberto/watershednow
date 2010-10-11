@@ -1,2 +1,32 @@
-.wn-hp-callouts li { display:none; }
-.wn-hp-callouts .first { display:block; } /* only show the first by default */
+.wn-hp-callout-title {
+  font-size:200%;
+  font-weight:bold;
+  margin-bottom:.5em;
+}
+.wn-hp-callouts {
+  margin:0;
+  padding:0;
+}
+
+.item-list ul.wn-hp-callouts li {
+  display:none;
+  list-style:none;
+  background:none;
+  margin:0;
+  padding:0;
+  position:relative;
+}
+
+.wn-hp-callouts .first {
+  display:block;  /* only show the first by default */
+}
+
+.wn-hp-callout-entry {
+  width:33%;
+  height:100%;
+  position:absolute;
+  top:0;
+  right:0;
+  padding:2em;
+  background:#fff;
+}
