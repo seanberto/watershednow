@@ -50,13 +50,6 @@ function wn_hp_callout_strongarm() {
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'comment_wn_hp_callout';
-  $strongarm->value = '2';
-
-  $export['comment_wn_hp_callout'] = $strongarm;
-  $strongarm = new stdClass;
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
   $strongarm->name = 'comment_preview_wn_hp_callout';
   $strongarm->value = '1';
 
@@ -68,6 +61,13 @@ function wn_hp_callout_strongarm() {
   $strongarm->value = '1';
 
   $export['comment_subject_field_wn_hp_callout'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'comment_wn_hp_callout';
+  $strongarm->value = '2';
+
+  $export['comment_wn_hp_callout'] = $strongarm;
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
