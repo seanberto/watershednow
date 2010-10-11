@@ -98,6 +98,7 @@ dependencies[] = openlayers_geocoder
 
 ; Customizations
 dependencies[] = wn_helper
+dependencies[] = wn_hp_callout
 
 ; Social Integration
 ; allows admins to add social network links that are reorderable.

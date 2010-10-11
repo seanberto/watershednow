@@ -1,0 +1,39 @@
+<?php
+// $Id: imagefield_extended.install,v 1.1.2.1.2.1 2010/03/03 02:12:37 aland Exp $
+
+/**
+ * @file
+ * Standard installation hooks.
+ */
+
+/**
+ * Implementation of hook_uninstall().
+ */
+function imagefield_extended_uninstall() {
+  variable_del('imagefield_extended_textfields');
+  variable_del('imagefield_extended_checkboxes');
+}
+
+/**
+ * Implementation of hook_update_63XX().
+ */
+function imagefield_extended_update_6300() {
+  cache_clear_all();
+  return array();
+}
+/**
+ * Implementation of hook_update_64XX().
+ */
+function imagefield_extended_update_6400() {
+  $ret = array();
+  $q = db_query("SELECT field_name, type_name, label FROM {content_node_field_instance} WHERE widget_type = 'imagefield_extended_widget'");
+  while ($r = db_fetch_array($q)) {
+    db_query("UPDATE {content_node_field_instance} SET widget_type = 'imagefield_widget', widget_module = 'imagefield' WHERE field_name = '%s' AND type_name = '%s'", $r['field_name'], $r['type_name']);
+      $ret[] = array(
+        'success' => TRUE,
+        'query' => strtr('Updated the field instance %label (%type) back to imagefield.', array('%label' => check_plain($r['label']), '%type' => $r['type_name'])),
+      );
+  }
+  cache_clear_all();
+  return $ret;
+}

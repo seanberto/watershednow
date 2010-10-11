@@ -1,0 +1,13 @@
+; $Id: imagefield_extended.info,v 1.1.4.1 2010/03/03 02:12:37 aland Exp $
+name = ImageField Extended Fields
+description = Defines additional information to store in a file or image field type. This is done by extending the FileField / ImageField modules using the new CCK 2.5 alter hook.
+core = 6.x
+dependencies[] = filefield
+package = CCK
+
+; Information added by drupal.org packaging script on 2010-09-30
+version = "6.x-4.1"
+core = "6.x"
+project = "imagefield_extended"
+datestamp = "1285862464"
+

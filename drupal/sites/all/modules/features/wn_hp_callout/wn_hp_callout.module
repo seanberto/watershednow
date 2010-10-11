@@ -1,0 +1,13 @@
+<?php
+
+include_once('wn_hp_callout.features.inc');
+
+function wn_hp_callout_db_rewrite_sql($query, $primary_table, $primary_field, $args) {
+  if ($query == '' && $primary_table == 'n' && $primary_field = 'nid' && empty($args)) {
+    $excluded_types = array('wn_hp_callout');
+    if (!empty($excluded_types)) {
+      $where = " n.type NOT IN ('". join("','", $excluded_types) ."') ";
+      return array('where' => $where);
+    }
+  }
+}

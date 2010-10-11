@@ -1,0 +1,19 @@
+<?php
+
+function wn_hp_callout_install() {
+  $imagefield_extended_textfields = variable_get('imagefield_extended_textfields', '');
+  $imagefield_extended_textfields = "wn_hp_callout_desc|Description\n" . $imagefield_extended_textfields;
+  variable_set('imagefield_extended_textfields', trim($imagefield_extended_textfields));
+}
+
+function wn_hp_callout_uninstall() {
+  $imagefield_extended_textfields = explode("\n", variable_get('imagefield_extended_textfields', ''));
+  foreach( $imagefield_extended_textfields as $k => $textfield ) {
+    if( preg_match('@^wn_hp_callout_desc|@',$textfield) ) {
+      unset($imagefield_extended_textfields[$k]);
+      break;
+    }
+  }
+  $imagefield_extended_textfields = implode("\n", $imagefield_extended_textfields);
+  variable_set('imagefield_extended_textfields', $imagefield_extended_textfields);
+}

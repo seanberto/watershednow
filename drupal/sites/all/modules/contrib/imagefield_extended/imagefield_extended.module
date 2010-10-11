@@ -1,0 +1,480 @@
+<?php
+// $Id: imagefield_extended.module,v 1.3.2.8.2.4 2010/09/19 03:49:28 aland Exp $
+
+/**
+ * @file
+ * Insert additional fields into a FileField / ImageField data array.
+ */
+
+/**
+ * Implementation of hook_menu().
+ */
+function imagefield_extended_menu() {
+  $items = array();
+
+  // Admin menu items
+  $items['admin/settings/imagefield-extended'] = array(
+    'title' => 'ImageField Extended Fields',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('imagefield_extended_admin_settings_form'),
+    'description' => 'Administer ImageField Extended Fields Settings.',
+    'access arguments' => array('administer content types'),
+    'file' => 'imagefield_extended.admin.inc',
+    'type' => MENU_NORMAL_ITEM,
+  );
+  return $items;
+}
+
+/**
+ * Implementation of hook_help().
+ */
+function imagefield_extended_help($path, $arg) {
+  switch ($path) {
+    case 'admin/settings/imagefield-extended':
+      return t('<p>Once you have defined the new fields here, the additional fields defined here will be configurable per field type. All new additional fields are disabled by default.</p>');
+  }
+}
+
+/**
+ * Implementation of hook_theme().
+ */
+function imagefield_extended_theme($existing, $type, $theme, $path) {
+  $themes = array(
+    'imagefield_extended_formatter_ife' => array(
+      'arguments' => array('element' => NULL),
+    ),
+    'imagefield_extended_image' => array(
+      'arguments' => array('item' => NULL, 'fapi_fields' => array()),
+      'template' => 'imagefield-extended-image',
+    ),
+  );
+  // Add imagecache support.
+  if (module_exists('imagecache')) {
+    $rules = array();
+    if (function_exists('imagecache_presets')) {
+      foreach (imagecache_presets() as $preset_id => $preset_info) {
+        $rules[$preset_id] = $preset_info['presetname'];
+      }
+    }
+    else {
+      $rules = _imagecache_get_presets();
+    }
+    foreach ($rules as $preset_id => $preset) {
+      $themes['imagefield_extended_formatter_'. $preset .'_ife'] = array(
+        'arguments' => array('element' => NULL),
+        'function' => 'theme_imagefield_extended_formatter_ife',
+      );
+    }
+  }
+  return $themes;
+}
+
+/**
+ * Implementation of hook_field_formatter_info().
+ */
+function imagefield_extended_field_formatter_info() {
+  $formatters = array(
+    'ife' => array(
+      'label' => t('Image, with additional fields'),
+      'field types' => array('filefield'),
+      'description' => t('Displays image files in their original size.'),
+    ),
+  );
+  // Add imagecache support.
+  if (module_exists('imagecache')) {
+    $rules = array();
+    if (function_exists('imagecache_presets')) {
+      foreach (imagecache_presets() as $preset_id => $preset_info) {
+        $rules[$preset_id] = $preset_info['presetname'];
+      }
+    }
+    else {
+      $rules = _imagecache_get_presets();
+    }
+    foreach ($rules as $preset_id => $preset) {
+      $formatters[$preset .'_ife'] = array(
+        'label' => t('@preset image, with additional fields', array('@preset' => $preset)),
+        'field types' => array('filefield'),
+      );
+    }
+
+  }
+  return $formatters;
+}
+
+/**
+ * Implementation of hook_widget_settings_alter().
+ */
+function imagefield_extended_widget_settings_alter(&$settings, $op, $widget) {
+  // Apply to all FileFields by default, we can remove specific cases latter.
+  $widget_types = _content_widget_types();
+  // On save, type could be FileField with widget_type containing the info we want.
+  $widget_type = isset($widget['widget_type']) ? $widget['widget_type'] : $widget['type'];
+  if (!in_array('filefield', $widget_types[$widget_type]['field types'])) {
+    return;
+  }
+
+  $extended_fields = _imagefield_extended_fields();
+  $ife_textfields = $extended_fields['textfields'];
+  $ife_workflow_checkboxes = $extended_fields['checkboxes'];
+  switch ($op) {
+    case 'form':
+      $weight = 12;
+      foreach ($ife_textfields as $textfield => $title) {
+        $title = check_plain($title);
+        $settings[$textfield .'_settings'] = array(
+          '#type' => 'fieldset',
+          '#title' => t('!field text settings', array('!field' => drupal_ucfirst($title))),
+          '#collapsible' => TRUE,
+          '#collapsed' => TRUE,
+          '#weight' => $weight++,
+        );
+        $settings[$textfield .'_settings']['custom_'. $textfield] = array(
+          '#type' => 'checkbox',
+          '#title' => t('Enable custom !field text', array('!field' => $title)),
+          '#default_value' =>  !empty($widget['custom_'. $textfield]) ? $widget['custom_'. $textfield] : 0,
+          '#description' => t('Enable user input !field text for files or images.', array('!field' => $title)),
+        );
+        $settings[$textfield .'_settings']['custom_'. $textfield .'_required'] = array(
+          '#type' => 'checkbox',
+          '#title' => t('Required'),
+          '#default_value' => empty($widget['custom_'. $textfield .'_required']) ? 0 : 1,
+        );
+        $settings[$textfield .'_settings']['custom_'. $textfield .'_style'] = array(
+          '#type' => 'radios',
+          '#title' => t('Text field style', array('!field' => $title)),
+          '#default_value' =>  !empty($widget['custom_'. $textfield .'_style']) ? $widget['custom_'. $textfield .'_style'] : 'textfield',
+          '#options' => $extended_fields['textfield options'],
+        );
+        $settings[$textfield .'_settings'][$textfield .'_help'] = array(
+          '#type' => 'textfield',
+          '#title' => t('!field help or description text', array('!field' => $title)),
+          '#default_value' => !empty($widget[$textfield .'_help']) ? $widget[$textfield .'_help'] : '',
+          '#description' => t('This value will be used for !field text description field.', array('!field' => $title)),
+        );
+        $settings[$textfield .'_settings'][$textfield] = array(
+          '#type' => 'textfield',
+          '#title' => t('Default !field text', array('!field' => $title)),
+          '#default_value' => !empty($widget[$textfield]) ? $widget[$textfield] : '',
+          '#description' => t('This value will be used for !field text by default.', array('!field' => $title)),
+          // TODO: '#suffix' => theme('token_help', 'file'),
+        );
+      }
+      $settings['workflow_settings'] = array(
+        '#type' => 'fieldset',
+        '#title' => t('Workflow settings'),
+        '#collapsible' => TRUE,
+        '#collapsed' => TRUE,
+        '#access' => !empty($ife_workflow_checkboxes),
+        '#weight' => $weight++,
+      );
+      foreach ($ife_workflow_checkboxes as $checkbox => $title) {
+        $title = check_plain($title);
+        $settings['workflow_settings']['workflow_'. $checkbox] = array(
+          '#type' => 'checkbox',
+          '#title' => t('Enable !field checkbox', array('!field' => $title)),
+          '#default_value' =>  empty($widget['workflow_'. $checkbox]) ? 0 : 1,
+          '#description' => t('Enable user input !field checkbox for files or images.', array('!field' => $title)),
+        );
+      }
+      break;
+    case 'save':
+      $if_settings = array();
+      foreach (array_keys($ife_textfields) as $textfield) {
+        $if_settings[] = $textfield;
+        $if_settings[] = $textfield .'_help';
+        $if_settings[] = 'custom_'. $textfield;
+        $if_settings[] = 'custom_'. $textfield .'_style';
+        $if_settings[] = 'custom_'. $textfield .'_required';
+      }
+      foreach (array_keys($ife_workflow_checkboxes) as $checkbox) {
+        $if_settings[] = 'workflow_'. $checkbox;
+      }
+      $settings = array_merge($settings, $if_settings);
+  }
+}
+
+/**
+ * Implementation of hook_elements().
+ */
+function imagefield_extended_elements() {
+  return array(
+    'imagefield_widget' => array(
+      '#process' => 'imagefield_extended_widget_process',
+    ),
+    'filefield_widget' => array(
+      '#process' => 'imagefield_extended_widget_process',
+    ),
+    'imagefield_crop_widget' => array(
+      '#process' => 'imagefield_extended_widget_process',
+    ),
+  );
+}
+/**
+ * Element #process callback function.
+ */
+function imagefield_extended_widget_process($element, $edit, &$form_state, $form) {
+
+  $file = $element['#value'];
+  $field = content_fields($element['#field_name'], $element['#type_name']);
+  $widget = $field['widget'];
+  $extra_values = isset($element['#value']['data']) ? $element['#value']['data'] : array();
+
+  // Load the internal fields we present
+  $extended_fields = _imagefield_extended_fields();
+  foreach ($extended_fields['textfields'] as $key => $title) {
+    if (!empty($widget['custom_'. $key])) {
+      $element['data'][$key]['body'] = array(
+        '#type' => $widget['custom_'. $key .'_style'] != 'textfield' ? 'textarea' : 'textfield',
+        '#required' => $widget['custom_'. $key .'_required'] ? TRUE : FALSE,
+        '#title' => drupal_ucfirst($title),
+        '#default_value' => isset($extra_values[$key]['body']) ? $extra_values[$key]['body'] : $widget[$key],
+        '#attributes' => array('class' => 'imagefield-text'),
+      );
+      // The AHAH load is not using the default value.
+      if ($form_state['submitted']) {
+        $element['data'][$key]['body']['#default_value'] = isset($extra_values[$key]['body']) ? $extra_values[$key]['body'] : $widget[$key];
+      }
+      else {
+        $element['data'][$key]['body']['#value'] = isset($extra_values[$key]['body']) ? $extra_values[$key]['body'] : $widget[$key];
+      }
+      if (!empty($widget[$key .'_help'])) {
+        $element['data'][$key]['body']['#description'] = $widget[$key .'_help'];
+      }
+      if ($widget['custom_'. $key .'_style'] == 'formatted') {
+        $element['data'][$key]['format'] = filter_form($extra_values[$key]['format'], NULL, array_merge($element['#array_parents'], array('data', $key, 'format')));
+      }
+      else {
+        $element['data'][$key]['format'] = array(
+          '#type' => 'hidden',
+          '#value' => isset($extra_values[$key]['format']) ? $extra_values[$key]['format'] : '',
+        );
+      }
+      $element['data'][$key]['style'] = array(
+        '#type' => 'hidden',
+        '#value' => $widget['custom_'. $key .'_style'],
+      );
+    }
+  }
+  foreach ($extended_fields['checkboxes'] as $key => $title) {
+    if (!empty($widget['workflow_'. $key])) {
+      $element['data']['workflow_'. $key] = array(
+        '#type' => 'checkbox',
+        '#title' => drupal_ucfirst($title),
+        '#default_value' => isset($extra_values['workflow_'. $key]) ? $extra_values['workflow_'. $key] : 0,
+        '#attributes' => array('class' => 'imagefield-checkbox'),
+        '#suffix' => '<div class="clear"></div>',
+      );
+    }
+  }
+
+  $extra_fields = module_invoke_all('imagefield_extended_widget', $element, $extra_values);
+  foreach ($extra_fields as $key => $field) {
+    $element['data'][$key] = $field;
+  }
+  return $element;
+}
+
+/**
+ * A private helper function to cache / normalise the custom field titles.
+ */
+function _imagefield_extended_fields() {
+  static $fields;
+  if (!isset($fields)) {
+
+    $fields = array(
+      'textfields' => imagefield_extended_keyed_values(variable_get('imagefield_extended_textfields', '')),
+      'textfield options' => array('textfield' => t('Single line text'), 'textarea' => t('Multi-line text'), 'formatted' => t('Formatted multi-line text')),
+      'checkboxes' => imagefield_extended_keyed_values(variable_get('imagefield_extended_checkboxes', '')),
+    );
+    if (module_exists('wysiwyg')) {
+      $fields['textfield formats']['formatted'] = t('WYSIWYG support');
+    }
+  }
+  return $fields;
+}
+
+/**
+ * To parse a newline selection list into options.
+ */
+function imagefield_extended_keyed_values($text, $required = FALSE) {
+  $options = $required ? array('' => '--') : array();
+  $rows = array_filter(explode("\n", $text));
+  $group = NULL;
+  foreach ($rows as $option) {
+    if (preg_match('/^([^|]+)\|(.*)$/', $option, $matches)) {
+      $options[$matches[1]] = $matches[2];
+    }
+  }
+  return $options;
+}
+
+/**
+ * ImageField Extended formatter theme callback.
+ */
+function theme_imagefield_extended_formatter_ife($element) {
+  // Inside a view $element may contain null data. In that case, just return.
+  if (empty($element['#item']['fid'])) {
+    return '';
+  }
+  $item = $element['#item'];
+  if (!is_file($item['filepath'])) {
+    return '<!-- File not found: '. $item['filepath'] .' -->';
+  }
+
+  $item['data']['alt'] = isset($item['data']['alt']) ? $item['data']['alt'] : '';
+  $item['data']['title'] = isset($item['data']['title']) ? $item['data']['title'] : NULL;
+
+  $field = content_fields($element['#field_name'], $element['#node']->type);
+  $widget = $field['widget'];
+  $data = array();
+  $extended_fields = _imagefield_extended_fields();
+  foreach ($extended_fields['textfields'] as $key => $title) {
+    if (!empty($widget['custom_'. $key])) {
+      $text = imagefield_extended_check_text($item['data'][$key]);
+      if (!empty($text)) {
+        $data[$key] = array(
+          '#title' => check_plain($title),
+          '#type' => 'item',
+          '#value' => $text,
+        );
+      }
+    }
+  }
+  foreach ($extended_fields['checkboxes'] as $key => $title) {
+    if (!empty($widget['workflow_'. $key])) {
+      $data[$key] = array(
+        '#type' => 'value',
+        '#title' => check_plain($title),
+        '#value' => !empty($widget['workflow_'. $key]),
+      );
+    }
+  }
+  $item['field_name'] = $element['#field_name'];
+  $item['formatter'] = $element['#formatter'];
+
+  return theme('imagefield_extended_image', $item, $data);
+}
+
+function imagefield_extended_check_text($textfield) {
+  $text = isset($textfield['body']) ? trim($textfield['body']) : '';
+  if (empty($text)) {
+    return '';
+  }
+  $format = isset($textfield['format']) ? $textfield['format'] : FILTER_FORMAT_DEFAULT;
+  switch ($textfield['style']) {
+    case 'formatted':
+      return check_markup($text, $format, FALSE);
+    case 'textarea':
+      return filter_xss($text);
+    case 'textfield':
+    default:
+      return check_plain($text);
+  }
+}
+
+/**
+ * Process variables for imagefield-extended-image.tpl.php.
+ *
+ * @see imagefield-extended-image.tpl.php
+ */
+function template_preprocess_imagefield_extended_image(&$variables) {
+  $item = $variables['item'];
+  $fapi_fields = $variables['fapi_fields'];
+  $field_name = empty($item['field_name']) ? 'extended' : $item['field_name'];
+  $variables += array(
+    'values' => array(),
+    'fields' => array(),
+    'image' => '',
+    'field_name' => check_plain($field_name),
+    'image_class' => 'imagefield imagefield-'. $field_name,
+  );
+
+  $item = (array) $item;
+  if (!is_file($item['filepath'])) {
+    $variables['image'] = '<!-- File not found: '. check_plain($item['filepath']) .' -->';
+  }
+  else {
+    if ($item['formatter'] == 'ife') {
+      $variables['image'] = theme('imagefield_image', $item, $item['data']['alt'],
+          $item['data']['title'], array('class' => $variables['image_class']));
+    }
+    else {
+      $presetname = drupal_substr($item['formatter'], 0, strrpos($item['formatter'], '_'));
+      $variables['image_class'] .= " imagecache-$presetname imagecache-{$item['formatter']}";
+      $variables['image'] = theme('imagecache', $presetname, $item['filepath'],
+          $item['data']['alt'], $item['data']['title'], array('class' => $variables['image_class']));
+    }
+  }
+
+  // Checkboxes are value FAPI 'item' fields, textfields are 'value' fields.
+  foreach (element_children($fapi_fields) as $key) {
+    $variables['values'][$key] = $fapi_fields[$key]['#value'];
+    $variables['fields'][$key] = drupal_render($fapi_fields[$key]);
+  }
+  $variables['fields'] = array_filter($variables['fields']);
+}
+
+/**
+ * Implements hook_token_list().
+ */
+function imagefield_extended_token_list($type = 'all') {
+  if ($type == 'field' || $type == 'all') {
+    $tokens = array();
+    $fields = _imagefield_extended_fields();
+    foreach ($fields['textfields'] as $id => $name) {
+      $name = check_plain($name);
+      $tokens['file']['imagefield-extended-' . $id . '-raw'] = t('ImageField Extended - !field raw', array('!field' => $name));
+      $tokens['file']['imagefield-extended-' . $id . '-plain'] = t('ImageField Extended - !field plain', array('!field' => $name));
+      $tokens['file']['imagefield-extended-' . $id] = t('ImageField Extended - !field', array('!field' => $name));
+    }
+    foreach ($fields['checkboxes'] as $id => $name) {
+      $name = check_plain($name);
+      //$key = 'workflow_' . $id;
+      $tokens['file']['imagefield-extended-workflow-' . $id . '-yn'] = t('ImageField Extended - !field (Yes / No)', array('!field' => $name));
+      $tokens['file']['imagefield-extended-workflow-' . $id . '-on'] = t('ImageField Extended - !field (On / Off)', array('!field' => $name));
+      $tokens['file']['imagefield-extended-workflow-' . $id] = t('ImageField Extended - !field (1 / O)', array('!field' => $name));
+    }
+    return $tokens;
+  }
+}
+
+/**
+ * Implements hook_token_values().
+ */
+function imagefield_extended_token_values($type, $object = NULL) {
+  if ($type == 'field') {
+    $tokens = array();
+    $fields = _imagefield_extended_fields();
+    foreach ($fields['textfields'] as $id => $field) {
+      $tokens['imagefield-extended-' . $id . '-raw'] = '';
+      $tokens['imagefield-extended-' . $id . '-plain'] = '';
+      $tokens['imagefield-extended-' . $id] = '';
+      if (isset($object[0]['data'][$id])) {
+        $tokens['imagefield-extended-' . $id . '-raw'] = $object[0]['data'][$id]['body'];
+        $tokens['imagefield-extended-' . $id . '-plain'] = strip_tags($object[0]['data'][$id]['body']);
+        $tokens['imagefield-extended-' . $id] = imagefield_extended_check_text($object[0]['data'][$id]);
+      }
+    }
+    foreach ($fields['checkboxes'] as $id => $field) {
+      $key = 'workflow_' . $id;
+      $tokens['imagefield-extended-workflow-' . $id . '-yn'] = '';
+      $tokens['imagefield-extended-workflow-' . $id . '-on'] = '';
+      $tokens['imagefield-extended-workflow-' . $id] = '';
+      if (isset($object[0]['data']['workflow_' . $id])) {
+        $tokens['imagefield-extended-workflow-' . $id . '-yn'] = $object[0]['data'][$key] ? t('Yes') : t('No');
+        $tokens['imagefield-extended-workflow-' . $id . '-on'] = $object[0]['data'][$key] ? t('On') : t('Off');
+        $tokens['imagefield-extended-workflow-' . $id] = $object[0]['data'][$key] ? 1 : 0;
+      }
+    }
+    return $tokens;
+  }
+}
+
+/**
+ * Implements hook_custom_formatters_field_tokens().
+ */
+function imagefield_extended_custom_formatters_filefield_tokens() {
+  return array('imagefield_extended');
+}
+
