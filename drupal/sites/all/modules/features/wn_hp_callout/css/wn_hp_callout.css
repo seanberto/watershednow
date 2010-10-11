@@ -1,0 +1,2 @@
+.wn-hp-callouts li { display:none; }
+.wn-hp-callouts .first { display:block; } /* only show the first by default */

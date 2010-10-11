@@ -1,7 +1,7 @@
 <?php
-
 include_once('wn_hp_callout.features.inc');
 
+/* hide wn_hp_callout content type from search */
 function wn_hp_callout_db_rewrite_sql($query, $primary_table, $primary_field, $args) {
   if ($query == '' && $primary_table == 'n' && $primary_field = 'nid' && empty($args)) {
     $excluded_types = array('wn_hp_callout');
@@ -10,4 +10,43 @@ function wn_hp_callout_db_rewrite_sql($query, $primary_table, $primary_field, $a
       return array('where' => $where);
     }
   }
+}
+
+function wn_hp_callout_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
+
+
+  if( $node->type != 'wn_hp_callout' ) {
+    return;
+  }
+
+  $path = drupal_get_path('module', 'wn_hp_callout');
+
+  if( count($node->field_wn_hp_callout_image ) > 1 ) {
+    drupal_add_js($path.'/js/jquery.cycle.min.js');
+    drupal_add_js($path.'/js/wn_hp_callout.js');
+  }
+
+  if( $op != 'view') {
+    return;
+  }
+  drupal_add_css($path .'/css/wn_hp_callout.css');
+
+  $imgs = array();
+  foreach( $node->field_wn_hp_callout_image as $img_data ) {
+    $title = '<div class="wn-hp-callout-title">' . check_plain($img_data['data']['title']) .'</div>';
+
+    $desc = $img_data['data']['wn_hp_callout_desc'];
+    $desc = '<div class="wn-hp-callout-content">' . check_markup($desc['body'], $desc['format'], FALSE).'</div>';
+
+    $img = theme('imagefield_image', $img_data);
+
+    $imgs[] = $img . $title . $desc;
+  }
+  $html = theme('item_list',$imgs, NULL, $type = 'ul', array('class' => 'wn-hp-callouts'));
+
+  $node->content = array(
+    'body' => array(
+      '#value' => $html
+    )
+  );
 }
