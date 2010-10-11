@@ -13,7 +13,7 @@ theme = watershed
 ; ----------------------------------------------
 
 ; NOTE: Do not add a coment after the modules name,
-; this will result in an error. See issue http://drupal.org/node/938492
+; this will result in an error. This is an issue with drupal_parse_info_file()
 
 ; MODULES
 ; (Note: that module dependencies will be automatically enabled.)
@@ -32,6 +32,7 @@ dependencies[] = update
 dependencies[] = admin_menu
 
 ; Views
+dependencies[] = views_ui
 dependencies[] = views_calc
 dependencies[] = draggableviews
 dependencies[] = web_widgets
