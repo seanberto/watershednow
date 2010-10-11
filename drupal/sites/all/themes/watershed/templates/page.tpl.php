@@ -2,7 +2,7 @@
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php print $language->language ?>" lang="<?php print $language->language ?>" dir="<?php print $language->dir ?>">
   <head>
-    
+
     <title><?php print $head_title; ?></title>
     <?php print $head; ?>
     <?php print $styles; ?>
@@ -12,7 +12,7 @@
   </head>
 
   <body class="<?php print $body_classes; ?>">
-    <div id="skip"><a href="#content"><?php print t('Skip to Content'); ?></a> <a href="#navigation"><?php print t('Skip to Navigation'); ?></a></div>  
+    <div id="skip"><a href="#content"><?php print t('Skip to Content'); ?></a> <a href="#navigation"><?php print t('Skip to Navigation'); ?></a></div>
     <div id="page">
 
     <!-- ______________________ HEADER _______________________ -->
@@ -20,7 +20,6 @@
     <div id="header">
 
       <div id="logo-title">
-	
         <?php if (!empty($logo)): ?>
           <a href="<?php print $front_page; ?>" title="<?php print t('Home'); ?>" rel="home" id="logo">
             <img src="<?php print $logo; ?>" alt="<?php print t('Home'); ?>"/>
@@ -45,26 +44,34 @@
 
       <?php print $search_box; ?>
 
+
+      <?php if (!empty($primary_links) || !empty($secondary_links)): ?>
+        <div id="navigation" class="menu <?php if (!empty($primary_links)) { print "with-main-menu"; } if (!empty($secondary_links)) { print " with-sub-menu"; } ?>">
+          <?php /* if (!empty($secondary_links)){ print theme('links', $secondary_links, array('id' => 'secondary', 'class' => 'links sub-menu')); } */ ?>
+          <?php if (!empty($primary_links)){ print theme('links', $primary_links, array('id' => 'primary', 'class' => 'links main-menu')); } ?>
+        </div> <!-- /navigation -->
+      <?php endif; ?>
+
+      <?php if ($callout): ?>
+        <div id="callout">
+          <?php print $callout; ?>
+        </div> <!-- /#callout -->
+      <?php endif; ?>
+
     </div> <!-- /header -->
 
     <!-- ______________________ MAIN _______________________ -->
 
     <div id="main" class="clearfix">
-    
+
       <div id="content">
         <div id="content-inner" class="inner column center">
-
-          <?php if ($callout): ?>
-            <div id="callout">
-              <?php print $callout; ?>
-            </div> <!-- /#callout -->
-          <?php endif; ?>
 
           <?php if ($breadcrumb || $title || $mission || $messages || $help || $tabs || $notes): ?>
             <div id="content-header">
 
               <?php print $breadcrumb; ?>
-              
+
               <?php if ($content_top): ?>
                 <div id="content-top"><?php print $content_top; ?></div>
               <?php endif; ?>
@@ -80,11 +87,11 @@
               <?php print $messages; ?>
 
               <?php print $help; ?>
-              
+
               <?php if ($notes): ?>
                 <div id="notes"><?php print $notes; ?></div>
               <?php endif; ?>
-              
+
               <?php if ($preface): ?>
                 <div id="preface"><?php print $preface; ?></div>
               <?php endif; ?>
@@ -111,13 +118,6 @@
           </div>
         </div> <!-- /content-inner /content -->
 
-        <?php if (!empty($primary_links) || !empty($secondary_links)): ?>
-          <div id="navigation" class="menu <?php if (!empty($primary_links)) { print "with-main-menu"; } if (!empty($secondary_links)) { print " with-sub-menu"; } ?>">
-            <?php if (!empty($secondary_links)){ print theme('links', $secondary_links, array('id' => 'secondary', 'class' => 'links sub-menu')); } ?>
-            <?php if (!empty($primary_links)){ print theme('links', $primary_links, array('id' => 'primary', 'class' => 'links main-menu')); } ?>
-          </div> <!-- /navigation -->
-        <?php endif; ?>
-
         <?php if ($left): ?>
           <div id="sidebar-first" class="column sidebar first">
             <div id="sidebar-first-inner" class="inner">
@@ -140,9 +140,9 @@
 
       <?php if(!empty($footer_message) || !empty($footer) || !empty($footer_second)): ?>
         <div id="footer">
-          <?php print $footer; ?>
-          <?php print $footer_second; ?>
-          <?php print $footer_message; ?>
+          <div id="footer-first"><?php print $footer; ?></div><!-- /#footer-first -->
+          <div id="footer-second"><?php print $footer_second; ?></div><!-- /#footer-second -->
+          <div id="footer-message"><?php print $footer_message; ?></div><!-- /#footer-message -->
         </div> <!-- /footer -->
       <?php endif; ?>
 

@@ -38,6 +38,11 @@
   clear: both;
 }
 
+#callout {
+  height: 360px;
+  overflow:hidden;
+}
+
 /* Layout Helpers */
 
 #header, #footer, .mission, .breadcrumb, .node {
@@ -50,7 +55,7 @@
 *  values below corresponding to the sidebar you want to modify.
 *  Make sure you keep negative values as negative values.
 *  For example, if I want to increase the width of the left sidebar
-*  to 300px, I would have to change each '190' to '300'.
+*  to 300px, I would have to change each '300' to '300'.
 */
 
 .two-sidebars .center,
@@ -63,10 +68,10 @@
 }
 .two-sidebars .center,
 .sidebar-right .center {
-  margin-right: 190px;    /* RIGHT value */
+  margin-right: 300px;    /* RIGHT value */
 }
 #sidebar-second {
-  width: 190px;           /* RIGHT value */
+  width: 300px;           /* RIGHT value */
 }
 
 /** Columns inner
@@ -87,7 +92,6 @@
 */
 
 #navigation {
-  float: left;
   margin-left: 0;
   margin-right: -100%;
   padding: 0;
