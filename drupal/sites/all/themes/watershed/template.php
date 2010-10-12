@@ -171,6 +171,24 @@ function watershed_preprocess_node(&$vars, $hook) {
 
 function watershed_preprocess_block(&$vars, $hook) {
     $block = $vars['block'];
+    //dsm($block);
+
+    $subject = $block->subject;
+    switch( $block->module.'_'.$block->delta ) {
+      case 'menu_primary-links':
+        $subject = t('navigate');
+        break;
+      case 'follow_site':
+        $subject = t('stay in the loop');
+        break;
+      case 'boxes_customizable_footer':
+        $subject = 'about us';
+        break;
+      case 'search_0':
+        $subject = '<none>';
+        break;
+    }
+    $block->subject = $subject;
 
     // special block classes
     $classes = array('block');
