@@ -144,7 +144,7 @@
 
           <div class="first" id="footer-first"><?php print $footer_first; ?></div><!-- /#footer-first -->
           <div id="footer-second"><?php print $footer_second; ?></div><!-- /#footer-second -->
-          <div id="footer-third"><?php print $footer; ?></div><!-- /#footer-third -->
+          <div id="footer-third"><?php print $footer_third; ?></div><!-- /#footer-third -->
           <div class="last" id="footer-fourth"><?php print $footer_fourth; ?></div><!-- /#footer-fourth -->
 
           <div id="footer-message"><?php print $footer_message; ?></div><!-- /#footer-message -->
