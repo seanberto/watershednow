@@ -18,7 +18,18 @@ function wn_common_context_default_contexts() {
       ),
     ),
   );
-  $context->reactions = array();
+  $context->reactions = array(
+    'block' => array(
+      'blocks' => array(
+        'views-wn_homepage_callout-block_1' => array(
+          'module' => 'views',
+          'delta' => 'wn_homepage_callout-block_1',
+          'region' => 'callout',
+          'weight' => 0,
+        ),
+      ),
+    ),
+  );
   $context->condition_mode = 0;
 
   // Translatables
@@ -91,7 +102,25 @@ function wn_common_context_default_contexts() {
         'boxes-customizable_footer' => array(
           'module' => 'boxes',
           'delta' => 'customizable_footer',
-          'region' => 'footer',
+          'region' => 'footer_first',
+          'weight' => 0,
+        ),
+        'menu-primary-links' => array(
+          'module' => 'menu',
+          'delta' => 'primary-links',
+          'region' => 'footer_second',
+          'weight' => 0,
+        ),
+        'follow-site' => array(
+          'module' => 'follow',
+          'delta' => 'site',
+          'region' => 'footer_third',
+          'weight' => 0,
+        ),
+        'search-0' => array(
+          'module' => 'search',
+          'delta' => 0,
+          'region' => 'footer_fourth',
           'weight' => 0,
         ),
       ),

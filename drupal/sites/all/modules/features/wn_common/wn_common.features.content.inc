@@ -56,6 +56,11 @@ function wn_common_content_default_fields() {
       'progress_indicator' => 'bar',
       'max_filesize_per_file' => '',
       'max_filesize_per_node' => '',
+      'wn_hp_callout_desc' => NULL,
+      'wn_hp_callout_desc_help' => NULL,
+      'custom_wn_hp_callout_desc' => NULL,
+      'custom_wn_hp_callout_desc_style' => NULL,
+      'custom_wn_hp_callout_desc_required' => NULL,
       'filefield_sources' => array(
         'reference' => 'reference',
         'attach' => 0,
@@ -216,6 +221,11 @@ function wn_common_content_default_fields() {
       'title_type' => 'textfield',
       'default_image' => NULL,
       'use_default_image' => 0,
+      'wn_hp_callout_desc' => NULL,
+      'wn_hp_callout_desc_help' => NULL,
+      'custom_wn_hp_callout_desc' => NULL,
+      'custom_wn_hp_callout_desc_style' => NULL,
+      'custom_wn_hp_callout_desc_required' => NULL,
       'filefield_sources' => array(
         'reference' => 'reference',
         'attach' => 'attach',
