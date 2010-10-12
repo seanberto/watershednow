@@ -106,8 +106,30 @@
 }
 
 
+/* =Header
+------------- */
+/* search */
+#search-theme-form, #search-block-form {
+  height: 35px;
+  width: 160px;
+  position: relative;
+}
+
+#search-input input {
+  width:100%;
+  height:24px;
+  padding-left:10px;
+}
+
+#search-button {
+  position:absolute;
+  top:6px;
+  right:-10px; /* negative padding left of search input */
+}
+
+
 /*= Footer
---------------------------------- */
+------------- */
 #footer .block-title {
   font-size:125%;
   margin-bottom:0;
