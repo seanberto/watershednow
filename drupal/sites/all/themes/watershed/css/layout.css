@@ -108,12 +108,35 @@
 
 /*= Footer
 --------------------------------- */
+#footer .block-title {
+  font-size:125%;
+  margin-bottom:0;
+}
 #footer-first, #footer-second, #footer-third, #footer-fourth {
   width:23%;
   float:left;
   margin-right:1%;
 }
 
+#footer-first  { width:33%; }
+#footer-second { width:21%; }
+#footer-third  { width:15%; }
+#footer-fourth  { width:27%; }
+
 #footer-fourth {
   margin-right:0;
 }
+
+#footer .block-menu ul.menu {
+  margin:0;
+  padding:0;
+}
+#footer .block-menu li {
+  float:left;
+  width:48%;
+  margin:0;
+  padding:0;
+  list-style:none;
+}
+
+

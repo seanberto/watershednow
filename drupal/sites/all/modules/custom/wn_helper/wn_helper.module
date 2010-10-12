@@ -17,8 +17,9 @@ function wn_helper_theme() {
   $items = array();
 
   $items['wn_helper_follow_link'] = array(
-    'arguments' => array('link' => NULL, 'title' => NULL),
+    'arguments' => array('link' => NULL),
   );
+
 
   return $items;
 }
@@ -26,6 +27,7 @@ function wn_helper_theme() {
 function wn_helper_theme_registry_alter(&$theme_registry) {
   $theme_registry['follow_link']['function'] = 'wn_helper_follow_link';
 }
+
 
 /**
  * Implementation of hook_help().
@@ -88,8 +90,40 @@ function wn_helper_form_alter(&$form, $form_state, $form_id) {
 }
 
 
-function wn_helper_follow_link($link, $title) {
-  return theme('wn_helper_follow_link',$link,$title);
+function wn_helper_follow_link_tooltip_rss($title, $variables) {
+  if( empty($title) ) {
+    return t('Subscribe');
+  }
+  return t('Subscribe to @title', array('@title' => $title));
+}
+
+
+function wn_helper_follow_networks_alter(&$networks) {
+  $sites = &$networks[0]; //alias
+  $sites['feed'] = array(
+    'title' => t('RSS Feed'),
+    'domain' => '',
+    'regex callback' => 'follow_network_regex_external',
+    'tooltip callback' => 'wn_helper_follow_link_tooltip_rss'
+  );
+
+  $whitelist = array(
+    'facebook',
+    'feed',
+    'flickr',
+    'linkedin',
+    'myspace',
+    'twitter',
+  );
+  foreach( $sites as $k => $site ) {
+    if( !in_array($k, $whitelist) ) {
+      unset($sites[$k]);
+    }
+  }
+}
+
+function wn_helper_follow_link($link) {
+  return theme('wn_helper_follow_link',$link);
 }
 
 /**
@@ -99,19 +133,30 @@ function wn_helper_follow_link($link, $title) {
  *   A follow link object.
  * @param $title
  *   The translated title of the social network.
+ *
+ * @ingroup themable
  */
-function theme_wn_helper_follow_link($link, $title) {
+function theme_wn_helper_follow_link($variables) {
+  $link = $variables['link'];
+  $network = $variables['network'];
+  $title = !empty($link->title) ? $link->title : $network['title'];
+
+  // @see follow_link_tooltip().
+  $tooltip_callback = (isset($network['tooltip callback']) && function_exists($network['tooltip callback'])) ? $network['tooltip callback'] : 'follow_link_tooltip';
+  $tooltip = $tooltip_callback($title, $variables);
+
   $classes = array();
   $classes[] = 'follow-link';
   $classes[] = "follow-link-{$link->name}";
   $classes[] = $link->uid ? 'follow-link-user' : 'follow-link-site';
-  $attributes = drupal_attributes(array(
-    'class' => implode(' ', $classes),
-    'href' => $link->url,
-    'title' => follow_link_title($link->uid) .' '. $title,
-    'rel' => 'me external',
-    'target' => '_blank'
-  ));
 
-  return "<a$attributes>$title</a>\n";
+  $attributes = array(
+    'class' => implode(' ', $classes),
+    'rel' => 'me external',
+    'target' => '_blank',
+    'title' => $tooltip,
+  );
+  $link->options['attributes'] = $attributes;
+
+  return l($title, $link->path, $link->options) . "\n";
 }

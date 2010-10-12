@@ -150,7 +150,6 @@
           <div id="footer-message"><?php print $footer_message; ?></div><!-- /#footer-message -->
         </div> <!-- /footer -->
       <?php endif; ?>
-
     </div> <!-- /page -->
     <?php print $closure; ?>
   </body>

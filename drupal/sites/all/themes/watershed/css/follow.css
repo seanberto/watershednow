@@ -1,0 +1,29 @@
+/* KEEP THESE STYLES IN follow.css to override default module css */
+#block-follow-site li { float:left; }
+
+.follow-links a {
+  float:left; 
+  width:32px;
+  height:32px;
+  margin:0 6px 6px 0;
+  padding:0;
+  overflow:hidden;
+  text-indent:-9999px;
+  background:url(../images/social_icons.gif) no-repeat 0 0;
+}
+
+a.follow-link-facebook { background-position:0 0;}
+a.follow-link-twitter  { background-position:-32px 0; }
+a.follow-link-flickr   { background-position:-64px 0; }
+a.follow-link-linkedin { background-position:-96px 0; }
+a.follow-link-feed     { background-position:-128px 0; }
+a.follow-link-this-site     { background-position:-128px 0; }
+a.follow-link-myspace  { background-position:-160px 0; }
+
+a.follow-link-facebook:hover { background-position:0 100%;}
+a.follow-link-twitter:hover  { background-position:-32px 100%; }
+a.follow-link-flickr:hover   { background-position:-64px 100%; }
+a.follow-link-linkedin:hover { background-position:-96px 100%; }
+a.follow-link-feed:hover     { background-position:-128px 100%; }
+a.follow-link-this-site:hover     { background-position:-128px 100%; }
+a.follow-link-myspace:hover  { background-position:-160px 100%; }
