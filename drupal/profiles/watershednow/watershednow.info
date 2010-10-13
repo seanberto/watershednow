@@ -18,99 +18,104 @@ theme = watershed
 ; MODULES
 ; (Note: that module dependencies will be automatically enabled.)
 
-; Core
-dependencies[] = comment
-dependencies[] = contact
-dependencies[] = help
+; Modules needed for install hook
 dependencies[] = menu
-dependencies[] = path
-dependencies[] = search
-dependencies[] = taxonomy
-dependencies[] = update
-
-;Admin
-dependencies[] = admin_menu
-
-; Views
-dependencies[] = views_ui
-dependencies[] = views_calc
-dependencies[] = draggableviews
-dependencies[] = web_widgets
-
-; Features Related Tools
-dependencies[] = ctools
-dependencies[] = context
-dependencies[] = context_ui
-dependencies[] = features
-dependencies[] = strongarm
-dependencies[] = boxes
-
-; Image Management
-dependencies[] = imageapi_gd
-dependencies[] = imagecache
-
-; CCK
-dependencies[] = number
-dependencies[] = text
-dependencies[] = filefield
-dependencies[] = imagefield
-dependencies[] = emfield
-dependencies[] = emvideo
-dependencies[] = media_flickr
-dependencies[] = link
-dependencies[] = optionwidgets
-dependencies[] = nodereference
-
-; Date
-dependencies[] = date_api
-dependencies[] = date
-dependencies[] = date_popup
-dependencies[] = date_timezone
-
-; Other
-dependencies[] = advanced_help
-dependencies[] = logintoboggan
-dependencies[] = menu_block
-dependencies[] = pathauto
-dependencies[] = token
-dependencies[] = transliteration
-dependencies[] = googleanalytics
-
-; User interface and WYSIWYG
-dependencies[] = better_formats
-dependencies[] = insert
-dependencies[] = filefield_sources
-dependencies[] = jquery_ui
-dependencies[] = webform
 dependencies[] = wysiwyg
 dependencies[] = wysiwyg_imagefield
+dependencies[] = better_formats
+
+; Core
+modules[core][] = comment
+modules[core][] = contact
+modules[core][] = help
+modules[core][] = menu
+modules[core][] = path
+modules[core][] = search
+modules[core][] = taxonomy
+modules[core][] = update
+
+;Admin
+modules[contrib][] = admin_menu
+
+; Views
+modules[contrib][] = views
+modules[contrib][] = views_calc
+modules[contrib][] = draggableviews
+modules[contrib][] = web_widgets
+
+; Features Related Tools
+modules[contrib][] = ctools
+modules[contrib][] = context
+modules[contrib][] = context_ui
+modules[contrib][] = features
+modules[contrib][] = strongarm
+modules[contrib][] = boxes
+
+; Image Management
+modules[contrib][] = imageapi_gd
+modules[contrib][] = imagecache
+
+; CCK
+modules[contrib][] = number
+modules[contrib][] = text
+modules[contrib][] = filefield
+modules[contrib][] = imagefield
+modules[contrib][] = emfield
+modules[contrib][] = emvideo
+modules[contrib][] = media_flickr
+modules[contrib][] = link
+modules[contrib][] = optionwidgets
+modules[contrib][] = nodereference
+
+; Date
+modules[contrib][] = date_api
+modules[contrib][] = date
+modules[contrib][] = date_popup
+modules[contrib][] = date_timezone
+
+; Other
+modules[contrib][] = advanced_help
+modules[contrib][] = logintoboggan
+modules[contrib][] = menu_block
+modules[contrib][] = pathauto
+modules[contrib][] = token
+modules[contrib][] = transliteration
+modules[contrib][] = googleanalytics
+
+; User interface and WYSIWYG
+modules[contrib][] = better_formats
+modules[contrib][] = insert
+modules[contrib][] = filefield_sources
+modules[contrib][] = jquery_ui
+modules[contrib][] = webform
+modules[contrib][] = wysiwyg
+modules[contrib][] = wysiwyg_imagefield
 
 ; Donation tools
-dependencies[] = simple_payments
-dependencies[] = simple_payments_paypal
-dependencies[] = simple_donations
+modules[contrib][] = simple_payments
+modules[contrib][] = simple_payments_paypal
+modules[contrib][] = simple_donations
 
 ; Event Sigups
-dependencies[] = signup
+modules[contrib][] = signup
 
 ; Open Layers
-dependencies[] = openlayers_cck
-dependencies[] = openlayers_views
-dependencies[] = openlayers_geocoder
+modules[contrib][] = openlayers
+modules[contrib][] = openlayers_cck
+modules[contrib][] = openlayers_views
+modules[contrib][] = openlayers_geocoder
 
 ; Customizations
-dependencies[] = wn_helper
-dependencies[] = wn_hp_callout
+modules[contrib][] = wn_helper
 
 ; Social Integration
 ; allows admins to add social network links that are reorderable.
-dependencies[] = follow
+modules[contrib][] = follow
 
 ; Watershed Now Features
-dependencies[] = wn_common
-dependencies[] = wn_blog
-dependencies[] = wn_getinvolved
-dependencies[] = wn_multimedia
-dependencies[] = wn_map
-
-; ----------------------------------------------
+features[] = wn_hp_callout
+features[] = wn_common
+features[] = wn_blog
+features[] = wn_getinvolved
+features[] = wn_multimedia
+features[] = wn_map
