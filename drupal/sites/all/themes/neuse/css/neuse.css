@@ -1,0 +1,22 @@
+body { background:#515151 url(../images/bg.jpg) 0 0 repeat; }
+#main { background:#fff; }
+#page { margin-top:40px; }
+#footer .block-title { color:#00B8E0; }
+#footer {
+  background:#000;
+  color:#fff;
+  padding:40px 20px 20px 20px;
+  margin-bottom:40px;
+}
+
+#footer a {
+  color:#fff;
+}
+
+.sidebar-right #content-inner {
+  background:url(../images/sidebar_border.gif) repeat-y 100% 0;
+  margin-top:20px;
+  margin-bottom:20px;
+}
+
+#sidebar-second #sidebar-second-inner { margin:40px 40px 40px 20px; }

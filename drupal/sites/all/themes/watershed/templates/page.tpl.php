@@ -139,7 +139,7 @@
       <!-- ______________________ FOOTER _______________________ -->
 
       <?php if(!empty($footer_message) || !empty($footer) || !empty($footer_second)): ?>
-        <div id="footer">
+        <div id="footer" class="clear-block">
           <?php print $footer; ?>
 
           <div class="first" id="footer-first"><?php print $footer_first; ?></div><!-- /#footer-first -->

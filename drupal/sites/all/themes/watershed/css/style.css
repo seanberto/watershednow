@@ -168,6 +168,10 @@ input#edit-search-theme-form-1 {
   font-size: 1.2em;
 }
 
+/* Block */
+h3.block-title { margin-bottom:.25em; }
+.block { margin-bottom:1em; }
+
 /* Donation widget styles */
 .simple-donations {
 /*  float: right;

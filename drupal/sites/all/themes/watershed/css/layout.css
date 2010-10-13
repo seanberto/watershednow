@@ -27,6 +27,8 @@
   margin-right: -100%;
   padding: 0;
 }
+#content-area { margin:0 40px; }
+
 .sidebar {
   float: left;
 }
@@ -34,7 +36,6 @@
   float: right;
 }
 #footer {
-  float: none;
   clear: both;
 }
 
@@ -73,6 +74,8 @@
 #sidebar-second {
   width: 300px;           /* RIGHT value */
 }
+
+#content-inner { padding:0 40px 40px 40px; }
 
 /** Columns inner
 ---------------------------------
