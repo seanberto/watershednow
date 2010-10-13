@@ -13,10 +13,22 @@ body { background:#515151 url(../images/bg.jpg) 0 0 repeat; }
   color:#fff;
 }
 
+
+/*= Sidebar 
+-----------------*/
+.sidebar .block-title {
+  background:#000;
+  color:#00B8E0;
+  text-transform:lowercase;
+}
+
 .sidebar-right #content-inner {
   background:url(../images/sidebar_border.gif) repeat-y 100% 0;
   margin-top:20px;
   margin-bottom:20px;
 }
 
-#sidebar-second #sidebar-second-inner { margin:40px 40px 40px 20px; }
+#sidebar-second #sidebar-second-inner {
+  margin:40px 40px 40px 20px;
+}
+
