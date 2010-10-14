@@ -119,3 +119,13 @@ features[] = wn_blog
 features[] = wn_getinvolved
 features[] = wn_multimedia
 features[] = wn_map
+
+; Set up admin user.
+users[superduper][uid] = 1
+users[superduper][name] = admin
+users[superduper][mail] = sean@thinkshout.com
+users[superduper][status] = 1
+
+; Set up required site config
+variables[site_name] = Watershed Now Example
+variables[site_mail] = sean@thinkshout.com
