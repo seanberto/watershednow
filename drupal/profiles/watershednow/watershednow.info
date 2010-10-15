@@ -16,7 +16,7 @@ theme = watershed
 ; this will result in an error. This is an issue with drupal_parse_info_file()
 
 ; MODULES
-; (Note: that module dependencies will be automatically enabled.)
+; (Note: that module dependencies will /not/ be automatically enabled.)
 
 ; Modules needed for install hook
 modules[contrib][] = menu
@@ -56,6 +56,7 @@ modules[contrib][] = imageapi_gd
 modules[contrib][] = imagecache
 
 ; CCK
+modules[contrib][] = content
 modules[contrib][] = number
 modules[contrib][] = text
 modules[contrib][] = filefield
@@ -126,6 +127,11 @@ users[superduper][name] = admin
 users[superduper][mail] = sean@thinkshout.com
 users[superduper][status] = 1
 
+nodes[hello][type] = update
+nodes[hello][title] = Hello world!
+nodes[hello][body] = Lorem ipsum dolor sit amet...
+nodes[hello][uid] = 0
+
 ; Set up required site config
-variables[site_name] = Watershed Now Example
+variables[site_name] = Watershed Now Blah
 variables[site_mail] = sean@thinkshout.com
