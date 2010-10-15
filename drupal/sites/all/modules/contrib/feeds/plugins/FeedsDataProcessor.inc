@@ -1,5 +1,5 @@
 <?php
-// $Id: FeedsDataProcessor.inc,v 1.24 2010/09/15 19:27:42 alexb Exp $
+// $Id: FeedsDataProcessor.inc,v 1.24.2.1 2010/09/21 13:28:53 alexb Exp $
 
 /**
  * @file
@@ -266,7 +266,7 @@ class FeedsDataProcessor extends FeedsProcessor {
     if ($this->config['expire'] != $values['expire']) {
       feeds_reschedule($this->id);
     }
-    parent::configFormSubmit(&$values);
+    parent::configFormSubmit($values);
   }
 
   /**

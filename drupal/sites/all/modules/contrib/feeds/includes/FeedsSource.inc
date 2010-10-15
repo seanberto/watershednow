@@ -1,5 +1,5 @@
 <?php
-// $Id: FeedsSource.inc,v 1.21 2010/09/15 20:06:20 alexb Exp $
+// $Id: FeedsSource.inc,v 1.21.2.1 2010/09/26 17:39:45 alexb Exp $
 
 /**
  * @file
@@ -301,6 +301,7 @@ class FeedsSource extends FeedsConfigurable {
       $this->importer->existing();
       return parent::existing();
     }
+    throw new FeedsNotExistingException(t('Source configuration not valid.'));
   }
 
   /**

@@ -1,5 +1,5 @@
 <?php
-// $Id: feeds.module,v 1.55 2010/09/15 19:27:42 alexb Exp $
+// $Id: feeds.module,v 1.55.2.2 2010/09/26 17:39:45 alexb Exp $
 
 /**
  * @file
@@ -66,6 +66,7 @@ function feeds_source_import($job) {
   try {
     $source->existing()->import();
   }
+  catch (FeedsNotExistingException $e) {}
   catch (Exception $e) {
     watchdog('feeds_source_import()', $e->getMessage(), array(), WATCHDOG_ERROR);
   }
@@ -80,6 +81,7 @@ function feeds_importer_expire($job) {
   try {
     $importer->existing()->expire();
   }
+  catch (FeedsNotExistingException $e) {}
   catch (Exception $e) {
     watchdog('feeds_importer_expire()', $e->getMessage(), array(), WATCHDOG_ERROR);
   }
@@ -89,9 +91,9 @@ function feeds_importer_expire($job) {
 /**
  * Reschedule one or all importers.
  *
- * Note: feeds_reschedule() is used in update hook feeds_update_6012() and as
- * such must be maintained as part of the upgrade path from pre 6.x 1.0 beta 6
- * versions of Feeds.
+ * Note: variable_set('feeds_reschedule', TRUE) is used in update hook
+ * feeds_update_6013() and as such must be maintained as part of the upgrade
+ * path from pre 6.x 1.0 beta 6 versions of Feeds.
  *
  * @param $importer_id
  *   If TRUE, all importers will be rescheduled, if FALSE, no importers will

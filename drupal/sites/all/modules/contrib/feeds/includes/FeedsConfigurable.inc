@@ -1,5 +1,5 @@
 <?php
-// $Id: FeedsConfigurable.inc,v 1.14 2010/09/12 02:16:45 alexb Exp $
+// $Id: FeedsConfigurable.inc,v 1.14.2.1 2010/09/25 17:26:16 alexb Exp $
 
 /**
  * @file
@@ -124,7 +124,7 @@ abstract class FeedsConfigurable {
    *   returned by configDefaults().
    */
   public function addConfig($config) {
-    $this->config = array_merge($this->config, $config);
+    $this->config = is_array($this->config) ? array_merge($this->config, $config) : $config;
     $default_keys = $this->configDefaults();
     $this->config = array_intersect_key($this->config, $default_keys);
   }

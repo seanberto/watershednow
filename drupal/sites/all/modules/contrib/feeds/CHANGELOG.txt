@@ -1,4 +1,21 @@
-// $Id: CHANGELOG.txt,v 1.173.2.3 2010/09/17 19:36:44 alexb Exp $
+// $Id: CHANGELOG.txt,v 1.173.2.11 2010/09/26 17:39:45 alexb Exp $
+
+Feeds 6.x 1.0 XXXXXXXXXXXXXXXXXX
+--------------------------------
+
+- #923318 alex_b: Fix "Fatal error: Call to a member function import() on a
+  non-object" occuring on cron.
+
+Feeds 6.x 1.0 Beta 8, 2010-09-25
+--------------------------------
+
+- #625196 mstrelan, alex_b: Fix array_merge(), array_intersect_key() warnings.
+- #831470 infojunkie, alex_b: Fix Import fails due to dates not converted
+  correctly.
+- #916962 alex_b: Fix undefined feeds_reschedule() when upgrading.
+- #919172 andrewlevine, alex_b: Fix enclosure source files deleted.
+- Fix emfield mapper not handling single values properly.
+- Fix emfield mapper not accepting FeedsElement objects.
 
 Feeds 6.x 1.0 Beta 7, 2010-09-17
 --------------------------------

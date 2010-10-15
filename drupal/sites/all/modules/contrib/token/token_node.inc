@@ -1,5 +1,5 @@
 <?php
-// $Id: token_node.inc,v 1.5.4.30 2010/07/24 20:25:04 davereid Exp $
+// $Id: token_node.inc,v 1.5.4.31 2010/09/24 22:47:29 greggles Exp $
 
 /**
  * @file
@@ -79,8 +79,8 @@ function node_token_values($type, $object = NULL, $options = array()) {
           $trail[] = check_plain($title);
         }
 
-        $values['menupath']            = implode('/', $trail);
-        $values['menupath-raw']        = implode('/', $trail_raw);
+        $values['menupath']            = !empty($options['pathauto']) ? $trail : implode('/', $trail);
+        $values['menupath-raw']        = !empty($options['pathauto']) ? $trail_raw : implode('/', $trail_raw);
         $values['menu']                = check_plain($menu);
         $values['menu-raw']            = $menu;
         $values['menu-link-title']     = check_plain($menu_link['title']);
@@ -294,8 +294,8 @@ function book_token_values($type, $object = NULL, $options = array()) {
       $tokens['book'] = $book;
       $tokens['book-raw'] = $book_raw;
       $tokens['book_id'] = $node->book['bid'];
-      $tokens['bookpath'] = implode('/', $trail);
-      $tokens['bookpath-raw'] = implode('/', $trail_raw);
+      $tokens['bookpath'] = !empty($options['pathauto']) ? $trail : implode('/', $trail);
+      $tokens['bookpath-raw'] = !empty($options['pathauto']) ? $trail_raw : implode('/', $trail_raw);
     }
 
     return $tokens;

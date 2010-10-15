@@ -3,9 +3,9 @@ name = Token
 description = Provides a shared API for replacement of textual placeholders with actual data.
 core = 6.x
 
-; Information added by drupal.org packaging script on 2010-08-11
-version = "6.x-1.14"
+; Information added by drupal.org packaging script on 2010-10-07
+version = "6.x-1.15"
 core = "6.x"
 project = "token"
-datestamp = "1281549693"
+datestamp = "1286469963"
 

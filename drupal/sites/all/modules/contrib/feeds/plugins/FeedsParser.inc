@@ -1,5 +1,5 @@
 <?php
-// $Id: FeedsParser.inc,v 1.22 2010/09/15 16:44:50 alexb Exp $
+// $Id: FeedsParser.inc,v 1.22.2.2 2010/09/25 16:47:01 alexb Exp $
 
 /**
  * Abstract class, defines interface for parsers.
@@ -197,18 +197,28 @@ class FeedsEnclosure extends FeedsElement {
   protected $file;
 
   /**
+   * Delete flag, denoting whether a file should be deleted when this object
+   * is destroyed.
+   *
+   * @see __destruct()
+   * @see getFile()
+   */
+  protected $delete_file;
+
+  /**
    * Constructor, requires MIME type.
    */
   public function __construct($value, $mime_type) {
     parent::__construct($value);
     $this->mime_type = $mime_type;
+    $this->delete_file = FALSE;
   }
 
   /**
    * Destructor, clean up any temporary files.
    */
   public function __destruct() {
-    if (!empty($this->file)) {
+    if (!empty($this->file) && $this->delete_file) {
       file_delete($this->file);
     }
   }
@@ -236,9 +246,10 @@ class FeedsEnclosure extends FeedsElement {
 
   /**
    * @return
-   *   A temporary file path to the downloaded resource referenced by the
-   *   enclosure. Downloads resource if not downloaded yet. The file path is
-   *   valid for the time of the page load.
+   *   A path pointing to a file containing the resource referenced by the
+   *   enclosure. This method downloads the resource if it is not local. The
+   *   file path must be considered temporary and is only valid for the current
+   *   page load.
    *
    * @todo Get file extension from mime_type.
    * @todo This is not concurrency safe.
@@ -270,6 +281,7 @@ class FeedsEnclosure extends FeedsElement {
       if ($this->file === 0) {
         throw new Exception(t('Cannot write content to %dest', array('%dest' => $dest)));
       }
+      $this->delete_file = TRUE;
     }
     return $this->file;
   }
@@ -475,19 +487,33 @@ class FeedsDateTime extends DateTime {
    *   PHP DateTimeZone object, NULL allowed
    */
   public function __construct($time = '', $tz = NULL) {
+    // Assume UNIX timestamp if numeric.
     if (is_numeric($time)) {
-      // Assume timestamp.
       $time = "@". $time;
     }
+
     // PHP < 5.3 doesn't like the GMT- notation for parsing timezones.
     $time = str_replace("GMT-", "-", $time);
     $time = str_replace("GMT+", "+", $time);
-    parent::__construct($time, $tz ? $tz : new DateTimeZone("UTC"));
-    $this->setGranularityFromTime($time, $tz);
+
+    // Some PHP 5.2 version's DateTime class chokes on invalid dates.
+    if (!strtotime($time)) {
+      $time = 'now';
+    }
+
+    // Create and set time zone separately, PHP 5.2.6 does not respect time zone
+    // argument in __construct().
+    parent::__construct($time);
+    $tz = $tz ? $tz : new DateTimeZone("UTC");
+    $this->setTimeZone($tz);
+
+    // Verify that timezone has not been specified as an offset.
     if (!preg_match('/[a-zA-Z]/', $this->getTimezone()->getName())) {
-      // This tz was given as just an offset, which causes problems
       $this->setTimezone(new DateTimeZone("UTC"));
     }
+
+    // Finally set granularity.
+    $this->setGranularityFromTime($time, $tz);
   }
 
   /**

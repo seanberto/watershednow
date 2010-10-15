@@ -1,5 +1,5 @@
 <?php
-// $Id: feeds.install,v 1.13 2010/09/16 18:46:38 alexb Exp $
+// $Id: feeds.install,v 1.13.2.1 2010/09/25 16:07:50 alexb Exp $
 
 /**
  * @file
@@ -537,7 +537,7 @@ function feeds_update_6011() {
 }
 
 /**
- * Drop schedule table and reschedule all tasks, install Job Scheduler module.
+ * Drop schedule table install Job Scheduler module.
  */
 function feeds_update_6012() {
   $ret = array();
@@ -554,6 +554,16 @@ function feeds_update_6012() {
     drupal_set_message(t('NOTE: Please install new dependency of Feeds: !job_scheduler module.', array('!job_scheduler' => l(t('Job Scheduler'), 'http://drupal.org/project/job_scheduler'))), 'warning');
   }
   db_drop_table($ret, 'feeds_schedule');
-  feeds_reschedule(TRUE);
   return $ret;
+}
+
+/**
+ * Reschedule all tasks.
+ */
+function feeds_update_6013() {
+  // This was originally part of 6012 upgrade, but failed due to usage of
+  // API functions residing in feeds.module. Make sure it runs again for all
+  // users of Feeds.
+  variable_set('feeds_reschedule', TRUE);
+  return array();
 }
