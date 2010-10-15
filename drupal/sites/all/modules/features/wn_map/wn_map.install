@@ -52,7 +52,7 @@ function wn_map_enable() {
     }
   }
   else { // If vocab doesn't exist, create it and get its VID. Then, add new terms.
-    taxonomy_save_vocabulary(&$vocabulary);
+    taxonomy_save_vocabulary($vocabulary);
     $vid = db_result(db_query_range("SELECT vid FROM {vocabulary} WHERE name = '%s'", $vocabulary['name'], 0, 1));
     foreach ($terms as $term) {
       $taxonomy = array('name' => $term, 'vid' => $vid);
