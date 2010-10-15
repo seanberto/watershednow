@@ -19,10 +19,10 @@ theme = watershed
 ; (Note: that module dependencies will be automatically enabled.)
 
 ; Modules needed for install hook
-dependencies[] = menu
-dependencies[] = wysiwyg
-dependencies[] = wysiwyg_imagefield
-dependencies[] = better_formats
+modules[contrib][] = menu
+modules[contrib][] = wysiwyg
+modules[contrib][] = wysiwyg_imagefield
+modules[contrib][] = better_formats
 
 ; Core
 modules[core][] = comment

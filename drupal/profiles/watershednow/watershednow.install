@@ -9,7 +9,7 @@
 /**
  * Implementation of hook_install().
  */
-function watershednow_install() {
+function _watershednow_install() {
 
 	// Leverage Install Profile API to create roles and perms.
 	require_once('libraries/install_profile_api/core/user.inc');
@@ -97,10 +97,6 @@ function watershednow_install() {
 	db_query("UPDATE {system} SET status = 1 WHERE type = 'theme' and name ='%s'", 'rubik');
 	variable_set('admin_theme', 'seven'); // set the admin theme to Rubik
 	variable_set('node_admin_theme', 1); // Use the admin theme for content editing
-}
-
-function _watershed_module_install_finished($success, $results) {
-  variable_set('install_task', 'watershednow-configure');
 }
 
 /*
