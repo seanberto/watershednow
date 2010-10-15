@@ -2,14 +2,12 @@
 
 /**
  * Now that we've installed a bunch of modules, let's capture some other config, create some roles,
- * set up some permissions, etc. NOTE: More ond more of what's stuff into this hook_install() is
- * abstractable with Profiler module. So, we need to remember to come back and prune sometimes.
+ * set up some permissions, etc.
+ *
+ * NOTE: More ond more of what's stuff into this hook_install() is abstractable with Profiler module.
+ * So, we need to remember to come back and prune sometimes.
  */
-
-/**
- * Implementation of hook_install().
- */
-function _watershednow_install() {
+function _watershednow_configure() {
 
 	// Leverage Install Profile API to create roles and perms.
 	require_once('libraries/install_profile_api/core/user.inc');

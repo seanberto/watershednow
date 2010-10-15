@@ -124,7 +124,7 @@ features[] = wn_map
 ; Set up admin user.
 users[superduper][uid] = 1
 users[superduper][name] = admin
-users[superduper][mail] = sean@thinkshout.com
+users[superduper][mail] = admin@example.com
 users[superduper][status] = 1
 
 nodes[hello][type] = update
@@ -133,5 +133,5 @@ nodes[hello][body] = Lorem ipsum dolor sit amet...
 nodes[hello][uid] = 0
 
 ; Set up required site config
-variables[site_name] = Watershed Now Blah
-variables[site_mail] = sean@thinkshout.com
+variables[site_name] = Watershed Now
+variables[site_mail] = admin@example.com

@@ -1,30 +1,51 @@
 <?php
+/**
+ * ## Install Workflow
+ * 1. User is asked what profile they would like, user picks Watershed Now
+ * 2. Dependencies are loaded, user puts in database credentials
+ * 3. Dependencies are installed
+ * 4. profiler_profile_tasks (in profiler_api.inc) is called and the following is done:
+ *     1. all db blocks are disabled
+ *     2. profiler components are run
+ *     3. hook_install() is run
+ *     4. menu_rebuild();
+ *     5. module_rebuild_cache(); to detect the newly added bootstrap modules
+ *     6. node_access_rebuild();
+ *     7. drupal_get_schema('system', TRUE); // Clear schema DB cache
+ *     8. drupal_flush_all_caches();
+ *     9. profiler_install_configure($config);
+ * 5. All modules specified in the watershednow.info are installed.
+ * 6. _watershednow_configure() is called
+ */
+
+require_once('watershednow.inc.php');
+$path = dirname(__FILE__).'/';
+require_once( $path . 'libraries/profiler/profiler.inc');
+require_once( $path . 'libraries/profiler/profiler_api.inc');
+require_once( $path . 'libraries/profiler/profiler_module.inc');
 
 // Bootstrap Profiler module. See: http:drupal.org/project/profiler for more info.
-!function_exists('profiler_v2') ? require_once('libraries/profiler/profiler.inc') : FALSE;
 profiler_v2('watershednow');
-
 
 function watershednow_profile_tasks(&$task, $url) {
 
   if ( $task == 'profile' ) {
+    profiler_profile_tasks(profiler_v2_load_config('watershednow'), $task, $url);
     _watershednow_profile_task_profile($task, $url);
   }
 
   if( $task == 'watershednow-configure' ) {
-    require_once('watershednow.install');
-    _watershednow_install();
+    _watershednow_configure();
     $task = 'profile-finished'; //hand control back to the installer
   }
   return '';
 }
 
 function _watershednow_profile_task_profile(&$task, $url) {
-  require_once(dirname(__FILE__).'/libraries/profiler/profiler_module.inc');
   $config = profiler_v2_load_config('watershednow');
   $modules = array_merge($config['modules']['core'], $config['modules']['contrib'], $config['features']);
 
-  $files = profiler_module_rebuild_cache();
+  $files = module_rebuild_cache();
   $operations = array();
 
   foreach ($modules as $module) {
