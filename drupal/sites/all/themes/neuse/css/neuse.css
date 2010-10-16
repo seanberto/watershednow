@@ -1,6 +1,17 @@
 body { background:#5c5c5c url(../images/bg2.jpg) 0 -300px no-repeat; }
 #main { background:#fff; }
 #page { margin-top:40px; }
+
+/*= Header
+-----------------*/
+#slogan {
+  margin-left:70px;
+  font-style:italic;
+}
+
+
+/*= Footer
+-----------------*/
 #footer .block-title { color:#00B8E0; }
 #footer {
   background:#000;

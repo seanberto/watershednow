@@ -77,7 +77,6 @@ function wn_helper_form_alter(&$form, $form_state, $form_id) {
     // Allow for custom page title on site front page
       $form['site_name']['#title'] = 'Website Name';
       $form['site_name']['#description'] = 'The name of this website - Generally recommended to be your organization\'s name.';
-      $form['site_slogan']['#access'] = FALSE;
       $form['anonymous']['#access'] = FALSE;
 
       //add newsletter textarea to site information form

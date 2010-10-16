@@ -27,6 +27,7 @@
                <img src="<?php print $logo; ?>" alt="<?php print $site_name ?>"/>
               </a>
             </h1>
+            <span id="slogan"><?php print $site_slogan ?></span>
           <?php endif; ?>
         </div> <!-- /name-and-slogan -->
       </div> <!-- /logo-title -->

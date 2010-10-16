@@ -24,7 +24,6 @@ if (theme_get_setting('watershed_wireframe')) {
  *	  The name of the theme function being called ("page" in this case.)
  */
 function watershed_preprocess_page(&$vars, $hook) {
-
   // Don't display empty help from node_help().
   if ($vars['help'] == '<div class="help"><p></p>\n</div>') {
     $vars['help'] = '';
