@@ -24,14 +24,13 @@ if (theme_get_setting('watershed_wireframe')) {
  *	  The name of the theme function being called ("page" in this case.)
  */
 function watershed_preprocess_page(&$vars, $hook) {
-
   // Don't display empty help from node_help().
   if ($vars['help'] == '<div class="help"><p></p>\n</div>') {
     $vars['help'] = '';
   }
 
-  //add mission to all pages
-  $vars['mission'] = variable_get('site_mission', '');
+  $vars['mission'] = variable_get('site_mission', '');  //add mission to all pages
+  $vars['newsletter'] = variable_get('site_newsletter', '');
 
   // theme the mission statement similar to a block
   if( !empty($vars['mission']) ) {
