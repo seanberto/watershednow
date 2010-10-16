@@ -125,7 +125,7 @@ features[] = wn_common
 features[] = wn_hp_callout
 features[] = wn_blog
 features[] = wn_getinvolved
-features[] = wn_multimedia
+features[] = wn_takeaction
 features[] = wn_map
 
 ; ----------------------------------------------
