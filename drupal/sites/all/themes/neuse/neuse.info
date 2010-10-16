@@ -17,8 +17,6 @@ regions[content_bottom] = Content bottom
 ; We use regions[footer] for first footer b/c most themes use this region.
 regions[footer_first] = First footer
 regions[footer_second] = Second footer
-regions[footer_third] = Third footer
-regions[footer_fourth] = Fourth footer
 regions[footer] = Footer
 
 features[] = logo

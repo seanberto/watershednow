@@ -99,12 +99,6 @@ function wn_common_context_default_contexts() {
           'region' => 'right',
           'weight' => 0,
         ),
-        'boxes-customizable_footer' => array(
-          'module' => 'boxes',
-          'delta' => 'customizable_footer',
-          'region' => 'footer_first',
-          'weight' => 0,
-        ),
         'menu-primary-links' => array(
           'module' => 'menu',
           'delta' => 'primary-links',
@@ -114,14 +108,8 @@ function wn_common_context_default_contexts() {
         'follow-site' => array(
           'module' => 'follow',
           'delta' => 'site',
-          'region' => 'footer_third',
-          'weight' => 0,
-        ),
-        'search-0' => array(
-          'module' => 'search',
-          'delta' => 0,
-          'region' => 'footer_fourth',
-          'weight' => 0,
+          'region' => 'footer_second',
+          'weight' => 1,
         ),
       ),
     ),

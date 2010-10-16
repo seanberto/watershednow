@@ -33,6 +33,23 @@ function watershed_preprocess_page(&$vars, $hook) {
   //add mission to all pages
   $vars['mission'] = variable_get('site_mission', '');
 
+  // theme the mission statement similar to a block
+  if( !empty($vars['mission']) ) {
+    $vars['mission'] = theme('block',(object)array(
+      'subject' => 'about us',
+      'delta' => 'mission',
+      'content' => $vars['mission']
+    ));
+  }
+
+  if( !empty($vars['search_box']) ) {
+    $vars['search_box'] = theme('block',(object)array(
+      'subject' => 'search',
+      'delta' => 'search',
+      'content' => $vars['search_box']
+    ));
+  }
+
   // Classes for body element. Allows advanced theming based on context
   // (home page, node of certain type, etc.)
   $body_classes = array($vars['body_classes']);

@@ -62,7 +62,7 @@
       <div id="content">
         <div id="content-inner" class="inner column center">
 
-          <?php if ($breadcrumb || $title || $mission || $messages || $help || $tabs || $notes): ?>
+          <?php if ($breadcrumb || $title || $messages || $help || $tabs || $notes): ?>
             <div id="content-header">
 
               <?php print $breadcrumb; ?>
@@ -73,10 +73,6 @@
 
               <?php if ($title): ?>
                 <h1 class="title"><?php print $title; ?></h1>
-              <?php endif; ?>
-
-              <?php if ($mission): ?>
-                <div id="mission"><?php print $mission; ?></div>
               <?php endif; ?>
 
               <?php print $messages; ?>
@@ -136,12 +132,12 @@
       <?php if(!empty($footer_message) || !empty($footer) || !empty($footer_second)): ?>
         <div id="footer" class="clear-block">
           <?php print $footer; ?>
-
-          <div class="first" id="footer-first"><?php print $footer_first; ?></div><!-- /#footer-first -->
-          <div id="footer-second"><?php print $footer_second; ?></div><!-- /#footer-second -->
-          <div id="footer-third"><?php print $footer_third; ?></div><!-- /#footer-third -->
-          <div class="last" id="footer-fourth"><?php print $footer_fourth; ?></div><!-- /#footer-fourth -->
-
+          <div id="footer-first"><?php print $footer_first; ?></div><!-- /#footer-first -->
+          <div id="footer-second">
+            <?php print $mission ?>
+            <?php print $footer_second; ?>
+            <?php print $search_box; ?>
+          </div><!-- /#footer-second -->
           <div id="footer-message"><?php print $footer_message; ?></div><!-- /#footer-message -->
         </div> <!-- /footer -->
       <?php endif; ?>

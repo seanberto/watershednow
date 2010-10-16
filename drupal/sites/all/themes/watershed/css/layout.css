@@ -135,10 +135,7 @@
 #search-theme-form, #search-block-form {
   height: 35px;
   width: 160px;
-  position:absolute;
-  right:30px;
-  bottom:-3px;
-  
+  position:relative;
 }
 
 #search-input input {
@@ -156,24 +153,20 @@
 
 /*= Footer
 ------------- */
-#footer .block-title {
+#footer-message { clear:both; }
+#footer-second .block-title {
   font-size:125%;
   margin-bottom:0;
 }
-#footer-first, #footer-second, #footer-third, #footer-fourth {
-  width:23%;
+#footer-second .block {
   float:left;
   margin-right:1%;
 }
 
-#footer-first  { width:33%; }
-#footer-second { width:21%; }
-#footer-third  { width:15%; }
-#footer-fourth  { width:27%; }
-
-#footer-fourth {
-  margin-right:0;
-}
+#block--mission  { width:33%; }
+#block-menu-primary-links { width:21%; }
+#block-follow-site  { width:15%; }
+#block--search  { width:27%; margin-right:0; }
 
 #footer .block-menu ul.menu {
   margin:0;
