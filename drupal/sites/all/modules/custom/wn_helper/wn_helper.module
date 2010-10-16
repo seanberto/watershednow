@@ -79,6 +79,16 @@ function wn_helper_form_alter(&$form, $form_state, $form_id) {
       $form['site_name']['#description'] = 'The name of this website - Generally recommended to be your organization\'s name.';
       $form['site_slogan']['#access'] = FALSE;
       $form['anonymous']['#access'] = FALSE;
+
+      //add newsletter textarea to site information form
+      $form['site_newsletter'] = array(
+        '#type' => 'textarea',
+        '#title' => 'Newsletter HTML',
+        '#description' => 'Paste in newsletter form HTML embed code.',
+        '#default_value' => variable_get('site_newsletter',''),
+      );
+      $form['buttons']['#weight'] = 10; //make sure buttons are at the bottom
+
       break;
     case 'system_themes_form':
     // Hide cruddy themes that we don't want folks to use, as well as admin themes that are fixed.
