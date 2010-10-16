@@ -1,5 +1,5 @@
 <?php
-// $Id: template.php,v 1.8 2010/08/03 17:27:45 mcrittenden Exp $
+// $Id: template.php,v 1.9 2010/10/15 19:52:07 mcrittenden Exp $
 
 /**
  * Override or insert variables into the page template.
@@ -91,5 +91,29 @@ function seven_fieldset($element) {
     }
   }
 
-  return '<fieldset'. drupal_attributes($element['#attributes']) .'>'. ($element['#title'] ? '<legend><span class="fieldset-legend">'. $element['#title'] .'</span></legend>' : '') . (isset($element['#description']) && $element['#description'] ? '<div class="description">'. $element['#description'] .'</div>' : '') . (!empty($element['#children']) ? $element['#children'] : '') . (isset($element['#value']) ? $element['#value'] : '') ."</fieldset>\n";
+  $output = '<fieldset' . drupal_attributes($element['#attributes']) . '>';
+  if (!empty($element['#title'])) {
+    // Always wrap fieldset legends in a SPAN for CSS positioning.
+    $output .= '<legend><span class="fieldset-legend">' . $element['#title'] . '</span></legend>';
+  }
+  // Add a wrapper if this fieldset is not collapsible.
+  // theme_fieldset() in D7 adds a wrapper to all fieldsets, however in D6 this
+  // wrapper is added by Drupal.behaviors.collapse(), but only to collapsible
+  // fieldsets. So to ensure the wrapper is consistantly added here we add the
+  // wrapper to the markup, but only for non collapsible fieldsets.
+  if (empty($element['#collapsible'])) {
+    $output .= '<div class="fieldset-wrapper">';
+  }
+  if (!empty($element['#description'])) {
+    $output .= '<div class="description">' . $element['#description'] . '</div>';
+  }
+  $output .= $element['#children'];
+  if (isset($element['#value'])) {
+    $output .= $element['#value'];
+  }
+  if (empty($element['#collapsible'])) {
+    $output .= '</div>';
+  }
+  $output .= "</fieldset>\n";
+  return $output;
 }

@@ -1,4 +1,4 @@
-/* $Id: style.css,v 1.5 2010/08/03 17:27:45 mcrittenden Exp $ */
+/* $Id: style.css,v 1.6 2010/10/15 19:52:07 mcrittenden Exp $ */
 
 /**
  * Generic elements.
@@ -127,12 +127,12 @@ ol {
 }
 .item-list ul li.collapsed,
 ul.menu li.collapsed {
-  list-style-image:url(../../misc/menu-collapsed.png);
+  list-style-image:url(../../../../misc/menu-collapsed.png);
   list-style-type:disc;
 }
 .item-list ul li.expanded,
 ul.menu li.expanded {
-  list-style-image:url(../../misc/menu-expanded.png);
+  list-style-image:url(../../../../misc/menu-expanded.png);
   list-style-type:circle;
 }
 quote,
@@ -567,17 +567,18 @@ table.system-status-report tr.error td {
  */
 fieldset {
   border: 1px solid #ccc;
-  padding: 2.5em 1em 1em;
+  padding: 2.5em 0 0 0;
   position: relative;
   margin: 1em 0;
 }
 fieldset .fieldset-legend {
   margin-top: 0.5em;
+  padding-left: 15px;
   position: absolute;
   text-transform: uppercase;
 }
 fieldset .fieldset-wrapper {
-  padding: 0 0 13px;
+  padding: 0 13px 13px 15px;
 }
 fieldset.collapsed {
   background-color: transparent;
@@ -585,12 +586,19 @@ fieldset.collapsed {
 html.js fieldset.collapsed {
   border-width: 1px;
   height: auto;
+  margin: 1em 0;
 }
 html.js fieldset.collapsed legend * {
-    display: inline;
+  display: inline;
 }
 html.js fieldset.collapsible legend a {
-    padding-left: 0;
+  padding-left: 0;
+}
+html.js fieldset.collapsible .fieldset-legend {
+  background: url("/misc/menu-expanded.png") no-repeat scroll 5px 65% transparent
+}
+html.js fieldset.collapsed .fieldset-legend {
+  background: url("/misc/menu-collapsed.png") no-repeat scroll 5px 50% transparent
 }
 fieldset fieldset {
   background-color: #fff;
@@ -706,7 +714,6 @@ div.node-form input#edit-submit-1 {
   background: url(images/buttons.png) 0px -40px repeat-x;
   color: #133B54;
 }
-div.node-form input.form-text,
 div.node-form .resizable-textarea {
   width: 99.5%;
 } 
@@ -954,4 +961,9 @@ form#views-ui-reorder-displays-button input.form-submit {
 }
 form#views-ui-preview-form input#preview-submit {
   margin-top: 1.2em;
+}
+
+/* CCK */
+.content-add-more {
+  margin-bottom: 10px;
 }

@@ -7,7 +7,7 @@
 
   <?php print $head; ?>
   <?php print $styles; ?>
-  <!--[if lte IE 7]>
+  <!--[if lte IE 8]>
     <style type="text/css" media="all">@import "<?php echo $base_path . path_to_theme() ?>/ie.css";</style>
   <![endif]-->
   <!--[if lte IE 6]>
@@ -27,39 +27,39 @@
   
   <div id="branding" class="clearfix">
   
-    <?php print $breadcrumb; ?>
+    <?php if (!empty($breadcrumbs)): ?><?php print $breadcrumb; ?><?php endif; ?>
     
-    <?php if ($title): ?>
+    <?php if (!empty($title)): ?>
       <h1 class="page-title"><?php print $title; ?></h1>
     <?php endif; ?>
     
-    <?php if ($primary_local_tasks): ?><ul class="tabs primary"><?php print $primary_local_tasks; ?></ul><?php endif; ?>
+    <?php if (!empty($primary_local_tasks)): ?><ul class="tabs primary"><?php print $primary_local_tasks; ?></ul><?php endif; ?>
     
   </div>
 
   <div id="page">
-    <?php if ($secondary_local_tasks): ?><ul class="tabs secondary"><?php print $secondary_local_tasks; ?></ul><?php endif; ?>
+    <?php if (!empty($secondary_local_tasks)): ?><ul class="tabs secondary"><?php print $secondary_local_tasks; ?></ul><?php endif; ?>
 
     <div id="content" class="clearfix">
       
-      <?php if ($messages): ?>
+      <?php if (!empty($messages)): ?>
         <div id="console" class="clearfix"><?php print $messages; ?></div>
       <?php endif; ?>
       
-      <?php if ($help): ?>
+      <?php if (!empty($help)): ?>
         <div id="help">
           <?php print $help; ?>
         </div>
       <?php endif; ?>
       
-      <?php if ($action_links): ?><ul class="action-links"><?php print render($action_links); ?></ul><?php endif; ?>
+      <?php if (!empty($action_links)): ?><ul class="action-links"><?php print render($action_links); ?></ul><?php endif; ?>
       
       <?php print $content; ?>
       
     </div>
 
     <div id="footer">
-      <?php print $feed_icons; ?>
+      <?php if (!empty($feed_icons)): ?><?php print $feed_icons; ?><?php endif; ?>
     </div>
 
   </div>

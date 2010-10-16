@@ -11,9 +11,9 @@ stylesheets[all][] = vertical-tabs.css
 
 regions[content] = Content
 
-; Information added by drupal.org packaging script on 2010-08-03
-version = "6.x-1.0-beta11"
+; Information added by drupal.org packaging script on 2010-10-15
+version = "6.x-1.0-beta12"
 core = "6.x"
 project = "seven"
-datestamp = "1280856675"
+datestamp = "1287172583"
 
