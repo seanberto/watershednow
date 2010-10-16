@@ -1,0 +1,20 @@
+name = Vote Smart Webform Component
+description = Provides a legislative representative lookup webform component field.
+core = 6.x
+version = "6.x-1.0"
+dependencies[] = webform
+
+
+; Information added by drupal.org packaging script on 2010-03-17
+version = "6.x-1.0-alpha1"
+core = "6.x"
+project = "vs_webform"
+datestamp = "1268857514"
+
+
+; Information added by drupal.org packaging script on 2010-09-21
+version = "6.x-1.x-dev"
+core = "6.x"
+project = "vs_webform"
+datestamp = "1285028795"
+

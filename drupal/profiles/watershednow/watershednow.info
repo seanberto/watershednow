@@ -1,4 +1,4 @@
-; BASIC INFORMATION
+; INSTAL PROFILE OVERVIEW
 name = Watershed Now
 description = Select this profile to build a Drupal CMS developed for watershed organizations.
 core = 6.x
@@ -19,6 +19,7 @@ modules[contrib][] = better_formats
 
 ; Core
 modules[core][] = dblog
+modules[core][] = syslog
 modules[core][] = comment
 modules[core][] = contact
 modules[core][] = help
@@ -27,6 +28,16 @@ modules[core][] = path
 modules[core][] = search
 modules[core][] = taxonomy
 modules[core][] = update
+
+; Other
+modules[contrib][] = advanced_help
+modules[contrib][] = logintoboggan
+modules[contrib][] = menu_block
+modules[contrib][] = pathauto
+modules[contrib][] = token
+modules[contrib][] = transliteration
+modules[contrib][] = googleanalytics
+modules[contrib][] = galleryformatter
 
 ;Admin
 modules[contrib][] = admin_menu
@@ -46,6 +57,7 @@ modules[contrib][] = strongarm
 modules[contrib][] = boxes
 
 ; Image Management
+modules[contrib][] = imageapi
 modules[contrib][] = imageapi_gd
 modules[contrib][] = imagecache
 
@@ -55,6 +67,7 @@ modules[contrib][] = number
 modules[contrib][] = text
 modules[contrib][] = filefield
 modules[contrib][] = imagefield
+modules[contrib][] = imagefield_extended
 modules[contrib][] = emfield
 modules[contrib][] = emvideo
 modules[contrib][] = media_flickr
@@ -68,23 +81,18 @@ modules[contrib][] = date
 modules[contrib][] = date_popup
 modules[contrib][] = date_timezone
 
-; Other
-modules[contrib][] = advanced_help
-modules[contrib][] = logintoboggan
-modules[contrib][] = menu_block
-modules[contrib][] = pathauto
-modules[contrib][] = token
-modules[contrib][] = transliteration
-modules[contrib][] = googleanalytics
-
 ; User interface and WYSIWYG
 modules[contrib][] = better_formats
 modules[contrib][] = insert
 modules[contrib][] = filefield_sources
 modules[contrib][] = jquery_ui
-modules[contrib][] = webform
 modules[contrib][] = wysiwyg
 modules[contrib][] = wysiwyg_imagefield
+
+; Feeds Integration
+modules[contrib][] = job_scheduler
+modules[contrib][] = feeds
+modules[contrib][] = feeds_ui
 
 ; Donation tools
 modules[contrib][] = simple_payments
@@ -94,38 +102,51 @@ modules[contrib][] = simple_donations
 ; Event Sigups
 modules[contrib][] = signup
 
+; E-petition Tools
+modules[contrib][] = webform
+modules[contrib][] = vs_webform
+
 ; Open Layers
 modules[contrib][] = openlayers
+modules[contrib][] = openlayers_ui
 modules[contrib][] = openlayers_cck
 modules[contrib][] = openlayers_views
 modules[contrib][] = openlayers_geocoder
-
-; Customizations
-modules[contrib][] = wn_helper
 
 ; Social Integration
 ; allows admins to add social network links that are reorderable.
 modules[contrib][] = follow
 
+; Customizations
+modules[contrib][] = wn_helper
+
 ; Watershed Now Features
-features[] = wn_hp_callout
 features[] = wn_common
+features[] = wn_hp_callout
 features[] = wn_blog
 features[] = wn_getinvolved
 features[] = wn_multimedia
 features[] = wn_map
 
+; ----------------------------------------------
+
+; PROFILER MODULE - DEFAULT SETUP
+; (If applicable)
+
+; ----------------------------------------------
+
+; PROFILER MODULE - SITE-SPECIFIC CONFIGURATIONS
+; (The following values will change per installation)
+
 ; Set up admin user.
 users[superduper][uid] = 1
 users[superduper][name] = admin
-users[superduper][mail] = admin@example.com
+users[superduper][mail] = admin@example.org
 users[superduper][status] = 1
-
-nodes[hello][type] = update
-nodes[hello][title] = Hello world!
-nodes[hello][body] = Lorem ipsum dolor sit amet...
-nodes[hello][uid] = 0
 
 ; Set up required site config
 variables[site_name] = Watershed Now
-variables[site_mail] = admin@example.com
+variables[site_mail] = admin@example.org
+; ----------------------------------------------
+
+; @TODO - Abstract custom .info settings to a child install profile using Profiler module.

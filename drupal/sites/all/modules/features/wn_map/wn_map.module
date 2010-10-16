@@ -3,16 +3,22 @@
 include_once('wn_map.features.inc');
 
 /**
- * Implementation of hook_views_pre_render(&$view).
+ * Implementation of hook_views_pre_render().
+ * Main map uses taxonomy-based map icons. B/c we can't guarantee that icons
+ * exist for every taxonomy term, we check to see if an icon file exists, and if not,
+ * we change the icon path in the view.
  */
 function wn_map_views_pre_render(&$view) {
-  if (($view->name == 'donation_opportunities') && ($view->current_display == 'page_1')) {
-    if (user_access('Allow Reordering')) {
-          $view->attachment_before .= '<div class="draggable"><a href="/donate/draggable">[Sort donations]</a></div>';
-    }
-  } elseif (($view->name == 'take_action') && ($view->current_display == 'page_1')) {
-      if (user_access('Allow Reordering')) {
-            $view->attachment_before .= '<div class="draggable"><a href="/take_action/draggable">[Sort campaigns]</a></div>';
+  if (($view->name == 'watershed_feature_data') || ($view->name == 'watershed_feature_data_with_args')) {
+    
+    foreach ($view->result as $row) { // Iterate through results.
+      $tid = $row->term_data_tid;
+      $path = drupal_get_path('module', 'map');
+      $path = $path . '/openlayers_themes/wn/tax_icons/';
+      $filename = $path . $tid . '-tax.png'; // Icon filename/path in OL styles.
+      if (!file_exists($filename)) {
+        $row->term_data_tid = ''; // If icon doesn't exist, go with default.
       }
     }
+  }
 }

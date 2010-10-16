@@ -30,7 +30,7 @@ profiler_v2('watershednow');
 function watershednow_profile_tasks(&$task, $url) {
 
   if ( $task == 'profile' ) {
-    //profiler_profile_tasks(profiler_v2_load_config('watershednow'), $task, $url);
+    profiler_profile_tasks(profiler_v2_load_config('watershednow'), $task, $url);
     _watershednow_profile_task_profile($task, $url);
   }
 
@@ -43,26 +43,6 @@ function watershednow_profile_tasks(&$task, $url) {
 
 function _watershednow_profile_task_profile(&$task, $url) {
   $config = profiler_v2_load_config('watershednow');
-
-  //BEGIN PROFILER BLOCK
-
-  // Disable all DB blocks
-  db_query("UPDATE {blocks} SET status = 0, region = ''");
-
-  // Run any component installations
-  profiler_install_components($config);
-
-  // Rebuild key tables/caches
-  menu_rebuild();
-  module_rebuild_cache(); // Detects the newly added bootstrap modules
-  node_access_rebuild();
-  drupal_get_schema('system', TRUE); // Clear schema DB cache
-  drupal_flush_all_caches();
-
-  // Finish
-  profiler_install_configure($config);
-
-  //END PROFILER BLOCK
 
   $modules = array_merge($config['modules']['core'], $config['modules']['contrib'], $config['features']);
 

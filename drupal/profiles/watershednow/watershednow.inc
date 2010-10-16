@@ -32,6 +32,9 @@ function _watershednow_configure() {
 
 	// Configure Input formats and WYSIWYG editor
 	_watershednow_fiters_wysiwyg();
+	
+	// Remove the default content type that Webform Module adds. It's cruft.
+	node_type_delete('webform');
 
 	// Set up basic contact form with Install Profile API
 	require_once('libraries/install_profile_api/core/contact.inc');
@@ -91,8 +94,6 @@ function _watershednow_configure() {
 	db_query("UPDATE {blocks} SET status = 0, region = ''"); // disable all DB blocks
 	db_query("UPDATE {system} SET status = 0 WHERE type = 'theme' and name ='%s'", 'garland');
 	db_query("UPDATE {system} SET status = 1 WHERE type = 'theme' and name ='%s'", 'watershed');
-	db_query("UPDATE {system} SET status = 1 WHERE type = 'theme' and name ='%s'", 'tao');
-	db_query("UPDATE {system} SET status = 1 WHERE type = 'theme' and name ='%s'", 'rubik');
 	variable_set('admin_theme', 'seven'); // set the admin theme to Rubik
 	variable_set('node_admin_theme', 1); // Use the admin theme for content editing
 }
