@@ -1,5 +1,4 @@
 <?php
-
 /**
  *  Implementation of hook_install().
  */
@@ -8,5 +7,5 @@ function wn_common_install() {
   // Menu block configuration has been strongarmed in feature definition.
   $module = 'menu_block';
   $delta = '1';
-  db_query("INSERT INTO {blocks} (module, delta VALUES ('%s', '%s')", $module, $delta);
+  db_query("INSERT INTO {blocks} (module, delta, theme, status) VALUES ('%s', %d, '%s', 1)", $module, $delta, 'watershed');
 }
