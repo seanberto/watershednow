@@ -249,21 +249,6 @@ function wn_getinvolved_strongarm() {
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'content_extra_weights_page';
-  $strongarm->value = array(
-    'title' => '-5',
-    'revision_information' => '2',
-    'author' => '1',
-    'options' => '3',
-    'comment_settings' => '5',
-    'menu' => '0',
-    'path' => '4',
-  );
-
-  $export['content_extra_weights_page'] = $strongarm;
-  $strongarm = new stdClass;
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
   $strongarm->name = 'content_extra_weights_take_action';
   $strongarm->value = array(
     'webform' => '1',
@@ -277,21 +262,6 @@ function wn_getinvolved_strongarm() {
   );
 
   $export['content_extra_weights_take_action'] = $strongarm;
-  $strongarm = new stdClass;
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'content_extra_weights_update';
-  $strongarm->value = array(
-    'title' => '-5',
-    'revision_information' => '2',
-    'author' => '1',
-    'options' => '3',
-    'comment_settings' => '5',
-    'menu' => '0',
-    'path' => '4',
-  );
-
-  $export['content_extra_weights_update'] = $strongarm;
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
