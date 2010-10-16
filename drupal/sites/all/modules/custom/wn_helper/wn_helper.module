@@ -16,6 +16,7 @@ function wn_helper_init() {
 function wn_helper_theme() {
   $items = array();
 
+  //defining theme callback used to wrap THEME_follow_link.
   $items['wn_helper_follow_link'] = array(
     'arguments' => array('link' => NULL),
   );
@@ -24,10 +25,14 @@ function wn_helper_theme() {
   return $items;
 }
 
+
+/**
+ * Implementation of hook_theme_registry_alter().
+ */
 function wn_helper_theme_registry_alter(&$theme_registry) {
+  //change the follow link theme callback to the one we defined here
   $theme_registry['follow_link']['function'] = 'wn_helper_follow_link';
 }
-
 
 /**
  * Implementation of hook_help().
@@ -73,8 +78,6 @@ function wn_helper_form_alter(&$form, $form_state, $form_id) {
       $form['site_name']['#title'] = 'Website Name';
       $form['site_name']['#description'] = 'The name of this website - Generally recommended to be your organization\'s name.';
       $form['site_slogan']['#access'] = FALSE;
-      $form['site_mission']['#access'] = FALSE;
-      $form['site_footer']['#access'] = FALSE;
       $form['anonymous']['#access'] = FALSE;
       break;
     case 'system_themes_form':
@@ -89,7 +92,9 @@ function wn_helper_form_alter(&$form, $form_state, $form_id) {
   }
 }
 
-
+/**
+ * This callback is used to generate the link title for RSS icon.
+ */
 function wn_helper_follow_link_tooltip_rss($title, $variables) {
   if( empty($title) ) {
     return t('Subscribe');
@@ -97,7 +102,12 @@ function wn_helper_follow_link_tooltip_rss($title, $variables) {
   return t('Subscribe to @title', array('@title' => $title));
 }
 
-
+/**
+ * This function is used to filter out extra networks, not supported
+ * by the themes in watershednow.
+ *
+ * Also defines the RSS network.
+ */
 function wn_helper_follow_networks_alter(&$networks) {
   $sites = &$networks[0]; //alias
   $sites['feed'] = array(
@@ -122,6 +132,11 @@ function wn_helper_follow_networks_alter(&$networks) {
   }
 }
 
+/**
+ * call the theme for our follow link.
+ * Using theme call so others can hook into it.
+ * see wn_helper_theme_registry_alter
+ */
 function wn_helper_follow_link($link) {
   return theme('wn_helper_follow_link',$link);
 }
