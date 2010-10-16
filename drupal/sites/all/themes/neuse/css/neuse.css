@@ -13,6 +13,15 @@ body { background:#5c5c5c url(../images/bg2.jpg) 0 -300px no-repeat; }
   color:#fff;
 }
 
+/*= Navigation
+-----------------*/
+#nav a {
+  border-right:1px solid #999;
+  padding-right:1em;
+  display:block;
+  float:left;
+}
+#nav ul ul a { border-right:0; }
 
 /*= Sidebar 
 -----------------*/

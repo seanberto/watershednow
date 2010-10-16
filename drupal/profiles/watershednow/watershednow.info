@@ -1,10 +1,4 @@
-; Watershed Now Installation Profile .info file.
-; ==============================================
-
-; ----------------------------------------------
-
 ; BASIC INFORMATION
-
 name = Watershed Now
 description = Select this profile to build a Drupal CMS developed for watershed organizations.
 core = 6.x
@@ -12,19 +6,19 @@ theme = watershed
 
 ; ----------------------------------------------
 
-; NOTE: Do not add a coment after the modules name,
-; this will result in an error. This is an issue with drupal_parse_info_file()
+; NOTE: Do not add a coment after the modules name, this will result in an error.
 
 ; MODULES
 ; (Note: that module dependencies will /not/ be automatically enabled.)
 
-; Modules needed for install hook
+; Modules referenced in _watershednow_configure()
 modules[contrib][] = menu
 modules[contrib][] = wysiwyg
 modules[contrib][] = wysiwyg_imagefield
 modules[contrib][] = better_formats
 
 ; Core
+modules[core][] = dblog
 modules[core][] = comment
 modules[core][] = contact
 modules[core][] = help

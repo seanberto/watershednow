@@ -12,7 +12,7 @@
   </head>
 
   <body class="<?php print $body_classes; ?>">
-    <div id="skip"><a href="#content"><?php print t('Skip to Content'); ?></a> <a href="#navigation"><?php print t('Skip to Navigation'); ?></a></div>
+    <div id="skip"><a href="#content"><?php print t('Skip to Content'); ?></a> <a href="#nav"><?php print t('Skip to nav'); ?></a></div>
     <div id="page">
 
     <!-- ______________________ HEADER _______________________ -->
@@ -20,20 +20,15 @@
     <div id="header">
 
       <div id="logo-title">
-        <?php if (!empty($logo)): ?>
-          <a href="<?php print $front_page; ?>" title="<?php print t('Home'); ?>" rel="home" id="logo">
-            <img src="<?php print $logo; ?>" alt="<?php print t('Home'); ?>"/>
-          </a>
-        <?php endif; ?>
-
         <div id="name-and-slogan">
           <?php if (!empty($site_name)): ?>
             <h1 id="site-name">
-              <a href="<?php print $front_page ?>" title="<?php print t('Home'); ?>" rel="home"><span><?php print $site_name; ?></span></a>
+              <a href="<?php print $front_page; ?>" title="<?php print t('Home'); ?>" rel="home" id="logo">
+               <img src="<?php print $logo; ?>" alt="<?php print $site_name ?>"/>
+              </a>
             </h1>
           <?php endif; ?>
         </div> <!-- /name-and-slogan -->
-
       </div> <!-- /logo-title -->
 
       <?php if ($header): ?>
@@ -46,10 +41,10 @@
 
 
       <?php if (!empty($primary_links) || !empty($secondary_links)): ?>
-        <div id="navigation" class="menu <?php if (!empty($primary_links)) { print "with-main-menu"; } if (!empty($secondary_links)) { print " with-sub-menu"; } ?>">
+        <div id="nav" class="menu <?php if (!empty($primary_links)) { print "with-main-menu"; } if (!empty($secondary_links)) { print " with-sub-menu"; } ?>">
           <?php /* if (!empty($secondary_links)){ print theme('links', $secondary_links, array('id' => 'secondary', 'class' => 'links sub-menu')); } */ ?>
           <?php if (!empty($primary_links)){ print theme('links', $primary_links, array('id' => 'primary', 'class' => 'links main-menu')); } ?>
-        </div> <!-- /navigation -->
+        </div> <!-- /nav -->
       <?php endif; ?>
 
       <?php if ($callout): ?>

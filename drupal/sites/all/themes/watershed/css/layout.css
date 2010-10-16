@@ -94,7 +94,13 @@
 *  remember to adapt the margin top of the content and sidebars.
 */
 
-#navigation {
+#nav, #nav * {
+  margin:0;
+  padding:0;
+  font-size:100%;
+}
+#nav {
+  height:3em;
   margin-left: 0;
   margin-right: -100%;
   padding: 0;
@@ -102,20 +108,37 @@
 }
 .with-navigation #content,
 .with-navigation .sidebar {
-  margin-top: 40px;        /* Navigation Height */
+  margin-top: 3em;/* Navigation Height */
 }
-#navigation {
-  /* height: 40px;            /* Navigation Height */
+#nav, #nav li {
+  font-size:100%;
+  background:#000;
+  color:#fff;
 }
 
+#nav li {
+  float:left;
+}
+
+#nav a {
+  padding-left:1em;
+  line-height:2.3;
+  color:#fff;
+}
 
 /* =Header
 ------------- */
 /* search */
+#header {
+  position:relative;
+}
 #search-theme-form, #search-block-form {
   height: 35px;
   width: 160px;
-  position: relative;
+  position:absolute;
+  right:30px;
+  bottom:-3px;
+  
 }
 
 #search-input input {

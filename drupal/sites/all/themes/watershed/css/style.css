@@ -152,9 +152,7 @@ div.status {
   display: inline-block;
   margin-left: 10px;
 }
-#search-theme-form {
-  float: right;
-}
+
 input#edit-search-theme-form-1 {
   color: #777;
   font-size: 0.7em;
