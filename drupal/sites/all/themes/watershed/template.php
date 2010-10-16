@@ -30,8 +30,8 @@ function watershed_preprocess_page(&$vars, $hook) {
     $vars['help'] = '';
   }
 
-  //add mission to all pages
-  $vars['mission'] = variable_get('site_mission', '');
+  $vars['mission'] = variable_get('site_mission', '');  //add mission to all pages
+  $vars['newsletter'] = variable_get('site_newsletter', '');
 
   // theme the mission statement similar to a block
   if( !empty($vars['mission']) ) {

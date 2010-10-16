@@ -137,6 +137,7 @@
             <?php print $mission ?>
             <?php print $footer_second; ?>
             <?php print $search_box; ?>
+            <?php print $newsletter; ?>
           </div><!-- /#footer-second -->
           <div id="footer-message"><?php print $footer_message; ?></div><!-- /#footer-message -->
         </div> <!-- /footer -->
