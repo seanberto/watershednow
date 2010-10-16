@@ -1,0 +1,515 @@
+<?php
+// $Id: vs_webform.module,v 1.3.2.4 2010/05/19 00:40:24 troynt Exp $
+
+/**
+ * Implementation of hook_requirements().
+ */
+function vs_webform_requirements($phrase) {
+  if ($phrase != 'runtime' ) {
+    return;
+  }
+
+  if ( variable_get('vs_webform_key', '') == '' ) {
+    return array('vs_webform' => array(
+      'title' => 'Vote Smart API key required',
+      'severity' => REQUIREMENT_ERROR,
+      'description' => l(t('Register for a Vote Smart API key'), 'http://www.votesmart.org/user_register.php', array('attributes' => array('target' => '_blank'))) . t(', then add it to the ') . l(t('Vote Smart Webform configuration page.'), 'admin/settings/vs_webform'),
+
+    ));
+  }
+ 
+}
+
+/**
+ * Implementation of hook_menu().
+ */
+function vs_webform_menu() {
+  $items = array();
+
+  // Admin Settings.
+  $items['admin/settings/vs_webform'] = array(
+    'title' => 'Vote smart webform',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('vs_webform_admin_settings'),
+    'access arguments' => array('administer site configuration'),
+    'description' => 'Configuration for Vote Smart webform.',
+    'type' => MENU_NORMAL_ITEM,
+  );
+
+  $items['vs_webform/ahah/get_candidates'] = array(
+    'title' => 'AHAH callback for vote smart webform',
+    'page callback' => 'vs_webform_ahah_get_candidates',
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+    'file' => 'vs_webform.component.inc'
+  );
+
+  return $items;
+}
+
+/**
+ * Implementation of hook_init().
+ */
+function vs_webform_init() {
+  $path = drupal_get_path('module', 'vs_webform');
+  drupal_add_css($path . '/vs_webform.css', 'module');
+  drupal_add_js($path . '/vs_webform.js', 'module');
+}
+
+/**
+ * Implementation of hook_webform_component_info().
+ */
+function vs_webform_webform_component_info() {
+  return array('vs_webform' => array(
+    'label' => t('Vote Smart Lookup'),
+    'description' => t('Looks up Representative for Given Zip Code'),
+    'features' => array(
+      'csv' => TRUE, // Add content to CSV downloads.
+      'email' => FALSE,// Show this field in e-mailed submissions.
+      'email_address' => TRUE, // Allow this field to be used as an e-mail FROM or TO address.
+      'email_name' => FALSE,// Allow this field to be used as an e-mail SUBJECT or FROM name.
+      'required' => TRUE,// This field may be toggled as required or not.
+    ),
+    'file' => 'vs_webform.component.inc'
+  ));
+}
+
+/**
+ * Implementation of hook_webform_exporters().
+ *
+ * Defines the exporters this module implements.
+ *
+ * @return
+ *   An "array of arrays", keyed by content-types. The 'handler' slot
+ *   should point to the PHP class implementing this flag.
+ */
+function vs_webform_webform_exporters() {
+  return array(
+    'vs_webform_delimited' => array(
+      'title' => t('Vote Smart') . ' ' . t('Delimited text'),
+      'description' => t('Submissions Span multiple rows, depending on candidates selected') . ' ' . t('A plain text file delimited by commas, tabs, or other characters.'),
+      'handler' => 'vs_webform_exporter_delimited',
+    ),
+    'vs_webform_excel' => array(
+      'title' => t('Vote Smart') . ' ' . t('Microsoft Excel'),
+      'description' => t('Submissions Span multiple rows, depending on candidates selected') . ' ' . t('A file readable by Microsoft Excel.'),
+      'handler' => 'vs_webform_exporter_excel',
+    ),
+  );
+}
+
+module_load_include('inc', 'webform', 'includes/webform.export');
+class vs_webform_exporter_delimited extends webform_exporter_delimited {
+  var $component_name = 'vs_webform';
+  var $cand_idx = NULL;
+  var $sid_idx = NULL;
+  var $cand_headers = array(
+    'officials_name',
+    'officials_email',
+    'officials_website',
+    'officials_phone',
+    'officials_fax',
+    'officials_street',
+    'officials_city',
+    'officials_state',
+    'officials_zip',
+    //'email_message'
+  );
+
+  function add_row(&$file_handle, $data) {
+    global $user;
+
+    if ( $this->cand_idx  == NULL || $this->sid_idx == NULL ) {
+      foreach ( $data as $idx => $col ) {
+        if ( $this->cand_idx == NULL && strpos($col, $this->component_name) !== FALSE ) {
+          $this->cand_idx = $idx + 2;//State Zip Selected Candidates
+          break;
+        }
+        else if( $this->sid_idx == NULL && strpos($col, 'SID') !== FALSE ) {
+          $this->sid_idx = $idx;
+        }
+      }
+    }
+    if ( $this->cand_idx != NULL ) {
+      $cand_data = array();
+
+      if ( empty($data[$this->cand_idx]) ) {
+        //no data found, but we know which column has selected candidates
+        //create spacer cells
+        foreach ($this->cand_headers as $header) {
+          $cand_data[] = '';
+        }
+      }
+      elseif ( strpos($data[$this->cand_idx], 'officials_selected') !== FALSE ) {
+        //this is a header row, use headers for data
+        $cand_data = $this->cand_headers;
+      }
+      elseif ( strpos($data[$this->cand_idx], $this->component_name) !== FALSE ) {
+        foreach ( $this->cand_headers as $header) {
+          $cand_data[] = $data[$this->cand_idx];
+        }
+      }
+      else {
+
+        //cell has data, try to expand on it
+        $cand_ids = explode(';', $data[$this->cand_idx]);
+        /*
+        $message_tpl = '';
+        $sid = intval(trim($data[$this->sid_idx]));
+        $message = '';
+        if( $sid ) {
+          $nid = db_result(db_query('SELECT nid FROM {webform_submissions} WHERE sid = %d',$sid));
+          $node = node_load($nid);
+          $tpl = theme(array('webform_mail_' . $node->nid, 'webform_mail', 'webform_mail_message'), $node, $submission);
+        }
+
+        $submission = webform_get_submission($nid, $sid);
+        $message = @_webform_filter_values($tpl, $node, $submission, NULL, TRUE, TRUE );
+        */
+        foreach ($cand_ids as $cand_id) {
+          $c = vs_webform_get_candidate($cand_id);
+
+          $cand_data = array(
+            _vs_webform_format_name($c),
+            $c['email'],
+            $c['website'],
+            $c['phone'],
+            $c['fax'],
+            $c['address']['street'],
+            $c['address']['city'],
+            $c['address']['state'],
+            $c['address']['zip'],
+            //$message
+          );
+          $tmp = $data;
+          array_splice($tmp, $this->cand_idx, 1, $cand_data);
+          parent::add_row($file_handle, $tmp);
+        }
+        return;
+      }
+      array_splice($data, $this->cand_idx, 1, $cand_data);
+      parent::add_row($file_handle, $data);
+    }
+    else {
+      //have yet to find selected candidates column
+      //no idea what to do with the row, just add the row as is
+      parent::add_row($file_handle, $data);
+    }
+  }
+}
+
+class vs_webform_exporter_excel extends vs_webform_exporter_delimited {
+  var $delimiter;
+
+  function webform_exporter_excel($options) {
+    $options['delimiter'] = '\t';
+    parent::webform_exporter_delimited($options);
+  }
+
+  function set_headers($filename) {
+    drupal_set_header('Content-Type: application/x-msexcel');
+    drupal_set_header("Content-Disposition: attachment; filename=$filename.xls");
+    drupal_set_header('Pragma: public');
+    drupal_set_header('Cache-Control: max-age=0');
+  }
+}
+
+/**
+ * Implementation of hook_admin_settings().
+ */
+function vs_webform_admin_settings() {
+  $form = array();
+  $form['api'] = array(
+    '#type' => 'fieldset',
+    '#title' => ('API Settings')
+  );
+  $form['api']['vs_webform_host'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Vote Smart API server'),
+    '#default_value' => variable_get('vs_webform_host', 'http://api.votesmart.org/'),
+  );
+  $form['api']['vs_webform_key'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Vote Smart API key'),
+    '#description' => l(t('Register for key.'), 'http://www.votesmart.org/user_register.php', array('attributes' => array('target' => '_blank'))),
+    '#default_value' => variable_get('vs_webform_key', ''),
+  );
+
+  return system_settings_form($form);
+}
+
+/**
+ * Interface to communicate with VS API
+ *
+ * @param string $request
+ * @param string $args
+ * @param string $item
+ * @param string $format
+ * @return data
+ */
+function _vs_webform_api($request, $args = array(), $item = NULL, $format = 'XML') {
+  $key = variable_get('vs_webform_key', '');
+  $url = variable_get('vs_webform_host', 'http://api.votesmart.org/') . $request . '?';
+
+  // Convert arguments into a request string.
+  $url .= drupal_query_string_encode(array_merge($args, array('key' => $key, 'o' => strtoupper($format))));
+
+  // Contact the REST API.
+  $res = drupal_http_request($url);
+
+  // check for errors
+  if ($res->code != 200) {
+    $error = t('Error communicating with the Vote Smart API: @code - @error', array('@code' => $res->code, '@error' => $res->error));
+    drupal_set_message($error);
+    watchdog('vs_webform', $error, NULL, WATCHDOG_ERROR);
+    return FALSE;
+  }
+
+  switch (strtolower($format)) {
+    case 'xml':
+      try {
+        $ret = (array) new SimpleXMLElement($res->data, LIBXML_NOCDATA);
+      }
+      catch (Exception $e) {
+        drupal_set_message(t('Vote Smart Webform: Attempted to fetch %url -- SimpleXML error parsing %data', array('%url' => $url, '%data' => $res->data)), 'error');
+        return FALSE;
+      }
+      break;
+    case 'json':
+      $ret = json_decode($res->data);
+      break;
+    default:
+      return false;
+  }
+
+  // Return specified element (e.g. 'details', 'list', etc.);
+  if ($item) {
+    foreach (explode('.', $item) as $key) {
+      $ret = (array) $ret[$key];
+    }
+  }
+
+  // Nothing specified, return the entire object.
+  return $ret;
+}
+
+function vs_webform_is_us_state($state_abbr) {
+  include('vs_webform.defines.inc');
+  return isset($VS_WEBFORM_US_STATES[$state_abbr]);
+}
+
+//office types and ids are the same,
+//keeping language the same as votesmart api
+function vs_webform_is_office_type($officeType) {
+  $office_types = vs_webform_get_office_types();
+  return isset($office_types[$officeType]);
+}
+
+
+function vs_webform_is_zip($zip) {
+  return preg_match('/^[0-9]{5}([- ]?[0-9]{4})?$/', $zip);
+}
+
+
+
+function vs_webform_get_candidate($candidateId, $partial_candidate_xml = NULL, $full = TRUE) {
+  $candidateId .= '';//convert to string
+
+  static $candidates;//cache candidates
+  
+  if ( !isset($candidates) ) {
+    $candidates = array();
+  }
+
+  if ( !isset($candidates[$candidateId]) ) {
+    $c = array();//candidate array
+
+    //only hit the database if we need more than the name
+    //or haven't been provided any info
+    if ( $full || empty($partial_candidate_xml)) {
+      $candidate_data = cache_get('vs_webform-candidate-' . $candidateId);
+      $c = $candidate_data->data;
+    }
+
+    if ( !$candidate_data || $full ) {
+      //not scoped so we have opportunity to fix candidate name
+      //if it is missing from partial $partial_candidate_xml
+      if ( $full ) {
+        $c_xml_web = _vs_webform_api('Address.getOfficeWebAddress', array('candidateId' => $candidateId));
+        $c_xml_addr = _vs_webform_api('Address.getOffice', array('candidateId' => $candidateId), 'office');
+      }
+      //officials can have multiple offices listed,
+      //we are only saving the first one
+      if ( isset($c_xml_addr[0]->phone) ) {
+        $c_xml_phone = $c_xml_addr[0]->phone;
+      }
+      elseif ( isset($c_xml_addr['phone']) ) {
+        $c_xml_phone = $c_xml_addr['phone'];
+      }
+  
+      if ( isset($c_xml_phone) ) {
+        $c['phone'] = trim($c_xml_phone->phone1);
+        $c['fax'] = trim($c_xml_phone->fax1);
+      }
+
+ 
+      //officials can have multiple offices listed,
+      //we are only saving the first one
+      if ( isset($c_xml_addr[0]->address) ) {
+        $c_xml_addr = $c_xml_addr[0]->address;
+      }
+      elseif ( isset($c_xml_addr['address']) ) {
+        $c_xml_addr = $c_xml_addr['address'];
+      }
+  
+      if ( isset($c_xml_addr) ) {
+        foreach ( array('type', 'street', 'city', 'state', 'zip') as $k ) {
+          $v = $c_xml_addr->$k;
+          $v = trim($v);
+          if ( !empty($v) ) {
+            $c['address'][$k] = $v;
+          }
+        }
+      }
+
+      $vars_to_save = array(
+        'title',
+        'firstName',
+        'middleName',
+        'lastName',
+        'suffix',
+        'nickName',
+        'officeTypeId',
+        'officeName'
+      );
+
+      foreach ($vars_to_save as $var) {
+        if ( !empty($c_xml_web['candidate']->$var) ) {
+          $c[$var] = $c_xml_web['candidate']->$var . '';
+        }
+        elseif ( !empty($partial_candidate_xml->$var) ) {
+          $c[$var] = $partial_candidate_xml->$var . '';
+        }
+      }
+
+      if ( is_array($c_xml_web['address']) ) {
+        foreach ($c_xml_web['address'] as $addr) {
+          $c[strtolower($addr->webAddressType . '')] = $addr->webAddress . '';
+        }
+      }
+
+      if ( empty($c) ) {
+        return FALSE;
+      }
+
+      if ( $full ) {
+        cache_set('vs_webform-candidate-' . $candidateId, $c, 'cache', CACHE_TEMPORARY);
+      }
+    }
+
+    $candidates[$candidateId] = $c;
+  }
+
+  return $candidates[$candidateId];
+}
+
+function vs_webform_get_candidates($args) {
+  $args['zip'] = preg_replace('@[^\d]@', '', $args['zip']);//strip non digits
+
+  $zip = $args['zip'];
+  $state = $args['state'];
+  $officeTypes = $args['officeTypes'];
+  if ( is_array($officeTypes) ) {
+    foreach ($officeTypes as $k => $office_type ) {
+      if ( !vs_webform_is_office_type($office_type) ) {
+        unset($officeTypes[$k]);
+      }
+    }
+  }
+
+  $full = $args['full'];
+
+  unset($args['full']);
+
+  $query_key = 'vs_webform-' . serialize($args);
+
+  $cached_query = cache_get($query_key);
+  if ( $cached_query ) {
+    return $cached_query->data;
+  }
+
+  $args = array();//set this to empty array as it is used later
+
+  if ( vs_webform_is_zip($zip) ) {
+    $args = array('zip5' => substr($zip, 0, 5) );
+    if ( strlen($zip) == 9 )
+      $args['zip4'] = substr($zip, 5, 9);
+  
+    $candidates = _vs_webform_api('Officials.getByZip', $args, 'candidate');
+  }
+  elseif ( vs_webform_is_us_state($state) ) {
+    $args = array('stateId' => $state );
+    $candidates = _vs_webform_api('Officials.getStatewide', $args, 'candidate');
+  }
+  else return array();
+
+  $sanitized_candidates = array();
+  
+  if ( is_array($candidates) ) {
+    $do_office_check = !empty($officeTypes) && is_array($officeTypes);
+    foreach ($candidates as $c) {
+      $candidate = vs_webform_get_candidate($c->candidateId, $c, $full);
+      if ( empty($candidate) || ( $do_office_check && !in_array($candidate['officeTypeId'], $officeTypes) ) ) {
+        continue;
+      }
+      $sanitized_candidates[$c->candidateId . ''] = $candidate;
+    }
+    cache_set($query_key, $sanitized_candidates, 'cache', CACHE_TEMPORARY);
+ }
+
+  return $sanitized_candidates;
+}
+
+/**
+ * Given candidate and tokenized format string, return candidates name formatted.
+ * @param $candidate candidate array object
+ * @param $format tokenized tring used to format name
+ * @return string containing candidate's name formatted
+ */
+function _vs_webform_format_name($candidate, $format = '!last !suffix, !first') {
+  if ( !is_array($candidate) ) return '';
+
+  $name = t($format, array(
+    '!title' => $candidate['title'],
+    '!first' => $candidate['firstName'],
+    '!last' =>  $candidate['lastName'],
+    '!suffix' => $candidate['suffix'],
+    '!middle' => $candidate['middleName'],
+    '!nick' => $candidate['nickName']
+  ));
+  $name = trim($name);
+  $name = preg_replace('@ +@', ' ', $name);
+  $name = str_replace(' ,', ',', $name);
+  return $name;
+}
+
+/**
+ * Return available office types from the VS API or local cache
+ *
+ * @return array
+ */
+function vs_webform_get_office_types() {
+  $types = cache_get('vs_webform_office_types');
+  if (!$types || empty($types->data)) {
+    $types = array();
+    $result = _vs_webform_api('Office.getTypes', array(), NULL, 'json');
+    foreach ($result->officeTypes->type as $type) {
+      $types[$type->officeTypeId] = $type->name;
+    }
+    cache_set('vs_webform_office_types', $types);
+    return $types;
+  }
+  else {
+    return $types->data;
+  }
+}

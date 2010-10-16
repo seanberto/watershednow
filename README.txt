@@ -25,3 +25,9 @@ Proposed Feature Set
 * A survey form creation tool.
 * A free e-advocacy legislative look-up and legislative e-petition feature, leveraging the VoteSmart.org API.
 * Donation badges: Embeddable donation widgets that can be placed on other websites.
+
+=====================
+
+* If you have questions, please contact us @ http://thinkshout.com/contact.
+
+* Please see our Licensing and Terms of Service explanation at: /docs/wn_distro_tos.pdf
