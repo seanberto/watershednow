@@ -18,7 +18,7 @@
  * 6. _watershednow_configure() is called
  */
 
-require_once('watershednow.inc.php');
+require_once('watershednow.inc');
 $path = dirname(__FILE__).'/';
 require_once( $path . 'libraries/profiler/profiler.inc');
 require_once( $path . 'libraries/profiler/profiler_api.inc');
