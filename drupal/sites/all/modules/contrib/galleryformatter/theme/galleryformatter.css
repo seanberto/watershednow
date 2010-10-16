@@ -1,11 +1,6 @@
 /* hard reset for now sorry*/
 .galleryformatter { margin: 0 auto; }
 .galleryformatter * { padding: 0; margin: 0; }
-.galleryformatter li {
-  margin-left: 0;
-  padding-left: 0;
-  list-style: none;
-}
 
 .galleryformatter .gallery-slides,
 .galleryformatter .gallery-thumbs { margin: 0 auto; }

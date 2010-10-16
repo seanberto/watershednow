@@ -9,9 +9,9 @@ dependencies[] = imagecache
 core = 6.x
 package = User interface
 
-; Information added by drupal.org packaging script on 2010-09-10
-version = "6.x-1.x-dev"
+; Information added by drupal.org packaging script on 2010-07-18
+version = "6.x-1.0-rc3"
 core = "6.x"
 project = "galleryformatter"
-datestamp = "1284077382"
+datestamp = "1279494014"
 
