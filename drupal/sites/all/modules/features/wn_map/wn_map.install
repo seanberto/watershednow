@@ -16,7 +16,6 @@ function wn_map_enable() {
     'multiple' => 0,
     'required' => 0,
     'module' => 'taxonomy',
-    'nodes' => array($content_type => 1),
     'help' => 'Categorize this map point.',
   );
   $terms = array( // Our default terms within the map point type vocabulary.

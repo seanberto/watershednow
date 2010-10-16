@@ -118,47 +118,6 @@ function wn_map_views_default_views() {
       ),
       'relationship' => 'none',
     ),
-    'field_report_wkt_openlayers_wkt' => array(
-      'label' => 'Location',
-      'alter' => array(
-        'alter_text' => 0,
-        'text' => '',
-        'make_link' => 0,
-        'path' => '',
-        'link_class' => '',
-        'alt' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 0,
-      'empty_zero' => 0,
-      'link_to_node' => 0,
-      'label_type' => 'widget',
-      'format' => 'openlayers_wkt',
-      'multiple' => array(
-        'group' => TRUE,
-        'multiple_number' => '',
-        'multiple_from' => '',
-        'multiple_reversed' => FALSE,
-      ),
-      'exclude' => 1,
-      'id' => 'field_report_wkt_openlayers_wkt',
-      'table' => 'node_data_field_report_wkt',
-      'field' => 'field_report_wkt_openlayers_wkt',
-      'override' => array(
-        'button' => 'Override',
-      ),
-      'relationship' => 'none',
-    ),
     'field_wkt_openlayers_wkt' => array(
       'label' => 'Location',
       'alter' => array(
@@ -359,7 +318,6 @@ function wn_map_views_default_views() {
       'value' => array(
         'map_feature' => 'map_feature',
         'map_kml' => 'map_kml',
-        'map_report' => 'map_report',
       ),
       'group' => '0',
       'exposed' => TRUE,
@@ -432,7 +390,6 @@ function wn_map_views_default_views() {
     'columns' => array(
       'type' => 'type',
       'title' => 'title',
-      'field_report_wkt_openlayers_wkt' => 'field_report_wkt_openlayers_wkt',
       'field_wkt_openlayers_wkt' => 'field_wkt_openlayers_wkt',
       'field_description_value' => 'field_description_value',
       'field_kml_fid' => 'field_kml_fid',
@@ -447,10 +404,6 @@ function wn_map_views_default_views() {
       ),
       'title' => array(
         'sortable' => 1,
-        'separator' => '',
-      ),
-      'field_report_wkt_openlayers_wkt' => array(
-        'sortable' => 0,
         'separator' => '',
       ),
       'field_wkt_openlayers_wkt' => array(
@@ -494,114 +447,6 @@ function wn_map_views_default_views() {
     'weight' => 0,
     'name' => 'navigation',
   ));
-
-  $views[$view->name] = $view;
-
-  // Exported view: report_photos
-  $view = new view;
-  $view->name = 'report_photos';
-  $view->description = 'Gallery of user-generated photo content';
-  $view->tag = 'mapping';
-  $view->view_php = '';
-  $view->base_table = 'node';
-  $view->is_cacheable = FALSE;
-  $view->api_version = 2;
-  $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
-  $handler = $view->new_display('default', 'Defaults', 'default');
-  $handler->override_option('fields', array(
-    'field_photo_fid' => array(
-      'label' => '',
-      'alter' => array(
-        'alter_text' => 0,
-        'text' => '',
-        'make_link' => 0,
-        'path' => '',
-        'link_class' => '',
-        'alt' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 0,
-      'empty_zero' => 0,
-      'link_to_node' => 0,
-      'label_type' => 'none',
-      'format' => 'homepage_thumb_linked',
-      'multiple' => array(
-        'group' => TRUE,
-        'multiple_number' => '',
-        'multiple_from' => '',
-        'multiple_reversed' => FALSE,
-      ),
-      'exclude' => 0,
-      'id' => 'field_photo_fid',
-      'table' => 'node_data_field_photo',
-      'field' => 'field_photo_fid',
-      'relationship' => 'none',
-    ),
-  ));
-  $handler->override_option('filters', array(
-    'status' => array(
-      'operator' => '=',
-      'value' => '1',
-      'group' => '0',
-      'exposed' => FALSE,
-      'expose' => array(
-        'operator' => FALSE,
-        'label' => '',
-      ),
-      'id' => 'status',
-      'table' => 'node',
-      'field' => 'status',
-      'relationship' => 'none',
-    ),
-    'type' => array(
-      'operator' => 'in',
-      'value' => array(
-        'map_report' => 'map_report',
-      ),
-      'group' => '0',
-      'exposed' => FALSE,
-      'expose' => array(
-        'operator' => FALSE,
-        'label' => '',
-      ),
-      'id' => 'type',
-      'table' => 'node',
-      'field' => 'type',
-      'relationship' => 'none',
-    ),
-  ));
-  $handler->override_option('access', array(
-    'type' => 'none',
-  ));
-  $handler->override_option('cache', array(
-    'type' => 'none',
-  ));
-  $handler->override_option('title', 'Recent community uploads');
-  $handler->override_option('style_plugin', 'list');
-  $handler->override_option('style_options', array(
-    'grouping' => '',
-    'type' => 'ul',
-  ));
-  $handler->override_option('row_options', array(
-    'inline' => array(
-      'field_photo_fid' => 'field_photo_fid',
-    ),
-    'separator' => '',
-    'hide_empty' => 0,
-  ));
-  $handler = $view->new_display('block', 'Block', 'block_1');
-  $handler->override_option('block_description', '');
-  $handler->override_option('block_caching', -1);
 
   $views[$view->name] = $view;
 
@@ -792,7 +637,6 @@ function wn_map_views_default_views() {
         'page' => 0,
         'map_feature' => 0,
         'map_kml' => 0,
-        'map_report' => 0,
       ),
       'validate_argument_node_access' => 0,
       'validate_argument_nid_type' => 'nid',
@@ -824,7 +668,6 @@ function wn_map_views_default_views() {
       'operator' => 'in',
       'value' => array(
         'map_feature' => 'map_feature',
-        'map_report' => 'map_report',
       ),
       'group' => '0',
       'exposed' => FALSE,
@@ -907,7 +750,6 @@ function wn_map_views_default_views() {
       'operator' => 'in',
       'value' => array(
         'map_feature' => 'map_feature',
-        'map_report' => 'map_report',
       ),
       'group' => '0',
       'exposed' => FALSE,
@@ -1004,7 +846,6 @@ function wn_map_views_default_views() {
       'operator' => 'in',
       'value' => array(
         'map_feature' => 'map_feature',
-        'map_report' => 'map_report',
       ),
       'group' => '0',
       'exposed' => FALSE,
@@ -1536,7 +1377,6 @@ function wn_map_views_default_views() {
         'page' => 0,
         'map_feature' => 0,
         'map_kml' => 0,
-        'map_report' => 0,
       ),
       'validate_argument_node_access' => 0,
       'validate_argument_nid_type' => 'nid',
@@ -1846,7 +1686,6 @@ function wn_map_views_default_views() {
         'page' => 0,
         'map_feature' => 0,
         'map_kml' => 0,
-        'map_report' => 0,
       ),
       'validate_argument_node_access' => 0,
       'validate_argument_nid_type' => 'nid',
@@ -1960,479 +1799,6 @@ function wn_map_views_default_views() {
     'weight' => 0,
     'name' => 'navigation',
   ));
-
-  $views[$view->name] = $view;
-
-  // Exported view: watershed_report_data
-  $view = new view;
-  $view->name = 'watershed_report_data';
-  $view->description = 'OpenLayers map data queried from user-generated watershed report nodes';
-  $view->tag = 'openlayers';
-  $view->view_php = '';
-  $view->base_table = 'node';
-  $view->is_cacheable = FALSE;
-  $view->api_version = 2;
-  $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
-  $handler = $view->new_display('default', 'Defaults', 'default');
-  $handler->override_option('fields', array(
-    'title' => array(
-      'label' => '',
-      'alter' => array(
-        'alter_text' => 0,
-        'text' => '',
-        'make_link' => 0,
-        'path' => '',
-        'link_class' => '',
-        'alt' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 0,
-      'empty_zero' => 0,
-      'link_to_node' => 1,
-      'exclude' => 0,
-      'id' => 'title',
-      'table' => 'node',
-      'field' => 'title',
-      'relationship' => 'none',
-    ),
-    'field_report_wkt_openlayers_wkt' => array(
-      'label' => '',
-      'alter' => array(
-        'alter_text' => 0,
-        'text' => '',
-        'make_link' => 0,
-        'path' => '',
-        'link_class' => '',
-        'alt' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 0,
-      'empty_zero' => 0,
-      'link_to_node' => 0,
-      'label_type' => 'none',
-      'format' => 'openlayers_wkt',
-      'multiple' => array(
-        'group' => TRUE,
-        'multiple_number' => '',
-        'multiple_from' => '',
-        'multiple_reversed' => FALSE,
-      ),
-      'exclude' => 0,
-      'id' => 'field_report_wkt_openlayers_wkt',
-      'table' => 'node_data_field_report_wkt',
-      'field' => 'field_report_wkt_openlayers_wkt',
-      'relationship' => 'none',
-    ),
-    'field_photo_fid' => array(
-      'label' => '',
-      'alter' => array(
-        'alter_text' => 0,
-        'text' => '',
-        'make_link' => 0,
-        'path' => '',
-        'link_class' => '',
-        'alt' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 0,
-      'empty_zero' => 0,
-      'link_to_node' => 0,
-      'label_type' => 'none',
-      'format' => 'main_map_linked',
-      'multiple' => array(
-        'group' => TRUE,
-        'multiple_number' => '',
-        'multiple_from' => '',
-        'multiple_reversed' => FALSE,
-      ),
-      'exclude' => 1,
-      'id' => 'field_photo_fid',
-      'table' => 'node_data_field_photo',
-      'field' => 'field_photo_fid',
-      'relationship' => 'none',
-    ),
-    'nothing' => array(
-      'label' => '',
-      'alter' => array(
-        'text' => '<div class="type">Community upload</div>
-[field_photo_fid]',
-        'make_link' => 0,
-        'path' => '',
-        'link_class' => '',
-        'alt' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 0,
-      'empty_zero' => 0,
-      'exclude' => 0,
-      'id' => 'nothing',
-      'table' => 'views',
-      'field' => 'nothing',
-      'relationship' => 'none',
-    ),
-  ));
-  $handler->override_option('filters', array(
-    'status' => array(
-      'operator' => '=',
-      'value' => '1',
-      'group' => '0',
-      'exposed' => FALSE,
-      'expose' => array(
-        'operator' => FALSE,
-        'label' => '',
-      ),
-      'id' => 'status',
-      'table' => 'node',
-      'field' => 'status',
-      'relationship' => 'none',
-    ),
-    'type' => array(
-      'operator' => 'in',
-      'value' => array(
-        'map_report' => 'map_report',
-      ),
-      'group' => '0',
-      'exposed' => FALSE,
-      'expose' => array(
-        'operator' => FALSE,
-        'label' => '',
-      ),
-      'id' => 'type',
-      'table' => 'node',
-      'field' => 'type',
-      'relationship' => 'none',
-    ),
-  ));
-  $handler->override_option('access', array(
-    'type' => 'none',
-  ));
-  $handler->override_option('cache', array(
-    'type' => 'none',
-  ));
-  $handler->override_option('title', 'Community uploads');
-  $handler->override_option('empty_format', '1');
-  $handler->override_option('items_per_page', 0);
-  $handler->override_option('style_plugin', 'openlayers_data');
-  $handler->override_option('style_options', array(
-    'grouping' => '',
-    'data_source' => array(
-      'value' => 'openlayers_wkt',
-      'other_lat' => 'title',
-      'other_lon' => 'title',
-      'openlayers_wkt' => 'field_report_wkt_openlayers_wkt',
-      'other_top' => 'title',
-      'other_right' => 'title',
-      'other_bottom' => 'title',
-      'other_left' => 'title',
-      'name_field' => 'title',
-      'description_field' => 'nothing',
-    ),
-  ));
-  $handler->override_option('exposed_block', TRUE);
-  $handler = $view->new_display('openlayers', 'OpenLayers Data', 'openlayers_1');
-  $handler->override_option('row_plugin', '');
-  $handler->override_option('displays', array());
-
-  $views[$view->name] = $view;
-
-  // Exported view: watershed_report_data_with_args
-  $view = new view;
-  $view->name = 'watershed_report_data_with_args';
-  $view->description = 'OpenLayers map data queried from user-generated watershed report nodes';
-  $view->tag = 'openlayers';
-  $view->view_php = '';
-  $view->base_table = 'node';
-  $view->is_cacheable = FALSE;
-  $view->api_version = 2;
-  $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
-  $handler = $view->new_display('default', 'Defaults', 'default');
-  $handler->override_option('fields', array(
-    'title' => array(
-      'label' => '',
-      'alter' => array(
-        'alter_text' => 0,
-        'text' => '',
-        'make_link' => 0,
-        'path' => '',
-        'link_class' => '',
-        'alt' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 0,
-      'empty_zero' => 0,
-      'link_to_node' => 1,
-      'exclude' => 0,
-      'id' => 'title',
-      'table' => 'node',
-      'field' => 'title',
-      'relationship' => 'none',
-    ),
-    'field_report_wkt_openlayers_wkt' => array(
-      'label' => '',
-      'alter' => array(
-        'alter_text' => 0,
-        'text' => '',
-        'make_link' => 0,
-        'path' => '',
-        'link_class' => '',
-        'alt' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 0,
-      'empty_zero' => 0,
-      'link_to_node' => 0,
-      'label_type' => 'none',
-      'format' => 'openlayers_wkt',
-      'multiple' => array(
-        'group' => TRUE,
-        'multiple_number' => '',
-        'multiple_from' => '',
-        'multiple_reversed' => FALSE,
-      ),
-      'exclude' => 0,
-      'id' => 'field_report_wkt_openlayers_wkt',
-      'table' => 'node_data_field_report_wkt',
-      'field' => 'field_report_wkt_openlayers_wkt',
-      'relationship' => 'none',
-    ),
-    'field_photo_fid' => array(
-      'label' => '',
-      'alter' => array(
-        'alter_text' => 0,
-        'text' => '',
-        'make_link' => 0,
-        'path' => '',
-        'link_class' => '',
-        'alt' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 0,
-      'empty_zero' => 0,
-      'link_to_node' => 0,
-      'label_type' => 'none',
-      'format' => 'main_map_linked',
-      'multiple' => array(
-        'group' => TRUE,
-        'multiple_number' => '',
-        'multiple_from' => '',
-        'multiple_reversed' => FALSE,
-      ),
-      'exclude' => 1,
-      'id' => 'field_photo_fid',
-      'table' => 'node_data_field_photo',
-      'field' => 'field_photo_fid',
-      'relationship' => 'none',
-    ),
-    'nothing' => array(
-      'label' => '',
-      'alter' => array(
-        'text' => '<div class="type">Community upload</div>
-[field_photo_fid]',
-        'make_link' => 0,
-        'path' => '',
-        'link_class' => '',
-        'alt' => '',
-        'prefix' => '',
-        'suffix' => '',
-        'target' => '',
-        'help' => '',
-        'trim' => 0,
-        'max_length' => '',
-        'word_boundary' => 1,
-        'ellipsis' => 1,
-        'html' => 0,
-        'strip_tags' => 0,
-      ),
-      'empty' => '',
-      'hide_empty' => 0,
-      'empty_zero' => 0,
-      'exclude' => 0,
-      'id' => 'nothing',
-      'table' => 'views',
-      'field' => 'nothing',
-      'relationship' => 'none',
-    ),
-  ));
-  $handler->override_option('arguments', array(
-    'nid' => array(
-      'default_action' => 'default',
-      'style_plugin' => 'default_summary',
-      'style_options' => array(),
-      'wildcard' => 'all',
-      'wildcard_substitution' => 'All',
-      'title' => '',
-      'breadcrumb' => '',
-      'default_argument_type' => 'node',
-      'default_argument' => '',
-      'validate_type' => 'none',
-      'validate_fail' => 'not found',
-      'break_phrase' => 0,
-      'not' => 0,
-      'id' => 'nid',
-      'table' => 'node',
-      'field' => 'nid',
-      'validate_user_argument_type' => 'uid',
-      'validate_user_roles' => array(
-        '2' => 0,
-        '4' => 0,
-        '3' => 0,
-      ),
-      'override' => array(
-        'button' => 'Override',
-      ),
-      'relationship' => 'none',
-      'default_options_div_prefix' => '',
-      'default_argument_fixed' => '',
-      'default_argument_user' => 0,
-      'default_argument_php' => '',
-      'validate_argument_node_type' => array(
-        'page' => 0,
-        'map_feature' => 0,
-        'map_kml' => 0,
-        'map_report' => 0,
-      ),
-      'validate_argument_node_access' => 0,
-      'validate_argument_nid_type' => 'nid',
-      'validate_argument_vocabulary' => array(
-        '1' => 0,
-      ),
-      'validate_argument_type' => 'tid',
-      'validate_argument_transform' => 0,
-      'validate_user_restrict_roles' => 0,
-      'validate_argument_php' => '',
-    ),
-  ));
-  $handler->override_option('filters', array(
-    'status' => array(
-      'operator' => '=',
-      'value' => '1',
-      'group' => '0',
-      'exposed' => FALSE,
-      'expose' => array(
-        'operator' => FALSE,
-        'label' => '',
-      ),
-      'id' => 'status',
-      'table' => 'node',
-      'field' => 'status',
-      'relationship' => 'none',
-    ),
-    'type' => array(
-      'operator' => 'in',
-      'value' => array(
-        'map_report' => 'map_report',
-      ),
-      'group' => '0',
-      'exposed' => FALSE,
-      'expose' => array(
-        'operator' => FALSE,
-        'label' => '',
-      ),
-      'id' => 'type',
-      'table' => 'node',
-      'field' => 'type',
-      'relationship' => 'none',
-    ),
-  ));
-  $handler->override_option('access', array(
-    'type' => 'none',
-  ));
-  $handler->override_option('cache', array(
-    'type' => 'none',
-  ));
-  $handler->override_option('title', 'Watershed data - Reports w/ args');
-  $handler->override_option('empty_format', '1');
-  $handler->override_option('items_per_page', 0);
-  $handler->override_option('style_plugin', 'openlayers_data');
-  $handler->override_option('style_options', array(
-    'grouping' => '',
-    'data_source' => array(
-      'value' => 'openlayers_wkt',
-      'other_lat' => 'title',
-      'other_lon' => 'title',
-      'openlayers_wkt' => 'field_report_wkt_openlayers_wkt',
-      'other_top' => 'title',
-      'other_right' => 'title',
-      'other_bottom' => 'title',
-      'other_left' => 'title',
-      'name_field' => 'title',
-      'description_field' => 'nothing',
-    ),
-  ));
-  $handler->override_option('exposed_block', TRUE);
-  $handler = $view->new_display('openlayers', 'OpenLayers Data', 'openlayers_1');
-  $handler->override_option('row_plugin', '');
-  $handler->override_option('displays', array());
 
   $views[$view->name] = $view;
 

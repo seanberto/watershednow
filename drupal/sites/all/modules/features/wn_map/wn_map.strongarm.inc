@@ -22,13 +22,6 @@ function wn_map_strongarm() {
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'comment_anonymous_map_report';
-  $strongarm->value = 0;
-
-  $export['comment_anonymous_map_report'] = $strongarm;
-  $strongarm = new stdClass;
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
   $strongarm->name = 'comment_controls_map_feature';
   $strongarm->value = '3';
 
@@ -40,13 +33,6 @@ function wn_map_strongarm() {
   $strongarm->value = '3';
 
   $export['comment_controls_map_kml'] = $strongarm;
-  $strongarm = new stdClass;
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'comment_controls_map_report';
-  $strongarm->value = '3';
-
-  $export['comment_controls_map_report'] = $strongarm;
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
@@ -71,13 +57,6 @@ function wn_map_strongarm() {
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'comment_default_mode_map_report';
-  $strongarm->value = '4';
-
-  $export['comment_default_mode_map_report'] = $strongarm;
-  $strongarm = new stdClass;
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
   $strongarm->name = 'comment_default_order_map_feature';
   $strongarm->value = '1';
 
@@ -99,13 +78,6 @@ function wn_map_strongarm() {
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'comment_default_order_map_report';
-  $strongarm->value = '1';
-
-  $export['comment_default_order_map_report'] = $strongarm;
-  $strongarm = new stdClass;
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
   $strongarm->name = 'comment_default_per_page_map_feature';
   $strongarm->value = '50';
 
@@ -120,13 +92,6 @@ function wn_map_strongarm() {
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'comment_default_per_page_map_report';
-  $strongarm->value = '50';
-
-  $export['comment_default_per_page_map_report'] = $strongarm;
-  $strongarm = new stdClass;
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
   $strongarm->name = 'comment_form_location_map_feature';
   $strongarm->value = '0';
 
@@ -138,13 +103,6 @@ function wn_map_strongarm() {
   $strongarm->value = '0';
 
   $export['comment_form_location_map_kml'] = $strongarm;
-  $strongarm = new stdClass;
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'comment_form_location_map_report';
-  $strongarm->value = '0';
-
-  $export['comment_form_location_map_report'] = $strongarm;
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
@@ -169,13 +127,6 @@ function wn_map_strongarm() {
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'comment_map_report';
-  $strongarm->value = '2';
-
-  $export['comment_map_report'] = $strongarm;
-  $strongarm = new stdClass;
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
   $strongarm->name = 'comment_preview_map_feature';
   $strongarm->value = '1';
 
@@ -197,13 +148,6 @@ function wn_map_strongarm() {
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'comment_preview_map_report';
-  $strongarm->value = '1';
-
-  $export['comment_preview_map_report'] = $strongarm;
-  $strongarm = new stdClass;
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
   $strongarm->name = 'comment_subject_field_map_feature';
   $strongarm->value = '1';
 
@@ -222,13 +166,6 @@ function wn_map_strongarm() {
   $strongarm->value = '1';
 
   $export['comment_subject_field_map_point'] = $strongarm;
-  $strongarm = new stdClass;
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'comment_subject_field_map_report';
-  $strongarm->value = '1';
-
-  $export['comment_subject_field_map_report'] = $strongarm;
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
@@ -260,21 +197,6 @@ function wn_map_strongarm() {
   );
 
   $export['content_extra_weights_map_kml'] = $strongarm;
-  $strongarm = new stdClass;
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'content_extra_weights_map_report';
-  $strongarm->value = array(
-    'title' => '-2',
-    'revision_information' => '3',
-    'author' => '4',
-    'options' => '5',
-    'comment_settings' => '6',
-    'menu' => '2',
-    'path' => '7',
-  );
-
-  $export['content_extra_weights_map_report'] = $strongarm;
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
@@ -632,13 +554,6 @@ function wn_map_strongarm() {
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'enable_revisions_page_map_report';
-  $strongarm->value = 0;
-
-  $export['enable_revisions_page_map_report'] = $strongarm;
-  $strongarm = new stdClass;
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
   $strongarm->name = 'media_flickr_max_saves';
   $strongarm->value = '10';
 
@@ -669,15 +584,6 @@ function wn_map_strongarm() {
   );
 
   $export['node_options_map_kml'] = $strongarm;
-  $strongarm = new stdClass;
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'node_options_map_report';
-  $strongarm->value = array(
-    0 => 'status',
-  );
-
-  $export['node_options_map_report'] = $strongarm;
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
@@ -773,12 +679,5 @@ function wn_map_strongarm() {
   $strongarm->value = 'watershed-features/[title-raw]';
 
   $export['pathauto_node_map_feature_pattern'] = $strongarm;
-  $strongarm = new stdClass;
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'pathauto_node_map_report_pattern';
-  $strongarm->value = 'watershed-reports/[title-raw]';
-
-  $export['pathauto_node_map_report_pattern'] = $strongarm;
   return $export;
 }

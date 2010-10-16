@@ -30,63 +30,10 @@ function wn_map_ctools_plugin_api() {
  */
 function wn_map_imagecache_default_presets() {
   $items = array(
-    'homepage_thumb' => array(
-      'presetname' => 'homepage_thumb',
-      'actions' => array(
-        '0' => array(
-          'weight' => '0',
-          'module' => 'imagecache',
-          'action' => 'imagecache_scale_and_crop',
-          'data' => array(
-            'width' => '75',
-            'height' => '75',
-          ),
-        ),
-      ),
-    ),
-    'main_map' => array(
-      'presetname' => 'main_map',
-      'actions' => array(
-        '0' => array(
-          'weight' => '0',
-          'module' => 'imagecache',
-          'action' => 'imagecache_scale',
-          'data' => array(
-            'width' => '',
-            'height' => '150',
-            'upscale' => 0,
-          ),
-        ),
-      ),
-    ),
-    'map_gallery_slide' => array(
-      'presetname' => 'map_gallery_slide',
-      'actions' => array(
-        '0' => array(
-          'weight' => '0',
-          'module' => 'imagecache',
-          'action' => 'imagecache_scale_and_crop',
-          'data' => array(
-            'width' => '350',
-            'height' => '219',
-          ),
-        ),
-      ),
-    ),
-    'map_gallery_thumb' => array(
-      'presetname' => 'map_gallery_thumb',
-      'actions' => array(
-        '0' => array(
-          'weight' => '0',
-          'module' => 'imagecache',
-          'action' => 'imagecache_scale_and_crop',
-          'data' => array(
-            'width' => '85',
-            'height' => '58',
-          ),
-        ),
-      ),
-    ),
+    'homepage_thumb' => array(),
+    'main_map' => array(),
+    'map_gallery_slide' => array(),
+    'map_gallery_thumb' => array(),
   );
   return $items;
 }
@@ -97,7 +44,7 @@ function wn_map_imagecache_default_presets() {
 function wn_map_node_info() {
   $items = array(
     'map_feature' => array(
-      'name' => t('Feature'),
+      'name' => t('Watershed feature'),
       'module' => 'features',
       'description' => t('A <em>Watershed Feature</em> represents a point of interest on a map of a watershed. A watershed feature can be a point, a polyline or a polygon - or a collection of any of the three.'),
       'has_title' => '1',

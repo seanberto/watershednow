@@ -32,30 +32,6 @@ function wn_map_openlayers_styles() {
   $openlayers_styles = new stdClass;
   $openlayers_styles->disabled = FALSE; /* Edit this to true to make a default openlayers_styles disabled initially */
   $openlayers_styles->api_version = 1;
-  $openlayers_styles->name = 'reports';
-  $openlayers_styles->title = 'Reports';
-  $openlayers_styles->description = 'Styling of user-generated content links';
-  $openlayers_styles->data = array(
-    'externalGraphic' => '/sites/all/modules/features/map/openlayers_themes/wn/icons/site_seeing.png',
-    'pointRadius' => 10,
-    'fillColor' => '#EE9900',
-    'strokeColor' => '#EE9900',
-    'strokeWidth' => 1,
-    'fillOpacity' => 1,
-    'strokeOpacity' => 1,
-    'strokeLinecap' => 'round',
-    'strokeDashstyle' => 'solid',
-    'cursor' => 'pointer',
-    'graphicWidth' => 16,
-    'graphicHeight' => 21,
-    'graphicOpacity' => 1,
-    'labelAlign' => 'cm',
-  );
-
-  $export['reports'] = $openlayers_styles;
-  $openlayers_styles = new stdClass;
-  $openlayers_styles->disabled = FALSE; /* Edit this to true to make a default openlayers_styles disabled initially */
-  $openlayers_styles->api_version = 1;
   $openlayers_styles->name = 'sidebar_features';
   $openlayers_styles->title = 'Sidebar Features';
   $openlayers_styles->description = 'Styling of sidebar feature map points';
@@ -76,28 +52,5 @@ function wn_map_openlayers_styles() {
   );
 
   $export['sidebar_features'] = $openlayers_styles;
-  $openlayers_styles = new stdClass;
-  $openlayers_styles->disabled = FALSE; /* Edit this to true to make a default openlayers_styles disabled initially */
-  $openlayers_styles->api_version = 1;
-  $openlayers_styles->name = 'sidebar_reports';
-  $openlayers_styles->title = 'Sidebar Reports';
-  $openlayers_styles->description = 'Styling of user-generated content links in the sidebar';
-  $openlayers_styles->data = array(
-    'externalGraphic' => '/sites/all/modules/features/map/openlayers_themes/wn/icons/site_seeing.png',
-    'pointRadius' => 10,
-    'fillColor' => '#EE9900',
-    'strokeColor' => '#EE9900',
-    'strokeWidth' => 1,
-    'fillOpacity' => 1,
-    'strokeOpacity' => 1,
-    'strokeLinecap' => 'round',
-    'strokeDashstyle' => 'solid',
-    'graphicWidth' => 16,
-    'graphicHeight' => 21,
-    'graphicOpacity' => 1,
-    'labelAlign' => 'cm',
-  );
-
-  $export['sidebar_reports'] = $openlayers_styles;
   return $export;
 }

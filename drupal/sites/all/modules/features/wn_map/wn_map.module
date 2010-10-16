@@ -11,15 +11,10 @@ include_once('wn_map.features.inc');
 function wn_map_views_pre_render(&$view) {
   if (($view->name == 'watershed_feature_data') || ($view->name == 'watershed_feature_data_with_args')) {
     
-    // set the page title based on the query string
-    if (isset($_GET['page'])) {
-      drupal_set_title(check_plain($_GET['page']));
-    }
-    
     foreach ($view->result as $row) { // Iterate through results.
       $tid = $row->term_data_tid;
       $path = drupal_get_path('module', 'map');
-      $path = $path . '/openlayers_themes/james/tax_icons/';
+      $path = $path . '/openlayers_themes/wn/tax_icons/';
       $filename = $path . $tid . '-tax.png'; // Icon filename/path in OL styles.
       if (!file_exists($filename)) {
         $row->term_data_tid = ''; // If icon doesn't exist, go with default.
