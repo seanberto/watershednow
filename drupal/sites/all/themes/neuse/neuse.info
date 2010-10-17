@@ -27,3 +27,5 @@ features[] = primary_links
 features[] = secondary_links
 
 stylesheets[all][] = css/neuse.css
+stylesheets[all][] = css/hp_callout.css
+stylesheets[all][] = css/colors/blue.css

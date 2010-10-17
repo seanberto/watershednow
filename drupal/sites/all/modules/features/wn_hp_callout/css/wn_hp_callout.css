@@ -4,8 +4,8 @@
 
 .wn-hp-callout-pager {
   position:absolute;
-  bottom:0;
-  right:0;
+  bottom:10px;
+  right:10px;
   z-index:99;
 }
 .wn-hp-callout-pager a {
@@ -40,12 +40,19 @@
   display:block;  /* only show the first by default */
 }
 
+.wn-hp-callout-title {
+  padding:50px 20px 20px 20px;
+}
+
+.wn-hp-callout-content {
+  padding:0 20px 20px 20px;
+}
+
 .wn-hp-callout-entry {
   width:33%;
   height:100%;
   position:absolute;
   top:0;
   right:0;
-  padding:2em;
   background:#fff;
 }

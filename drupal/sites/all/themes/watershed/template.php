@@ -195,7 +195,6 @@ function watershed_preprocess_node(&$vars, $hook) {
 
 function watershed_preprocess_block(&$vars, $hook) {
     $block = $vars['block'];
-    //dsm($block);
 
     $subject = $block->subject;
     switch( $block->module.'_'.$block->delta ) {
