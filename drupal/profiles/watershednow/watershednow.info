@@ -124,6 +124,7 @@ modules[contrib][] = wn_helper
 
 ; Watershed Now Features
 features[] = wn_common
+features[] = wn_admin
 features[] = wn_hp_callout
 features[] = wn_blog
 features[] = wn_getinvolved
