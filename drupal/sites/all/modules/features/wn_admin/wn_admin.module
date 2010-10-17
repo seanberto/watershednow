@@ -1,0 +1,44 @@
+<?php
+
+include_once('wn_admin.features.inc');
+
+/**
+ * Implmentation of hook_init().
+ */
+function wn_admin_init() {
+  // Load wn_helper's css and javascript.
+  drupal_add_css((drupal_get_path('module', 'wn_admin')) . '/css/wn_admin.css');
+  drupal_add_js((drupal_get_path('module', 'wn_admin')) . '/js/wn_admin.js');
+}
+
+/**
+ * Implementation of hook_help().
+ *
+ * Adds a help message our our custom dashboard.
+ */
+function wn_admin_help($path, $arg) {
+  switch ($path) {
+    case 'admin/dashboard':
+      return 'Welcome to the Watershed Now Dashboard. Here you will find quick links and other tools for managing your site. If you get stuck, consider reaching out to the maintainers of Watershed Now, <a href="http://thinkshout.com/contact" target="_blank">ThinkShout.com</a>.';
+  }
+}
+
+/**
+ * Implementation of hook_menu().
+ *
+ * Adds a customized dashboard menu item and page.
+ */
+function wn_admin_menu() {
+  $items = array();
+
+  $items['admin/dashboard'] = array(
+    'title' => 'Watershed Now Dashboard',
+    'page callback' => 'wn_admin_dashboard',
+    'access arguments' => array('administer site configuration'),
+    'type' => MENU_NORMAL_ITEM,
+    'file' => 'wn_admin.admin.inc',
+    'weight' => -20,
+  );
+
+  return $items;
+}

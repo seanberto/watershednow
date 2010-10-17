@@ -1,16 +1,6 @@
 <?php
 
 /**
- * Implmentation of hook_init().
- */
-function wn_helper_init() {
-  // Load wn_helper's css and javascript.
-  drupal_add_css((drupal_get_path('module', 'wn_helper')) . '/css/wn_helper.css');
-  drupal_add_js((drupal_get_path('module', 'wn_helper')) . '/js/wn_helper.js');
-}
-
-
-/**
  * Implementation of hook_theme().
  */
 function wn_helper_theme() {
@@ -32,38 +22,6 @@ function wn_helper_theme() {
 function wn_helper_theme_registry_alter(&$theme_registry) {
   //change the follow link theme callback to the one we defined here
   $theme_registry['follow_link']['function'] = 'wn_helper_follow_link';
-}
-
-/**
- * Implementation of hook_help().
- *
- * Adds a help message our our custom dashboard.
- */
-function wn_helper_help($path, $arg) {
-  switch ($path) {
-    case 'admin/dashboard':
-      return 'Welcome to the Watershed Now! Dashboard. Here you will find quick links and other tools for managing your site. If you get stuck, consider reaching out to the maintainers of Watershed Now!, <a href="http://thinkshout.com/contact" target="_blank">ThinkShout.com</a>.';
-  }
-}
-
-/**
- * Implementation of hook_menu().
- *
- * Adds a customized dashboard menu item and page.
- */
-function wn_helper_menu() {
-  $items = array();
-
-  $items['admin/dashboard'] = array(
-    'title' => 'Watershed Now! Dashboard',
-    'page callback' => 'wn_helper_dashboard',
-    'access arguments' => array('administer site configuration'),
-    'type' => MENU_NORMAL_ITEM,
-    'file' => 'wn_helper.admin.inc',
-    'weight' => -20,
-  );
-
-  return $items;
 }
 
 /**

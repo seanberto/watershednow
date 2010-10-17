@@ -3,15 +3,15 @@
 /**
  * Generate Watershed Dashboard page
  */
-function wn_helper_dashboard() {
-  $output .= _wn_helper_quicklinks();
+function wn_admin_dashboard() {
+  $output .= _wn_admin_quicklinks();
   return $output;
 }
 
 /**
  * Build table with settings links. Note that module adds some nice styles and javascript sorting.
  */
-function _wn_helper_quicklinks() {
+function _wn_admin_quicklinks() {
   $links = array();
   
   $link = new stdClass;
