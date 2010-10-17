@@ -145,12 +145,20 @@ features[] = wn_map
 ; Set up admin user.
 users[superduper][uid] = 1
 users[superduper][name] = admin
-users[superduper][mail] = admin@example.org
+users[superduper][mail] = no-reply@thinkshout.com
 users[superduper][status] = 1
 
 ; Set up required site config
-variables[site_name] = Watershed Now
-variables[site_mail] = admin@example.org
+variables[site_name] = Watershed Now Example
+variables[site_mail] = no-reply@thinkshout.com
+variables[site_slogan] = Lorem ipsum eam sale postea eu.
+
+variables[site_mission] = 'Lorem ipsum eam sale postea eu, lorem ipsum vis ex natum doctus expetendis.'
+
+variables[site_footer] = '&copy; 2010 Watershed Now is a <a href="http://thinkshout.com">ThinkShout</a> open source product.'
+
+variables[site_newsletter] = '<form name="newsletter"><input type="text" name="user" value="Newsletter placeholder"/><input type="submit" value="Submit" /></form>'
+
 ; ----------------------------------------------
 
 ; @TODO - Abstract custom .info settings to a child install profile using Profiler module.
