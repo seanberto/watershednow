@@ -4,7 +4,7 @@ description = Select this profile to build a Drupal CMS developed for watershed 
 core = 6.x
 theme = watershed
 
-; ----------------------------------------------
+; ==============================================
 
 ; NOTE: Do not add a coment after the modules name, this will result in an error.
 
@@ -132,23 +132,34 @@ features[] = wn_events
 features[] = wn_donations
 features[] = wn_map
 
-; ----------------------------------------------
+; ==============================================
 
 ; PROFILER MODULE - DEFAULT SETUP
 ; (If applicable)
 
-; ----------------------------------------------
+; ==============================================
 
 ; PROFILER MODULE - SITE-SPECIFIC CONFIGURATIONS
-; (The following values will change per installation)
+; (The following values will change per installation - Edit the values below to speed up the installation process.)
 
-; Set up admin user.
+; ----------------------------------------------
+
+; Set up admin users.
+
 users[superduper][uid] = 1
-users[superduper][name] = admin
+users[superduper][name] = super-user
 users[superduper][mail] = no-reply@thinkshout.com
 users[superduper][status] = 1
 
-; Set up required site config
+users[admin][uid] = 2
+users[admin][name] = admin
+users[admin][mail] = no-reply+1@thinkshout.com
+users[admin][status] = 1
+
+; ----------------------------------------------
+
+; Set up site config
+
 variables[site_name] = Watershed Now Example
 variables[site_mail] = no-reply@thinkshout.com
 variables[site_slogan] = Lorem ipsum eam sale postea eu.
@@ -160,5 +171,9 @@ variables[site_footer] = '&copy; 2010 Watershed Now is a <a href="http://thinksh
 variables[site_newsletter] = '<form name="newsletter"><input type="text" name="user" value="Newsletter placeholder"/><input type="submit" value="Submit" /></form>'
 
 ; ----------------------------------------------
+
+
+
+; ==============================================
 
 ; @TODO - Abstract custom .info settings to a child install profile using Profiler module.
