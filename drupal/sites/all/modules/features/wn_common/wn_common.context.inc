@@ -10,7 +10,7 @@ function wn_common_context_default_contexts() {
   $context->api_version = 3;
   $context->name = 'homepage';
   $context->description = '';
-  $context->tag = 'page';
+  $context->tag = 'specific_pages';
   $context->conditions = array(
     'path' => array(
       'values' => array(
@@ -34,23 +34,19 @@ function wn_common_context_default_contexts() {
 
   // Translatables
   // Included for use with string extractors like potx.
-  t('page');
+  t('specific_pages');
 
   $export['homepage'] = $context;
   $context = new stdClass;
   $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
   $context->api_version = 3;
-  $context->name = 'sidebar_content';
+  $context->name = 'pages';
   $context->description = 'Add sidebar content to applicable nodes.';
-  $context->tag = 'section';
+  $context->tag = 'content_types';
   $context->conditions = array(
     'node' => array(
       'values' => array(
-        'donation' => 'donation',
-        'event' => 'event',
         'page' => 'page',
-        'take_action' => 'take_action',
-        'update' => 'update',
       ),
       'options' => array(
         'node_form' => '0',
@@ -66,6 +62,12 @@ function wn_common_context_default_contexts() {
           'region' => 'right',
           'weight' => 0,
         ),
+        'views-ce3c6f72a6fff470fd9f1ade8c7b668c' => array(
+          'module' => 'views',
+          'delta' => 'ce3c6f72a6fff470fd9f1ade8c7b668c',
+          'region' => 'right',
+          'weight' => 1,
+        ),
       ),
     ),
   );
@@ -74,9 +76,9 @@ function wn_common_context_default_contexts() {
   // Translatables
   // Included for use with string extractors like potx.
   t('Add sidebar content to applicable nodes.');
-  t('section');
+  t('content_types');
 
-  $export['sidebar_content'] = $context;
+  $export['pages'] = $context;
   $context = new stdClass;
   $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
   $context->api_version = 3;

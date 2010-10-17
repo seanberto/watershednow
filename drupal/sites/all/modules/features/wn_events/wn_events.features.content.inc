@@ -3,15 +3,15 @@
 /**
  * Implementation of hook_content_default_fields().
  */
-function wn_getinvolved_content_default_fields() {
+function wn_events_content_default_fields() {
   $fields = array();
 
   // Exported field: field_attachments
-  $fields['donation-field_attachments'] = array(
+  $fields['event-field_attachments'] = array(
     'field_name' => 'field_attachments',
-    'type_name' => 'donation',
+    'type_name' => 'event',
     'display_settings' => array(
-      'weight' => 0,
+      'weight' => '1',
       'parent' => '',
       'label' => array(
         'format' => 'above',
@@ -84,19 +84,19 @@ function wn_getinvolved_content_default_fields() {
       'insert_class' => '',
       'insert_width' => '',
       'label' => 'Attachments',
-      'weight' => 0,
-      'description' => 'Attach supporting documents and files to this donation page.',
+      'weight' => '1',
+      'description' => 'Attach supporting documents and files to this page.',
       'type' => 'filefield_widget',
       'module' => 'filefield',
     ),
   );
 
   // Exported field: field_body
-  $fields['donation-field_body'] = array(
+  $fields['event-field_body'] = array(
     'field_name' => 'field_body',
-    'type_name' => 'donation',
+    'type_name' => 'event',
     'display_settings' => array(
-      'weight' => '-3',
+      'weight' => '-2',
       'parent' => '',
       'label' => array(
         'format' => 'hidden',
@@ -142,24 +142,98 @@ function wn_getinvolved_content_default_fields() {
       'default_value' => array(
         '0' => array(
           'value' => '',
+          'format' => '1',
           '_error_element' => 'default_value_widget][field_body][0][value',
         ),
       ),
       'default_value_php' => NULL,
-      'label' => 'Body',
-      'weight' => '-3',
+      'label' => 'Description',
+      'weight' => '-2',
       'description' => '',
       'type' => 'text_textarea',
       'module' => 'text',
     ),
   );
 
-  // Exported field: field_get_involved
-  $fields['donation-field_get_involved'] = array(
-    'field_name' => 'field_get_involved',
-    'type_name' => 'donation',
+  // Exported field: field_date_event
+  $fields['event-field_date_event'] = array(
+    'field_name' => 'field_date_event',
+    'type_name' => 'event',
     'display_settings' => array(
-      'weight' => '-2',
+      'weight' => '-4',
+      'parent' => '',
+      'label' => array(
+        'format' => 'hidden',
+      ),
+      'teaser' => array(
+        'format' => 'short',
+        'exclude' => 0,
+      ),
+      'full' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '4' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '2' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '3' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+    'widget_active' => '1',
+    'type' => 'date',
+    'required' => '1',
+    'multiple' => '0',
+    'module' => 'date',
+    'active' => '1',
+    'granularity' => array(
+      'year' => 'year',
+      'month' => 'month',
+      'day' => 'day',
+      'hour' => 'hour',
+      'minute' => 'minute',
+    ),
+    'timezone_db' => 'UTC',
+    'tz_handling' => 'site',
+    'todate' => 'optional',
+    'repeat' => 0,
+    'repeat_collapsed' => '',
+    'default_format' => 'medium',
+    'widget' => array(
+      'default_value' => 'blank',
+      'default_value_code' => '',
+      'default_value2' => 'same',
+      'default_value_code2' => '',
+      'input_format' => 'M j Y - g:ia',
+      'input_format_custom' => '',
+      'increment' => '15',
+      'text_parts' => array(),
+      'year_range' => '-3:+3',
+      'label_position' => 'above',
+      'label' => 'Event date/time',
+      'weight' => '-4',
+      'description' => 'Enter the date and time of this event.',
+      'type' => 'date_popup',
+      'module' => 'date',
+    ),
+  );
+
+  // Exported field: field_get_involved
+  $fields['event-field_get_involved'] = array(
+    'field_name' => 'field_get_involved',
+    'type_name' => 'event',
+    'display_settings' => array(
+      'weight' => '-1',
       'parent' => '',
       'label' => array(
         'format' => 'hidden',
@@ -218,19 +292,19 @@ function wn_getinvolved_content_default_fields() {
       ),
       'default_value_php' => NULL,
       'label' => 'Associated "Get Involved" opportunities',
-      'weight' => '-2',
-      'description' => 'Select up to 5 donation, take action, or event opportunities associated with this donation page. Start typing the title of the page to find those available. You can drag-and-drop selected pages to change their order in the list.',
+      'weight' => '-1',
+      'description' => 'Select up to 5 donation, take action, or event opportunities associated with this event. Start typing the title of the page to find those available. You can drag-and-drop selected pages to change their order in the list.',
       'type' => 'nodereference_autocomplete',
       'module' => 'nodereference',
     ),
   );
 
   // Exported field: field_image_assets
-  $fields['donation-field_image_assets'] = array(
+  $fields['event-field_image_assets'] = array(
     'field_name' => 'field_image_assets',
-    'type_name' => 'donation',
+    'type_name' => 'event',
     'display_settings' => array(
-      'weight' => '7',
+      'weight' => '10',
       'parent' => '',
       'label' => array(
         'format' => 'hidden',
@@ -318,7 +392,7 @@ function wn_getinvolved_content_default_fields() {
       'insert_width' => '',
       'wysiwyg_imagefield' => TRUE,
       'label' => 'Image assets',
-      'weight' => '7',
+      'weight' => '10',
       'description' => '',
       'type' => 'imagefield_widget',
       'module' => 'imagefield',
@@ -326,11 +400,11 @@ function wn_getinvolved_content_default_fields() {
   );
 
   // Exported field: field_sidebar
-  $fields['donation-field_sidebar'] = array(
+  $fields['event-field_sidebar'] = array(
     'field_name' => 'field_sidebar',
-    'type_name' => 'donation',
+    'type_name' => 'event',
     'display_settings' => array(
-      'weight' => '-1',
+      'weight' => 0,
       'parent' => '',
       'label' => array(
         'format' => 'hidden',
@@ -382,19 +456,19 @@ function wn_getinvolved_content_default_fields() {
       ),
       'default_value_php' => NULL,
       'label' => 'Sidebar content',
-      'weight' => '-1',
-      'description' => 'Optionally, can enter up to 400 characters of additional content to be displayed in the sidebar on this donation campaign page.',
+      'weight' => 0,
+      'description' => 'Optionally, can enter up to 400 characters of additional content to be displayed in the sidebar on this event page.',
       'type' => 'text_textarea',
       'module' => 'text',
     ),
   );
 
   // Exported field: field_teaser
-  $fields['donation-field_teaser'] = array(
+  $fields['event-field_teaser'] = array(
     'field_name' => 'field_teaser',
-    'type_name' => 'donation',
+    'type_name' => 'event',
     'display_settings' => array(
-      'weight' => '-4',
+      'weight' => '-3',
       'parent' => '',
       'label' => array(
         'format' => 'hidden',
@@ -440,14 +514,13 @@ function wn_getinvolved_content_default_fields() {
       'default_value' => array(
         '0' => array(
           'value' => '',
-          'format' => '1',
           '_error_element' => 'default_value_widget][field_teaser][0][value',
         ),
       ),
       'default_value_php' => NULL,
       'label' => 'Teaser',
-      'weight' => '-4',
-      'description' => 'Enter a short teaser for this donation page (140 character max). This teaser will be used in sidebars as well as "widgets".',
+      'weight' => '-3',
+      'description' => 'Enter a short teaser for this event (140 character max). This teaser will be used in sidebars as well as "widgets".',
       'type' => 'text_textfield',
       'module' => 'text',
     ),
@@ -457,7 +530,8 @@ function wn_getinvolved_content_default_fields() {
   // Included for use with string extractors like potx.
   t('Associated "Get Involved" opportunities');
   t('Attachments');
-  t('Body');
+  t('Description');
+  t('Event date/time');
   t('Image assets');
   t('Sidebar content');
   t('Teaser');

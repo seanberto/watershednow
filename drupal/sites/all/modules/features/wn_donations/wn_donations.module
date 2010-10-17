@@ -1,0 +1,3 @@
+<?php
+
+include_once('wn_donations.features.inc');

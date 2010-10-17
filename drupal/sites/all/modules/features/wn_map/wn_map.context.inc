@@ -8,9 +8,9 @@ function wn_map_context_default_contexts() {
   $context = new stdClass;
   $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
   $context->api_version = 3;
-  $context->name = 'features';
-  $context->description = 'Context triggered when viewing watershed features.';
-  $context->tag = 'section';
+  $context->name = 'map_features';
+  $context->description = 'Context triggered when viewing map features.';
+  $context->tag = 'content_types';
   $context->conditions = array(
     'node' => array(
       'values' => array(
@@ -55,8 +55,8 @@ function wn_map_context_default_contexts() {
 
   // Translatables
   // Included for use with string extractors like potx.
-  t('Context triggered when viewing watershed features.');
-  t('section');
+  t('Context triggered when viewing map features.');
+  t('content_types');
 
   $export['features'] = $context;
   return $export;

@@ -44,6 +44,7 @@ modules[contrib][] = admin_menu
 
 ; Views
 modules[contrib][] = views
+modules[contrib][] = views_ui
 modules[contrib][] = views_calc
 modules[contrib][] = draggableviews
 modules[contrib][] = web_widgets
@@ -55,6 +56,7 @@ modules[contrib][] = context_ui
 modules[contrib][] = features
 modules[contrib][] = strongarm
 modules[contrib][] = boxes
+modules[contrib][] = diff
 
 ; Image Management
 modules[contrib][] = imageapi
@@ -126,6 +128,8 @@ features[] = wn_hp_callout
 features[] = wn_blog
 features[] = wn_getinvolved
 features[] = wn_takeaction
+features[] = wn_events
+features[] = wn_donations
 features[] = wn_map
 
 ; ----------------------------------------------
