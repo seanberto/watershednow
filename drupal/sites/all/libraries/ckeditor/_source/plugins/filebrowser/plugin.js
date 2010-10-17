@@ -174,7 +174,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			params.langCode = editor.langCode;
 
 		var url = addQueryString( this.filebrowser.url, params );
-		editor.popup( url, width, height );
+		editor.popup( url, width, height, editor.config.fileBrowserWindowFeatures );
 	}
 
 	/**
@@ -388,11 +388,13 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		// Associate filebrowser to elements with 'filebrowser' attribute.
 		for ( var i in definition.contents )
 		{
-			element = definition.contents[ i ] ;
-			attachFileBrowser( evt.editor, evt.data.name, definition, element.elements );
-			if ( element.hidden && element.filebrowser )
+			if ( ( element = definition.contents[ i ] ) )
 			{
-				element.hidden = !isConfigured( definition, element[ 'id' ], element.filebrowser );
+				attachFileBrowser( evt.editor, evt.data.name, definition, element.elements );
+				if ( element.hidden && element.filebrowser )
+				{
+					element.hidden = !isConfigured( definition, element[ 'id' ], element.filebrowser );
+				}
 			}
 		}
 	} );
@@ -476,4 +478,14 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
  * @default '' (empty string = disabled)
  * @example
  * config.filebrowserImageBrowseLinkUrl = '/browser/browse.php';
+ */
+
+/**
+ * The "features" to use in the file browser popup window.
+ * @name CKEDITOR.config.filebrowserWindowFeatures
+ * @since 3.4.1
+ * @type String
+ * @default 'location=no,menubar=no,toolbar=no,dependent=yes,minimizable=no,modal=yes,alwaysRaised=yes,resizable=yes,scrollbars=yes'
+ * @example
+ * config.filebrowserWindowFeatures = 'resizable=yes,scrollbars=no';
  */

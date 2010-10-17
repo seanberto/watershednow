@@ -60,13 +60,13 @@ CKEDITOR.editor.prototype.attachStyleStateChange = function( style, callback )
 
 						// Save the current state, so it can be compared next
 						// time.
-						callback.state !== currentState;
+						callback.state = currentState;
 					}
 				}
 			});
 	}
 
-	// Save the callback info, so it can be checked on the next occurence of
+	// Save the callback info, so it can be checked on the next occurrence of
 	// selectionChange.
 	styleStateChangeCallbacks.push( { style : style, fn : callback } );
 };
@@ -137,6 +137,8 @@ CKEDITOR.STYLE_OBJECT = 3;
 			return ( this.removeFromRange =
 						this.type == CKEDITOR.STYLE_INLINE ?
 							removeInlineStyle
+						: this.type == CKEDITOR.STYLE_OBJECT ?
+							removeObjectStyle
 						: null ).call( this, range );
 		},
 
@@ -180,6 +182,10 @@ CKEDITOR.STYLE_OBJECT = 3;
 			return false;
 		},
 
+		/**
+		 * Whether this style can be applied at the element path.
+ 		 * @param elementPath
+		 */
 		checkApplicable : function( elementPath )
 		{
 			switch ( this.type )
@@ -222,6 +228,8 @@ CKEDITOR.STYLE_OBJECT = 3;
 							continue;
 
 						var elementAttr = element.getAttribute( attName ) || '';
+
+						// Special treatment for 'style' attribute is required.
 						if ( attName == 'style' ?
 							compareCssText( attribs[ attName ], normalizeCssText( elementAttr, false ) )
 							: attribs[ attName ] == elementAttr  )
@@ -370,9 +378,6 @@ CKEDITOR.STYLE_OBJECT = 3;
 		// Get the DTD definition for the element. Defaults to "span".
 		var dtd = CKEDITOR.dtd[ elementName ] || ( isUnknownElement = true, CKEDITOR.dtd.span );
 
-		// Bookmark the range so we can re-select it after processing.
-		var bookmark = range.createBookmark();
-
 		// Expand the range.
 		range.enlarge( CKEDITOR.ENLARGE_ELEMENT );
 		range.trim();
@@ -401,7 +406,7 @@ CKEDITOR.STYLE_OBJECT = 3;
 				var nodeType = currentNode.type;
 				var nodeName = nodeType == CKEDITOR.NODE_ELEMENT ? currentNode.getName() : null;
 
-				if ( nodeName && currentNode.getAttribute( '_fck_bookmark' ) )
+				if ( nodeName && currentNode.getAttribute( '_cke_bookmark' ) )
 				{
 					currentNode = currentNode.getNextSourceNode( true );
 					continue;
@@ -538,9 +543,9 @@ CKEDITOR.STYLE_OBJECT = 3;
 			}
 		}
 
-		firstNode.remove();
-		lastNode.remove();
-		range.moveToBookmark( bookmark );
+		// Remove the bookmark nodes.
+		range.moveToBookmark( boundaryNodes );
+
 		// Minimize the result range to exclude empty text nodes. (#5374)
 		range.shrink( CKEDITOR.SHRINK_TEXT );
 	}
@@ -579,12 +584,14 @@ CKEDITOR.STYLE_OBJECT = 3;
 
 				if ( this.checkElementRemovable( element ) )
 				{
-					var endOfElement = range.checkBoundaryOfElement( element, CKEDITOR.END ),
-							startOfElement = !endOfElement && range.checkBoundaryOfElement( element, CKEDITOR.START );
-					if ( startOfElement || endOfElement )
+					var isStart;
+
+					if ( range.collapsed && (
+						 range.checkBoundaryOfElement( element, CKEDITOR.END ) ||
+						 ( isStart = range.checkBoundaryOfElement( element, CKEDITOR.START ) ) ) )
 					{
 						boundaryElement = element;
-						boundaryElement.match = startOfElement ? 'start' : 'end';
+						boundaryElement.match = isStart ? 'start' : 'end';
 					}
 					else
 					{
@@ -714,6 +721,41 @@ CKEDITOR.STYLE_OBJECT = 3;
 		element && setupElement( element, this );
 	}
 
+	function removeObjectStyle( range )
+	{
+		var root = range.getCommonAncestor( true, true ),
+				element = root.getAscendant( this.element, true );
+
+		if ( !element )
+			return;
+
+		var style = this;
+		var def = style._.definition;
+		var attributes = def.attributes;
+		var styles = CKEDITOR.style.getStyleText( def );
+
+		// Remove all defined attributes.
+		if ( attributes )
+		{
+			for ( var att in attributes )
+			{
+				element.removeAttribute( att, attributes[ att ] );
+			}
+		}
+
+		// Assign all defined styles.
+		if ( def.styles )
+		{
+			for ( var i in def.styles )
+			{
+				if ( !def.styles.hasOwnProperty( i ) )
+					continue;
+
+				element.removeStyle( i );
+			}
+		}
+	}
+
 	function applyBlockStyle( range )
 	{
 		// Serializible bookmarks is needed here since
@@ -768,13 +810,14 @@ CKEDITOR.STYLE_OBJECT = 3;
 		}
 	}
 
+	var nonWhitespaces = CKEDITOR.dom.walker.whitespaces( true );
 	/**
 	 * Merge a <pre> block with a previous sibling if available.
 	 */
 	function mergePre( preBlock )
 	{
 		var previousBlock;
-		if ( !( ( previousBlock = preBlock.getPreviousSourceNode( true, CKEDITOR.NODE_ELEMENT ) )
+		if ( !( ( previousBlock = preBlock.getPrevious( nonWhitespaces ) )
 				 && previousBlock.is
 				 && previousBlock.is( 'pre') ) )
 			return;
@@ -806,7 +849,7 @@ CKEDITOR.STYLE_OBJECT = 3;
 	{
 		// Exclude the ones at header OR at tail,
 		// and ignore bookmark content between them.
-		var duoBrRegex = /(\S\s*)\n(?:\s|(<span[^>]+_fck_bookmark.*?\/span>))*\n(?!$)/gi,
+		var duoBrRegex = /(\S\s*)\n(?:\s|(<span[^>]+_cke_bookmark.*?\/span>))*\n(?!$)/gi,
 			blockName = preBlock.getName(),
 			splitedHtml = replace( preBlock.getOuterHtml(),
 				duoBrRegex,
@@ -828,7 +871,7 @@ CKEDITOR.STYLE_OBJECT = 3;
 		var headBookmark = '',
 			tailBookmark = '';
 
-		str = str.replace( /(^<span[^>]+_fck_bookmark.*?\/span>)|(<span[^>]+_fck_bookmark.*?\/span>$)/gi,
+		str = str.replace( /(^<span[^>]+_cke_bookmark.*?\/span>)|(<span[^>]+_cke_bookmark.*?\/span>$)/gi,
 			function( str, m1, m2 ){
 					m1 && ( headBookmark = m1 );
 					m2 && ( tailBookmark = m2 );
@@ -1074,8 +1117,16 @@ CKEDITOR.STYLE_OBJECT = 3;
 		}
 
 		// Assign all defined styles.
-		if ( styles )
-			el.setAttribute( 'style', styles );
+		if ( def.styles )
+		{
+			for ( var i in def.styles )
+			{
+				if ( !def.styles.hasOwnProperty( i ) )
+					continue;
+
+				el.setStyle( i, def.styles[ i ] );
+			}
+		}
 
 		return el;
 	}
@@ -1198,6 +1249,7 @@ CKEDITOR.STYLE_OBJECT = 3;
 		return overrides;
 	}
 
+	// Make the comparison of attribute value easier by standardizing it.
 	function normalizeProperty( name, value, isStyle )
 	{
 		var temp = new CKEDITOR.dom.element( 'span' );
@@ -1205,6 +1257,7 @@ CKEDITOR.STYLE_OBJECT = 3;
 		return temp[ isStyle ? 'getStyle' : 'getAttribute' ]( name );
 	}
 
+	// Make the comparison of style text easier by standardizing it.
 	function normalizeCssText( unparsedCssText, nativeNormalize )
 	{
 		var styleText;
@@ -1240,14 +1293,18 @@ CKEDITOR.STYLE_OBJECT = 3;
 		return retval;
 	}
 
+	/**
+	 * Compare two bunch of styles, with the speciality that value 'inherit'
+	 * is treated as a wildcard which will match any value.
+	 * @param {Object|String} source
+	 * @param {Object|String} target
+	 */
 	function compareCssText( source, target )
 	{
 		typeof source == 'string' && ( source = parseStyleText( source ) );
 		typeof target == 'string' && ( target = parseStyleText( target ) );
 		for( var name in source )
 		{
-			// Value 'inherit'  is treated as a wildcard,
-			// which will match any value.
 			if ( !( name in target &&
 					( target[ name ] == source[ name ]
 						|| source[ name ] == 'inherit'
@@ -1261,17 +1318,24 @@ CKEDITOR.STYLE_OBJECT = 3;
 
 	function applyStyle( document, remove )
 	{
-		// Get all ranges from the selection.
-		var selection = document.getSelection();
-		var ranges = selection.getRanges();
-		var func = remove ? this.removeFromRange : this.applyToRange;
+		var selection = document.getSelection(),
+			// Bookmark the range so we can re-select it after processing.
+			bookmarks = selection.createBookmarks(),
+			ranges = selection.getRanges( true ),
+			func = remove ? this.removeFromRange : this.applyToRange,
+			range;
 
-		// Apply the style to the ranges.
-		for ( var i = 0 ; i < ranges.length ; i++ )
-			func.call( this, ranges[ i ] );
+		var iterator = ranges.createIterator();
+		while ( ( range = iterator.getNextRange() ) )
+			func.call( this, range );
 
-		// Select the ranges again.
-		selection.selectRanges( ranges );
+		if ( bookmarks.length == 1 && bookmarks[0].collapsed )
+		{
+			selection.selectRanges( ranges );
+			bookmarks[0].startNode.remove();
+		}
+		else
+			selection.selectBookmarks( bookmarks );
 	}
 })();
 

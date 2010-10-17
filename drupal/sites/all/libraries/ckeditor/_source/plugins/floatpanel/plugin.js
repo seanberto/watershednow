@@ -129,14 +129,15 @@ CKEDITOR.plugins.add( 'floatpanel',
 
 				element.setStyles(
 					{
-						top : top + 'px',
-						left : '-3000px',
-						opacity : '0',	// FF3 is ignoring "visibility"
+						top : '-30000px',
 						display	: ''
 					});
+				// Don't use display or visibility style because we need to
+				// calculate the rendering layout later and focus the element.
+				element.setOpacity( 0 );
 
 				// To allow the context menu to decrease back their width
-				element.getFirst().removeStyle('width');
+				element.getFirst().removeStyle( 'width' );
 
 				// Configure the IFrame blur event. Do that only once.
 				if ( !this._.blurSet )
@@ -203,10 +204,10 @@ CKEDITOR.plugins.add( 'floatpanel',
 								// We must adjust first the width or IE6 could include extra lines in the height computation
 								var widthNode = block.element.$;
 
-								if ( CKEDITOR.env.gecko || CKEDITOR.env.opera)
+								if ( CKEDITOR.env.gecko || CKEDITOR.env.opera )
 									widthNode = widthNode.parentNode;
 
-								if ( CKEDITOR.env.ie)
+								if ( CKEDITOR.env.ie )
 									widthNode = widthNode.document.body;
 
 								var width = widthNode.scrollWidth;
@@ -259,13 +260,34 @@ CKEDITOR.plugins.add( 'floatpanel',
 							if ( top + panelSize.height > viewportSize.height + windowScroll.y )
 								top -= panelSize.height;
 
+							// If IE is in RTL, we have troubles with absolute
+							// position and horizontal scrolls. Here we have a
+							// series of hacks to workaround it. (#6146)
+							if ( CKEDITOR.env.ie )
+							{
+								var offsetParent = new CKEDITOR.dom.element( element.$.offsetParent ),
+									scrollParent = offsetParent;
+
+								// Quirks returns <body>, but standards returns <html>.
+								if ( scrollParent.getName() == 'html' )
+									scrollParent = scrollParent.getDocument().getBody();
+
+								if ( scrollParent.getComputedStyle( 'direction' ) == 'rtl' )
+								{
+									// For IE8, there is not much logic on this, but it works.
+									if ( CKEDITOR.env.ie8Compat )
+										left -= element.getDocument().getDocumentElement().$.scrollLeft * 2;
+									else
+										left -= ( offsetParent.$.scrollWidth - offsetParent.$.clientWidth );
+								}
+							}
+
 							element.setStyles(
 								{
 									top : top + 'px',
-									left : left + 'px',
-									opacity : '1'
+									left : left + 'px'
 								} );
-
+							element.setOpacity( 1 );
 						} , this );
 
 						panel.isLoaded ? panelLoad() : panel.onLoad = panelLoad;

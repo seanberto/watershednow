@@ -1,4 +1,4 @@
-// $Id: fckeditor-2.6.js,v 1.16.2.3 2010/02/13 23:58:41 sun Exp $
+// $Id: fckeditor-2.6.js,v 1.16.2.4 2010/09/10 02:06:57 sun Exp $
 (function($) {
 
 /**
@@ -43,11 +43,19 @@ Drupal.wysiwyg.editor.detach.fckeditor = function(context, params) {
     // deepest. Its parent is the iFrame containing the editor.
     var instanceScope = instance.EditingArea.Window.parent;
     instanceScope.FCKTools.RemoveEventListener(instance.GetParentForm(), 'submit', instance.UpdateLinkedField); 
-    // Remove the editor instance.
+    // Run cleanups before forcing an unload of the iFrames or IE crashes.
+    // This also deletes the instance from the FCKeditorAPI.__Instances array.
+    instanceScope.FCKTools.RemoveEventListener(instanceScope, 'unload', instanceScope.FCKeditorAPI_Cleanup);
+    instanceScope.FCKTools.RemoveEventListener(instanceScope, 'beforeunload', instanceScope.FCKeditorAPI_ConfirmCleanup);
+    if (jQuery.isFunction(instanceScope.FCKIECleanup_Cleanup)) {
+      instanceScope.FCKIECleanup_Cleanup();
+    }
+    instanceScope.FCKeditorAPI_ConfirmCleanup();
+    instanceScope.FCKeditorAPI_Cleanup();
+    // Remove the editor elements.
     $('#' + instanceName + '___Config').remove();
     $('#' + instanceName + '___Frame').remove();
     $('#' + instanceName).show();
-    delete instance;
   }
 };
 

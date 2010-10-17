@@ -359,12 +359,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	{
 			return this.blockBoundary( { br : 1 } );
 	};
-	/**
-	 * Whether the node is a bookmark node's inner text node.
-	 */
-	CKEDITOR.dom.walker.bookmarkContents = function( node )
-	{
-	},
 
 	/**
 	 * Whether the to-be-evaluated node is a bookmark node OR bookmark node
@@ -380,7 +374,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		{
 			return ( node && node.getName
 					&& node.getName() == 'span'
-					&& node.hasAttribute('_fck_bookmark') );
+					&& node.hasAttribute('_cke_bookmark') );
 		}
 
 		return function( node )

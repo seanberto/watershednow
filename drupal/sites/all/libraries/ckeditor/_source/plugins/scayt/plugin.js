@@ -62,7 +62,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			oParams.onBeforeChange = function()
 			{
 				if ( plugin.getScayt( editor ) && !editor.checkDirty() )
-					setTimeout( function(){ editor.resetDirty(); } );
+					setTimeout( function(){ editor.resetDirty(); }, 0 );
 			};
 
 			var scayt_custom_params = window.scayt_custom_params;
@@ -382,7 +382,7 @@ CKEDITOR.plugins.scayt =
 			var protocol = document.location.protocol;
 			// Default to 'http' for unknown.
 			protocol = protocol.search( /https?:/) != -1? protocol : 'http:';
-			var baseUrl  = 'svc.spellchecker.net/spellcheck31/lf/scayt24/loader__base.js';
+			var baseUrl  = 'svc.spellchecker.net/scayt25/loader__base.js';
 
 			var scaytUrl  =  editor.config.scayt_srcUrl || ( protocol + '//' + baseUrl );
 			var scaytConfigBaseUrl =  plugin.parseUrl( scaytUrl ).path +  '/';
@@ -453,9 +453,6 @@ CKEDITOR.plugins.scayt =
 
 		exec: function( editor )
 		{
-			var autoStartup = editor.config.scayt_autoStartup;
-			autoStartup = ( autoStartup == undefined ) || autoStartup;
-
 			if ( plugin.isScaytReady( editor ) )
 			{
 				var isEnabled = plugin.isScaytEnabled( editor );
@@ -472,7 +469,7 @@ CKEDITOR.plugins.scayt =
 				scayt_control.focus( );
 				scayt_control.setDisabled( isEnabled );
 			}
-			else if ( !autoStartup && plugin.engineLoaded >= 0 )	// Load first time
+			else if ( !editor.config.scayt_autoStartup && plugin.engineLoaded >= 0 )	// Load first time
 			{
 				this.setState( CKEDITOR.TRISTATE_DISABLED );
 				plugin.loadEngine( editor );
@@ -499,13 +496,8 @@ CKEDITOR.plugins.scayt =
 					items_order_str += 'scayt_' + items_order[ pos ] + ( items_order.length != parseInt( pos, 10 ) + 1 ? ',' : '' );
 			}
 
-			// Register scayt rbc menu group.
-			if ( editor.config.scayt_contextMenuOntop )
-				// Put it on top of all context menu items
-				editor.config.menu_groups =  items_order_str + ',' + editor.config.menu_groups;
-			else
-				// Put it down
-				editor.config.menu_groups = editor.config.menu_groups + ',' +items_order_str;
+			// Put it on top of all context menu items (#5717)
+			editor.config.menu_groups =  items_order_str + ',' + editor.config.menu_groups;
 		},
 
 		init : function( editor )
@@ -627,9 +619,10 @@ CKEDITOR.plugins.scayt =
 			// If the "contextmenu" plugin is loaded, register the listeners.
 			if ( editor.contextMenu && editor.addMenuItems )
 			{
-				editor.contextMenu.addListener( function(  )
+				editor.contextMenu.addListener( function( element, selection )
 					{
-						if ( !plugin.isScaytEnabled( editor ) )
+						if ( !plugin.isScaytEnabled( editor )
+								|| selection.getCommonAncestor().isReadOnly() )
 							return null;
 
 						var scayt_control = plugin.getScayt( editor ),
@@ -778,8 +771,7 @@ CKEDITOR.plugins.scayt =
 			}
 
 			// Start plugin
-			var autoStartup = editor.config.scayt_autoStartup;
-			if ( ( autoStartup == undefined ) || autoStartup )
+			if ( editor.config.scayt_autoStartup )
 			{
 				editor.on( 'instanceReady', function()
 				{
@@ -811,9 +803,9 @@ CKEDITOR.plugins.scayt =
  * If enabled (true), turns on SCAYT automatically after loading the editor.
  * @name CKEDITOR.config.scayt_autoStartup
  * @type Boolean
- * @default true
+ * @default false
  * @example
- * config.scayt_autoStartup = false;
+ * config.scayt_autoStartup = true;
  */
 
 /**
@@ -931,15 +923,6 @@ CKEDITOR.plugins.scayt =
  * @default ''
  * @example
  * config.scayt_userDictionaryName = 'MyDictionary';
- */
-
-/**
- * Makes it possible to place the SCAYT context menu items above others.
- * @name CKEDITOR.config.scayt_contextMenuOntop
- * @type Boolean
- * @default false
- * @example
- * config.scayt_contextMenuOntop = true;
  */
 
 /**
