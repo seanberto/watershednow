@@ -1,0 +1,54 @@
+<?php
+
+include_once('wn_hp_main.features.inc');
+
+/**
+* Implementation of hook_menu().
+*/
+function wn_hp_main_menu() {
+  $items = array();
+
+  $items['home'] = array( // Creating a placeholder homepage
+    'title' => '',
+    'page callback' => '_wn_hp_main_home',
+    'access callback' => TRUE,
+    'type' => MENU_NORMAL_ITEM,
+  );
+
+  return $items;
+}
+
+
+/**
+* Hompage callback. Displays a blank page.
+*/
+function _wn_hp_main_home() {
+  return t('');
+}
+
+/**
+ * Implementation of hook_form_alter().
+ *
+ * IMPORTANT: We are removing display of the site_frontpage field on the site config page.
+ * It's quite possible some other developer will scratch his/her head looking for this.
+ * It's an opinionated choice, but makes things simplier on ThinkShout's paid WN clients.
+ *
+ * Similarly, we are disabling display of the Boxes module box descripton field for non-super users.
+ */
+function wn_hp_main_form_alter(&$form, $form_state, $form_id) {
+    
+  global $user; // Some of the display is dependent upon access.
+  
+  switch ($form_id) {
+    case 'system_site_information_settings':
+      if ($user->uid != '1') {
+        $form['site_frontpage']['#access'] = FALSE; // If not super-user, hide ability to set homepage.
+      }
+      break;
+    case 'boxes_box_form':
+      if ($user->uid != '1') {
+        $form['description']['#access'] = FALSE; // If not super-user, hide the boxes box description field.
+      }
+      break;
+  }
+}

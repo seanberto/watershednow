@@ -112,7 +112,6 @@ modules[contrib][] = openlayers
 modules[contrib][] = openlayers_ui
 modules[contrib][] = openlayers_cck
 modules[contrib][] = openlayers_views
-modules[contrib][] = openlayers_geocoder
 
 ; Social Integration
 ; allows admins to add social network links that are reorderable.
@@ -124,6 +123,7 @@ modules[contrib][] = wn_helper
 ; Watershed Now Features
 features[] = wn_common
 features[] = wn_admin
+features[] = wn_hp_main
 features[] = wn_hp_callout
 features[] = wn_blog
 features[] = wn_takeaction
@@ -135,6 +135,9 @@ features[] = wn_map
 
 ; PROFILER MODULE - DEFAULT SETUP
 ; (If applicable)
+
+; @FIXME - For some reason, this value isn't being obeyed in wn_common's strongarm settings.
+variables[pathauto_node_pattern' = '[title-raw]'
 
 ; ==============================================
 

@@ -46,7 +46,6 @@ function wn_helper_form_alter(&$form, $form_state, $form_id) {
       if ($user->uid != '1') {
         // Hide silly anonymous field on site info form unless super user.
         $form['anonymous']['#access'] = FALSE;
-        $form['site_frontpage']['#access'] = FALSE;
       }
 
       //add newsletter textarea to site information form
