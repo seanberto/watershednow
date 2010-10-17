@@ -184,6 +184,8 @@
   position:absolute;
   top:6px;
   right:-60px; /* negative padding left of search input */
+  cursor:pointer;
+  cursor:hand;
 }
 
 
