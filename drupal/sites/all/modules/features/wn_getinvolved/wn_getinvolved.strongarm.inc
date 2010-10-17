@@ -197,26 +197,6 @@ function wn_getinvolved_strongarm() {
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'components';
-  $strongarm->value = array(
-    'date' => 1,
-    'email' => 1,
-    'fieldset' => 1,
-    'file' => 1,
-    'grid' => 1,
-    'hidden' => 1,
-    'markup' => 1,
-    'pagebreak' => 1,
-    'select' => 1,
-    'textarea' => 1,
-    'textfield' => 1,
-    'time' => 1,
-  );
-
-  $export['components'] = $strongarm;
-  $strongarm = new stdClass;
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
   $strongarm->name = 'content_extra_weights_donation';
   $strongarm->value = array(
     'title' => '-5',
@@ -349,34 +329,6 @@ function wn_getinvolved_strongarm() {
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'enable_revisions_page_take_action';
-  $strongarm->value = 0;
-
-  $export['enable_revisions_page_take_action'] = $strongarm;
-  $strongarm = new stdClass;
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'form_build_id_donation';
-  $strongarm->value = 'form-11fb0debe8ba12dc705d2feb2c7fd94e';
-
-  $export['form_build_id_donation'] = $strongarm;
-  $strongarm = new stdClass;
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'form_build_id_event';
-  $strongarm->value = 'form-6a6509eb03934d24eae8421eef3eef22';
-
-  $export['form_build_id_event'] = $strongarm;
-  $strongarm = new stdClass;
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'form_build_id_take_action';
-  $strongarm->value = 'form-9239f24a962e362ef7a35578583f6fc7';
-
-  $export['form_build_id_take_action'] = $strongarm;
-  $strongarm = new stdClass;
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
   $strongarm->name = 'node_options_donation';
   $strongarm->value = array(
     0 => 'status',
@@ -415,13 +367,6 @@ function wn_getinvolved_strongarm() {
   $strongarm->value = 'events/[title-raw]';
 
   $export['pathauto_node_event_pattern'] = $strongarm;
-  $strongarm = new stdClass;
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'pathauto_node_take_action_pattern';
-  $strongarm->value = 'take_action/[title-raw]';
-
-  $export['pathauto_node_take_action_pattern'] = $strongarm;
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
@@ -485,77 +430,5 @@ function wn_getinvolved_strongarm() {
   $strongarm->value = 'Amount';
 
   $export['simple_donations_title_donation'] = $strongarm;
-  $strongarm = new stdClass;
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'webform_csv_delimiter';
-  $strongarm->value = '\\t';
-
-  $export['webform_csv_delimiter'] = $strongarm;
-  $strongarm = new stdClass;
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'webform_default_from_address';
-  $strongarm->value = 'admin@watershednow.dev';
-
-  $export['webform_default_from_address'] = $strongarm;
-  $strongarm = new stdClass;
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'webform_default_from_name';
-  $strongarm->value = 'watershednow.dev';
-
-  $export['webform_default_from_name'] = $strongarm;
-  $strongarm = new stdClass;
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'webform_default_subject';
-  $strongarm->value = 'Form submission from: %title';
-
-  $export['webform_default_subject'] = $strongarm;
-  $strongarm = new stdClass;
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'webform_disabled_components';
-  $strongarm->value = array();
-
-  $export['webform_disabled_components'] = $strongarm;
-  $strongarm = new stdClass;
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'webform_email_address_format';
-  $strongarm->value = 'long';
-
-  $export['webform_email_address_format'] = $strongarm;
-  $strongarm = new stdClass;
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'webform_export_format';
-  $strongarm->value = 'delimited';
-
-  $export['webform_export_format'] = $strongarm;
-  $strongarm = new stdClass;
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'webform_node_types';
-  $strongarm->value = array(
-    0 => 'take_action',
-  );
-
-  $export['webform_node_types'] = $strongarm;
-  $strongarm = new stdClass;
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'webform_submission_access_control';
-  $strongarm->value = '1';
-
-  $export['webform_submission_access_control'] = $strongarm;
-  $strongarm = new stdClass;
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'webform_use_cookies';
-  $strongarm->value = 0;
-
-  $export['webform_use_cookies'] = $strongarm;
   return $export;
 }

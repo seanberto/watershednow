@@ -453,77 +453,10 @@ function wn_takeaction_content_default_fields() {
     ),
   );
 
-  // Exported field: field_body
-  $fields['update-field_body'] = array(
-    'field_name' => 'field_body',
-    'type_name' => 'update',
-    'display_settings' => array(
-      'weight' => '-4',
-      'parent' => '',
-      'label' => array(
-        'format' => 'hidden',
-      ),
-      'teaser' => array(
-        'format' => 'trimmed',
-        'exclude' => 0,
-      ),
-      'full' => array(
-        'format' => 'default',
-        'exclude' => 0,
-      ),
-      '4' => array(
-        'format' => 'default',
-        'exclude' => 0,
-      ),
-      '2' => array(
-        'format' => 'default',
-        'exclude' => 0,
-      ),
-      '3' => array(
-        'format' => 'default',
-        'exclude' => 0,
-      ),
-      'token' => array(
-        'format' => 'default',
-        'exclude' => 0,
-      ),
-    ),
-    'widget_active' => '1',
-    'type' => 'text',
-    'required' => '0',
-    'multiple' => '0',
-    'module' => 'text',
-    'active' => '1',
-    'text_processing' => '1',
-    'max_length' => '',
-    'allowed_values' => '',
-    'allowed_values_php' => '',
-    'widget' => array(
-      'rows' => '5',
-      'size' => 60,
-      'default_value' => array(
-        '0' => array(
-          'value' => '',
-          'format' => '1',
-          '_error_element' => 'default_value_widget][field_body][0][value',
-        ),
-      ),
-      'default_value_php' => NULL,
-      'label' => 'Body',
-      'weight' => '-4',
-      'description' => '',
-      'type' => 'text_textarea',
-      'module' => 'text',
-    ),
-  );
-
   // Translatables
   // Included for use with string extractors like potx.
   t('Associated "Get Involved" opportunities');
   t('Attachments');
-  t('Body');
-  t('Description');
-  t('Event date/time');
   t('Image assets');
   t('Plea');
   t('Sidebar content');

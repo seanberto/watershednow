@@ -293,6 +293,7 @@ function wn_takeaction_views_default_views() {
     'mission_description' => FALSE,
     'description' => '',
   ));
+  $handler->override_option('row_options', array());
   $handler->override_option('path', 'take_action/web_widget');
   $handler->override_option('menu', array(
     'type' => 'none',

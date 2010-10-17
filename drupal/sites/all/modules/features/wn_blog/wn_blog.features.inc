@@ -33,7 +33,7 @@ function wn_blog_node_info() {
       'has_body' => '0',
       'body_label' => '',
       'min_word_count' => '0',
-      'help' => '"Updates" are blog posts that keep your community informed about what your organization is doing.',
+      'help' => t('"Updates" are blog posts that keep your community informed about what your organization is doing.'),
     ),
     'update_feed' => array(
       'name' => t('Update feed'),
@@ -44,7 +44,7 @@ function wn_blog_node_info() {
       'has_body' => '0',
       'body_label' => '',
       'min_word_count' => '0',
-      'help' => 'An "Update feed" is the URL of an RSS feed that links to content that you would like to use to populate your blog. Any RSS feed will work, but we recommend you choose RSS feeds that contain content that you have created, such as Posterous.com feeds, Facebook feeds, or feeds from other blogs or sites that you maintain.',
+      'help' => t('An "Update feed" is the URL of an RSS feed that links to content that you would like to use to populate your blog. Any RSS feed will work, but we recommend you choose RSS feeds that contain content that you have created, such as Posterous.com feeds, Facebook feeds, or feeds from other blogs or sites that you maintain.'),
     ),
   );
   return $items;

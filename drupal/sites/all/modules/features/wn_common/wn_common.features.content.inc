@@ -6,6 +6,134 @@
 function wn_common_content_default_fields() {
   $fields = array();
 
+  // Exported field: field_body
+  $fields['page-field_body'] = array(
+    'field_name' => 'field_body',
+    'type_name' => 'page',
+    'display_settings' => array(
+      'weight' => '-4',
+      'parent' => '',
+      'label' => array(
+        'format' => 'hidden',
+      ),
+      'teaser' => array(
+        'format' => 'hidden',
+        'exclude' => 0,
+      ),
+      'full' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '4' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '2' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '3' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+    'widget_active' => '1',
+    'type' => 'text',
+    'required' => '0',
+    'multiple' => '0',
+    'module' => 'text',
+    'active' => '1',
+    'text_processing' => '1',
+    'max_length' => '',
+    'allowed_values' => '',
+    'allowed_values_php' => '',
+    'widget' => array(
+      'rows' => '5',
+      'size' => 60,
+      'default_value' => array(
+        '0' => array(
+          'value' => '',
+          'format' => '1',
+          '_error_element' => 'default_value_widget][field_body][0][value',
+        ),
+      ),
+      'default_value_php' => NULL,
+      'label' => 'Body',
+      'weight' => '-4',
+      'description' => '',
+      'type' => 'text_textarea',
+      'module' => 'text',
+    ),
+  );
+
+  // Exported field: field_sidebar
+  $fields['page-field_sidebar'] = array(
+    'field_name' => 'field_sidebar',
+    'type_name' => 'page',
+    'display_settings' => array(
+      'weight' => '-2',
+      'parent' => '',
+      'label' => array(
+        'format' => 'hidden',
+      ),
+      'teaser' => array(
+        'format' => 'hidden',
+        'exclude' => 0,
+      ),
+      'full' => array(
+        'format' => 'hidden',
+        'exclude' => 0,
+      ),
+      '4' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '2' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '3' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+    'widget_active' => '1',
+    'type' => 'text',
+    'required' => '0',
+    'multiple' => '0',
+    'module' => 'text',
+    'active' => '1',
+    'text_processing' => '1',
+    'max_length' => '400',
+    'allowed_values' => '',
+    'allowed_values_php' => '',
+    'widget' => array(
+      'rows' => '2',
+      'size' => 60,
+      'default_value' => array(
+        '0' => array(
+          'value' => '',
+          'format' => '1',
+          '_error_element' => 'default_value_widget][field_sidebar][0][value',
+        ),
+      ),
+      'default_value_php' => NULL,
+      'label' => 'Sidebar content',
+      'weight' => '-2',
+      'description' => 'Optionally, can enter up to 400 characters of additional content to be displayed in the sidebar on this page.',
+      'type' => 'text_textarea',
+      'module' => 'text',
+    ),
+  );
+
   // Exported field: field_attachments
   $fields['page-field_attachments'] = array(
     'field_name' => 'field_attachments',
@@ -56,6 +184,11 @@ function wn_common_content_default_fields() {
       'progress_indicator' => 'bar',
       'max_filesize_per_file' => '',
       'max_filesize_per_node' => '',
+      'wn_hp_callout_desc' => NULL,
+      'wn_hp_callout_desc_help' => NULL,
+      'custom_wn_hp_callout_desc' => NULL,
+      'custom_wn_hp_callout_desc_style' => NULL,
+      'custom_wn_hp_callout_desc_required' => NULL,
       'filefield_sources' => array(
         'reference' => 'reference',
         'attach' => 0,
@@ -78,11 +211,6 @@ function wn_common_content_default_fields() {
       'insert_default' => 'auto',
       'insert_class' => '',
       'insert_width' => '',
-      'wn_hp_callout_desc' => NULL,
-      'wn_hp_callout_desc_help' => NULL,
-      'custom_wn_hp_callout_desc' => NULL,
-      'custom_wn_hp_callout_desc_style' => NULL,
-      'custom_wn_hp_callout_desc_required' => NULL,
       'label' => 'Attachments',
       'weight' => '-1',
       'description' => 'Attach supporting documents and files to this page.',
@@ -221,6 +349,16 @@ function wn_common_content_default_fields() {
       'title_type' => 'textfield',
       'default_image' => NULL,
       'use_default_image' => 0,
+      'slide_preset' => NULL,
+      'thumb_preset' => NULL,
+      'style' => NULL,
+      'link_to_full' => NULL,
+      'link_to_full_preset' => NULL,
+      'wn_hp_callout_desc' => NULL,
+      'wn_hp_callout_desc_help' => NULL,
+      'custom_wn_hp_callout_desc' => NULL,
+      'custom_wn_hp_callout_desc_style' => NULL,
+      'custom_wn_hp_callout_desc_required' => NULL,
       'filefield_sources' => array(
         'reference' => 'reference',
         'attach' => 'attach',
@@ -244,11 +382,6 @@ function wn_common_content_default_fields() {
       'insert_class' => '',
       'insert_width' => '',
       'wysiwyg_imagefield' => TRUE,
-      'wn_hp_callout_desc' => NULL,
-      'wn_hp_callout_desc_help' => NULL,
-      'custom_wn_hp_callout_desc' => NULL,
-      'custom_wn_hp_callout_desc_style' => NULL,
-      'custom_wn_hp_callout_desc_required' => NULL,
       'label' => 'Image assets',
       'weight' => '6',
       'description' => '',
@@ -262,6 +395,8 @@ function wn_common_content_default_fields() {
   t('Associated "Get Involved" opportunities');
   t('Attachments');
   t('Image assets');
+  t('Body');
+  t('Sidebar content');
 
   return $fields;
 }

@@ -30,7 +30,7 @@ function wn_takeaction_node_info() {
       'has_body' => '0',
       'body_label' => '',
       'min_word_count' => '0',
-      'help' => '"Take action pages" are used to create survey forms and e-petitions. Create an "take action" page to gather site visitor information and/or to send petition letters to representatives. Form results can be downloaded as spreadsheet data.',
+      'help' => t('"Take action pages" are used to create survey forms and e-petitions. Create an "take action" page to gather site visitor information and/or to send petition letters to representatives. Form results can be downloaded as spreadsheet data.'),
     ),
   );
   return $items;
