@@ -49,6 +49,14 @@ function watershed_preprocess_page(&$vars, $hook) {
     ));
   }
 
+  if( !empty($vars['newsletter']) ) {
+    $vars['newsletter'] = theme('block',(object)array(
+      'subject' => 'newsletter signup',
+      'delta' => 'newsletter',
+      'content' => $vars['newsletter']
+    ));
+  }
+
   // Classes for body element. Allows advanced theming based on context
   // (home page, node of certain type, etc.)
   $body_classes = array($vars['body_classes']);
