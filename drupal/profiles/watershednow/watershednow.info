@@ -2,7 +2,6 @@
 name = Watershed Now
 description = Select this profile to build a Drupal CMS developed for watershed organizations.
 core = 6.x
-theme = watershed
 
 ; ==============================================
 
@@ -159,7 +158,10 @@ users[admin][status] = 1
 
 ; ----------------------------------------------
 
-; Set up site config
+; Set up general site config.
+
+; First set the default theme.
+theme = watershed
 
 variables[site_name] = Watershed Now Example
 variables[site_mail] = no-reply@thinkshout.com
@@ -173,7 +175,11 @@ variables[site_newsletter] = '<form name="newsletter"><input type="text" name="u
 
 ; ----------------------------------------------
 
+; Set up additional contrib configurations.
+; (Note: these run after features are installed so the variables below should override defaults.)
 
+; placeholder for google analytics key
+; placeholder for OpenLayers google maps key
 
 ; ==============================================
 
