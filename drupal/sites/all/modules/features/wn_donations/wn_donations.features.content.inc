@@ -3,7 +3,7 @@
 /**
  * Implementation of hook_content_default_fields().
  */
-function wn_getinvolved_content_default_fields() {
+function wn_donations_content_default_fields() {
   $fields = array();
 
   // Exported field: field_attachments
