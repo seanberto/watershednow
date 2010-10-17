@@ -1,14 +1,33 @@
+.wn-hp-callout {
+  position:relative;
+}
+
+.wn-hp-callout-pager {
+  position:absolute;
+  bottom:0;
+  right:0;
+  z-index:99;
+}
+.wn-hp-callout-pager a {
+  margin-left:1em;
+  padding:.5em;
+}
+
+.wn-hp-callout-pager a.activeSlide {
+  font-weight:bold;
+}
+
 .wn-hp-callout-title {
   font-size:200%;
   font-weight:bold;
   margin-bottom:.5em;
 }
-.wn-hp-callouts {
+.wn-hp-callout ul {
   margin:0;
   padding:0;
 }
 
-.item-list ul.wn-hp-callouts li {
+.wn-hp-callout .item-list ul li {
   display:none;
   list-style:none;
   background:none;
@@ -17,7 +36,7 @@
   position:relative;
 }
 
-.wn-hp-callouts .first {
+.wn-hp-callout .first {
   display:block;  /* only show the first by default */
 }
 
