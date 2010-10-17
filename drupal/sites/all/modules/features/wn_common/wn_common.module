@@ -13,12 +13,17 @@ function wn_common_block($op = 'list', $delta = 0, $edit = array()) {
       $blocks[0]['info'] = t('Sidebar content');
       return $blocks;
 
-    case 'view':
-      if ($delta == 0) { // Build the sidebar block.
-        $node = node_load(arg(1)); // If not empty, grab the sidebar content from the current node.
-        $block['subject'] = t('');
-        $block['content'] = $node->field_sidebar[0]['value'];          
-      }
+      case 'view':
+        if ($delta == 0) { // Build the sidebar block.
+          $node = node_load(arg(1)); // If not empty, grab the sidebar content from the current node.
+          $sidebar = $node->field_sidebar[0]['value'];
+          $sidebar = rtrim($sidebar); // Sometimes the WYSIWYG editor adds whitespace to the end of a post.
+          if ( !(empty($sidebar)) && ($sidebar != "<br />") ) {
+            $block['subject'] = t('');
+            $block['content'] = $sidebar;
+            return $block;
+          } else { break; }
+        }
 
       return $block;
   }    
