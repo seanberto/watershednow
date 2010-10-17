@@ -35,3 +35,12 @@ function wn_common_node_info() {
   );
   return $items;
 }
+
+/**
+ * Implementation of hook_views_api().
+ */
+function wn_common_views_api() {
+  return array(
+    'api' => '2',
+  );
+}

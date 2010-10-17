@@ -3,7 +3,7 @@
 /**
  * Implementation of hook_views_default_views().
  */
-function wn_getinvolved_views_default_views() {
+function wn_common_views_default_views() {
   $views = array();
 
   // Exported view: related_getinvolved_content

@@ -126,7 +126,6 @@ features[] = wn_common
 features[] = wn_admin
 features[] = wn_hp_callout
 features[] = wn_blog
-features[] = wn_getinvolved
 features[] = wn_takeaction
 features[] = wn_events
 features[] = wn_donations
