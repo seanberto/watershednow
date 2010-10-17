@@ -27,7 +27,7 @@
   
   <div id="branding" class="clearfix">
   
-    <?php if (!empty($breadcrumbs)): ?><?php print $breadcrumb; ?><?php endif; ?>
+    <?php if (!empty($breadcrumb)): ?><?php print $breadcrumb; ?><?php endif; ?>
     
     <?php if (!empty($title)): ?>
       <h1 class="page-title"><?php print $title; ?></h1>

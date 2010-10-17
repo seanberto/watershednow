@@ -1,0 +1,13 @@
+diff --git a/drupal/sites/all/themes/seven/page.tpl.php b/drupal/sites/all/themes/seven/page.tpl.php
+index 02a4b34..13910e3 100644
+--- a/drupal/sites/all/themes/seven/page.tpl.php
++++ b/drupal/sites/all/themes/seven/page.tpl.php
+@@ -27,7 +27,7 @@
+   
+   <div id="branding" class="clearfix">
+   
+-    <?php if (!empty($breadcrumbs)): ?><?php print $breadcrumb; ?><?php endif; ?>
++    <?php if (!empty($breadcrumb)): ?><?php print $breadcrumb; ?><?php endif; ?>
+     
+     <?php if (!empty($title)): ?>
+       <h1 class="page-title"><?php print $title; ?></h1>
