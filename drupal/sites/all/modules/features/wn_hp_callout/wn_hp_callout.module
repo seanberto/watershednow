@@ -40,7 +40,7 @@ function wn_hp_callout_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
 
     $imgs[] = $img . '<div class="wn-hp-callout-entry">' . $title . $desc . '</div>';
   }
-  $html = theme('item_list',$imgs, NULL, $type = 'ul', array('class' => 'wn-hp-callouts'));
+  $html = '<div class="wn-hp-callout">'.theme('item_list',$imgs, NULL, $type = 'ul').'</div>';
 
   $node->content = array(
     'body' => array(
