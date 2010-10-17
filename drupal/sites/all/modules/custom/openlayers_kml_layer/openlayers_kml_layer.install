@@ -1,0 +1,14 @@
+<?php
+// $Id:
+
+/**
+ * Implements hook_uninstall().
+ */
+function openlayers_kml_layer_uninstall() {
+  $ret = array();
+  $ret[] = update_sql("DELETE FROM {variable} WHERE name like 'openlayers_kml_layer%'");
+  return $ret;
+}
+
+
+

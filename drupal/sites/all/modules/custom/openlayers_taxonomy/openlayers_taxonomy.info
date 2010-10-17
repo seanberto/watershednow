@@ -1,0 +1,9 @@
+; $Id: 
+name = OpenLayers Taxonomy
+description = Provides OpenLayers Taxonomy plugins.
+core = 6.x
+package = OpenLayers
+dependencies[] = openlayers
+dependencies[] = openlayers_views
+dependencies[] = views
+dependencies[] = taxonomy

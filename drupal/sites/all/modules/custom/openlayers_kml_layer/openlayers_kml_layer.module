@@ -1,0 +1,206 @@
+<?php
+// $Id:
+
+/**
+ * Implementation of hook_menu().
+ */
+function openlayers_kml_layer_menu() {
+  $items = array();
+
+  $items['admin/build/openlayers/layers/openlayers_kml_layer'] = array(
+    'title' => 'Layer content types',
+    'description' => 'Define what content types to use for KML layers',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('openlayers_kml_layer_settings_form'),
+    'access arguments' => array('administer openlayers'),
+    'type' => MENU_LOCAL_TASK,
+    'weight' => 20,
+  );
+
+  return $items;
+}
+
+/**
+ * Form allowing users to assocaite fields as KMLs
+ */
+function openlayers_kml_layer_settings_form() {
+  $form = array('#tree' => TRUE);
+  
+  $types = content_types();
+  foreach($types as $type) {
+    $filefields = array_filter($type['fields'], '_openlayers_kml_layer_fieldfilter');
+    if (!empty($filefields)) {
+      $options = array('-- NO KML FIELD --');
+      foreach($filefields as $field) {
+        $options[$field['field_name']] = $field['widget']['label'];
+      }
+      $key = $type['type'];
+      $form[$key]['name'] = array(
+        '#value' => $type['name'],
+        '#prefix' => '<div>',
+        '#suffix' => '</div>'
+      );
+      $form[$key]['filefield'] = array(
+        '#type' => 'select',
+        '#options' => $options,
+        '#default_value' => variable_get('openlayers_kml_layer_type_' . $key, NULL)
+      );
+    }
+  }
+
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Save'),
+  );  
+  
+  return $form;
+}
+
+/**
+ * Submit handler for openlayers_kml_layer_settings_form
+ */
+function openlayers_kml_layer_settings_form_submit($form, $form_state) {
+  foreach($form_state['values'] as $key => $value) {
+    if (is_array($value) && isset($value['filefield'])) {
+      if ($value['filefield']) {
+        variable_set('openlayers_kml_layer_type_' . $key, $value['filefield']);
+      } else {
+        variable_del('openlayers_kml_layer_type_' . $key);
+      }
+    }
+  }
+}
+
+/**
+ * Helper to filter field types
+ */
+function _openlayers_kml_layer_fieldfilter($field) {
+  return ($field['type'] === 'filefield');
+}
+
+/**
+ * Implementation of hook_nodeapi().
+ */
+function openlayers_kml_layer_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
+  $kml_field = variable_get('openlayers_kml_layer_type_' . $node->type, FALSE);
+  if ($kml_field) {
+    $layer_name = 'openlayers_kml_layer_node_' . $node->nid;
+    switch ($op) {
+      case 'load':
+        // The node is about to be loaded from the database. This hook can be used
+        // to load additional data at this time.
+        break;
+      case 'view':
+        // The node is about to be presented to the user. The module may change
+        // $node->body prior to presentation. This hook will be called after
+        // hook_view(), so the module may assume the node is filtered and now contains HTML.
+        break;
+      case 'insert':
+      case 'update':
+        $layer = openlayers_layer_load($layer_name);
+        
+        // attempt to load existing layer, else create a new one
+        if (!$layer) {
+          $layer = openlayers_layer_type_load('openlayers_layer_type_kml');          
+          $layer->name = $layer_name;
+          $layer->data['layer_type'] = 'openlayers_layer_type_kml';
+        }
+
+        // assign relevant values from this node
+        $layer->title = $node->title;
+        $layer->description = $node->teaser;        
+        $layer->data['url'] = base_path() . $node->{$kml_field}[0]['filepath'];
+
+        // save and alert user
+        $success = openlayers_layer_save($layer);
+        if ($success) {
+          drupal_set_message(t('KML Layer saved.'));
+        }
+        else {
+          form_set_error('openlayers_kml_layer', t('Error trying to save layer.'));
+        }
+        
+        // add/remove from presets
+        $existing_presets = variable_get('openlayers_kml_layer_node_presets_' . $node->nid, array());
+        
+        foreach(openlayers_presets() as $preset) {
+          if (isset($node->openlayers_kml_layer_presets[$preset->name]) && !in_array($preset->name, $existing_presets)) {
+            $preset->data['layers'][$layer_name] = $layer_name;
+            $preset->data['layer_activated'][$layer_name] = $layer_name;
+            $preset->data['layer_switcher'][$layer_name] = $layer_name;
+            drupal_set_message(t('Layer added to preset "@name"', array('@name' => $preset->title)));
+          } 
+          
+          if (!isset($node->openlayers_kml_layer_presets[$preset->name]) && in_array($preset->name, $existing_presets)) {
+            unset($preset->data['layers'][$layer_name]);
+            unset($preset->data['layer_activated'][$layer_name]);
+            unset($preset->data['layer_switcher'][$layer_name]);
+            drupal_set_message(t('Layer removed from preset "@name"', array('@name' => $preset->title)));            
+          }
+          
+          openlayers_preset_save($preset);
+        }        
+                
+        // set a variable with our selected map presets
+        variable_set('openlayers_kml_layer_node_presets_' . $node->nid, array_values($node->openlayers_kml_layer_presets));
+        
+        break;
+      case 'validate':
+        // The user has just finished editing the node and is trying to preview or
+        // submit it. This hook can be used to check or even modify the node.
+        // Errors should be set with form_set_error().
+        break;
+      case 'delete':
+        // delete assocaited layers
+        $success = openlayers_layer_delete($layer_name);
+        if ($success) {
+          drupal_set_message(t('KML Layer deleted.'));
+        }
+        else {
+          form_set_error('openlayers_kml_layer', t('Error trying to delete layer.'));
+        }                
+        
+        // remove layer from presets
+        $presets = variable_get('openlayers_kml_layer_node_presets_' . $node->nid, array());
+        foreach($presets as $name) {
+          if ($preset = openlayers_preset_load($name) ){
+            unset($preset->data['layers'][$layer_name]);
+            unset($preset->data['layer_activated'][$layer_name]);
+            unset($preset->data['layer_switcher'][$layer_name]);
+            openlayers_preset_save($preset);
+            drupal_set_message(t('Layer removed from preset "@name"', array('@name' => $preset->title)));            
+          }
+        }
+        
+        // delete the preset/node associations
+        variable_del('openlayers_kml_layer_node_presets_' . $node->nid);
+        break;
+    }    
+  }
+}
+
+/**
+ * Implementation of hook_form_alter().
+ */
+function openlayers_kml_layer_form_alter(&$form, $form_state, $form_id) {
+  // this is a KML node; add the list of available map presets
+  if (isset($form['#node']) && $kml_field = variable_get('openlayers_kml_layer_type_' . $form['#node']->type, FALSE)) {
+    $options = array();
+    foreach(openlayers_presets() as $preset) {
+      $options[$preset->name] = $preset->title;
+    }
+    
+    $field = $form[$kml_field];
+    $default = isset($form['#node']->nid) ? variable_get('openlayers_kml_layer_node_presets_' . $form['#node']->nid, -1) : -1;
+    $form['openlayers_kml_layer_presets'] = array(
+      '#type' => 'select',
+      '#title' => t('Map presets'),
+      '#multiple' => TRUE,
+      '#description' => t('Select one or more map presets to add this KML file to.'),
+      '#options' => $options,
+      '#default_value' => $default,
+      '#weight' => $form[$kml_field]['#weight'] + 1
+    );
+  }
+}
+

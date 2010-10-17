@@ -1,0 +1,8 @@
+; $Id: 
+name = OpenLayers KML Layer
+description = Content types configured as KML automatically create openlayer layers and associate them with presets.
+core = 6.x
+package = OpenLayers
+dependencies[] = openlayers
+dependencies[] = content
+dependencies[] = filefield

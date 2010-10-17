@@ -1,0 +1,209 @@
+<?php
+// $Id: 
+
+/**
+ * @file
+ * This file holds the main Drupal hook functions 
+ * and private functions for the openlayers_taxonomy module.
+ *
+ * @ingroup openlayers
+ */
+
+
+/**
+ * Implementation of hook_menu().
+ */
+function openlayers_taxonomy_menu() {
+  $items = array();
+
+  $items['admin/build/openlayers/layers/openlayers_taxonomy'] = array(
+    'title' => 'Taxonomy Layers',
+    'description' => 'Configure openlayers taxonomy.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('openlayers_taxonomy_settings_form'),
+    'access arguments' => array('administer openlayers'),
+    'type' => MENU_LOCAL_TASK,
+    'weight' => 20,
+  );
+
+  return $items;
+}
+
+/**
+ * Return a form for the openlayers_taxonomy settings
+ */
+function openlayers_taxonomy_settings_form() {
+  $views = views_get_all_views();
+  $options = array('-- NONE --');
+  // grab all views with an openlayer data display
+  foreach($views as $view) {
+    foreach ($view->display as $display => $data) {
+      if ($data->display_plugin == 'openlayers') {
+        $options[] = $view->name . ': ' . $display;        
+      } 
+    }   
+  }
+  
+  $form['openlayers_taxonomy_view'] = array(
+    '#type' => 'select',
+    '#title' => t('View (viewname: display name)'),
+    '#multiple' => FALSE,
+    '#description' => t('Select the view display combination that will return the map features for each term in the selected vocabulary. Only views that have an openlayers data display are available.'),
+    '#options' => $options,
+    '#default_value' => variable_get('openlayers_taxonomy_view', -1)
+  );
+  
+  $options = array();
+  foreach(taxonomy_get_vocabularies() as $vocab) {
+    $options[$vocab->vid] = $vocab->name;
+  }
+  
+  $form['openlayers_taxonomy_vids'] = array(
+    '#type' => 'select',
+    '#title' => t('Vocabularies'),
+    '#multiple' => TRUE,
+    '#description' => t('Each selected vocabular will have it\'s terms turned into a layer.'),
+    '#options' => $options,
+    '#default_value' => variable_get('openlayers_taxonomy_vids', -1)
+  );
+  
+  $form['save'] = array(
+    '#type' => 'submit',
+    '#value' => t('Save'),
+  );
+ 
+  return $form; 
+}
+
+/**
+ * Submit handler for openlayers_taxonomy_settings_form()
+ */
+function openlayers_taxonomy_settings_form_submit($form, $form_state) {
+  variable_set('openlayers_taxonomy_vids', $form_state['values']['openlayers_taxonomy_vids']);
+  variable_set('openlayers_taxonomy_view', $form_state['values']['openlayers_taxonomy_view']);
+}
+
+/**
+ * Implementation of hook_ctools_plugin_api().
+ */
+function openlayers_taxonomy_ctools_plugin_api($module, $api) {
+  if ($module == "openlayers") {
+    switch ($api) {
+      case 'openlayers_layers':
+        return array('version' => 1);
+    }
+  }
+}
+
+/**
+ * Implementation of hook_openlayers_layers().
+ */
+function openlayers_taxonomy_openlayers_layers() {
+  $layers = array();
+
+  // Attempt to load information from cache.
+  // For now use a arg based check for skipping cache.
+  if (arg(0) != 'admin') {
+    $cache = cache_get('openlayers_taxonomy');
+    if (isset($cache->data)) {
+      return $cache->data;
+    }
+  }
+
+  $vids = variable_get('openlayers_taxonomy_vids', array());
+  if (!empty($vids)) {
+    foreach($vids as $vid) {
+      $terms = taxonomy_get_tree($vid);
+      
+       // Provide each term as a layer
+      foreach ($terms as $term) {
+            //Build Layer
+        $layer = new stdClass();
+        $layer->api_version = 1;
+        $layer->name = 'taxonomy_' . $term->tid;
+        $layer->title = $term->name; 
+        $layer->description = $term->description;
+        $layer->data = array(
+          'layer_type' => 'openlayers_taxonomy_vector',
+          'projection' => array('4326'),
+          'baselayer' => FALSE,
+          'type' => 'Vector',
+          'url' => array(),
+          'options' => array(),
+          'events' => array(),
+          'term_id' => $term->tid
+        );
+        $layers[$layer->name] = $layer;
+      }  
+
+    }
+  }
+  
+  cache_set('openlayers_taxonomy', $layers);
+  return $layers;
+} 
+
+/**
+ * Implementation of hook_openlayers_layer_types()
+ */
+function openlayers_taxonomy_openlayers_layer_types() {
+  return array(
+    'openlayers_taxonomy_vector' => array(
+      'title' => t('openlayers_taxonomy'),
+      'description' => t('OpenLayers Taxonomy Vector'),
+      'layer_type' => array(
+        'path' => drupal_get_path('module', 'openlayers_taxonomy') 
+          .'/includes/layer_types',
+        'file' => 'openlayers_taxonomy_vector.inc',
+        'class' => 'openlayers_layer_type_openlayers_taxonomy_vector',
+        'parent' => 'openlayers_layer_type',
+      ),
+    ),
+  );
+}
+
+/**
+ * Implementation of hook_form_alter()
+ */
+function openlayers_taxonomy_form_alter(&$form, $form_state, $form_id) {
+  switch ($form_id) {
+    case 'openlayers_ui_object_export':
+      // prevent exporting in the openlayers interface
+      if (isset($form['#parameters'][3]->data['layer_type']) &&
+        $form['#parameters'][3]->data['layer_type'] == 'openlayers_taxonomy_vector') {
+        $form['export'] = array('#value' => t('This layer is provided by openlayers taxonomy and cannot be exported.'));
+        unset($form['done']);
+      }
+      break;
+    case 'openlayers_ui_layers_form':
+      // prevent cloning in the openlayers interface
+      if (isset($form['#parameters'][2]->data['layer_type']) && 
+        $form['#parameters'][2]->data['layer_type'] == 'openlayers_taxonomy_vector') {
+        $form = array(
+          'message' => array(
+            '#value' => t('This layer is provided by a openlayers taxonomy and it cannot be cloned.')
+            )
+          );
+      }
+      break;
+  }
+}
+
+/**
+ * Implementation of hook_taxonomy()
+ */
+function openlayers_taxonomy_taxonomy($op, $type, $array = NULL) {
+  // flush the cache if we're creating, editing, or deleting a term
+  if ($type == 'term') {
+    cache_set('openlayers_taxonomy', NULL);
+  } else if($type == 'vocabulary' && $op == 'delete') {
+    // update the vid list when a vocab is deleted
+    $vids = variable_get('openlayers_taxonomy_vids', array());
+    foreach($vids as $key => $vid) {
+      if ($vid == $array['vid']) {
+        unset($vids[$key]);
+      }
+    }
+    variable_set('openlayers_taxonomy_vids', $vids);
+  }
+}
