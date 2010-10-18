@@ -47,6 +47,11 @@ function _watershednow_configure() {
 
 	// Create a few placeholder nodes and add them to the menu structure.
 	// @TODO: Find the correct input filter. Right now, we rely on _watershednow_filters_wysiwyg() being called first..
+	
+	// @FIXME - For some reason, this value isn't being obeyed in wn_common's strongarm settings.
+	// Set pathauto default for nodes. Do so before creating nodes below.
+  variable_set('pathauto_node_pattern', '[title-raw]');
+	
 	require_once('libraries/install_profile_api/core/node.inc');
 	require_once('libraries/install_profile_api/core/menu.inc');
 	$pages = array();

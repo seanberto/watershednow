@@ -136,8 +136,6 @@ features[] = wn_map
 ; PROFILER MODULE - DEFAULT SETUP
 ; (If applicable)
 
-; @FIXME - For some reason, this value isn't being obeyed in wn_common's strongarm settings.
-variables[pathauto_node_pattern] = '[title-raw]'
 
 ; ==============================================
 
