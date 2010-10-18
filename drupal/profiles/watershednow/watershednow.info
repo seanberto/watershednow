@@ -137,7 +137,7 @@ features[] = wn_map
 ; (If applicable)
 
 ; @FIXME - For some reason, this value isn't being obeyed in wn_common's strongarm settings.
-variables[pathauto_node_pattern' = '[title-raw]'
+variables[pathauto_node_pattern] = '[title-raw]'
 
 ; ==============================================
 
