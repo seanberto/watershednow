@@ -6,13 +6,13 @@
 function wn_map_content_default_fields() {
   $fields = array();
 
-  // Exported field: field_files
-  $fields['map_feature-field_files'] = array(
-    'field_name' => 'field_files',
+  // Exported field: field_attachments
+  $fields['map_feature-field_attachments'] = array(
+    'field_name' => 'field_attachments',
     'type_name' => 'map_feature',
     'display_settings' => array(
-      'weight' => '3',
-      'parent' => 'group_multimedia',
+      'weight' => '-1',
+      'parent' => '',
       'label' => array(
         'format' => 'above',
       ),
@@ -48,32 +48,42 @@ function wn_map_content_default_fields() {
     'module' => 'filefield',
     'active' => '1',
     'list_field' => '1',
-    'list_default' => 1,
+    'list_default' => 0,
     'description_field' => '1',
     'widget' => array(
-      'file_extensions' => 'txt pdf doc xls cvs',
-      'file_path' => '',
+      'file_extensions' => 'txt pdf doc docx jpg jpeg png gif xls xlsx cvs',
+      'file_path' => 'attachments',
       'progress_indicator' => 'bar',
       'max_filesize_per_file' => '',
       'max_filesize_per_node' => '',
-      'wn_hp_callout_desc' => NULL,
-      'wn_hp_callout_desc_help' => NULL,
-      'custom_wn_hp_callout_desc' => NULL,
-      'custom_wn_hp_callout_desc_style' => NULL,
-      'custom_wn_hp_callout_desc_required' => NULL,
-      'filefield_sources' => NULL,
-      'filefield_source_attach_path' => NULL,
-      'filefield_source_attach_absolute' => NULL,
-      'filefield_source_attach_mode' => NULL,
-      'filefield_source_autocomplete' => NULL,
-      'insert' => NULL,
-      'insert_styles' => NULL,
-      'insert_default' => NULL,
-      'insert_class' => NULL,
-      'insert_width' => NULL,
-      'label' => 'File uploads',
-      'weight' => '3',
-      'description' => 'Enter any file attachments associated with this watershed feature.',
+      'wn_hp_callout_desc' => '',
+      'wn_hp_callout_desc_help' => '',
+      'custom_wn_hp_callout_desc' => 0,
+      'custom_wn_hp_callout_desc_style' => 'textfield',
+      'custom_wn_hp_callout_desc_required' => 0,
+      'filefield_sources' => array(
+        'reference' => 'reference',
+        'attach' => 0,
+        'remote' => 0,
+      ),
+      'filefield_source_attach_path' => 'file_attach',
+      'filefield_source_attach_absolute' => '0',
+      'filefield_source_attach_mode' => 'copy',
+      'filefield_source_autocomplete' => '1',
+      'insert' => 1,
+      'insert_styles' => array(
+        'link' => 'link',
+        'auto' => 0,
+        'image' => 0,
+        'imagecache_galleryformatter_slide' => 0,
+        'imagecache_galleryformatter_thumb' => 0,
+      ),
+      'insert_default' => 'link',
+      'insert_class' => '',
+      'insert_width' => '',
+      'label' => 'Attachments',
+      'weight' => '12',
+      'description' => 'Attach supporting documents and files to this map feature.',
       'type' => 'filefield_widget',
       'module' => 'filefield',
     ),
@@ -500,8 +510,8 @@ function wn_map_content_default_fields() {
 
   // Translatables
   // Included for use with string extractors like potx.
+  t('Attachments');
   t('Description');
-  t('File uploads');
   t('Image Uploads');
   t('KML file');
   t('Location');

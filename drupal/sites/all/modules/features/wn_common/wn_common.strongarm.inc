@@ -96,10 +96,18 @@ function wn_common_strongarm() {
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'context_reaction_block_disable_core';
-  $strongarm->value = '0';
+  $strongarm->name = 'content_extra_weights_page';
+  $strongarm->value = array(
+    'title' => '-5',
+    'revision_information' => '1',
+    'author' => '2',
+    'options' => '3',
+    'comment_settings' => '4',
+    'menu' => '0',
+    'path' => '5',
+  );
 
-  $export['context_reaction_block_disable_core'] = $strongarm;
+  $export['content_extra_weights_page'] = $strongarm;
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
@@ -381,12 +389,5 @@ function wn_common_strongarm() {
   $strongarm->value = 'field_image_assets';
 
   $export['wysiwyg_imagefield_page'] = $strongarm;
-  $strongarm = new stdClass;
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'wysiwyg_imageupload_imgstyles';
-  $strongarm->value = 'Spacing 20px Border=imgupl_styles_spacing_20_black_border\\n\\rBlack Border=imgupl_styles_black_border\\n\\rSpacing 5px=imgupl_styles_spacing_5\\n\\rSpacing 10px=imgupl_styles_spacing_10';
-
-  $export['wysiwyg_imageupload_imgstyles'] = $strongarm;
   return $export;
 }

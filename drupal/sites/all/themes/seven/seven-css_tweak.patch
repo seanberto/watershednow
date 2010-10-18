@@ -1,0 +1,13 @@
+diff --git a/drupal/sites/all/themes/seven/style.css b/drupal/sites/all/themes/seven/style.css
+index 325d3a0..c5fb986 100644
+--- a/drupal/sites/all/themes/seven/style.css
++++ b/drupal/sites/all/themes/seven/style.css
+@@ -967,3 +967,8 @@ form#views-ui-preview-form input#preview-submit {
+ .content-add-more {
+   margin-bottom: 10px;
+ }
++
++.node-form .text {
++  width: 95%;
++}
++
