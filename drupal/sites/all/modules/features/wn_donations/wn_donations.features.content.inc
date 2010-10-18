@@ -141,7 +141,7 @@ function wn_donations_content_default_fields() {
       'default_value_php' => NULL,
       'label' => 'Body',
       'weight' => '-3',
-      'description' => '',
+      'description' => 'Enter the content of this donation campaign.',
       'type' => 'text_textarea',
       'module' => 'text',
     ),
@@ -351,7 +351,7 @@ function wn_donations_content_default_fields() {
     'module' => 'text',
     'active' => '1',
     'text_processing' => '1',
-    'max_length' => '400',
+    'max_length' => '600',
     'allowed_values' => '',
     'allowed_values_php' => '',
     'widget' => array(
@@ -367,7 +367,7 @@ function wn_donations_content_default_fields() {
       'default_value_php' => NULL,
       'label' => 'Sidebar content',
       'weight' => '-1',
-      'description' => 'Optionally, can enter up to 400 characters of additional content to be displayed in the sidebar on this donation campaign page.',
+      'description' => 'Optionally, can enter up to 600 characters of additional content to be displayed in the sidebar on this donation campaign page.',
       'type' => 'text_textarea',
       'module' => 'text',
     ),
@@ -420,7 +420,7 @@ function wn_donations_content_default_fields() {
     'allowed_values_php' => '',
     'widget' => array(
       'rows' => '3',
-      'size' => '140',
+      'size' => '200',
       'default_value' => array(
         '0' => array(
           'value' => '',
@@ -431,7 +431,7 @@ function wn_donations_content_default_fields() {
       'default_value_php' => NULL,
       'label' => 'Teaser',
       'weight' => '-4',
-      'description' => 'Enter a short teaser for this donation page (140 character max). This teaser will be used in sidebars as well as "widgets".',
+      'description' => 'Enter a short teaser for this donation page (200 characters max). This teaser will be used in sidebars as well as "widgets".',
       'type' => 'text_textfield',
       'module' => 'text',
     ),
