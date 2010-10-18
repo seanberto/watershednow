@@ -38,13 +38,13 @@ modules[contrib][] = transliteration
 modules[contrib][] = googleanalytics
 modules[contrib][] = galleryformatter
 modules[contrib][] = vertical_tabs
+modules[contrib][] = follow
 
 ;Admin
 modules[contrib][] = admin_menu
 
 ; Views
 modules[contrib][] = views
-modules[contrib][] = views_ui
 modules[contrib][] = views_calc
 modules[contrib][] = draggableviews
 modules[contrib][] = web_widgets
@@ -52,11 +52,8 @@ modules[contrib][] = web_widgets
 ; Features Related Tools
 modules[contrib][] = ctools
 modules[contrib][] = context
-modules[contrib][] = context_ui
-modules[contrib][] = features
 modules[contrib][] = strongarm
 modules[contrib][] = boxes
-modules[contrib][] = diff
 
 ; Image Management
 modules[contrib][] = imageapi
@@ -68,6 +65,7 @@ modules[contrib][] = content
 modules[contrib][] = number
 modules[contrib][] = text
 modules[contrib][] = filefield
+modules[contrib][] = filefield_sources
 modules[contrib][] = imagefield
 modules[contrib][] = imagefield_extended
 modules[contrib][] = emfield
@@ -86,7 +84,6 @@ modules[contrib][] = date_timezone
 ; User interface and WYSIWYG
 modules[contrib][] = better_formats
 modules[contrib][] = insert
-modules[contrib][] = filefield_sources
 modules[contrib][] = jquery_ui
 modules[contrib][] = wysiwyg
 modules[contrib][] = wysiwyg_imagefield
@@ -94,7 +91,6 @@ modules[contrib][] = wysiwyg_imagefield
 ; Feeds Integration
 modules[contrib][] = job_scheduler
 modules[contrib][] = feeds
-modules[contrib][] = feeds_ui
 
 ; Donation tools
 modules[contrib][] = simple_payments
@@ -131,6 +127,14 @@ features[] = wn_takeaction
 features[] = wn_events
 features[] = wn_donations
 features[] = wn_map
+
+; Development stuff to be turned off on production sites.
+modules[contrib][] = context_ui
+modules[contrib][] = features
+modules[contrib][] = diff
+modules[contrib][] = views_ui
+modules[contrib][] = feeds_ui
+
 
 ; ==============================================
 
