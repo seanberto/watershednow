@@ -4,10 +4,19 @@
  * Now that we've installed a bunch of modules, let's capture some other config, create some roles,
  * set up some permissions, etc.
  *
- * NOTE: More ond more of what's stuff into this hook_install() is abstractable with Profiler module.
+ * @TODO: More ond more of what's stuff into this custom function is abstractable with Profiler module.
  * So, we need to remember to come back and prune sometimes.
  */
 function _watershednow_configure() {
+  
+  // @FIXME - Set wysiwyg imagefield flag on appropriate content types.
+  // This should be accomplishable via Features strongarm export. And if not there, in profiler.info.
+  // But neither approach works for some reason. So, we call it in this last step of the install process.
+  $has_assets = array('page', 'donation', 'take_action', 'update', 'event'); 
+  foreach ($has_assets as $type) { // Set variable for types with image_assets field.
+    variable_set('wysiwyg_imagefield_' . $type, 'field_image_assets');
+  }
+
 
 	// Leverage Install Profile API to create roles and perms.
 	require_once('libraries/install_profile_api/core/user.inc');
@@ -44,14 +53,13 @@ function _watershednow_configure() {
 	install_contact_add_category($category, $recipients, $reply = '', $weight = 0, $selected = 1);
 	// Add contact form to secondary links.
 	install_menu_create_menu_item('contact', 'Contact Us', 'Get in touch with us.', 'secondary_links');
-
-	// Create a few placeholder nodes and add them to the menu structure.
-	// @TODO: Find the correct input filter. Right now, we rely on _watershednow_filters_wysiwyg() being called first..
 	
 	// @FIXME - For some reason, this value isn't being obeyed in wn_common's strongarm settings.
 	// Set pathauto default for nodes. Do so before creating nodes below.
   variable_set('pathauto_node_pattern', '[title-raw]');
-	
+
+	// Create a few placeholder nodes and add them to the menu structure.
+	// @TODO: Find the correct input filter. Right now, we rely on _watershednow_filters_wysiwyg() being called first..	
 	require_once('libraries/install_profile_api/core/node.inc');
 	require_once('libraries/install_profile_api/core/menu.inc');
 	$pages = array();
