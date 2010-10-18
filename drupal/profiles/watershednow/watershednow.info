@@ -37,6 +37,7 @@ modules[contrib][] = token
 modules[contrib][] = transliteration
 modules[contrib][] = googleanalytics
 modules[contrib][] = galleryformatter
+modules[contrib][] = vertical_tabs
 
 ;Admin
 modules[contrib][] = admin_menu
