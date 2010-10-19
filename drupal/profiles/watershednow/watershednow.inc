@@ -49,7 +49,7 @@ function _watershednow_configure() {
 	require_once('libraries/install_profile_api/core/contact.inc');
 	require_once('libraries/install_profile_api/core/menu.inc');
 	$category = 'website feedback';
-	$recipients = 'admin@'. $_SERVER['HTTP_HOST'];
+	$recipients = variable_get('site_mail', 'admin@'. $_SERVER['HTTP_HOST']); // Grab site email, if not create from URL.
 	install_contact_add_category($category, $recipients, $reply = '', $weight = 0, $selected = 1);
 	// Add contact form to secondary links.
 	install_menu_create_menu_item('contact', 'Contact Us', 'Get in touch with us.', 'secondary_links');
