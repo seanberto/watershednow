@@ -25,7 +25,7 @@ function wn_hp_main_context_default_contexts() {
           'module' => 'boxes',
           'delta' => 'homepage_secondary',
           'region' => 'right',
-          'weight' => 0,
+          'weight' => 30,
         ),
         'boxes-homepage_promo' => array(
           'module' => 'boxes',
