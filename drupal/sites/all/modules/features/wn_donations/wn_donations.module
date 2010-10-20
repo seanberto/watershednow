@@ -1,3 +1,13 @@
 <?php
 
 include_once('wn_donations.features.inc');
+
+/**
+ * Implementation of hook_views_pre_render(&$view).
+ * Add a link to the header of the "Donations" view to allow sorting.
+ */
+function wn_donations_views_pre_render(&$view) {
+  if (($view->name == 'donation_opportunities') && ($view->current_display == 'page_1') && (user_access('Allow Reordering'))) {
+    $view->attachment_before .= '<div class="draggable"><a href="/donate/draggable">[Sort donations]</a></div>';
+  }
+}
