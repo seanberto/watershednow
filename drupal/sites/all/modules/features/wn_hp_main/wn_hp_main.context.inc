@@ -21,6 +21,12 @@ function wn_hp_main_context_default_contexts() {
   $context->reactions = array(
     'block' => array(
       'blocks' => array(
+        'boxes-homepage_secondary' => array(
+          'module' => 'boxes',
+          'delta' => 'homepage_secondary',
+          'region' => 'right',
+          'weight' => 0,
+        ),
         'boxes-homepage_promo' => array(
           'module' => 'boxes',
           'delta' => 'homepage_promo',

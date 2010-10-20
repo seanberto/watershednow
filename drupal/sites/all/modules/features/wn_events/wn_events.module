@@ -35,6 +35,7 @@ function wn_events_block($op = 'list', $delta = 0, $edit = array()) {
     case 'view':
       if ($delta == 0) {
         if (variable_get('wn_events_number', '3') != '0') { // If count set to zero, do no display block.
+          $block['subject'] = t('Upcoming events');
           $block['content'] = _wn_events_homepage_list();
         } 
       }

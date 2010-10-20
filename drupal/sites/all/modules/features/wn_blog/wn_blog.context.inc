@@ -41,6 +41,39 @@ function wn_blog_context_default_contexts() {
   $context = new stdClass;
   $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
   $context->api_version = 3;
+  $context->name = 'homepage_updates';
+  $context->description = 'Listing of updates on the homepage';
+  $context->tag = 'wn_blog';
+  $context->conditions = array(
+    'path' => array(
+      'values' => array(
+        '<front>' => '<front>',
+      ),
+    ),
+  );
+  $context->reactions = array(
+    'block' => array(
+      'blocks' => array(
+        'wn_blog-0' => array(
+          'module' => 'wn_blog',
+          'delta' => 0,
+          'region' => 'right',
+          'weight' => 0,
+        ),
+      ),
+    ),
+  );
+  $context->condition_mode = 0;
+
+  // Translatables
+  // Included for use with string extractors like potx.
+  t('Listing of updates on the homepage');
+  t('wn_blog');
+
+  $export['homepage_updates'] = $context;
+  $context = new stdClass;
+  $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
+  $context->api_version = 3;
   $context->name = 'update_pages';
   $context->description = 'Context triggered when viewing update pages.';
   $context->tag = 'content_types';
