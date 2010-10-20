@@ -86,5 +86,38 @@ function wn_events_context_default_contexts() {
   t('views');
 
   $export['events_description'] = $context;
+  $context = new stdClass;
+  $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
+  $context->api_version = 3;
+  $context->name = 'homepage_events';
+  $context->description = 'Listing of events on the homepage';
+  $context->tag = 'wn_events';
+  $context->conditions = array(
+    'path' => array(
+      'values' => array(
+        '<front>' => '<front>',
+      ),
+    ),
+  );
+  $context->reactions = array(
+    'block' => array(
+      'blocks' => array(
+        'wn_events-0' => array(
+          'module' => 'wn_events',
+          'delta' => 0,
+          'region' => 'right',
+          'weight' => 0,
+        ),
+      ),
+    ),
+  );
+  $context->condition_mode = 0;
+
+  // Translatables
+  // Included for use with string extractors like potx.
+  t('Listing of events on the homepage');
+  t('wn_events');
+
+  $export['homepage_events'] = $context;
   return $export;
 }
