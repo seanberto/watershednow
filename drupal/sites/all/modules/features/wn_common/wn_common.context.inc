@@ -8,6 +8,39 @@ function wn_common_context_default_contexts() {
   $context = new stdClass;
   $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
   $context->api_version = 3;
+  $context->name = 'contact_form';
+  $context->description = 'This context is triggered on the site-wide contact form.';
+  $context->tag = 'page-specific';
+  $context->conditions = array(
+    'path' => array(
+      'values' => array(
+        'contact' => 'contact',
+      ),
+    ),
+  );
+  $context->reactions = array(
+    'block' => array(
+      'blocks' => array(
+        'boxes-contact_form' => array(
+          'module' => 'boxes',
+          'delta' => 'contact_form',
+          'region' => 'right',
+          'weight' => 0,
+        ),
+      ),
+    ),
+  );
+  $context->condition_mode = 0;
+
+  // Translatables
+  // Included for use with string extractors like potx.
+  t('This context is triggered on the site-wide contact form.');
+  t('page-specific');
+
+  $export['contact_form'] = $context;
+  $context = new stdClass;
+  $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
+  $context->api_version = 3;
   $context->name = 'pages';
   $context->description = 'Add sidebar content to applicable nodes.';
   $context->tag = 'content_types';

@@ -8,6 +8,19 @@ function wn_common_default_box() {
   $box = new stdClass;
   $box->disabled = FALSE; /* Edit this to true to make a default box disabled initially */
   $box->api_version = 1;
+  $box->delta = 'contact_form';
+  $box->plugin_key = 'simple';
+  $box->title = '';
+  $box->description = 'Contact form';
+  $box->options = array(
+    'body' => 'This is editable sidebar content on the contact form.',
+    'format' => '3',
+  );
+
+  $export['contact_form'] = $box;
+  $box = new stdClass;
+  $box->disabled = FALSE; /* Edit this to true to make a default box disabled initially */
+  $box->api_version = 1;
   $box->delta = 'customizable_footer';
   $box->plugin_key = 'simple';
   $box->title = '';

@@ -24,9 +24,9 @@ function wn_events_context_default_contexts() {
   $context->reactions = array(
     'block' => array(
       'blocks' => array(
-        'wn_common-0' => array(
-          'module' => 'wn_common',
-          'delta' => 0,
+        'views-events-block_1' => array(
+          'module' => 'views',
+          'delta' => 'events-block_1',
           'region' => 'right',
           'weight' => 0,
         ),
@@ -35,6 +35,12 @@ function wn_events_context_default_contexts() {
           'delta' => 'ce3c6f72a6fff470fd9f1ade8c7b668c',
           'region' => 'right',
           'weight' => 1,
+        ),
+        'wn_common-0' => array(
+          'module' => 'wn_common',
+          'delta' => 0,
+          'region' => 'right',
+          'weight' => 2,
         ),
       ),
     ),
@@ -50,8 +56,8 @@ function wn_events_context_default_contexts() {
   $context = new stdClass;
   $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
   $context->api_version = 3;
-  $context->name = 'events_header';
-  $context->description = 'Header content on the events listing page.';
+  $context->name = 'events_description';
+  $context->description = 'Sidebar content on the events listing page.';
   $context->tag = 'views';
   $context->conditions = array(
     'views' => array(
@@ -66,7 +72,7 @@ function wn_events_context_default_contexts() {
         'boxes-events' => array(
           'module' => 'boxes',
           'delta' => 'events',
-          'region' => 'preface',
+          'region' => 'right',
           'weight' => 0,
         ),
       ),
@@ -76,9 +82,9 @@ function wn_events_context_default_contexts() {
 
   // Translatables
   // Included for use with string extractors like potx.
-  t('Header content on the events listing page.');
+  t('Sidebar content on the events listing page.');
   t('views');
 
-  $export['events_header'] = $context;
+  $export['events_description'] = $context;
   return $export;
 }
