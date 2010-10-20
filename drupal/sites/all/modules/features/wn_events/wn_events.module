@@ -20,7 +20,7 @@ function wn_events_block($op = 'list', $delta = 0, $edit = array()) {
           '#type' => 'select',
           '#title' => t('Number of event posts shown on the homepage'),
           '#default_value' => variable_get('wn_events_number','3'),
-          '#options' => array('1', '2', '3', '4', '5'),
+          '#options' => array('0', '1', '2', '3', '4', '5'),
           '#description' =>t('Enter the maximum number of events to post on the homepage. If zero, this block will not display.'),
           );
       }
@@ -34,7 +34,9 @@ function wn_events_block($op = 'list', $delta = 0, $edit = array()) {
 
     case 'view':
       if ($delta == 0) {
-        $block['content'] = _wn_events_homepage_list();
+        if (variable_get('wn_events_number', '3') != '0') { // If count set to zero, do no display block.
+          $block['content'] = _wn_events_homepage_list();
+        } 
       }
 
       return $block;
@@ -43,12 +45,12 @@ function wn_events_block($op = 'list', $delta = 0, $edit = array()) {
 
 /**
  * Helper function for displaying homepage events listing.
+ * Generates our vendered view of events.
  */
 function _wn_events_homepage_list() {
-  $view = views_get_view('events');
-  $view_display = 'block_1';
-  $view->set_items_per_page(1);
-  $output = $view->preview($view_display);
-  $output .= dsm($view);
+  $view = views_get_view('events'); // Great the events view.
+  $view->set_display('block_1'); // Set the display.
+  $view->set_items_per_page(variable_get('wn_events_number', '3')); // Look up the number of events to display. 
+  $output = $view->render($view_display); // Output the view.
   return $output;
 }
