@@ -5,12 +5,17 @@ core = 6.x
 
 ; ==============================================
 
-; NOTE: Do not add a coment after the modules name, this will result in an error.
+; DEPENDENCIES
+; These are modules that are needed for Profiler to properly handle the info file
+; e.g. components
+dependencies[] = wn_components
 
 ; MODULES
-; (Note: that module dependencies will /not/ be automatically enabled.)
+;  Modules referenced in _watershednow_configure()
+; NOTES:
+;  * Module dependencies will *NOT* be automatically enabled, declare them
+;  * DO NOT add comments after module's name, doing so will result in error
 
-; Modules referenced in _watershednow_configure()
 modules[contrib][] = menu
 modules[contrib][] = wysiwyg
 modules[contrib][] = wysiwyg_imagefield
@@ -177,6 +182,19 @@ variables[site_mission] = 'Lorem ipsum eam sale postea eu, lorem ipsum vis ex na
 variables[site_footer] = '&copy; 2010 Watershed Now is a <a href="http://thinkshout.com">ThinkShout</a> open source product.'
 
 variables[site_newsletter] = '<form name="newsletter"><input type="text" name="user" value="Newsletter placeholder"/><input type="submit" value="Submit" /></form>'
+
+
+; ----------------------------------------------
+; Follow Links
+; follow[uid][network] = url
+; 0 for uid is sitewide
+; declare in the order you want them presented
+follow[0][facebook] = http://facebook.com/profile
+follow[0][twitter]  = http://twitter.com/profile
+follow[0][flickr]   = http://flickr.com
+follow[0][linkedin] = http://linkedin.com
+follow[0][feed]     = http://example.com/feed.rss
+follow[0][myspace]  = http://myspace.com
 
 ; ----------------------------------------------
 
