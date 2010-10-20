@@ -34,11 +34,21 @@ function wn_events_block($op = 'list', $delta = 0, $edit = array()) {
 
     case 'view':
       if ($delta == 0) {
-        $block['subject'] = t('Wn_events block 1 title');
-        $block['content'] = t('Wn_events block 1 content');
+        $block['content'] = _wn_events_homepage_list();
       }
 
       return $block;
   }    
 }
 
+/**
+ * Helper function for displaying homepage events listing.
+ */
+function _wn_events_homepage_list() {
+  $view = views_get_view('events');
+  $view_display = 'block_1';
+  $view->set_items_per_page(1);
+  $output = $view->preview($view_display);
+  $output .= dsm($view);
+  return $output;
+}
