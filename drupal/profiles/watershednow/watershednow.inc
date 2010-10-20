@@ -42,6 +42,23 @@ function _watershednow_configure( $config ) {
   variable_set('node_admin_theme', 1); // Use the admin theme for content editing
 }
 
+/**
+ * Follow Links
+ *
+ * This function is used to parse the follow components in the install profile
+ * info file.
+ *
+ * We chose not to use another module, to cut down on the # of modules.
+ *
+ * The syntax in the info file looks like the following:
+ * follow[uid][network] = url
+ * 0 for uid is sitewide
+ *
+ * Declare in the order you want them presented.
+ *
+ * @param $follow_links array of follow links to be saved.
+ * array($uid  => array($network => $url))
+ */
 function _watershednow_create_follow_links($follow_links) {
   foreach($follow_links as $uid => $links ) {
     $weight = 0;
