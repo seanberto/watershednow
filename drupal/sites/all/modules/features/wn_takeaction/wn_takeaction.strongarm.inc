@@ -8,15 +8,6 @@ function wn_takeaction_strongarm() {
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'webform_node_types';
-  $strongarm->value = array(
-    0 => 'take_action',
-  );
-
-  $export['webform_node_types'] = $strongarm;
-  $strongarm = new stdClass;
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
   $strongarm->name = 'comment_take_action';
   $strongarm->value = '0';
 
@@ -37,6 +28,14 @@ function wn_takeaction_strongarm() {
   );
 
   $export['content_extra_weights_take_action'] = $strongarm;
-  
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'webform_node_types';
+  $strongarm->value = array(
+    0 => 'take_action',
+  );
+
+  $export['webform_node_types'] = $strongarm;
   return $export;
 }

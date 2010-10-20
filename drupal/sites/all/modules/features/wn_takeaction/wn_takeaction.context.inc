@@ -35,10 +35,10 @@ function wn_takeaction_context_default_contexts() {
 
   // Translatables
   // Included for use with string extractors like potx.
-  t('Header content on the "Take Action" listing page.');
+  t('Sidebar content on the "Take Action" listing page.');
   t('views');
 
-  $export['take_action_header'] = $context;
+  $export['take_action_description'] = $context;
   $context = new stdClass;
   $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
   $context->api_version = 3;
