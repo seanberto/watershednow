@@ -10,7 +10,7 @@ function wn_events_views_default_views() {
   $view = new view;
   $view->name = 'events';
   $view->description = 'Events listing';
-  $view->tag = 'get_involved';
+  $view->tag = 'wn_events';
   $view->view_php = '';
   $view->base_table = 'node';
   $view->is_cacheable = FALSE;

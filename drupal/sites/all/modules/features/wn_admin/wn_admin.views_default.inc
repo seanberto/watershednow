@@ -10,7 +10,7 @@ function wn_admin_views_default_views() {
   $view = new view;
   $view->name = 'all_content';
   $view->description = 'An administrative screen for viewing all site content in a table.';
-  $view->tag = 'admin';
+  $view->tag = 'wn_admin';
   $view->view_php = '';
   $view->base_table = 'node';
   $view->is_cacheable = FALSE;
@@ -263,6 +263,7 @@ function wn_admin_views_default_views() {
   $handler->override_option('cache', array(
     'type' => 'none',
   ));
+  $handler->override_option('title', 'Listing of all content posted to this site');
   $handler->override_option('empty', '<div class="messages">Your query did not produce any content, please try a different search.</div>');
   $handler->override_option('empty_format', '2');
   $handler->override_option('items_per_page', 30);
@@ -306,10 +307,10 @@ function wn_admin_views_default_views() {
   $handler->override_option('header', '<div class="messages">Use the form below to query all content posted on this site. You can also <a href="/node/add">create content</a>.</div>');
   $handler->override_option('header_format', '2');
   $handler->override_option('header_empty', 1);
-  $handler->override_option('path', 'admin/content/all_content');
+  $handler->override_option('path', 'admin/content/list_content');
   $handler->override_option('menu', array(
     'type' => 'normal',
-    'title' => 'All content',
+    'title' => 'List content',
     'description' => 'View all content on the site.',
     'weight' => '0',
     'name' => 'navigation',

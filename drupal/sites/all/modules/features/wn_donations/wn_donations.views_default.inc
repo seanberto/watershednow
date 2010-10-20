@@ -10,7 +10,7 @@ function wn_donations_views_default_views() {
   $view = new view;
   $view->name = 'donation_opportunities';
   $view->description = 'Donation opportunity listing';
-  $view->tag = 'get_involved';
+  $view->tag = 'wn_donations';
   $view->view_php = '';
   $view->base_table = 'node';
   $view->is_cacheable = FALSE;
@@ -289,7 +289,7 @@ function wn_donations_views_default_views() {
   $view = new view;
   $view->name = 'donations';
   $view->description = 'Donations listings';
-  $view->tag = 'get_involved';
+  $view->tag = 'wn_donations';
   $view->view_php = '';
   $view->base_table = 'node';
   $view->is_cacheable = FALSE;
