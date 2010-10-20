@@ -22,26 +22,7 @@ function _watershednow_configure() {
     variable_set('wysiwyg_imagefield_' . $type, 'field_image_assets');
   }
 
-
-  // Leverage Install Profile API to create roles and perms.
-  $default_roles = array('web admin', 'staff'); // Adding roles and perms.
-  $default_perms = _watershednow_define_perms(); // Grabbing array of permissions.
-  foreach ($default_roles as $role) {
-    install_add_role($role);
-    $rid = install_get_rid($role); // Get the RID so we can add perms.
-    if ($role == 'staff') {
-      install_add_permissions($rid, $default_perms['staff']);
-    }
-    if ($role == 'web admin') {
-      install_add_permissions($rid, $default_perms['web_admin']);
-    }
-  }
-  install_add_permissions('1', $default_perms['anonymous']);
-  install_add_permissions('2', $default_perms['authenticated']);
-
-  // Now remove some crufy permissions
-  install_remove_permissions('1', $default_perms['to_remove']);
-  install_remove_permissions('2', $default_perms['to_remove']);
+  _watershednow_configure_roles();
 
   // Configure Input formats and WYSIWYG editor
   _watershednow_fiters_wysiwyg();
@@ -49,19 +30,50 @@ function _watershednow_configure() {
   // Remove the default content type that Webform Module adds. It's cruft.
   node_type_delete('webform');
 
-  // @FIXME - For some reason, this value isn't being obeyed in wn_common's strongarm settings.
-  // Set pathauto default for nodes. Do so before creating nodes below.
-  variable_set('pathauto_node_pattern', '[title-raw]');
+  _watershednow_create_nodes();
+
+  _watershednow_create_menu_items();
+
+  // Do some additional clean up.
+  db_query("UPDATE {blocks} SET status = 0, region = ''"); // disable all DB blocks
+  db_query("UPDATE {system} SET status = 0 WHERE type = 'theme' and name ='%s'", 'garland');
+  db_query("UPDATE {system} SET status = 1 WHERE type = 'theme' and name ='%s'", 'watershed');
+  variable_set('admin_theme', 'seven'); // set the admin theme to Rubik
+  variable_set('node_admin_theme', 1); // Use the admin theme for content editing
+}
+
+function _watershednow_create_menu_items() {
+  menu_rebuild();
 
   // Create a homepage link in the primary navigation
   install_menu_create_menu_item('<front>', 'Home', 'Return to the homepage.', 'primary_links', '0', '-10');
 
   // Set up basic contact form with Install Profile API
-  $category = 'website feedback';
   $recipients = variable_get('site_mail', 'admin@'. $_SERVER['HTTP_HOST']); // Grab site email, if not create from URL.
-  install_contact_add_category($category, $recipients, $reply = '', $weight = 0, $selected = 1);
+  install_contact_add_category('website feedback', $recipients, $reply = '', $weight = 0, $selected = 1);
   // Add contact form to primary links.
   install_menu_create_menu_item('contact', 'Contact Us', 'Get in touch with us.', 'primary_links', '0', '50');
+
+  $secondary_links = array(
+    'about-us'    => 'About Us',
+    'explore'     => 'Explore',
+    'updates'     => 'Blog',
+    'events'      => 'Events',
+    'take_action' => 'Take Action',
+    'donate'      => 'Donate',
+    'contact'     => 'Contact'
+  );
+
+  $weight = 0;
+  foreach( $secondary_links as $path => $title ) {
+    install_menu_create_menu_item($path, $title, NULL, 'secondary_links', '0', $weight++);
+  }
+}
+
+function _watershednow_create_nodes() {
+  // @FIXME - For some reason, this value isn't being obeyed in wn_common's strongarm settings.
+  // Set pathauto default for nodes. Do so before creating nodes below.
+  variable_set('pathauto_node_pattern', '[title-raw]');
 
   // Create a few placeholder nodes and add them to the menu structure.
   // @TODO: Find the correct input filter. Right now, we rely on _watershednow_filters_wysiwyg() being called first..
@@ -105,13 +117,6 @@ function _watershednow_configure() {
 
     install_menu_create_menu_item('node/' . $created_node->nid, $created_node->title, $node->menuitem_description, $node->menu, $plid);
   }
-
-  // Do some additional clean up.
-  db_query("UPDATE {blocks} SET status = 0, region = ''"); // disable all DB blocks
-  db_query("UPDATE {system} SET status = 0 WHERE type = 'theme' and name ='%s'", 'garland');
-  db_query("UPDATE {system} SET status = 1 WHERE type = 'theme' and name ='%s'", 'watershed');
-  variable_set('admin_theme', 'seven'); // set the admin theme to Rubik
-  variable_set('node_admin_theme', 1); // Use the admin theme for content editing
 }
 
 /*
@@ -276,5 +281,26 @@ function _watershednow_fiters_wysiwyg() {
   foreach ($wysiwyg_profiles as $profile) {
     db_query("INSERT INTO {wysiwyg} (`format`,`editor`,`settings`) VALUES (%d, '%s', '%s')", $profile['format'], $profile['editor'], $profile['settings']);
   };
+}
 
+function _watershednow_configure_roles() {
+  // Leverage Install Profile API to create roles and perms.
+  $default_roles = array('web admin', 'staff'); // Adding roles and perms.
+  $default_perms = _watershednow_define_perms(); // Grabbing array of permissions.
+  foreach ($default_roles as $role) {
+    install_add_role($role);
+    $rid = install_get_rid($role); // Get the RID so we can add perms.
+    if ($role == 'staff') {
+      install_add_permissions($rid, $default_perms['staff']);
+    }
+    if ($role == 'web admin') {
+      install_add_permissions($rid, $default_perms['web_admin']);
+    }
+  }
+  install_add_permissions('1', $default_perms['anonymous']);
+  install_add_permissions('2', $default_perms['authenticated']);
+
+  // Now remove some crufy permissions
+  install_remove_permissions('1', $default_perms['to_remove']);
+  install_remove_permissions('2', $default_perms['to_remove']);
 }
