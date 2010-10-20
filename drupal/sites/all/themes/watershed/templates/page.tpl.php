@@ -99,13 +99,13 @@
             <?php print $content; ?>
           </div> <!-- /#content-area -->
 
-          <?php print $feed_icons; ?>
-
           <?php if ($content_bottom): ?>
             <div id="content-bottom">
               <?php print $content_bottom; ?>
             </div><!-- /#content-bottom -->
           <?php endif; ?>
+
+          <?php print $feed_icons; ?>
 
           </div>
         </div> <!-- /content-inner /content -->
