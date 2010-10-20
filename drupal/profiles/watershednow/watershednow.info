@@ -169,6 +169,7 @@ theme = watershed
 
 variables[site_name] = Watershed Now Example
 variables[site_mail] = no-reply@thinkshout.com
+; Note: we use the site_mail variable for the default contact form recipiant as well.
 variables[site_slogan] = Lorem ipsum eam sale postea eu.
 
 variables[site_mission] = 'Lorem ipsum eam sale postea eu, lorem ipsum vis ex natum doctus expetendis.'

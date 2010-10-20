@@ -9,6 +9,11 @@
  */
 function _watershednow_configure() {
   
+	require_once('libraries/install_profile_api/core/user.inc');  
+  require_once('libraries/install_profile_api/core/contact.inc');
+	require_once('libraries/install_profile_api/core/menu.inc');
+	require_once('libraries/install_profile_api/core/node.inc');
+  
   // @FIXME - Set wysiwyg imagefield flag on appropriate content types.
   // This should be accomplishable via Features strongarm export. And if not there, in profiler.info.
   // But neither approach works for some reason. So, we call it in this last step of the install process.
@@ -19,7 +24,6 @@ function _watershednow_configure() {
 
 
 	// Leverage Install Profile API to create roles and perms.
-	require_once('libraries/install_profile_api/core/user.inc');
 	$default_roles = array('web admin', 'staff'); // Adding roles and perms.
 	$default_perms = _watershednow_define_perms(); // Grabbing array of permissions.
 	foreach ($default_roles as $role) {
@@ -45,30 +49,29 @@ function _watershednow_configure() {
 	// Remove the default content type that Webform Module adds. It's cruft.
 	node_type_delete('webform');
 
-	// Set up basic contact form with Install Profile API
-	require_once('libraries/install_profile_api/core/contact.inc');
-	require_once('libraries/install_profile_api/core/menu.inc');
-	$category = 'website feedback';
-	$recipients = variable_get('site_mail', 'admin@'. $_SERVER['HTTP_HOST']); // Grab site email, if not create from URL.
-	install_contact_add_category($category, $recipients, $reply = '', $weight = 0, $selected = 1);
-	// Add contact form to secondary links.
-	install_menu_create_menu_item('contact', 'Contact Us', 'Get in touch with us.', 'secondary_links');
-	
 	// @FIXME - For some reason, this value isn't being obeyed in wn_common's strongarm settings.
 	// Set pathauto default for nodes. Do so before creating nodes below.
   variable_set('pathauto_node_pattern', '[title-raw]');
 
+  // Create a homepage link in the primary navigation
+  install_menu_create_menu_item('<front>', 'Home', 'Return to the homepage.', 'primary_links', '0', '-10');
+
+	// Set up basic contact form with Install Profile API
+	$category = 'website feedback';
+	$recipients = variable_get('site_mail', 'admin@'. $_SERVER['HTTP_HOST']); // Grab site email, if not create from URL.
+	install_contact_add_category($category, $recipients, $reply = '', $weight = 0, $selected = 1);
+	// Add contact form to primary links.
+	install_menu_create_menu_item('contact', 'Contact Us', 'Get in touch with us.', 'primary_links', '0', '50');
+
 	// Create a few placeholder nodes and add them to the menu structure.
 	// @TODO: Find the correct input filter. Right now, we rely on _watershednow_filters_wysiwyg() being called first..	
-	require_once('libraries/install_profile_api/core/node.inc');
-	require_once('libraries/install_profile_api/core/menu.inc');
 	$pages = array();
 
 	$page = new stdClass;
 	$page->title = 'About Us';
 	$page->body = 'This is a placeholder "about us" page. Here readers can learn more about this website and the orgaization behind it.';
 	$page->format = 2;
-	$page->menu = 'secondary_links';
+	$page->menu = 'primary_links';
 	$page->menuitem_description = 'Learn more about us';
 	$page->parent_title = NULL;
 	$pages['about'] = $page;
@@ -77,7 +80,7 @@ function _watershednow_configure() {
 	$page->title = 'Staff';
 	$page->body = 'This is a placeholder page about our staff';
 	$page->format = 2;
-	$page->menu = 'secondary_links';
+	$page->menu = 'primary_links';
 	$page->menuitem_description = 'Get to know our staff. Feel free to rename or even delete this page. It\'s provided here to show how subpages work.';
 	$page->parent_title = 'About Us';
 	$pages['staff'] = $page;
@@ -86,8 +89,8 @@ function _watershednow_configure() {
 	$page->title = 'History';
 	$page->body = 'This is a placeholder page about our organizational history. Feel free to rename or even delete this page. It\'s provided here to show how subpages work.';
 	$page->format = 2;
-	$page->menu = 'secondary_links';
-	$page->menuitem_description = 'Get to know our w.';
+	$page->menu = 'primary_links';
+	$page->menuitem_description = 'Get to know our history.';
 	$page->parent_title = 'About Us';
 	$pages['history'] = $page;
 
