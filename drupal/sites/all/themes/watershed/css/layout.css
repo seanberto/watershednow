@@ -187,7 +187,6 @@
   cursor:hand;
 }
 
-
 /*= Footer
 ------------- */
 #footer-message { clear:both; }
@@ -201,8 +200,9 @@
 }
 
 #block--mission  { width:33%; }
-#block-menu-primary-links { width:21%; }
-#block-follow-site  { width:15%; }
+#block-menu-secondary-links { width:23%; }
+#block-follow-site { width:17%; }
+#block-follow-site .content  { width:150px; }
 #block--search  { width:27%; margin-right:0; }
 
 #footer .block-menu ul.menu {
