@@ -62,14 +62,15 @@ function _watershednow_configure( $config ) {
 function _watershednow_create_follow_links($follow_links) {
   foreach($follow_links as $uid => $links ) {
     $weight = 0;
-    foreach($links as $name => $link ) {
+    foreach($links as $name => $url ) {
       $follow_link = array(
         'uid'  => $uid,
-        'path' => $url,
+        'url' => $url,
         'name' => $name,
         'weight' => $weight++
       );
-      follow_link_save( (object) $follow_link );
+      $follow_link = (object) $follow_link;
+      follow_link_save( $follow_link );
     }
   }
 }
