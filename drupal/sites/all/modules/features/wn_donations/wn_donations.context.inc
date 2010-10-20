@@ -27,13 +27,13 @@ function wn_donations_context_default_contexts() {
         'wn_common-0' => array(
           'module' => 'wn_common',
           'delta' => 0,
-          'region' => 'footer_second',
+          'region' => 'right',
           'weight' => 0,
         ),
         'views-ce3c6f72a6fff470fd9f1ade8c7b668c' => array(
           'module' => 'views',
           'delta' => 'ce3c6f72a6fff470fd9f1ade8c7b668c',
-          'region' => 'footer_second',
+          'region' => 'right',
           'weight' => 1,
         ),
       ),
