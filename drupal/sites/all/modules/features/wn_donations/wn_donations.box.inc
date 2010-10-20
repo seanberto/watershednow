@@ -11,9 +11,9 @@ function wn_donations_default_box() {
   $box->delta = 'donate';
   $box->plugin_key = 'simple';
   $box->title = '';
-  $box->description = 'Donation page header';
+  $box->description = 'Donation description';
   $box->options = array(
-    'body' => '<p>This is a placeholder for the listing of opportunities to donate. As you build online donation campaigns, they will be listed here. Edit this header to provide an overview of your campaigns. You can also simply delete this header all together.</p>',
+    'body' => '<p>This is example sidebar text for the listing of opportunities to donate. As you build online donation campaigns, they will be listed here. Edit this header to provide an overview of your campaigns. You can also simply delete this header all together.</p>',
     'format' => '3',
   );
 

@@ -30,7 +30,7 @@ function wn_donations_node_info() {
       'has_body' => '0',
       'body_label' => '',
       'min_word_count' => '0',
-      'help' => t('"Donation pages" are created for specific fundraising initiatives. They contain a simple donation link that goes to PayPal. When donations are made, payment information is sent back to this site for tracking purposes.'),
+      'help' => t('<em>Donation pages</em> are created for specific fundraising initiatives. They contain a simple donation link that goes to PayPal. When donations are made, payment information is sent back to this site for tracking purposes.'),
     ),
   );
   return $items;

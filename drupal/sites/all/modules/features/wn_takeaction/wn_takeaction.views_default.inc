@@ -10,7 +10,7 @@ function wn_takeaction_views_default_views() {
   $view = new view;
   $view->name = 'take_action';
   $view->description = '"Take Action" opportunity listing';
-  $view->tag = 'get_involved';
+  $view->tag = 'take_action';
   $view->view_php = '';
   $view->base_table = 'node';
   $view->is_cacheable = FALSE;

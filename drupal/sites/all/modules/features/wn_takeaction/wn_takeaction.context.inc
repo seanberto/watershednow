@@ -8,13 +8,14 @@ function wn_takeaction_context_default_contexts() {
   $context = new stdClass;
   $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
   $context->api_version = 3;
-  $context->name = 'take_action_header';
-  $context->description = 'Header content on the "Take Action" listing page.';
+  $context->name = 'take_action_description';
+  $context->description = 'Sidebar content on the "Take Action" listing page.';
   $context->tag = 'views';
   $context->conditions = array(
     'views' => array(
       'values' => array(
         'take_action:page_1' => 'take_action:page_1',
+        'take_action:page_2' => 'take_action:page_2',
       ),
     ),
   );
@@ -24,7 +25,7 @@ function wn_takeaction_context_default_contexts() {
         'boxes-take_action' => array(
           'module' => 'boxes',
           'delta' => 'take_action',
-          'region' => 'preface',
+          'region' => 'right',
           'weight' => 0,
         ),
       ),

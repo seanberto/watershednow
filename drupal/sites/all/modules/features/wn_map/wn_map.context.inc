@@ -58,6 +58,6 @@ function wn_map_context_default_contexts() {
   t('Context triggered when viewing map features.');
   t('content_types');
 
-  $export['features'] = $context;
+  $export['map_features'] = $context;
   return $export;
 }

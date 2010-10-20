@@ -1,7 +1,6 @@
 <?php
 // ; $Id: simple_donations.module,v 1.1 2010/08/22 seanberto Exp $
 
-
 /**
  * Generating the PayPal donation form via Simple Payments API.
  */
@@ -115,4 +114,54 @@ function simple_donations_nodeapi(&$node, $op, $teaser = NULL, $page = NULL) {
       }
       break;
   }
+}
+
+/**
+ * Implementation of hook_menu().
+ * 
+ * Add a donations tab on all nodes of those content types that are donations-enabled.
+ */
+function simple_donations_menu() {
+  $items = array();
+
+  $items['node/%node/donations'] = array(
+    'title' => 'Donations Received',
+    'page callback' => '_simple_donations_list_received',
+    'page arguments' => array(1),
+    'access callback' => '_simple_donations_menu_access',
+    'access arguments' => array(1),
+    'type' => MENU_LOCAL_TASK,
+    'weight' => 10,
+  );
+  return $items;
+}
+
+/**
+ * Menu callback to attach view of received donations associated with a given node.
+ */
+function _simple_donations_list_received($node) {
+  $view = views_get_view('donations');
+  $view_display = 'page_2';
+  $view_args = array($node->nid);
+  $output .=  $view->preview($view_display, $view_args);
+  return $output;
+}
+
+/**
+ * Access callback function. Only display donations tab on nodes of those types that are donations enabled.
+ */
+function _simple_donations_menu_access($node) {
+  if (variable_get('simple_donations_allowed_'. $node->type, 0)){
+    return TRUE;
+  }
+}
+
+/**
+ * Implementation of hook_views_api().
+ */
+function simple_donations_views_api() {
+  return array(
+    'api' => 2,
+    'path' => drupal_get_path('module', 'simple_donations'),
+  );
 }

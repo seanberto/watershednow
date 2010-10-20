@@ -74,13 +74,12 @@ function wn_hp_callout_strongarm() {
   $strongarm->name = 'content_extra_weights_wn_hp_callout';
   $strongarm->value = array(
     'title' => '-5',
-    'body_field' => '-3',
-    'revision_information' => '-1',
-    'author' => '0',
-    'options' => '1',
-    'comment_settings' => '2',
-    'menu' => '-4',
-    'path' => '3',
+    'revision_information' => '-2',
+    'author' => '-1',
+    'options' => '0',
+    'comment_settings' => '1',
+    'menu' => '-3',
+    'path' => '2',
   );
 
   $export['content_extra_weights_wn_hp_callout'] = $strongarm;

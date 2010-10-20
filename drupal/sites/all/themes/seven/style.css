@@ -967,3 +967,8 @@ form#views-ui-preview-form input#preview-submit {
 .content-add-more {
   margin-bottom: 10px;
 }
+
+.node-form .text {
+  width: 95%;
+}
+

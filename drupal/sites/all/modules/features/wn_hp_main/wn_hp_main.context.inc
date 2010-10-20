@@ -14,11 +14,22 @@ function wn_hp_main_context_default_contexts() {
   $context->conditions = array(
     'path' => array(
       'values' => array(
-        '<front>' => '<front>',
+        'home' => 'home',
       ),
     ),
   );
-  $context->reactions = array();
+  $context->reactions = array(
+    'block' => array(
+      'blocks' => array(
+        'boxes-homepage_promo' => array(
+          'module' => 'boxes',
+          'delta' => 'homepage_promo',
+          'region' => 'content_bottom',
+          'weight' => 0,
+        ),
+      ),
+    ),
+  );
   $context->condition_mode = 0;
 
   // Translatables

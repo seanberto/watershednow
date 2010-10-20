@@ -6,5 +6,6 @@ name = "Simple donations"
 package = Simple payments
 dependencies[] = simple_payments
 dependencies[] = simple_payments_paypal
+dependencies[] = views
 core = "6.x"
 version = "6.x-1.0"

@@ -11,9 +11,9 @@ function wn_events_default_box() {
   $box->delta = 'events';
   $box->plugin_key = 'simple';
   $box->title = '';
-  $box->description = 'Events page header';
+  $box->description = 'Events Description';
   $box->options = array(
-    'body' => '<p>This is a placeholder for the event listing page. As you build online campaigns, they will be listed here. Edit this header to provide an overview of your campaigns. You can also simply delete this header all together.</p>',
+    'body' => '<p>This is placeholder sidebar content for the event listing page. As you build online campaigns, they will be listed here. Edit this sidebar content to provide an overview of your events. You can also simply delete this textarea all together.</p>',
     'format' => '3',
   );
 
