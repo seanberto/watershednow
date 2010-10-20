@@ -1,8 +1,0 @@
-core = "6.x"
-description = "Components used in Watershed Now Install Profile"
-name = "Watershed Now Components"
-core = "6.x"
-version = "6.x-1.0"
-project = "Watershed Now"
-
-dependencies[] = follow

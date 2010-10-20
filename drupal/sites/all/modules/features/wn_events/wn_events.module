@@ -1,3 +1,44 @@
 <?php
 
 include_once('wn_events.features.inc');
+
+/**
+ * Implementation of hook_block().
+ * 
+ * Provides a customizable block that pulls a view of events, with a configurable title and # of posts.
+ */
+function wn_events_block($op = 'list', $delta = 0, $edit = array()) {
+  switch ($op) {
+
+    case 'list':
+      $blocks[0]['info'] = t('Events - Customizable listing');
+      return $blocks;
+
+    case 'configure':
+      if ($delta == 0 && user_access('administer site configuration')) {
+        $form['wn_events_number'] = array(
+          '#type' => 'select',
+          '#title' => t('Number of event posts shown on the homepage'),
+          '#default_value' => variable_get('wn_events_number','3'),
+          '#options' => array('1', '2', '3', '4', '5'),
+          '#description' =>t('Enter the maximum number of events to post on the homepage. If zero, this block will not display.'),
+          );
+      }
+      return $form;
+
+    case 'save':
+      if ($delta == 0) {
+        variable_set('wn_events_number', $edit['wn_events_number']);
+      }
+      break;
+
+    case 'view':
+      if ($delta == 0) {
+        $block['subject'] = t('Wn_events block 1 title');
+        $block['content'] = t('Wn_events block 1 content');
+      }
+
+      return $block;
+  }    
+}
+
