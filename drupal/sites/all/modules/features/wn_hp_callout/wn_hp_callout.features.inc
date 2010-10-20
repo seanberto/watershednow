@@ -19,7 +19,7 @@ function wn_hp_callout_node_info() {
       'name' => t('Homepage Callout'),
       'module' => 'features',
       'description' => '',
-      'has_title' => '1',
+      'has_title' => '0',
       'title_label' => t('Title'),
       'has_body' => '0',
       'body_label' => t('Body'),
