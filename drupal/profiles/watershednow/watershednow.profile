@@ -28,14 +28,15 @@ require_once( $path . 'libraries/profiler/profiler_module.inc');
 profiler_v2('watershednow');
 
 function watershednow_profile_tasks(&$task, $url) {
+  $config = profiler_v2_load_config('watershednow');
 
   if ( $task == 'profile' ) {
-    profiler_profile_tasks(profiler_v2_load_config('watershednow'), $task, $url);
+    profiler_profile_tasks($config, $task, $url);
     _watershednow_profile_task_profile($task, $url);
   }
 
   if( $task == 'watershednow-configure' ) {
-    _watershednow_configure();
+    _watershednow_configure($config);
     drupal_flush_all_caches();
     $task = 'profile-finished'; //hand control back to the installer
   }

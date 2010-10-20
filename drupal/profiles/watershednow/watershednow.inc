@@ -1,4 +1,8 @@
 <?php
+require_once('libraries/install_profile_api/core/user.inc');
+require_once('libraries/install_profile_api/core/contact.inc');
+require_once('libraries/install_profile_api/core/menu.inc');
+require_once('libraries/install_profile_api/core/node.inc');
 
 /**
  * Now that we've installed a bunch of modules, let's capture some other config, create some roles,
@@ -7,13 +11,7 @@
  * @TODO: More ond more of what's stuff into this custom function is abstractable with Profiler module.
  * So, we need to remember to come back and prune sometimes.
  */
-function _watershednow_configure() {
-
-  require_once('libraries/install_profile_api/core/user.inc');
-  require_once('libraries/install_profile_api/core/contact.inc');
-  require_once('libraries/install_profile_api/core/menu.inc');
-  require_once('libraries/install_profile_api/core/node.inc');
-
+function _watershednow_configure( $config ) {
   // @FIXME - Set wysiwyg imagefield flag on appropriate content types.
   // This should be accomplishable via Features strongarm export. And if not there, in profiler.info.
   // But neither approach works for some reason. So, we call it in this last step of the install process.
@@ -34,12 +32,29 @@ function _watershednow_configure() {
 
   _watershednow_create_menu_items();
 
+  _watershednow_create_follow_links( $config['follow'] );
+
   // Do some additional clean up.
   db_query("UPDATE {blocks} SET status = 0, region = ''"); // disable all DB blocks
   db_query("UPDATE {system} SET status = 0 WHERE type = 'theme' and name ='%s'", 'garland');
   db_query("UPDATE {system} SET status = 1 WHERE type = 'theme' and name ='%s'", 'watershed');
   variable_set('admin_theme', 'seven'); // set the admin theme to Rubik
   variable_set('node_admin_theme', 1); // Use the admin theme for content editing
+}
+
+function _watershednow_create_follow_links($follow_links) {
+  foreach($follow_links as $uid => $links ) {
+    $weight = 0;
+    foreach($links as $name => $link ) {
+      $follow_link = array(
+        'uid'  => $uid,
+        'path' => $url,
+        'name' => $name,
+        'weight' => $weight++
+      );
+      follow_link_save( (object) $follow_link );
+    }
+  }
 }
 
 function _watershednow_create_menu_items() {
