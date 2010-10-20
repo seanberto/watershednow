@@ -36,7 +36,7 @@ function watershednow_profile_tasks(&$task, $url) {
 
   if( $task == 'watershednow-configure' ) {
     _watershednow_configure();
-    drupal_flush_all_caches();
+    drupal_flush_all_caches(); // One last flush for good measure... @TODO - Check if necessary.
     $task = 'profile-finished'; //hand control back to the installer
   }
   return '';
