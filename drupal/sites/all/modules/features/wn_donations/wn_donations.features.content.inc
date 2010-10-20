@@ -56,6 +56,11 @@ function wn_donations_content_default_fields() {
       'progress_indicator' => 'bar',
       'max_filesize_per_file' => '',
       'max_filesize_per_node' => '',
+      'wn_hp_callout_desc' => NULL,
+      'wn_hp_callout_desc_help' => NULL,
+      'custom_wn_hp_callout_desc' => NULL,
+      'custom_wn_hp_callout_desc_style' => NULL,
+      'custom_wn_hp_callout_desc_required' => NULL,
       'filefield_sources' => array(
         'reference' => 'reference',
         'attach' => 0,
@@ -282,6 +287,11 @@ function wn_donations_content_default_fields() {
       'style' => 'nostyle',
       'link_to_full' => 0,
       'link_to_full_preset' => '0',
+      'wn_hp_callout_desc' => NULL,
+      'wn_hp_callout_desc_help' => NULL,
+      'custom_wn_hp_callout_desc' => NULL,
+      'custom_wn_hp_callout_desc_style' => NULL,
+      'custom_wn_hp_callout_desc_required' => NULL,
       'filefield_sources' => array(
         'reference' => 'reference',
         'attach' => 'attach',

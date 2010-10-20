@@ -99,7 +99,7 @@ function wn_blog_views_default_views() {
         'target' => '',
         'help' => '',
         'trim' => 1,
-        'max_length' => '400',
+        'max_length' => '200',
         'word_boundary' => 1,
         'ellipsis' => 1,
         'html' => 0,

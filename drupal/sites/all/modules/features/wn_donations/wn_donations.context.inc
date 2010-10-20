@@ -47,5 +47,39 @@ function wn_donations_context_default_contexts() {
   t('content_types');
 
   $export['donation_pages'] = $context;
+  $context = new stdClass;
+  $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
+  $context->api_version = 3;
+  $context->name = 'donations_description';
+  $context->description = 'Sidebar content on the donation campaign listing page.';
+  $context->tag = 'views';
+  $context->conditions = array(
+    'views' => array(
+      'values' => array(
+        'donation_opportunities:page_1' => 'donation_opportunities:page_1',
+        'donation_opportunities:page_2' => 'donation_opportunities:page_2',
+      ),
+    ),
+  );
+  $context->reactions = array(
+    'block' => array(
+      'blocks' => array(
+        'boxes-donate' => array(
+          'module' => 'boxes',
+          'delta' => 'donate',
+          'region' => 'right',
+          'weight' => 0,
+        ),
+      ),
+    ),
+  );
+  $context->condition_mode = 0;
+
+  // Translatables
+  // Included for use with string extractors like potx.
+  t('Sidebar content on the donation campaign listing page.');
+  t('views');
+
+  $export['donations_description'] = $context;
   return $export;
 }

@@ -11,9 +11,9 @@ function wn_takeaction_default_box() {
   $box->delta = 'take_action';
   $box->plugin_key = 'simple';
   $box->title = '';
-  $box->description = 'take action page header';
+  $box->description = 'Take Action description';
   $box->options = array(
-    'body' => '<p>This is a placeholder for the listing of opportunities to take action. As you build online campaigns, they will be listed here. Edit this header to provide an overview of your campaigns. You can also simply delete this header all together.</p>',
+    'body' => '<p>This is example text for the listing of opportunities to take action. As you build online campaigns, they will be listed here. Edit this header to provide an overview of your campaigns. You can also simply delete this header all together.</p>',
     'format' => '3',
   );
 
