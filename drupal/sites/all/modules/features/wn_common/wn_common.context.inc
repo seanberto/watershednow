@@ -102,9 +102,9 @@ function wn_common_context_default_contexts() {
           'region' => 'right',
           'weight' => 0,
         ),
-        'menu-primary-links' => array(
+        'menu-secondary-links' => array(
           'module' => 'menu',
-          'delta' => 'primary-links',
+          'delta' => 'secondary-links',
           'region' => 'footer_second',
           'weight' => 0,
         ),

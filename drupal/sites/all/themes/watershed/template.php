@@ -198,7 +198,7 @@ function watershed_preprocess_block(&$vars, $hook) {
 
     $subject = $block->subject;
     switch( $block->module.'_'.$block->delta ) {
-      case 'menu_primary-links':
+      case 'menu_secondary-links':
         $subject = t('navigate');
         break;
       case 'follow_site':
