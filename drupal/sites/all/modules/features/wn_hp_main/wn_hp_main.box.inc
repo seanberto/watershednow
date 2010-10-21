@@ -18,5 +18,18 @@ function wn_hp_main_default_box() {
   );
 
   $export['homepage_promo'] = $box;
+  $box = new stdClass;
+  $box->disabled = FALSE; /* Edit this to true to make a default box disabled initially */
+  $box->api_version = 1;
+  $box->delta = 'homepage_secondary';
+  $box->plugin_key = 'simple';
+  $box->title = 'Sidebar callout';
+  $box->description = 'Homepage secondary callout';
+  $box->options = array(
+    'body' => '<p>This is a secondary callout on the homepage. Users can enter rich HTML blah blah blah blah blah. lorem lorem lorem....</p>',
+    'format' => '3',
+  );
+
+  $export['homepage_secondary'] = $box;
   return $export;
 }
