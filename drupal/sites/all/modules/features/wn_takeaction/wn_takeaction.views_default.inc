@@ -288,33 +288,6 @@ function wn_takeaction_views_default_views() {
     'weight' => 0,
     'name' => 'navigation',
   ));
-  $handler = $view->new_display('web_widgets', 'Web widget', 'web_widgets_1');
-  $handler->override_option('style_options', array(
-    'mission_description' => FALSE,
-    'description' => '',
-  ));
-  $handler->override_option('row_options', array());
-  $handler->override_option('path', 'take_action/web_widget');
-  $handler->override_option('menu', array(
-    'type' => 'none',
-    'title' => '',
-    'description' => '',
-    'weight' => 0,
-    'name' => 'navigation',
-  ));
-  $handler->override_option('tab_options', array(
-    'type' => 'none',
-    'title' => '',
-    'description' => '',
-    'weight' => 0,
-    'name' => 'navigation',
-  ));
-  $handler->override_option('displays', array(
-    'page_1' => 'page_1',
-    'default' => 0,
-    'page_2' => 0,
-  ));
-  $handler->override_option('sitename_title', FALSE);
 
   $views[$view->name] = $view;
 
