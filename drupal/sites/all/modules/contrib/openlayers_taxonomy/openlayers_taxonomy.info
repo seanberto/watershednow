@@ -1,0 +1,16 @@
+; $Id: 
+name = OpenLayers Taxonomy
+description = Provides OpenLayers Taxonomy plugins.
+core = 6.x
+package = OpenLayers
+dependencies[] = openlayers
+dependencies[] = openlayers_views
+dependencies[] = views
+dependencies[] = taxonomy
+
+; Information added by drupal.org packaging script on 2010-10-18
+version = "6.x-1.0-beta1"
+core = "6.x"
+project = "openlayers_taxonomy"
+datestamp = "1287430584"
+

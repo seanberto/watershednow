@@ -6,3 +6,9 @@ package = OpenLayers
 dependencies[] = openlayers
 dependencies[] = content
 dependencies[] = filefield
+; Information added by drupal.org packaging script on 2010-10-18
+version = "6.x-1.0-beta1"
+core = "6.x"
+project = "openlayers_kml_layer"
+datestamp = "1287431183"
+

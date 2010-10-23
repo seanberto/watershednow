@@ -1,0 +1,13 @@
+<?php
+// $Id:
+
+/**
+ * Implements hook_uninstall().
+ */
+function openlayers_taxonomy_uninstall() {
+  db_query("DELETE FROM {variable} WHERE name like 'openlayers_taxonomy%'");
+}
+
+
+
+
