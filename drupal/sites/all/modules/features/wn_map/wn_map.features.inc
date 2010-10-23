@@ -44,15 +44,15 @@ function wn_map_imagecache_default_presets() {
 function wn_map_node_info() {
   $items = array(
     'map_feature' => array(
-      'name' => t('Watershed feature'),
+      'name' => t('Map feature'),
       'module' => 'features',
-      'description' => t('A <em>Watershed Feature</em> represents a point of interest on a map of a watershed. A watershed feature can be a point, a polyline or a polygon - or a collection of any of the three.'),
+      'description' => t('A <em>Map Feature</em> represents a point of interest on a map of a watershed. A watershed feature can be a point, a polyline or a polygon - or a collection of any of the three.'),
       'has_title' => '1',
       'title_label' => t('Title'),
       'has_body' => '0',
       'body_label' => '',
       'min_word_count' => '0',
-      'help' => '',
+      'help' => t('Create a feature to be displayed on a map. You can create points, lines and polygons. NOTE: To delete an element with the map picker, click the far-left of the right-hand picker icons, then click the point on the map and hit "d".'),
     ),
     'map_kml' => array(
       'name' => t('KML layer'),

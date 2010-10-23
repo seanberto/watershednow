@@ -15,7 +15,7 @@ function _watershednow_configure( $config ) {
   // @FIXME - Set wysiwyg imagefield flag on appropriate content types.
   // This should be accomplishable via Features strongarm export. And if not there, in profiler.info.
   // But neither approach works for some reason. So, we call it in this last step of the install process.
-  $has_assets = array('page', 'donation', 'take_action', 'update', 'event');
+  $has_assets = array('page', 'donation', 'take_action', 'update', 'event', 'map_feature');
   foreach ($has_assets as $type) { // Set variable for types with image_assets field.
     variable_set('wysiwyg_imagefield_' . $type, 'field_image_assets');
   }

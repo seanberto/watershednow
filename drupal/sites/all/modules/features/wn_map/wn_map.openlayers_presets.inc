@@ -14,14 +14,14 @@ function wn_map_openlayers_presets() {
   $openlayers_presets->data = array(
     'width' => 'auto',
     'height' => '700px',
-    'image_path' => '/sites/all/modules/features/map/openlayers_themes/james/',
-    'css_path' => '/sites/all/modules/features/map/openlayers_themes/james/style.css',
+    'image_path' => '/sites/all/modules/features/wn_map/openlayers_themes/wn/',
+    'css_path' => '/sites/all/modules/features/wn_map/openlayers_themes/wn/style.css',
     'proxy_host' => '',
     'hide_empty_map' => 0,
     'center' => array(
       'initial' => array(
-        'centerpoint' => '-77.475585934425, 37.65773212499',
-        'zoom' => '8',
+        'centerpoint' => '-79.233398434294, 38.410558249643',
+        'zoom' => '5',
       ),
       'restrict' => array(
         'restrictextent' => 0,
@@ -31,7 +31,7 @@ function wn_map_openlayers_presets() {
     'behaviors' => array(
       'openlayers_behavior_popup' => array(
         'layers' => array(
-          'openlayers_kml_layer_node_2' => 'openlayers_kml_layer_node_2',
+          'watershed_feature_data_openlayers_1' => 'watershed_feature_data_openlayers_1',
         ),
       ),
       'openlayers_behavior_fullscreen' => array(
@@ -39,8 +39,6 @@ function wn_map_openlayers_presets() {
       ),
       'openlayers_behavior_layerswitcher' => array(
         'ascending' => 1,
-        'roundedCorner' => 0,
-        'roundedCornerColor' => 'darkblue',
       ),
       'openlayers_behavior_mouseposition' => array(),
       'openlayers_behavior_navigation' => array(
@@ -49,6 +47,10 @@ function wn_map_openlayers_presets() {
       'openlayers_behavior_panzoombar' => array(),
       'openlayers_behavior_permalink' => array(),
       'openlayers_behavior_scaleline' => array(),
+      'openlayers_behavior_zoomtolayer' => array(
+        'zoomtolayer' => 'watershed_feature_data_openlayers_1',
+        'point_zoom_level' => '5',
+      ),
     ),
     'default_layer' => 'google_physical',
     'layers' => array(
@@ -56,17 +58,16 @@ function wn_map_openlayers_presets() {
       'google_hybrid' => 'google_hybrid',
       'google_normal' => 'google_normal',
       'google_physical' => 'google_physical',
-      'openlayers_kml_layer_node_2' => 'openlayers_kml_layer_node_2',
+      'watershed_feature_data_openlayers_1' => 'watershed_feature_data_openlayers_1',
     ),
     'layer_styles' => array(
       'watershed_feature_data_openlayers_1' => 'features',
-      'watershed_report_data_openlayers_1' => 'reports',
     ),
     'layer_activated' => array(
-      'openlayers_kml_layer_node_2' => 'openlayers_kml_layer_node_2',
+      'watershed_feature_data_openlayers_1' => 'watershed_feature_data_openlayers_1',
     ),
     'layer_switcher' => array(
-      'openlayers_kml_layer_node_2' => 'openlayers_kml_layer_node_2',
+      'watershed_feature_data_openlayers_1' => 'watershed_feature_data_openlayers_1',
     ),
     'projection' => '900913',
     'displayProjection' => '4326',
@@ -93,8 +94,8 @@ function wn_map_openlayers_presets() {
     'hide_empty_map' => 0,
     'center' => array(
       'initial' => array(
-        'centerpoint' => '-77.475585934425, 37.65773212499',
-        'zoom' => '8',
+        'centerpoint' => '-77.398681637554, 40.220829971489',
+        'zoom' => '6',
       ),
       'restrict' => array(
         'restrictextent' => 0,
@@ -146,13 +147,13 @@ function wn_map_openlayers_presets() {
   $openlayers_presets->data = array(
     'width' => '350px',
     'height' => '300px',
-    'image_path' => '/sites/all/modules/features/map/openlayers_themes/wn/',
-    'css_path' => '/sites/all/modules/features/map/openlayers_themes/wn/style.css',
+    'image_path' => '/sites/all/modules/features/wn_map/openlayers_themes/wn/',
+    'css_path' => '/sites/all/modules/features/wn_map/openlayers_themes/wn/style.css',
     'proxy_host' => '',
     'hide_empty_map' => 0,
     'center' => array(
       'initial' => array(
-        'centerpoint' => '-77.47559, 37.65773',
+        'centerpoint' => '',
         'zoom' => '8',
       ),
       'restrict' => array(
@@ -165,6 +166,10 @@ function wn_map_openlayers_presets() {
         'zoomWheelEnabled' => 0,
       ),
       'openlayers_behavior_panzoom' => array(),
+      'openlayers_behavior_zoomtolayer' => array(
+        'zoomtolayer' => 'watershed_feature_data_with_args_openlayers_1',
+        'point_zoom_level' => '5',
+      ),
     ),
     'default_layer' => 'google_physical',
     'layers' => array(
@@ -174,11 +179,9 @@ function wn_map_openlayers_presets() {
     'layer_styles' => array(
       'watershed_feature_data_openlayers_1' => 'features',
       'watershed_feature_data_with_args_openlayers_1' => 'sidebar_features',
-      'watershed_report_data_with_args_openlayers_1' => 'sidebar_reports',
     ),
     'layer_activated' => array(
       'watershed_feature_data_with_args_openlayers_1' => 'watershed_feature_data_with_args_openlayers_1',
-      'watershed_report_data_with_args_openlayers_1' => 'watershed_report_data_with_args_openlayers_1',
     ),
     'layer_switcher' => array(),
     'projection' => '900913',

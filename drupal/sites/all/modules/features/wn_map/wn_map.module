@@ -12,12 +12,13 @@ function wn_map_views_pre_render(&$view) {
   if (($view->name == 'watershed_feature_data') || ($view->name == 'watershed_feature_data_with_args')) {
     
     foreach ($view->result as $row) { // Iterate through results.
-      $tid = $row->term_data_tid;
-      $path = drupal_get_path('module', 'map');
-      $path = $path . '/openlayers_themes/wn/tax_icons/';
-      $filename = $path . $tid . '-tax.png'; // Icon filename/path in OL styles.
-      if (!file_exists($filename)) {
-        $row->term_data_tid = ''; // If icon doesn't exist, go with default.
+      $tid = $row->term_data_tid; // Get term ID.
+      $img_url = taxonomy_image_get_url($tid); // Look up term's image URL.
+      $default_img = drupal_get_path('module', 'wn_map') . '/openlayers_themes/wn/icons/poi.png';
+      if (!empty($img_url)) {
+        $row->term_data_tid = $img_url; // If term image exists, use it.
+      } else {
+        $row->term_data_tid = $default_img; // Else use default image.
       }
     }
   }

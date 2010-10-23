@@ -1,0 +1,227 @@
+<?php
+// $Id: taxonomy_image.install,v 1.1.4.5.2.11 2009/02/17 18:57:12 nancyw Exp $
+
+/**
+ * @file
+ *  taxonomy_image.install.
+ *  Simple module for providing an association between taxonomy terms and images.
+ *  Written by Jeremy Andrews <jeremy@kerneltrap.org>, May 2004.
+ */
+
+/**
+ * Implementation of hook_requirements().
+ */
+function taxonomy_image_requirements($phase) {
+  $requirements = array();
+  // Ensure translations don't break at install time
+  $t = get_t();
+  
+  // Check for GD support.
+  if (extension_loaded('gd')) {
+    $gd = gd_info();
+    $gd_vers = $gd['GD Version'];
+    unset($gd['GD Version']);
+    if ($gd['FreeType Support']) {
+      $gd['FreeType Support'.' '. $gd['FreeType Linkage']] = 1;
+      unset($gd['FreeType Support'], $gd['FreeType Linkage']);
+    }
+    $requirements['gd'] = array(
+      // D6 already has a GD check, just add the description.
+      'description' => '<small>'. implode(', ', array_keys(array_filter($gd))) .'</small>',
+      );
+  }
+  else {
+    $requirements['ti'] = array(
+      'title' => $t('Image functions (GD)'),
+      'value' => $t('Disabled'),
+      'description' => $t('The Taxonomy Image module requires that you configure PHP with GD support.'),
+      'severity' => REQUIREMENT_ERROR,
+      );
+  }
+
+  return $requirements;
+}
+
+/**
+ * Implementation of hook_schema().
+ */
+function taxonomy_image_schema() {
+  $schema['term_image'] = array(
+    'module' => 'Taxonomy Image',
+    'description' => t('Mapping of term to image.'),
+    'fields' => array(
+      'tid' => array(
+        'description' => t('Term identifier.'),
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'disp-width' => '10',
+        ),
+      'path' => array(
+        'description' => t('File system path to the image.'),
+        'type' => 'varchar',
+        'length' => '255',
+        'not null' => TRUE),
+      ),
+    'primary key' => array('tid'),
+    );
+
+  $schema['cache_tax_image'] = array(
+    'module' => 'Taxonomy Image',
+    'fields' => array(
+      'cid' => array(
+        'description' => t('Primary Key: Unique cache ID.'),
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => ''),
+      'data' => array(
+        'description' => t('A collection of data to cache.'),
+        'type' => 'blob',
+        'not null' => FALSE,
+        'size' => 'big'),
+      'expire' => array(
+        'description' => t('A Unix timestamp indicating when the cache entry should expire, or 0 for never.'),
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0),
+      'created' => array(
+        'description' => t('A Unix timestamp indicating when the cache entry was created.'),
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0),
+      'headers' => array(
+        'description' => t('Any custom HTTP headers to be added to cached data.'),
+        'type' => 'text',
+        'not null' => FALSE),
+      'serialized' => array(
+        'description' => t('A flag to indicate whether content is serialized (1) or not (0).'),
+        'type' => 'int',
+        'size' => 'small',
+        'not null' => TRUE,
+        'default' => 0)
+      ),
+    'indexes' => array('expire' => array('expire')),
+    'primary key' => array('cid'),
+    );
+
+  return $schema;
+}
+
+/**
+ * Implementation of hook_update_N().
+ * Add a cache table.
+ */
+function taxonomy_image_update_6100() {
+  $schema['cache_tax_image'] = array(
+    'module' => 'Taxonomy Image',
+    'fields' => array(
+      'cid' => array(
+        'description' => t('Primary Key: Unique cache ID.'),
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => ''),
+      'data' => array(
+        'description' => t('A collection of data to cache.'),
+        'type' => 'blob',
+        'not null' => FALSE,
+        'size' => 'big'),
+      'expire' => array(
+        'description' => t('A Unix timestamp indicating when the cache entry should expire, or 0 for never.'),
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0),
+      'created' => array(
+        'description' => t('A Unix timestamp indicating when the cache entry was created.'),
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0),
+      'headers' => array(
+        'description' => t('Any custom HTTP headers to be added to cached data.'),
+        'type' => 'text',
+        'not null' => FALSE),
+      'serialized' => array(
+        'description' => t('A flag to indicate whether content is serialized (1) or not (0).'),
+        'type' => 'int',
+        'size' => 'small',
+        'not null' => TRUE,
+        'default' => 0)
+      ),
+    'indexes' => array('expire' => array('expire')),
+    'primary key' => array('cid'),
+    );
+
+  $ret = array();
+  db_create_table($ret, 'cache_tax_image', $schema['cache_tax_image']);
+
+  return $ret;
+}
+
+/**
+ * Implementation of hook_update_N().
+ * Make file path relative to TI image path.
+ */
+function taxonomy_image_update_6101() {
+  $ret = array();
+
+  $mypath = file_directory_path()  .'/'. variable_get('taxonomy_image_path', 'category_pictures') .'/';
+  $path_len = drupal_strlen($mypath);
+  $sub_len = $path_len + 1;
+  $update = "UPDATE {term_image} SET path = SUBSTR(path, ". $sub_len .")"
+    ." WHERE SUBSTR(path, 1, ". $path_len .") = '$mypath'";
+  $ret[] = update_sql($update);
+
+  // Delete the cached version.
+  cache_clear_all("taxonomy_image:$tid", 'cache_tax_image');
+  drupal_set_message(t('Taxonomy Image cache has been cleared.'));
+  
+  return $ret;
+}
+
+/**
+ * Implementation of hook_install().
+ */
+function taxonomy_image_install() {
+  $result = drupal_install_schema('taxonomy_image');
+
+  if (count($result) > 0) {
+    drupal_set_message(t('The Taxonomy Image module was installed. You may want to go to the <a href="!settings">settings page now</a>.', array('!settings' => url('admin/settings/taxonomy_image'))));
+  }
+  else {
+    drupal_set_message(t('Taxonomy Image table creation failed. Please "uninstall" the module and retry.'));
+  }
+}
+
+/**
+ * Implementation of hook_uninstall().
+ */
+function taxonomy_image_uninstall() {
+  drupal_uninstall_schema('taxonomy_image');
+  db_query("DELETE FROM {blocks} WHERE module='taxonomy_image'");
+
+  variable_del('taxonomy_image_height');
+  variable_del('taxonomy_image_path');
+  variable_del('taxonomy_image_recursive');
+  variable_del('taxonomy_image_resize');
+  variable_del('taxonomy_image_width');
+  variable_del('taxonomy_image_imagecache_preset');
+  variable_del('taxonomy_image_link_types');
+  variable_del('taxonomy_image_link_title');
+  variable_del('taxonomy_image_wrapper');
+  variable_del('taxonomy_image_disable');
+  variable_del('taxonomy_image_admin_preset');
+  variable_del('taxonomy_image_block_imagecache_preset');
+  variable_del('taxonomy_image_block_max_images');
+  variable_del('taxonomy_image_block_max_size');
+  variable_del('taxonomy_image_block_suppress');
+  variable_del('taxonomy_image_block_title');
+  variable_del('taxonomy_image_default');
+  variable_del('taxonomy_image_node_preset');
+  variable_del('taxonomy_image_node_show_name');
+  variable_del('taxonomy_image_node_view');
+  variable_del('taxonomy_image_node_view_link');
+  variable_del('taxonomy_image_node_view_page');
+  variable_del('taxonomy_image_node_view_teaser');
+  variable_del('taxonomy_image_node_view_weight');
+}

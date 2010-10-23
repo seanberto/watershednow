@@ -1,0 +1,62 @@
+/* $Id: taxonomy_image.css,v 1.1.4.13 2009/03/16 00:07:11 nancyw Exp $ */
+
+.taxonomy_image_checkboxes .form-item label.option {
+  float: left;
+  margin-right: 1.5em;
+}
+
+.taxonomy_image_checkboxes .form-item .description {
+  clear: both;
+}
+
+.taxonomy_image_checkboxes {
+  clear: both;
+  padding-top: 1em;
+}
+
+.taxonomy_image_radios .form-item label.option {
+  float: left;
+  margin-right: 1em;
+}
+
+.taxonomy_image_radios .form-item .description {
+  clear: both;
+}
+
+.taxonomy_image_radios dt {
+  font-weight: bold;
+}
+
+.taxonomy_image_radios dl {
+  margin-left: 3em;
+}
+#taxonomy-image-admin-settings .form-item {
+  margin-bottom: 0;
+}
+
+#taxonomy_image_terms a.links {
+  font-size: 80%;
+  float: right;
+}
+
+#block-taxonomy_image-0 img {
+  float: left;
+  margin-right: 1em;
+}
+
+.taxonomy-image-block-edit {
+  float: right;
+  font-size: 89%; 
+}
+
+a.taxonomy-image-link-alter {
+  display: inline-block;
+}
+
+.taxonomy_image_links {
+  margin-right: 6px;
+}
+
+a.taxonomy-image-links img, .taxonomy-images img {
+  margin-right: 6px;
+}

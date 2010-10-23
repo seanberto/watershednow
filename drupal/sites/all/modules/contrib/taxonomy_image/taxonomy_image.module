@@ -1,0 +1,754 @@
+<?php
+// $Id: taxonomy_image.module,v 1.12.4.13.2.44 2009/04/16 13:33:35 nancyw Exp $
+
+/**
+ * @file
+ *  taxonomy_image.module
+ *  Simple module for providing an association between taxonomy terms and images.
+ *  Written by Jeremy Andrews <jeremy@kerneltrap.org>, May 2004.
+ */
+
+/**
+ * Function to display the image associated with the given term id.
+ * An html <img> tag will be returned if an image is found.  The link
+ * format can be modified with the tags parameter.
+ * @see taxonomy_image_get_object()
+ * @see taxonomy_image_get_url()
+ *
+ * @param
+ *   $tid - the term id.
+ * @param
+ *   $tags - optional HTML attributes to include in the link.
+ * 
+ * @return
+ *   An html img link.
+ */
+function taxonomy_image_display($tid, $tags = NULL, $profile = NULL, $overrides = array()) {
+  global $user;
+
+  if (user_access('access taxonomy images') && empty($user->taxonomy_image_disable_images)) {
+    // Get our controlling variables.
+    $wrapper = variable_get('taxonomy_image_wrapper', FALSE);
+    $imagecache_preset = variable_get('taxonomy_image_imagecache_preset', 'ORIGINAL');
+    $recursive = variable_get('taxonomy_image_recursive', 0);
+    $resize = variable_get('taxonomy_image_resize', 0);
+    $width = variable_get('taxonomy_image_width', '');
+    $height = variable_get('taxonomy_image_height', '');
+    // Any overrides specified?
+    if ($overrides) {
+      extract($overrides, EXTR_IF_EXISTS);
+    }
+
+    // do lookup, return full display path
+    $image = taxonomy_image_get_object($tid, $recursive);
+    // Do we have an image?
+    if (isset($image->path)) {
+      if (module_exists('imagecache') && $image->type_extension != 'swf') {
+        $preset = $profile ? $profile : $imagecache_preset;
+      }
+      else {
+        $preset = 'ORIGINAL';
+      }
+      // Handle our own image resizing?
+      if ($preset == 'ORIGINAL') {
+        taxonomy_image_resize($image, $resize, $width, $height);
+      }
+      $current = $image;
+
+      // Build the link title based on admin choice.
+      // Note: translation must be done here because the cache needs to be language-neutral.
+      if ($current->description && !variable_get('taxonomy_image_link_title', 0)) {
+        $current->title = taxonomy_image_tt("taxonomy:term:$current->tid:description", $current->description);
+      }
+      else {
+        $current->title = taxonomy_image_tt("taxonomy:term:$current->tid:name", $current->name);
+      }
+      // Have to dump double quotes for attribute.
+      $current->title = htmlspecialchars(strip_tags($current->title), ENT_COMPAT);
+
+      $my_attrs = array(
+        'width' => $current->width,
+        'height' => $current->height,
+        );
+      // $tag was originally an HTML attribute string. It should now be a standard attributes array.
+      // If the caller provided the same key, this will force me to use those.
+      if (is_array($tags)) {
+        $attributes = array_merge($my_attrs, $tags);
+      }
+      else {
+        // Handle the old string format.
+        $attributes = array_merge($my_attrs, taxonomy_image_parse_tags($tags));
+      }
+
+      // Handle special image types.
+      switch ($current->type_extension) {
+        case 'swf':
+          $attributes['type'] = $current->mime;
+          $attributes['data'] = $current->url;
+          $attributes['title'] = $current->title;
+          $return_url = '<object '. drupal_attributes($attributes) .'>Your browser does not support Flash objects.</object>';
+          break;
+
+        default:
+          if ($preset == 'ORIGINAL') {
+            $return_url = theme('image', $current->url, $current->name, $current->title, $attributes, FALSE);
+          }
+          else {
+            // Make sure the attributes don't try to override the preset.
+            unset($attributes['width'], $attributes['height']);
+            $mypath = variable_get('taxonomy_image_path', 'category_pictures') .'/';
+            $return_url = theme('imagecache', $preset, $mypath . $current->path, $current->name, $current->title, $attributes);
+          }
+      }
+      if ($wrapper) {
+        $return_url = '<div class="taxonomy_image_wrapper">'. $return_url .'</div>';
+      }
+      return $return_url;
+    }
+  }
+  return '';
+}
+
+/**
+ * Function to resize the image.
+ */
+function taxonomy_image_resize($image, $resize, $width = NULL, $height = NULL) {
+  switch ($resize) {
+    case 3: // Exact.
+      if ($width) {
+        $image->width = $width;
+      }
+      if ($height) {
+        $image->height = $height;
+      }
+      break;
+ 
+    case 2: // Not less than.
+      if ($width && ($width > $image->width)) {
+        $width_scale = $image->width / $width;
+      }
+      if ($height && ($height > $image->height)) {
+        $height_scale = $image->height / $height;
+      }
+      if ($height_scale || $width_scale) {
+        if ($width_scale && $height_scale) {
+          $scale = min($width_scale, $height_scale);
+        }
+        else {
+          $scale = $width_scale ? $width_scale : $height_scale;
+        }
+        $image->height = round($image->height / $scale);
+        $image->width = round($image->width / $scale);
+      }
+      break;
+
+    case 1: // Not greater than.
+      if ($width && ($width < $image->width)) {
+        $width_scale = $image->width / $width;
+      }
+      if ($height && ($height < $image->height)) {
+        $height_scale = $image->height / $height;
+      }
+      if ($height_scale || $width_scale) {
+        $scale = max($width_scale, $height_scale);
+        $image->height = round($image->height / $scale);
+        $image->width = round($image->width / $scale);
+      }
+      break;
+
+    case 0:  // Disabled, just leave them as is.
+      break;
+  }
+}
+
+/*
+ * Function to parse tags (HTML) string.
+ */
+function taxonomy_image_parse_tags($tags) {
+  $attrs = array();
+  $arr = explode(' ', $tags);
+  foreach ($arr as $tag) {
+    if (!empty($tag)) { // Ignore extra blanks.
+      $key_len = strpos($tag, '=');
+      $attrs[drupal_substr($tag, 0, $key_len)] = trim(drupal_substr($tag, $key_len + 1), '\'"');
+    }
+  }
+  return $attrs;
+}
+
+/**
+ * Helper function for when i18ntaxonomy module is not installed.
+ */
+function taxonomy_image_tt($string_id, $default, $language = NULL) {
+  return function_exists('tt') ? tt($string_id, $default, $language) : $default;
+}
+
+/**
+ * Function to get a url for an image, for use in css, html or other client-side code.
+ * @param
+ *   $tid - the term id
+ * @return
+ *   The url string.
+ */
+function taxonomy_image_get_url($tid) {
+  $image = taxonomy_image_get_object($tid);
+  return $image->url;
+}
+
+/**
+ * Function to get an image object with more useful data for custom formatting.
+ * @param
+ *   $tid - the term tid.
+ * @return
+ *   image object.
+ */
+function taxonomy_image_get_object($tid, $recursive = NULL) {
+  global $user;
+  static $image = array();
+  static $mypath, $fullpath;
+
+  // Get base path for my images.
+  if (!isset($mypath)) {
+    $mypath = variable_get('taxonomy_image_path', 'category_pictures') .'/';
+    $fullpath = file_directory_path() .'/'. $mypath;
+  }
+
+  if (!$recursive) {
+    $recursive = variable_get('taxonomy_image_recursive', 0);
+  }
+
+  // Themes may call with a string of terms, skip it. Also skip if invalid tid.
+  if (!is_numeric($tid) || $tid < 1) {
+    return NULL;
+  }
+
+  // Should we be here?
+  if (!user_access('access taxonomy images') || !empty($user->taxonomy_image_disable_images)) {
+    return NULL;
+  }
+
+  // Is the data statically cached?
+  if (isset($image[$tid])) {
+    return $image[$tid];
+  }
+  else {
+    $cache_obj = cache_get("taxonomy_image:$tid", 'cache_tax_image');
+    if ($cache_obj) {
+      $image[$tid] = $cache_obj->data;
+      return $image[$tid];
+    }
+
+    // Not cached, so go build it.
+    if ($image[$tid] = db_fetch_object(db_query('SELECT i.path, d.name, d.description FROM {term_image} i INNER JOIN {term_data} d USING(tid) WHERE i.tid=%d', $tid))) {
+      $image[$tid]->url = file_create_url($mypath . $image[$tid]->path);
+    }
+    elseif ($recursive) {
+      // Walk up the taxonomy hierarchy and look for an image.
+      $orig = $tid;
+      while ($parent = db_fetch_object(db_query('SELECT t.tid FROM {term_hierarchy} h, {term_data} t WHERE h.parent=t.tid AND h.tid=%d ORDER BY weight, name', $tid))) {
+        return $image[$orig] = taxonomy_image_get_object($parent->tid, $recursive);
+      }
+    }
+  }
+
+  // If there was no image, but there is a default, fake it.
+  if (!isset($image[$tid]->path) && ($default = variable_get('taxonomy_image_default', NULL))) {
+    $image[$tid]->path = $default;
+    $term = taxonomy_get_term($tid);
+    $image[$tid]->name = $term->name;
+    $image[$tid]->description = $term->description;
+//    $image[$tid]->url = file_create_url($mypath . $image[$tid]->path);
+    $image[$tid]->url = url($fullpath . $image[$tid]->path, array('absolute' => TRUE));
+  }
+  // Get more properties if we had an image.
+  if (!empty($image[$tid]->path)) {
+    $image[$tid]->tid = $tid;
+//    $img = getimagesize($image[$tid]->path);
+    $img = getimagesize($image[$tid]->url);
+    // Make sure it worked.
+    if (!$img) {
+      return NULL;
+    }
+    $exts = array(1 => 'gif', 'jpeg', 'png', 'swf', 'psd', 'bmp',
+      'tiff', 'tiff', 'jpc', 'jp2', 'jpf', 'jb2', 'swc',
+      'aiff', 'wbmp', 'xbm');
+    $image[$tid]->width = $img[0];
+    $image[$tid]->height = $img[1];
+    $image[$tid]->type = $img[2];
+    $image[$tid]->type_extension = $exts[$img[2]];
+    $image[$tid]->tags = $img[3];
+    $image[$tid]->bits = isset($img['bits']) ? $img['bits'] : NULL;
+    $image[$tid]->channels = isset($img['channels']) ? $img['channels'] : NULL;
+    $image[$tid]->mime = isset($img['mime']) ? $img['mime'] : NULL;
+    $image[$tid]->term = drupal_get_path_alias(taxonomy_term_path(taxonomy_get_term($tid)));
+    $image[$tid]->img = '<img src="'. $image[$tid]->url
+      .'" '. $image[$tid]->tags
+      .'alt="'. check_plain($image[$tid]->name) .'" '
+      .'title="'. check_plain(($image[$tid]->description ? $image[$tid]->description : $image[$tid]->name))  .'" '
+      .'>';
+  }
+
+  cache_set("taxonomy_image:$tid", $image[$tid], 'cache_tax_image');
+  return $image[$tid];
+}
+// Standard Drupal functions.
+/**
+ * Implementation of hook_perm.
+ */
+function taxonomy_image_perm() {
+  return array('access taxonomy images', 'administer taxonomy images', 'can disable taxonomy images');
+}
+
+/**
+ * Implementation of hook_help.
+ */
+function taxonomy_image_help($path, $args) {
+  switch ($path) {
+    case 'admin/content/taxonomy/taxonomy_image':
+      if (user_access('administer taxonomy images')) {
+        $settings = '<p>'. l(t('Taxonomy Image settings'), 'admin/settings/taxonomy_image') .'</p>';
+      }
+      else {
+        $settings = NULL;
+      }
+      return t('The taxonomy_image module allows site administrators to associate images with category (taxonomy) terms.  Once defined, this association allows Drupal themes to display images with site content.  For example, this module might be used to display a penguin with content about Linux, and a cheeseburger with content about junk food. To modify or delete an existing image or to upload a new image, click "edit image" on the overview page or use the term edit page.  To learn more about how to create vocabularies and terms, review the <a href="!taxonomy-help">taxonomy help page</a>.', array('!taxonomy-help' => url('admin/help/taxonomy'))) . $settings;
+
+      case 'admin/help#taxonomy_image':
+      $output = t('<h3>Introduction</h3>
+      <p>The taxonomy_image module allows site administrators to associate images with category terms.  Once defined, this association allows Drupal sites to display images with site content.  For example, the taxonomy_image module might be used to display a penguin with content about Linux, and a cheeseburger with content about junk food.</p>
+      <p>The module allows both a one-to-one term-to-image relationship, and a many-to-one terms-to-image relationship.</p>
+      <p>The taxonomy_image module requires that the taxonomy module also be enabled. The Categories module is not currently supported.</p>
+      <h3>Configuration</h3>
+      <h4>Uploading images</h4>
+      <p>With the taxonomy_image module enabled, images can be uploaded and associated with category terms at "Administer >> Content management >> Taxonomy".  On that page you will find links to tables containing all your vocabularies and terms.  Next to each term is a link titled "edit term" which you can click to upload an image for that term.  After clicking that link, you will be you will find the image management section at the bottom of that page. Using the "browse" button you can select your image then click "Save".
+      <p>Continue this process to upload appropriate images for your category terms.  Note that by default images will be displayed at the size they were uploaded.  Alternatively, you can go to "Administer >> Site configuration >> Taxonomy_image" to set the display height and/or width of all taxonomy images.</p>
+      <h4>Permissions</h4>
+      <p>For your users to be able to view the images you have uploaded, you will need to give them the necessary permissions.  Only users with the "access taxonomy images" permission will see images.  If you wish to give your users the ability to disable the images, also give them the "can disable taxonomy images" permission. A third permission, "administer taxonomy images", controls which users are allowed to configure taxonomy images.</p>
+      <h4>Recursive image display</h4>
+      <p>Taxonomy is a very powerful tool. One of its features is providing the ability to create hierarchical vocabularies, with which you can build a tree of terms.  It is possible that an entire tree of terms, or even just a branch of terms, are all about a similar subject and should all be associated with the same image.  By going to "Administer >> Site configuration >> Taxonomy_image", you can enable "Recursive image display".  With this option enabled, you only need to configure an image for the parent term, and all children will automatically inheret the same image (unless they are manually configured to display an alternate image).</p>
+      <h3>Displaying images</h3>
+      <p>To actually display images, you will have to make a call to taxonomy_image_display(). [There are some included add-on modules that will do this for you.]  When calling this function, you will need to pass in the taxonomy term for which an image should be displayed.  For example, from your theme\'s "_node" function you might do the following:
+<pre>
+  foreach (taxonomy_node_get_terms($node->nid) as $term) {
+    if ($image = taxonomy_image_display($term->tid)) {
+      $output .= \"$image\";
+    }
+</pre>
+    <p>Taxonomy_image_display uses "theme(\'image\',..." so you may override the display in your theme layer.</p>
+    ');
+      if (module_exists('views')) {
+        $output .= t('<h3>Views</h3><p>Views support has been added, so you can use the field "Taxonomy Image" in your view definition.</p>');
+      }
+      if (module_exists('imagecache')) {
+        $output .= t('<h3>Imagecache</h3>
+          <p>With imagecache enabled, you may use Imagecache profiles instead of image height/width. You can set a default profile on the settings page, or use it manually with taxonomy_image_display(), like this:</p>
+<pre>
+taxonomy_image_display($term->tid, NULL, \'PROFILE_NAME\');
+</pre>
+         <p>set <em>PROFILE_NAME</em> to whatever profile you want to use.</p>'
+        );
+      }
+      if (module_exists('taxonomy_image_node_display')
+        || module_exists('taxonomy_image_link_alter')) {
+        $output .= t('<h3>Add-on Feature Modules</h3>');
+      }
+      if (module_exists('taxonomy_image_node_display')) {
+        $output .= t('<h4>Taxonomy Image Node Display</h4><p>With this add-on feature, Taxonomy Image will automatically include all available term-associated images into the display of selected node types. The weight option determines where in the output the image will be positioned. Another option specifies whether or not to add a "taxonomy/term/nn" link to each image. Configuration is part of the usual Taxonomy Image settings page.</p>');
+      }
+      if (module_exists('taxonomy_image_link_alter')) {
+        $output .= t('<h4>Taxonomy Image Link Alter</h4><p>With this add-on feature, Taxonomy Image will automatically modify the standard taxonomy term display to use the term\'s image, if it has one. Configuration is part of the usual Taxonomy Image settings page.</p>');
+      }
+      if (module_exists('taxonomy_image_blocks')) {
+        $output .= t('<h4>Taxonomy Image Blocks</h4><p>This add-on feature provides a block in which the terms and images are shown on full node display. Configuration is part of the usual block settings page.</p>');
+      }
+      return $output;
+  }
+}
+
+/**
+ * Implementation of hook_menu.
+ */
+function taxonomy_image_menu() {
+  $items = array();
+
+  $items['admin/content/taxonomy/taxonomy_image'] = array(
+    'title' => 'Images',
+    'page callback' => 'taxonomy_image_overview',
+    'access arguments' => array('administer taxonomy images'),
+    'description' => 'An overview of taxonomy images',
+    'type' => MENU_LOCAL_TASK,
+    'file' => 'taxonomy_image.admin.inc',
+    );
+
+  // Admin Settings
+  $items['admin/settings/taxonomy_image'] = array(
+    'title' => 'Taxonomy Image',
+    'page callback' => 'taxonomy_image_admin_settings',
+    'access arguments' => array('administer site configuration'),
+    'description' => 'Configure Taxonomy_image functionality.',
+    'type' => MENU_NORMAL_ITEM,
+    'file' => 'taxonomy_image.admin.inc',
+    );
+
+  $items['admin/settings/taxonomy_image/general'] = array(
+    'title' => 'General',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('taxonomy_image_admin_form'),
+    'access arguments' => array('administer site configuration'),
+    'description' => 'Configure Taxonomy_image functionality.',
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'weight' => -1,
+    'file' => 'taxonomy_image.admin.inc',
+    );
+
+  return $items;
+}
+
+/**
+ * Implementation of hook_user().
+ */
+function taxonomy_image_user($type, $edit, $user, $category='account') {
+  switch ($type) {
+    case 'form':
+      if (user_access('can disable taxonomy images') && $category == 'account') {
+        $form['content_images'] = array(
+          '#type' => 'fieldset',
+          '#title' => t('Content images'),
+        );
+        $form['content_images']['taxonomy_image_disable_images'] = array(
+          '#type' => 'checkbox',
+          '#title' => t('Disable images'),
+          '#return_value' => 1,
+          '#default_value' => !empty($user->taxonomy_image_disable_images),
+          '#description' => variable_get('taxonomy_image_disable', t('Check this box to disable the display of content images.')),
+        );
+        return $form;
+      }
+      break;
+  }
+}
+
+/**
+ * Helper function for Imagecache presets.
+ */
+function _taxonomy_image_presets() {
+  if (module_exists('imagecache')) {
+    if (function_exists('_imagecache_get_presets')) {
+      $presets = _imagecache_get_presets();
+    }
+    elseif (function_exists('imagecache_presets')) {
+      $ic_presets = imagecache_presets();
+      $presets = array();
+      foreach ($ic_presets as $preset_id => $preset_info) {
+        $presets[$preset_info['presetid']] = $preset_info['presetname'];
+      }
+    }
+    else {
+      drupal_set_message(t('Unrecognized Imagecache API.'), 'error');
+      return FALSE;
+    }
+    $presets[0] = 'ORIGINAL';
+    sort($presets);
+    return $presets;
+  }
+  else {
+    return FALSE;
+  }   
+}
+
+function taxonomy_image_file_download($file) {
+  if (user_access('access taxonomy images')) {
+    $path = file_create_path($file);
+    if (function_exists('mime_content_type')) {
+      if ($type =  mime_content_type($path))
+        return array("Content-type: $type");
+    }
+    list($width, $height, $type, $attr) = getimagesize($path);
+    $types = array(
+      IMAGETYPE_GIF => 'image/gif',
+      IMAGETYPE_JPEG => 'image/jpeg',
+      IMAGETYPE_PNG => 'image/png',
+      IMAGETYPE_SWF => 'application/x-shockwave-flash',
+      IMAGETYPE_PSD => 'image/psd',
+      IMAGETYPE_BMP => 'image/bmp',
+      IMAGETYPE_TIFF_II => 'image/tiff',
+      IMAGETYPE_TIFF_MM  => 'image/tiff',
+      IMAGETYPE_JPC => 'application/octet-stream',
+      IMAGETYPE_JP2 => 'image/jp2',
+      IMAGETYPE_JPX => 'application/octet-stream',
+      IMAGETYPE_JB2 => 'application/octet-stream',
+      IMAGETYPE_SWC => 'application/x-shockwave-flash',
+      IMAGETYPE_IFF => 'image/iff',
+      IMAGETYPE_WBMP => 'image/vnd.wap.wbmp',
+      IMAGETYPE_XBM => 'image/xbm'
+    );
+    if (isset($types[$type])) {
+      return array('Content-type: '. $types[$type]);
+    }
+  }
+}
+
+// Taxonomy_image specific functions.
+function taxonomy_image_admin() {
+  global $form_values;
+  $op = $_POST['op'];
+  $tid = $_POST['tid'];
+  // TODO: Use menus, not arg()
+
+  if (empty($op)) {
+    $op = arg(3);
+  }
+
+  switch ($op) {
+    case 'image':
+      if (arg(4) == 'add' || arg(4) == 'edit') {
+        $output = drupal_get_form('taxonomy_image_form', (array)(taxonomy_image_get_term(arg(5))));
+        break;
+      }
+      $output = taxonomy_image_overview();
+      break;
+    case t('Save'):
+      $output = taxonomy_image_save($tid);
+      $output = taxonomy_image_overview();
+      break;
+    case t('Delete'):
+      $output = taxonomy_image_delete($tid);
+      $output = taxonomy_image_overview();
+      break;
+    default:
+      $output = taxonomy_image_overview();
+  }
+
+  print theme('page', $output);
+}
+
+function taxonomy_image_get_term($tid) {
+  return db_fetch_object(db_query('SELECT d.name, d.description, d.tid, i.path FROM {term_data} d LEFT JOIN {term_image} i USING(tid) WHERE d.tid = %d', $tid));
+}
+
+function taxonomy_image_form_alter(&$form, &$form_state, $form_id) {
+  switch ($form_id) {
+    case 'taxonomy_form_term':      
+      // Don't show Term-Image fieldset if we're deleting this term.
+      if ($form_state['confirm_delete']) {
+        return;
+      }
+
+      $preview = @taxonomy_image_display($form['tid']['#value']);
+      $form['#attributes'] = array('enctype' => 'multipart/form-data');
+      $form['taxonomy_image'] = array(
+        '#type' => 'fieldset',
+        '#title' => t('Term Image'),
+        '#collapsible' => TRUE,
+        '#collapsed' => empty($preview),
+        );
+      if ($preview) {
+        $form['taxonomy_image']['current_image'] = array(
+          '#type' => 'fieldset',
+          '#title' => t('Current Image'),
+          );
+
+        $form['taxonomy_image']['current_image']['image'] = array('#value' => $preview);
+
+        $form['taxonomy_image']['current_image']['taxonomy_image_current_image_delete'] = array(
+          '#type' => 'checkbox',
+          '#title' => t('Delete'),
+          '#prefix' => '<div class="taxonomy_image_checkboxes">',
+          '#suffix' => '</div>',
+          );
+      }
+
+      $form['taxonomy_image']['new_image']['taxonomy_image_upload'] = array(
+        '#type' => 'file',
+        '#title' => t('Upload image'),
+        '#size' => 60,
+        '#description' => t("The image file you wish to associate this term."),
+        );
+
+      $form['taxonomy_image']['taxonomy_image_external'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Use external image'),
+        '#default_value' => $curr_path,
+        '#cols' => 60,
+//        '#element_validate' => array('taxonomy_image_validate_external'),
+        '#description' => t('Enter a path to an external image. Note this image will be copied to this site.'),
+        '#prefix' => '<strong>'. t('or:') .'</strong>',
+        );
+
+      $form['#validate'] = array('taxonomy_image_validate_external');
+      $form['submit']['#weight'] = 10;
+      $form['delete']['#weight'] = 10;
+      break;
+  }
+
+  return $form;
+}
+
+/**
+ * Check an external link.
+ */
+function _taxonomy_image_validate_external($form, &$form_state) {
+  if (empty($form_state['values']['taxonomy_image_external'])) {
+    return;
+  }
+  if (valid_url($form_state['values']['taxonomy_image_external'])
+    && substr($form_state['values']['taxonomy_image_external'], 0, 4) == 'http') {
+    return;
+  }
+  form_set_error('taxonomy_image_external', t('The URL (@url) you entered does not appear to be valid.', array('@url' => $form['#value'])));
+}
+
+/**
+ * Implementation of hook_taxonomy().
+ */
+function taxonomy_image_taxonomy($op, $type, $form_values = NULL) {
+  // We're only interested in term changes.
+  if ($type != 'term') {
+    return;
+  }
+
+  $tid = $form_values['tid'];
+  switch ($op) {
+    case 'insert':
+    case 'update':
+      // Check / create category picture directory.
+      $directory = file_create_path(variable_get('taxonomy_image_path', 'category_pictures'));
+      if (!file_check_directory($directory, FILE_CREATE_DIRECTORY)) {
+        drupal_set_message(t('Error creating the category picture directory: "%dir" does not exist, or is not writable.', array('%dir' => $directory)), 'error');
+        return;
+      }
+
+      // Did they mark it to delete?
+      if ($form_values['taxonomy_image_current_image_delete'] == TRUE) {
+        taxonomy_image_delete($tid);
+      }
+
+      // External file used?
+      if (!empty($form_values['taxonomy_image_external'])) {
+        $source = $form_values['taxonomy_image_external'];
+        $filename = basename($source);
+        $where = file_directory_path() .'/'. variable_get('taxonomy_image_path', 'category_pictures') .'/'. $filename;
+
+        if (copy($source, $where)) {
+          drupal_set_message(t('Copy from @source to @where successful.', array('@source' => $source, '@where' => $where)));
+          taxonomy_image_add($tid, $filename);
+        }
+        else {        
+          drupal_set_message(t('Copy from @source to @where failed.', array('@source' => $source, '@where' => $where)), 'error');
+        }      
+      }
+      // Upload field used?
+      else {
+        $validators = array();
+        // FILE_EXISTS_REPLACE allows multiple terms to use the same image without having multiple files.      
+        $file = file_save_upload('taxonomy_image_upload', $validators, $directory, FILE_EXISTS_REPLACE);
+
+        if (is_object($file)) {
+          // If no errors while uploading, save term-image relation into DB
+          $filepath = variable_get('taxonomy_image_path', 'category_pictures') .'/'. $file->filename;
+          
+          if (taxonomy_image_add($tid, $file->filename)) {
+            // Successfully added to DB, make sure Cron doesn't delete this file.
+            file_set_status($file, FILE_STATUS_PERMANENT);
+            drupal_set_message(t('Image uploaded as @name.', array('@name' => $filepath)));
+          }
+          else
+            drupal_set_message(t('Error while adding image [tid = !tid, path = @path].', array('!tid' => $tid, '@path' => $filepath)), 'error');
+        }
+      }
+      break;
+    case 'delete':
+      taxonomy_image_delete($tid);
+      break;
+  }
+}
+
+/**
+ * Helper function for adding an image to a term
+ */
+function taxonomy_image_add($tid, $filename) {
+
+  $count = db_result(db_query('SELECT COUNT(tid) FROM {term_image} WHERE tid=%d', $tid));
+  if ($count == 1) {
+    // Delete old image before saving the new one.
+    taxonomy_image_delete($tid);
+  }
+
+  if (db_query("INSERT INTO {term_image} (tid, path) VALUES ('%d', '%s')", $tid, $filename)) {
+    cache_clear_all("taxonomy_image:$tid", 'cache_tax_image');
+    return TRUE;
+  }
+  else {
+    return FALSE;
+  }
+}
+
+function taxonomy_image_delete($tid) {
+  $old_path = db_result(db_query('SELECT path FROM {term_image} WHERE tid=%d', $tid));
+  $how_many = db_result(db_query("SELECT COUNT(path) FROM {term_image} WHERE path='%s'", $old_path));
+
+  // Delete the cached version.
+  cache_clear_all("taxonomy_image:$tid", 'cache_tax_image');
+
+  $taxonomy_image_path = file_directory_path() .'/'. variable_get('taxonomy_image_path', 'category_pictures') .'/';
+  $full_path = $taxonomy_image_path . $old_path;
+  if ($how_many == 1) {
+    // This is the only term using this file, so it is safe to delete it.
+    $file_del_ok = db_query("DELETE FROM {files} WHERE filepath='%s'", $full_path);
+  }
+  else {
+    // Pretend we deleted it.
+    $file_del_ok = TRUE;
+    drupal_set_message(t('Not deleted from the files table because it is use on !count other terms.', array('!count' => $how_many - 1)));
+  }
+
+  $db_del_ok = db_query('DELETE FROM {term_image} WHERE tid=%d', $tid);
+  if ($file_del_ok && $db_del_ok) {
+    drupal_set_message(t('!name image removed.', array('!name' => $old_path)));
+  }
+  else {
+    drupal_set_message(t('Image delete failed. File: !file, Db: !db.',
+      array('!file' => ($file_del_ok ? 'yes' : 'no'), '!db' => ($db_del_ok ? 'yes' : 'no'))));
+  }
+  return;
+}
+
+function _taxonomy_image_exists($tid) {
+  if (db_fetch_object(db_query('SELECT path FROM {term_image} WHERE tid=%d', $tid))) {
+    return TRUE;
+  }
+  return FALSE;
+}
+
+/**
+ *  Implementation of hook_flush_caches().
+ */
+function taxonomy_image_flush_caches() {
+  return array('cache_tax_image');
+}
+
+/**
+ *  Implementation of hook_views_api().
+ */
+function taxonomy_image_views_api() {
+  return array(
+    'api' => 2,
+    'path' => drupal_get_path('module', 'taxonomy_image'),
+    );
+}
+
+/**
+ *  Implementation of hook_views_handlers().
+ */
+function taxonomy_image_views_handlers() {
+  return array(
+    'info' => array(
+      'path' => drupal_get_path('module', 'taxonomy_image'),
+      ),
+    'handlers' => array(
+      'views_handler_field_taxonomy_image' => array(
+        'parent' => 'views_handler_field',
+        ),
+      ),
+    );
+}

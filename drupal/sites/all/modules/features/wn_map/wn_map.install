@@ -5,7 +5,8 @@
  *
  * Checks to make sure that we have a taxonomy vocabulary for "Map point type". If not, creates
  * this vocabulary and pre-populates it. Note: This is sorta hacky, but it's the best we can do w/o
- * machine-readable taxonomy system in Drupal core.
+ * machine-readable taxonomy system in Drupal core. Once the term is create, taxonomy image is added
+ * for each term.
  *
  */
 function wn_map_enable() {
@@ -19,27 +20,28 @@ function wn_map_enable() {
     'help' => 'Categorize this map point.',
   );
   $terms = array( // Our default terms within the map point type vocabulary.
-    'boat ramp',
-    'river access (without a ramp)',
-    'marina',
-    'public land',
-    'paddle trip/water trail',
-    'hiking opportunity/land trail',
-    'point of interest',
-    'fishing spot',
-    'outfitter/guide service',
-    'camping',
-    'lodging',
-    'food/supplies',
-    'restaurant',
-    'water level gauge',
-    'river mile marker',
-    'river hazard',
-    'polluted waters',
-    'restoration',
-    'monitoring',
-    'conservation project',
-    'pollution report',
+    array('name' =>'boat ramp', 'image' => 'boat_ramp.png'),
+    array('name' =>'river access (without a ramp)', 'image' => 'access.png'),
+    array('name' =>'marina', 'image' => 'marina.png'),
+    array('name' =>'public land', 'image' => 'ranger.png'),
+    array('name' =>'paddle trip/water trail', 'image' => 'canoe.png'),
+    array('name' =>'hiking opportunity/land trail', 'image' => 'hike.png'),
+    array('name' =>'point of interest', 'image' => 'site_seeing.png'),
+    array('name' =>'fishing spot', 'image' => 'fish.png'),
+    array('name' =>'outfitter/guide service', 'image' => 'information.png'),
+    array('name' =>'camping', 'image' => 'camping.png'),
+    array('name' =>'lodging', 'image' => 'lodging.png'),
+    array('name' =>'food/supplies', 'image' => 'groceries.png'),
+    array('name' =>'restaurant', 'image' => 'restaurant.png'),
+    array('name' =>'polluted waters', 'image' => 'first_aid.png'),
+    array('name' =>'conservation project', 'image' => 'recycle.png'),
+    array('name' =>'recreation spot', 'image' => 'swim.png'),
+    array('name' =>'parking area', 'image' => 'parking.png'),
+    array('name' =>'picnic area', 'image' => 'picnic.png'),
+    array('name' =>'hospital', 'image' => 'hospital.png'),
+    array('name' =>'bike trail', 'image' => 'bike.png'),
+    array('name' =>'ADA accessible area', 'image' => 'wheelchair.png'),
+    array('name' =>'pollution report', 'image' => 'poi.png')
   );
   // First, check to see if vocabulary already exists.
   $vid = db_result(db_query_range("SELECT vid FROM {vocabulary} WHERE name = '%s'", $vocabulary['name'], 0, 1));
@@ -50,12 +52,27 @@ function wn_map_enable() {
       db_query("INSERT INTO {vocabulary_node_types} (vid, type) VALUES (%d, '%s')", $vid, $content_type);
     }
   }
-  else { // If vocab doesn't exist, create it and get its VID. Then, add new terms.
+  else { // If vocab doesn't exist, create it and get its VID. Then, assign to content type and add new terms.
     taxonomy_save_vocabulary($vocabulary);
     $vid = db_result(db_query_range("SELECT vid FROM {vocabulary} WHERE name = '%s'", $vocabulary['name'], 0, 1));
+    db_query("INSERT INTO {vocabulary_node_types} (vid, type) VALUES (%d, '%s')", $vid, $content_type);
+    // Set image source directory.
+    $source_dir = drupal_get_path('module', 'wn_map') . '/openlayers_themes/wn/icons';
+    // Make sure that we have a map icons directory under the files directory. If not, create it.
+    $dest_dir = file_create_path('map_icons');
+    file_check_directory($dest_dir, FILE_CREATE_DIRECTORY);
     foreach ($terms as $term) {
-      $taxonomy = array('name' => $term, 'vid' => $vid);
+      $taxonomy = array('name' => $term['name'], 'vid' => $vid);
       taxonomy_save_term($taxonomy);
+      // Now we get the new term's ID and insert the taxonomy image.
+      $tid = db_result(db_query("SELECT tid FROM {term_data} WHERE name = '%s'", $term['name'])); //Get term ID.
+      $filename = $term['image'];
+      taxonomy_image_add($tid, $filename); // Add term image to DB.
+      // Now copy default images to files directory.
+      $source = $source_dir . '/' . $filename;
+      $destination = $dest_dir . '/' . $filename;
+      file_copy(&$source, $destination);
     }
+    
   }
 }

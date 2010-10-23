@@ -1,0 +1,88 @@
+$Id: INSTALL,v 1.9.2.4 2009/02/03 16:55:59 nancyw Exp $
+
+The following are instructions on how to install and configure the
+taxonomy_image.module:
+
+INSTALLATION:
+
+Step 1)
+  Properly configure Drupal's built in file system support by following the
+  directions at 'administer >> settings' in the File system settings area.
+  Taxonomy Image will create another directory within the default file directory.
+
+
+Step 2)
+  Untar (or unzip) the Taxonomy Image module files into a
+  'taxonomy_image' subdirectory within your appropriate 'modules' directory.
+
+
+Step 3)
+  Enable the taxonomy_image module.
+
+  Go to "administer >> site building >> modules" and put a check mark in the
+  'enabled' column next to 'taxonomy_image'.  This will automatically create
+  the necessary database table.
+
+
+Step 4)
+  Enable permissions appropriate to your site.
+
+  The taxonomy_image.module provides three permissions:
+   - 'access taxonomy images': allow user to see taxonomy images.
+   - 'administer taxonomy images': allow user to configure taxonomy images.
+   - 'can  disable taxonomy images': allow user to disable taxonomy images.
+
+  Note that you need to enable 'access taxonomy images' for users that
+should see the taxonomy images.
+
+
+Step 5)
+  Configure the taxonomy_image module.
+
+  Go to "administer >> settings >> taxonomy_image" to configure the module.
+If you properly followed Step 0 above, this module will automatically create
+the 'picture image path' which defaults to 'files/category_pictures'.  You can
+also configure the module to force pictures to be within a certain size,
+automatically resizing if needed.
+
+  If you're using taxonomy hierarchies, and you wish to assign one image to
+an entire tree of terms, enable 'recursive image display'.  If you're not
+sure what this means, don't enable this option.
+
+
+Step 6)
+  Associate taxonomy terms with images. This is done within the normal term edit page.
+
+
+Step 7)
+  NOTE: This may not be needed. See the documentation pages for the add-on
+    features. These add-ons are designed to largely eliminate the need for
+    any theme changes.
+  ------------------------------------------------------------------------
+                          --- DEPRECATED ---
+                          --- DEPRECATED ---
+  Update your theme or other php code to display taxonomy images.
+
+  To display a taxonomy image from your theme or other php code, add
+a call to taxonomy_image_display().  This function requires that you pass
+in the term id of the term for which you wish to display the appropriate
+image.  For example:
+   taxonomy_image_display($term->tid)
+
+  This will return an <img> tag with the appropriate values for source=,
+height=, width= and alt=.  For example, it may return something like:
+   <img src="files/image.jpg" width="75" height="75" alt="term name" title="term name" />
+
+  If you wish to set other img attributes, you can pass them in through a
+second (optional) function paramter.  For example, to put a 2 pixel border
+around the images being displayed and to set the alt text, you could call as
+follows:
+   taxonomy_image_display($term->tid, array('border' => "2", 'target' => 'new'))
+
+  This would then return the following <img> tag:
+   <img src="files/image.jpg" width="75" height="75" alt="term name"
+     title="term name" border="2" target="new" />
+
+  See the included theme patches (in the 'contributed' folder) for more
+examples.
+

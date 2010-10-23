@@ -114,6 +114,7 @@ modules[contrib][] = openlayers
 modules[contrib][] = openlayers_ui
 modules[contrib][] = openlayers_cck
 modules[contrib][] = openlayers_views
+modules[contrib][] = taxonomy_image
 
 ; Social Integration
 ; allows admins to add social network links that are reorderable.

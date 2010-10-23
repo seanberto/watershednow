@@ -93,7 +93,7 @@ function wn_map_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'comment_map_feature';
-  $strongarm->value = '2';
+  $strongarm->value = '0';
 
   $export['comment_map_feature'] = $strongarm;
   $strongarm = new stdClass;
@@ -136,13 +136,13 @@ function wn_map_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'content_extra_weights_map_feature';
   $strongarm->value = array(
-    'title' => '-3',
-    'revision_information' => '6',
-    'author' => '7',
-    'options' => '8',
-    'comment_settings' => '10',
-    'menu' => '5',
-    'path' => '9',
+    'title' => '-2',
+    'revision_information' => '4',
+    'author' => '5',
+    'options' => '6',
+    'comment_settings' => '8',
+    'menu' => '3',
+    'path' => '7',
   );
 
   $export['content_extra_weights_map_feature'] = $strongarm;
@@ -590,7 +590,7 @@ function wn_map_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'openlayers_layers_google_api';
-  $strongarm->value = 'ABQIAAAAXcM0kIV0KYcm1CAyqIc4qRSHkCyqhSqqp5YRYHcOSZBwKr2WbBRNEFYg6PtBYzHFrb1R_inbzYvP0g';
+  $strongarm->value = 'ABQIAAAAXcM0kIV0KYcm1CAyqIc4qRTBRbjBNDIac9IBLAsNWawmb_4ssxQf6kE73jz8wpJw5kIFRn2w7rXMJA';
 
   $export['openlayers_layers_google_api'] = $strongarm;
   $strongarm = new stdClass;
@@ -644,5 +644,82 @@ function wn_map_strongarm() {
   $strongarm->value = 'watershed-features/[title-raw]';
 
   $export['pathauto_node_map_feature_pattern'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'taxonomy_image_admin_preset';
+  $strongarm->value = 'ORIGINAL';
+
+  $export['taxonomy_image_admin_preset'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'taxonomy_image_default';
+  $strongarm->value = '';
+
+  $export['taxonomy_image_default'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'taxonomy_image_disable';
+  $strongarm->value = 'Check this box to disable the display of content images.';
+
+  $export['taxonomy_image_disable'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'taxonomy_image_height';
+  $strongarm->value = '21';
+
+  $export['taxonomy_image_height'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'taxonomy_image_imagecache_preset';
+  $strongarm->value = 'ORIGINAL';
+
+  $export['taxonomy_image_imagecache_preset'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'taxonomy_image_link_title';
+  $strongarm->value = '1';
+
+  $export['taxonomy_image_link_title'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'taxonomy_image_path';
+  $strongarm->value = 'map_icons';
+
+  $export['taxonomy_image_path'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'taxonomy_image_recursive';
+  $strongarm->value = '0';
+
+  $export['taxonomy_image_recursive'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'taxonomy_image_resize';
+  $strongarm->value = '3';
+
+  $export['taxonomy_image_resize'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'taxonomy_image_width';
+  $strongarm->value = '16';
+
+  $export['taxonomy_image_width'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'taxonomy_image_wrapper';
+  $strongarm->value = 0;
+
+  $export['taxonomy_image_wrapper'] = $strongarm;
   return $export;
 }

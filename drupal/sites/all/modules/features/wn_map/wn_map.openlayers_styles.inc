@@ -12,7 +12,7 @@ function wn_map_openlayers_styles() {
   $openlayers_styles->title = 'Features';
   $openlayers_styles->description = 'Map features created and maintained by staff';
   $openlayers_styles->data = array(
-    'externalGraphic' => '/sites/all/modules/features/map/openlayers_themes/wn/tax_icons/${tid}-tax.png',
+    'externalGraphic' => '${tid}',
     'pointRadius' => 8,
     'fillColor' => '#EE9900',
     'strokeColor' => '#EE9900',
@@ -36,7 +36,7 @@ function wn_map_openlayers_styles() {
   $openlayers_styles->title = 'Sidebar Features';
   $openlayers_styles->description = 'Styling of sidebar feature map points';
   $openlayers_styles->data = array(
-    'externalGraphic' => '/sites/all/modules/features/map/openlayers_themes/wn/tax_icons/${tid}-tax.png',
+    'externalGraphic' => '${tid}',
     'pointRadius' => 8,
     'fillColor' => '#EE9900',
     'strokeColor' => '#EE9900',

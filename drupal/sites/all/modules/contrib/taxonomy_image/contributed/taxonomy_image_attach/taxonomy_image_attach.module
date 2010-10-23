@@ -1,0 +1,196 @@
+<?php
+// $Id: taxonomy_image_attach.module,v 1.1.4.8 2009/03/13 17:25:45 nancyw Exp $
+/**
+ * @file
+ * Add functionality to terms similar to the image_attach.module.
+ * Allow a term editor to choose from EXISTING images rather than upload new ones all the time.
+ * Currently this uses image.module handling of image nodes to index available images.
+ *
+ * If you are editing your term definitions a lot, I recommend
+ * http://drupal.org/project/edit_term
+ * for features that make handling terms even more like handling nodes.
+ *
+ * TODO:
+ * The selection could be made either wider (all files/filesystem scan)
+ * or narrower (images tagged in a certain gallery)
+ *
+ * @author dman http://coders.co.nz/
+ */
+
+/**
+ * Implementation of hook_menu.
+ */
+function taxonomy_image_attach_menu() {
+  $items = array();
+
+  // Add a tab to the Admin Settings
+  $items['admin/settings/taxonomy_image/image_attach'] = array(
+    'title' => 'Image Attach',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('taxonomy_image_image_attach_form'),
+    'access arguments' => array('administer site configuration'),
+    'description' => 'Configure Taxonomy_image Image_attach functionality.',
+    'type' => MENU_LOCAL_TASK,
+    'weight' => 1,
+    );
+
+  return $items;
+}
+
+function taxonomy_image_image_attach_form() {
+  drupal_add_css(drupal_get_path('module', 'taxonomy_image') .'/taxonomy_image.css');
+  $form = array();
+
+  $form['taxonomy_image_attach_enable'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Allow selection of existing image node images to use as taxonomy_images'),
+    '#default_value' => variable_get('taxonomy_image_attach_enable', TRUE),
+    );
+
+  $form['taxonomy_image_attach_enable_size'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Allow selection of image derivative sizes'),
+    '#default_value' => variable_get('taxonomy_image_attach_enable_size', FALSE),
+    );
+
+  $form['taxonomy_image_attach_default_size'] = array(
+    '#type' => 'radios',
+    '#title' => t('Default image attach size'),
+    '#options' => drupal_map_assoc(_taxonomy_image_presets()),
+    '#default_value' => variable_get('taxonomy_image_attach_default_size', variable_get('taxonomy_image_imagecache_preset', 'ORIGINAL')),
+    '#prefix' => '<div class="taxonomy_image_radios">',
+    '#suffix' => '</div><div class="clear-block"></div><br />',
+    );
+
+  return system_settings_form($form);
+}
+
+/**
+ * Add an image selector to the taxonomy_image fieldset alongside the upload field.
+ */
+function taxonomy_image_attach_form_alter(&$form, &$form_state, $form_id) {
+  switch ($form_id) {
+    case 'taxonomy_form_term':
+      // Don't show Term-Image fieldset if we're deleting this term.
+      if ($form_state['confirm_delete']) {
+        return;
+      }
+
+      $current_image = taxonomy_image_get_object($form['tid']['#value']);
+      $current_filepath = $current_image->path;
+      // Reverse-lookup to figure what this attached image is, if any.
+      $file = db_fetch_object(db_query("SELECT * FROM {files} WHERE filepath = '%s'", $current_filepath));
+      // If none, no problem.
+
+      $all_images = taxonomy_image_attach_get_image_nodes();
+      $form['taxonomy_image']['image_attach']['iid'] = array(
+        '#type' => 'select',
+        '#title' => t('Use existing image'),
+        '#options' => $all_images,
+        '#default_value' => $file->nid,
+        '#description' => t("Choose from existing image nodes."),
+        '#prefix' => '<strong>'. t('or:') .'</strong>',
+      );
+      // TODO: Ajax to display the one you just chose?
+
+      $sizes = image_get_sizes();
+      $size_options = array();
+      foreach ($sizes as $size => $size_def) {
+        $size_options[$size] = $size;
+      }
+      $form['taxonomy_image']['image_attach']['image_size'] = array(
+        '#type' => 'select',
+        '#title' => t('Preset size from existing image'),
+        '#default_value' => $file->filename ? $file->filename : variable_get('taxonomy_image_attach_default_size', 'thumbnail'),
+        '#options' => $size_options,
+        '#description' => t("Any resizing preferences set in the taxonomy_image admin may over-ride this size choice."),
+      );
+      if (!variable_get('taxonomy_image_attach_enable_size', FALSE)) {
+        // Actually, scratch that selector, if you're not allowed to use it. Just set a value.
+        $form['taxonomy_image']['image_attach']['image_size']['#type'] = 'value';
+        $form['taxonomy_image']['image_attach']['image_size']['#value'] = variable_get('taxonomy_image_attach_default_size', 'thumbnail');
+      }
+      break;
+  }
+  return $form;
+}
+
+/**
+ * Fetch an array of all candidate referenced nodes, for use in presenting the selection form to the user.
+ *
+ * Direct copy of the way image_attach does so
+ * @see _image_attach_get_image_nodes()
+ */
+function taxonomy_image_attach_get_image_nodes() {
+  $result = db_query(db_rewrite_sql("SELECT n.nid, n.title FROM {node} n WHERE n.status=1 AND type='image' ORDER BY n.sticky DESC, n.title ASC"));
+
+  $rows = array(0 => t('None'));
+  while ($node = db_fetch_object($result)) {
+    $rows[$node->nid] = $node->title;
+  }
+  if (count($rows) == 1) {
+    return array();
+  }
+  else {
+    return $rows;
+  }
+}
+
+/**
+ *  Implementation of hook_taxonomy.
+ * Capture term updates - including submission of the term edit form
+ */
+function taxonomy_image_attach_taxonomy($op, $type, $form_values = NULL) {
+  $directory = file_create_path(variable_get('taxonomy_image_path', 'category_pictures'));
+  file_check_directory($directory, FILE_CREATE_DIRECTORY);
+
+  // We're only interested in term changes.
+  if ($type != 'term') {
+    return;
+  }
+
+  $tid = $form_values['tid'];
+  switch ($op) {
+    case 'insert':
+    case 'update':
+//      if (file_check_upload('path')) {
+      if ($form_values['path']) {
+        // An upload will have just happened. Not our problem, don't even try to interfere.
+        break;
+      }
+      if ($form_values['current_image_delete'] == 1) {
+        // Then don't immediately re-attach it!
+        break;
+      }
+
+      $is_current_image = db_result(db_query('SELECT COUNT(tid) FROM {term_image} WHERE tid=%d', $tid));
+      if ($iid = $form_values['iid']) {
+
+        $oldpath = db_result(db_query('SELECT path FROM {term_image} WHERE tid=%d', $tid));
+        if ($is_current_image) {
+          // Delete old image before saving the new one,
+          // Image files outside of the dedicated directory should be safe
+          taxonomy_image_delete($tid);
+        }
+
+        $image_node = node_load($iid);
+        // choose size
+        $filepath = $image_node->images[$form_values['image_size']];
+
+        if ($filepath && file_exists($filepath)) {
+          $insert = db_query("INSERT INTO {term_image} (tid, path) VALUES ('%d', '%s')", $tid, $filepath);
+          if ($insert == FALSE) {
+            $message = theme('error', t('Database insert failed. [tid = !tid, path = @path.', array('!tid' => $tid, '@path' => $file->filepath)));
+          }
+        }
+        else {
+          $message = t("Failed to locate the %image_size version of image node !iid", array('%image_size' => $form_values['image_size'], '!iid' => l($iid, 'node/'. $iid)));
+        }
+      }
+      return drupal_set_message($message);
+
+    case 'delete':
+      taxonomy_image_delete($tid);
+      return;
+  }
+}

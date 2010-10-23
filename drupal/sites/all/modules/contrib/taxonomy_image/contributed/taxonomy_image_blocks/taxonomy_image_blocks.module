@@ -1,0 +1,234 @@
+<?php
+// $Id: taxonomy_image_blocks.module,v 1.1.2.19 2009/03/13 17:27:27 nancyw Exp $
+/**
+ * @file
+ * Add a block to show the images attached to the terms of a node.
+ */
+
+/**
+ * Implementation of hook_block().
+ *  This creates and populates the "unanswered questions" block.
+ */
+function taxonomy_image_block($op = 'list', $delta = 0, $edit = array()) {
+  global $user;
+  drupal_add_css(drupal_get_path('module', 'taxonomy_image') .'/taxonomy_image.css');
+  $multi_id = isset($edit['multiblock_delta']) ? '_'. $edit['multiblock_delta']['#value'] : NULL;
+
+  switch ($op) {
+    case 'list':
+      $blocks[0] = array(
+        'info' => t('Taxonomy Image: Node Images'),
+        'cache' => BLOCK_CACHE_PER_PAGE,
+        );
+      return $blocks;
+
+    case 'mb_enabled':
+      return 'mb_enabled';
+
+    case 'view':
+      switch ($delta) {
+        case 0:
+          // Node Images.
+          if (arg(0) != 'node' || !is_numeric(arg(1))) {
+            return array();
+          }
+          $nid = (int)arg(1);
+          $rows = array();
+          $count = 0;
+          $max = variable_get('taxonomy_image_block_max_images'. $multi_id, 3);
+          $suppress = variable_get('taxonomy_image_block_suppress'. $multi_id, FALSE);
+          $size = variable_get('taxonomy_image_block_max_size'. $multi_id, 32);
+          $imagecache_preset = variable_get('taxonomy_image_block_imagecache_preset'. $multi_id, variable_get('taxonomy_image_imagecache_preset', 'ORIGINAL'));
+          $vocab_opt = variable_get('taxonomy_image_block_vocab_opt'. $multi_id, 'exclude');
+          $vocab_list = variable_get('taxonomy_image_block_vocab_list'. $multi_id, array());
+          if ($node = node_load($nid)) {
+            foreach ($node->taxonomy as $term) {
+              // Check if this term is in a vocabulary to be skipped.
+              if (($vocab_opt == 'exclude' && in_array($term->vid, $vocab_list))
+                || ($vocab_opt == 'include' && !in_array($term->vid, $vocab_list))) {
+                continue;
+              }
+              
+              if ($imagecache_preset != 'ORIGINAL') {
+                $img = taxonomy_image_display($term->tid, array(), $imagecache_preset);
+              }
+              else {
+                if ($size == 'ORIGINAL') {
+                  $img = taxonomy_image_display($term->tid, array(), 'ORIGINAL', array('resize' => 0));
+                }
+                else {
+                  $img = taxonomy_image_display($term->tid, array(), 'ORIGINAL', array('resize' => 1, 'width' => $size, 'height' => $size));
+                }
+              }
+              if ($img || !$suppress) {
+                $term_path = drupal_get_path_alias(taxonomy_term_path($term));
+                $name_link = '<div class="taxonomy-image-block-name">'. l(taxonomy_image_tt("taxonomy:term:$term->tid:name", $term->name), $term_path) .'</div>';
+                if (user_access('administer taxonomy')) {
+                  $edit_link = '<div class="taxonomy-image-block-edit">'. l('edit term', 'admin/content/taxonomy/edit/term/'. $term->tid, array('class' => 'links inline')) .'</div>';
+                }
+                else {
+                  $edit_link = NULL;
+                }
+                
+                $rows[] = array(l($img, $term_path, array('html' => TRUE)) . $name_link . $edit_link);
+                ++$count;
+              }
+              // Have we hit the limit?
+              if ($count == $max) {
+                break;
+              }
+            }
+          }          
+          if ($rows) {
+            $subs = array(
+              '@title' => check_plain($node->title),
+              '!nid' => $node->nid, 
+              '!vid' => $node->vid, 
+              '!type' => $node->type,
+              );
+            $block = array(
+              'subject' => strtr(variable_get('taxonomy_image_block_title', 'Term Images for "@title"'), $subs),
+              'content' => theme('table', array() , $rows, array('id' => 'taxonomy_image_terms')),
+              );
+          }
+          break;
+
+      }
+      return $block;
+
+    case 'configure':
+      switch ($delta) {
+        case 0:
+          $form['ti'] = array(
+            '#type' => 'fieldset',
+            '#title' => t('Taxonomy Image '),
+            '#collapsible' => TRUE,
+            );
+
+          $form['ti']['taxonomy_image_block_max_images'] = array(
+            '#type' => 'textfield',
+            '#size' => 6,
+            '#title' => t('Number of terms to show'),
+            '#description' => t('This controls the number of terms that appear in the "Node Images" block. If you use the next option, suppressed terms do not count.'),
+            '#default_value' => variable_get('taxonomy_image_block_max_images'. $multi_id, 3),
+            );
+
+          $form['ti']['taxonomy_image_block_suppress'] = array(
+            '#type' => 'checkbox',
+            '#title' => t('Suppress term if no image'),
+            '#description' => t('Do not show the term if it has no image. Suppressed terms do not count towards the limit above.'),
+            '#default_value' => variable_get('taxonomy_image_block_suppress'. $multi_id, FALSE),
+            );
+
+          if (module_exists('imagecache')) {
+            $form['ti']['taxonomy_image_block_imagecache_preset'] = array(
+              '#type' => 'radios',
+              '#title' => t('Imagecache Preset'),
+              '#description' => t('The Imagecache module is available. If you select one of these presets, or provide one in your call, then Taxonomy Image will use Imagecache to process the image and ignore the following settings. "ORIGINAL" effectively disables Imagecache and uses the following settings.'),
+              '#options' => drupal_map_assoc(_taxonomy_image_presets()),
+               // Use main preset if this one isn't defined yet.
+              '#default_value' => variable_get('taxonomy_image_block_imagecache_preset'. $multi_id, variable_get('taxonomy_image_imagecache_preset', NULL)),
+              '#prefix' => '<div class="taxonomy_image_radios">',
+              '#suffix' => '</div>',
+              );
+          }
+          else {
+            $form['ti']['taxonomy_image_block_imagecache_preset'] = array(
+              '#type' => 'value',
+              '#value' => 'ORIGINAL',
+              );
+          }
+
+          $size_opts = array(0, 16, 24, 32, 48, 64, 80, 96, 112, 128);
+          $deflt_size = min(variable_get('taxonomy_image_height', ''), variable_get('taxonomy_image_width', ''));
+          // Find the next smaller value of $size_opts.
+          $x = reset($size_opts);
+          while ($deflt_size >= $x) {
+            $x = next($size_opts);
+          }
+          $deflt_size = prev($size_opts);
+          $size_opts[0] = 'ORIGINAL';
+          $form['ti']['taxonomy_image_block_max_size'] = array(
+            '#type' => 'radios',
+            '#options' => drupal_map_assoc($size_opts),
+            '#title' => t('Maximum size'),
+            '#description' => t('This limits the size of images that appear in the "Node Images" block. This is the size, in pixels, of the longer side of the image. Selecting "ORIGINAL" will keep the image at it\'s original size.'),
+            '#default_value' => variable_get('taxonomy_image_block_max_size'. $multi_id, $deflt_size),
+            '#prefix' => '<div class="taxonomy_image_radios">',
+            '#suffix' => '</div>',
+            );
+
+          $form['ti']['taxonomy_image_block_vocab_opt'] = array(
+            '#type' => 'radios',
+            '#options' => array('include' => t('Opt-in'), 'exclude' => t('Opt-out')),
+            '#title' => t('Vocabulary list option'),
+            '#description' => t('This setting determines whetehr the list below is considered as an "opt-in" or an "opt-out" list.
+              <dl><dt>Opt-in</dt><dd>Only selected vocabularies will be shown; all others will be ignored.</dd>
+              <dt>Opt-out</dt><dd>Selected vocabularies will be ignored; all others will be displayed.</dd></dl>'),
+            '#default_value' => variable_get('taxonomy_image_block_vocab_opt'. $multi_id, 'exclude'),
+            '#prefix' => '<div class="taxonomy_image_radios">',
+            '#suffix' => '</div>',
+            );
+
+          $vocabs = array();
+          $result = db_query("SELECT vid, name FROM {vocabulary} ORDER BY weight, vid");
+          while ($vocabulary = db_fetch_object($result)) {
+            $vocabs[$vocabulary->vid] = check_plain($vocabulary->name);
+          }
+          $form['ti']['taxonomy_image_block_vocab_list'] = array(
+            '#type' => 'checkboxes',
+            '#options' => $vocabs,
+            '#title' => t('Vocabularies'),
+            '#description' => t('See the "Vocabulary list option" above.'),
+            '#default_value' => variable_get('taxonomy_image_block_vocab_list'. $multi_id, array()),
+            '#prefix' => '<div class="taxonomy_image_checkboxes">',
+            '#suffix' => '</div>',
+            );
+
+          break;
+      }
+
+      return $form;
+
+    case 'save':
+      switch ($delta) {
+        case 0:
+          // Node Images.
+          variable_set('taxonomy_image_block_max_images'. $multi_id, $edit['taxonomy_image_block_max_images']);
+          variable_set('taxonomy_image_block_suppress'. $multi_id, $edit['taxonomy_image_block_suppress']);
+          variable_set('taxonomy_image_block_max_size'. $multi_id, $edit['taxonomy_image_block_max_size']);
+          variable_set('taxonomy_image_block_imagecache_preset'. $multi_id, $edit['taxonomy_image_block_imagecache_preset']);
+          variable_set('taxonomy_image_block_title'. $multi_id, $edit['title']);
+          variable_set('taxonomy_image_block_vocab_list'. $multi_id, array_filter($edit['taxonomy_image_block_vocab_list']));
+          variable_set('taxonomy_image_block_vocab_opt'. $multi_id, $edit['taxonomy_image_block_vocab_opt']);
+          if (!$multi_id) {
+            // Don't let blocks.module have the real title.
+            db_query("UPDATE {blocks} SET title='' WHERE module='taxonomy_image' AND delta=0");
+          }
+          break;
+
+      }
+      return;
+  } // end switch($op)
+}
+
+/**
+ * Implementation of hook_form_alter().
+ *  This modifies the title field for the "node images" block.
+ */
+function taxonomy_image_blocks_form_alter(&$form, &$form_state, $form_id) {
+  if ($form_id == 'block_admin_configure') {
+    if ($form['module']['#value'] == 'taxonomy_image' && $form['delta']['#value'] == 0) {
+      $form['block_settings']['title']['#description'] = t('Use <em>&lt;none&gt;</em> to display no title.
+        You may use the following placeholders for a dynamic title: 
+        <em>@title</em> (node title), 
+        <em>!nid</em> (node id), 
+        <em>!vid</em> (node version id), 
+        <em>!type</em> (node type)');
+
+      if (empty($form['block_settings']['title']['#default_value'])) {
+        $form['block_settings']['title']['#default_value'] = variable_get('taxonomy_image_block_title', 'Term Images for "@title"');
+      }
+    }
+  }
+}

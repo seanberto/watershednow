@@ -11,7 +11,7 @@ function wn_map_content_default_fields() {
     'field_name' => 'field_attachments',
     'type_name' => 'map_feature',
     'display_settings' => array(
-      'weight' => '-1',
+      'weight' => '2',
       'parent' => '',
       'label' => array(
         'format' => 'above',
@@ -82,10 +82,172 @@ function wn_map_content_default_fields() {
       'insert_class' => '',
       'insert_width' => '',
       'label' => 'Attachments',
-      'weight' => '12',
+      'weight' => '2',
       'description' => 'Attach supporting documents and files to this map feature.',
       'type' => 'filefield_widget',
       'module' => 'filefield',
+    ),
+  );
+
+  // Exported field: field_body
+  $fields['map_feature-field_body'] = array(
+    'field_name' => 'field_body',
+    'type_name' => 'map_feature',
+    'display_settings' => array(
+      'weight' => '-1',
+      'parent' => '',
+      'label' => array(
+        'format' => 'hidden',
+      ),
+      'teaser' => array(
+        'format' => 'hidden',
+        'exclude' => 0,
+      ),
+      'full' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '4' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '2' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '3' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+    'widget_active' => '1',
+    'type' => 'text',
+    'required' => '0',
+    'multiple' => '0',
+    'module' => 'text',
+    'active' => '1',
+    'text_processing' => '1',
+    'max_length' => '',
+    'allowed_values' => '',
+    'allowed_values_php' => '',
+    'widget' => array(
+      'rows' => '5',
+      'size' => 60,
+      'default_value' => array(
+        '0' => array(
+          'value' => '',
+          'format' => '1',
+          '_error_element' => 'default_value_widget][field_body][0][value',
+        ),
+      ),
+      'default_value_php' => NULL,
+      'label' => 'Description',
+      'weight' => '-1',
+      'description' => 'Enter the content of this map feature.',
+      'type' => 'text_textarea',
+      'module' => 'text',
+    ),
+  );
+
+  // Exported field: field_image_assets
+  $fields['map_feature-field_image_assets'] = array(
+    'field_name' => 'field_image_assets',
+    'type_name' => 'map_feature',
+    'display_settings' => array(
+      'weight' => '9',
+      'parent' => '',
+      'label' => array(
+        'format' => 'hidden',
+      ),
+      'teaser' => array(
+        'format' => 'hidden',
+        'exclude' => 0,
+      ),
+      'full' => array(
+        'format' => 'hidden',
+        'exclude' => 0,
+      ),
+      '4' => array(
+        'format' => 'image_plain',
+        'exclude' => 0,
+      ),
+      '2' => array(
+        'format' => 'image_plain',
+        'exclude' => 0,
+      ),
+      '3' => array(
+        'format' => 'image_plain',
+        'exclude' => 0,
+      ),
+      'token' => array(
+        'format' => 'image_plain',
+        'exclude' => 0,
+      ),
+    ),
+    'widget_active' => '1',
+    'type' => 'filefield',
+    'required' => '0',
+    'multiple' => '1',
+    'module' => 'filefield',
+    'active' => '1',
+    'list_field' => '0',
+    'list_default' => 1,
+    'description_field' => '0',
+    'widget' => array(
+      'file_extensions' => 'png gif jpg jpeg',
+      'file_path' => 'image_assets',
+      'progress_indicator' => 'bar',
+      'max_filesize_per_file' => '',
+      'max_filesize_per_node' => '',
+      'max_resolution' => '0',
+      'min_resolution' => '0',
+      'alt' => '',
+      'custom_alt' => 1,
+      'title' => '',
+      'custom_title' => 1,
+      'title_type' => 'textfield',
+      'default_image' => NULL,
+      'use_default_image' => 0,
+      'slide_preset' => '0',
+      'thumb_preset' => '0',
+      'style' => 'nostyle',
+      'link_to_full' => 0,
+      'link_to_full_preset' => '0',
+      'wn_hp_callout_desc' => '',
+      'wn_hp_callout_desc_help' => '',
+      'custom_wn_hp_callout_desc' => 0,
+      'custom_wn_hp_callout_desc_style' => 'textfield',
+      'custom_wn_hp_callout_desc_required' => 0,
+      'filefield_sources' => array(
+        'reference' => 'reference',
+        'attach' => 'attach',
+        'remote' => 0,
+      ),
+      'filefield_source_attach_path' => 'file_attach',
+      'filefield_source_attach_absolute' => '0',
+      'filefield_source_attach_mode' => 'copy',
+      'filefield_source_autocomplete' => '1',
+      'insert' => 1,
+      'insert_styles' => array(
+        'auto' => 'auto',
+        'image' => 'image',
+        'link' => 0,
+        'imagecache_galleryformatter_slide' => 0,
+        'imagecache_galleryformatter_thumb' => 0,
+      ),
+      'insert_default' => 'auto',
+      'insert_class' => '',
+      'insert_width' => '',
+      'wysiwyg_imagefield' => TRUE,
+      'label' => 'Image assets',
+      'weight' => '9',
+      'description' => '',
+      'type' => 'imagefield_widget',
+      'module' => 'imagefield',
     ),
   );
 
@@ -94,8 +256,8 @@ function wn_map_content_default_fields() {
     'field_name' => 'field_images',
     'type_name' => 'map_feature',
     'display_settings' => array(
-      'weight' => '2',
-      'parent' => 'group_multimedia',
+      'weight' => '1',
+      'parent' => '',
       'label' => array(
         'format' => 'hidden',
       ),
@@ -169,7 +331,7 @@ function wn_map_content_default_fields() {
       'insert_class' => NULL,
       'insert_width' => NULL,
       'label' => 'Image Uploads',
-      'weight' => '2',
+      'weight' => '1',
       'description' => 'Upload one or more images associated with this watershed feature.',
       'type' => 'imagefield_widget',
       'module' => 'imagefield',
@@ -181,8 +343,8 @@ function wn_map_content_default_fields() {
     'field_name' => 'field_videos',
     'type_name' => 'map_feature',
     'display_settings' => array(
-      'weight' => '1',
-      'parent' => 'group_multimedia',
+      'weight' => 0,
+      'parent' => '',
       'label' => array(
         'format' => 'hidden',
       ),
@@ -293,7 +455,7 @@ function wn_map_content_default_fields() {
       'media_flickr_allowfullscreen_preview' => 1,
       'media_flickr_logo_preview' => '',
       'label' => 'Videos and slideshows',
-      'weight' => '1',
+      'weight' => 0,
       'description' => 'Enter the URL(s) of videos or Flickr slideshows that are associated with the watershed feature.<br /> (For videos, enter the URL of the individual video. For Flickr slideshows, enter the URL of a photo set.)',
       'type' => 'emvideo_textfields',
       'module' => 'emvideo',
@@ -306,7 +468,7 @@ function wn_map_content_default_fields() {
     'type_name' => 'map_feature',
     'display_settings' => array(
       'weight' => '-3',
-      'parent' => 'group_location',
+      'parent' => '',
       'label' => array(
         'format' => 'hidden',
       ),
@@ -513,6 +675,7 @@ function wn_map_content_default_fields() {
   t('Attachments');
   t('Description');
   t('Image Uploads');
+  t('Image assets');
   t('KML file');
   t('Location');
   t('Videos and slideshows');

@@ -1,0 +1,17 @@
+<?php
+// $Id: taxonomy_image_attach.install,v 1.1.4.2 2008/08/27 17:09:21 nancyw Exp $
+
+/**
+ * @file
+ *  taxonomy_image_attach.install
+ */
+
+ /**
+ * Implementation of hook_install().
+ */
+function taxonomy_image_attach_install() {
+  // This must run after the main taxonomy_image form_alter, 
+  // as it alters that form in turn.
+  $taxonomy_image_weight = db_result(db_query("SELECT weight FROM {system} WHERE name='taxonomy_image'"));
+  db_query("UPDATE {system} SET weight=%d WHERE name='taxonomy_image_attach'", 1 + $taxonomy_image_weight );
+}

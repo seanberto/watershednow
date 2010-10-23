@@ -1,0 +1,168 @@
+<?php
+// $Id: taxonomy_image_link_alter.module,v 1.1.4.9 2009/03/13 17:28:21 nancyw Exp $
+/**
+ * @file
+ * Change taxonomy links to show term images.
+ */
+
+/**
+ * Implementation of hook_menu.
+ */
+function taxonomy_image_link_alter_menu() {
+  $items = array();
+
+  // Add a tab to the Admin Settings
+  $items['admin/settings/taxonomy_image/link_alter'] = array(
+    'title' => 'Link Alter',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('taxonomy_image_link_alter_form'),
+    'access arguments' => array('administer site configuration'),
+    'description' => 'Configure Taxonomy_image Link_alter functionality.',
+    'type' => MENU_LOCAL_TASK,
+    'weight' => 1,
+    );
+
+  return $items;
+}
+
+/**
+ *  Implement hook_link_alter to picturize the taxonomy term links
+ */
+function taxonomy_image_link_alter(&$links, $node) {
+  // We make these static so we only have to get them once per page view.
+  static $type_enabled, $show_name, $preset;
+  if (!isset($type_enabled)) {
+    $type_enabled = variable_get('taxonomy_image_link_types', array());
+    $show_name = variable_get('taxonomy_image_link_show_name', 0);
+    $preset = variable_get('taxonomy_image_link_preset', variable_get('taxonomy_image_imagecache_preset', 'ORIGINAL'));
+  }
+
+  // Is the type one we want to change?
+  if (!$type_enabled[$node->type]) {
+    return;
+  }
+
+  drupal_add_css(drupal_get_path('module', 'taxonomy_image') .'/taxonomy_image.css');
+  $tid_list = array();
+
+  foreach ($links AS $module => $link) {
+    if (strstr($module, 'taxonomy_term')) {
+      // Link back to my display and not the taxonomy term page
+      $tid_list[] = $tid = substr($module, 14);
+      $term = taxonomy_image_get_object($tid);
+      $tname = $show_name ? ('<br />'. taxonomy_image_tt("taxonomy:term:$term->tid:name", $term->name)) : NULL;
+      // See if we have a taxonomy image associated with this term
+      $taxo_image = taxonomy_image_display($term->tid, NULL, $preset, array('wrapper' => FALSE));
+      if ($taxo_image) {
+        if (isset($links[$module]['attributes']['class'])) {
+          $links[$module]['attributes']['class'] .= ' taxonomy-image-link-alter';
+        }
+        else {
+          $links[$module]['attributes']['class'] = 'taxonomy-image-link-alter';
+        }
+        $links[$module]['title'] = $taxo_image . $tname;
+        $links[$module]['html'] = TRUE;   /* if we don't do this, it will come out as text */
+      }
+    }
+  }
+
+  $sort_order = variable_get('taxonomy_image_link_sort_links', 0);
+  // If we don't want to sort, go back now.
+  if ($sort_order == 0) {
+    return;
+  }
+  switch ($sort_order) {
+    case 1:  // Alphabetically
+      $sort_fields = array('v.weight', 'v.name', 't.weight', 't.name');
+      break;
+    case 2:  // By ID
+      $sort_fields = array('v.weight', 'v.vid', 't.weight', 't.tid');
+      break;
+    default:  // Should never get here.
+      drupal_set_message(t('Unknown sort order (@order) configured.', array('@order' => $sort_order)), 'error');
+      return;
+  }
+  $fields = array();
+  foreach ($sort_fields as $index => $field_name) {
+    $fields[] = $field_name .' AS field'. $index;
+  }
+  
+  // Save the taxo link data into a temporary table.
+  // We do this because PHP can't properly sort anything but English.
+  $tquery = 'SELECT '. implode(', ', $fields) .', t.tid ' 
+    ."FROM `term_data` t LEFT JOIN `vocabulary` v USING (vid) WHERE t.tid IN ('".
+    implode("', '", $tid_list) ."')";
+  $result = db_query_temporary($tquery, 'ti_link_alter');
+  // Now read them back in the proper order.
+  $result = db_query("SELECT * FROM {ti_link_alter} ORDER BY field0, field1, field2, field3");
+  $new_links = array();
+
+  while ($row = db_fetch_object($result)) {
+      $module = 'taxonomy_term_'. $row->tid;
+      // Save the link, then delete the original.
+      $new_links[$module] = $links[$module];
+      unset($links[$module]);
+  }
+
+  // Now put the taxo links back in the new order.
+  $links = array_merge($links, $new_links);
+
+  // We need to destroy the table in case there are more nodes on the page.
+  db_query("DROP TABLE {ti_link_alter}");
+}
+
+function taxonomy_image_link_alter_form() {
+  drupal_add_css(drupal_get_path('module', 'taxonomy_image') .'/taxonomy_image.css');
+  $form = array();
+
+  $form['taxonomy_image_link_types'] = array(
+    '#type' => 'checkboxes',
+    '#title' => t('Select content types to alter links'),
+    '#options' => array_map('check_plain', node_get_types('names')),
+    '#default_value' => variable_get('taxonomy_image_link_types', array()),
+    '#description' => t('For the selected content types, the taxonomy links will use taxonomy images if they are available.'),
+    '#prefix' => '<div class="taxonomy_image_checkboxes">',
+    '#suffix' => '</div>',
+    '#weight' => -3,
+    );
+
+  $form['taxonomy_image_link_show_name'] = array(
+    '#type' => 'radios',
+    '#title' => t('Link style'),
+    '#options' => array(0 => t('Image only'), 1 => t('Image and name')),
+    '#default_value' => variable_get('taxonomy_image_link_show_name', 0),
+    '#description' => t('For the selected content types, this determines how the taxonomy links will be displayed.'),
+    '#prefix' => '<div class="taxonomy_image_radios">',
+    '#suffix' => '</div>',
+    );
+
+  $sort_options = array(
+    0 => 'No sort',
+    1 => 'Alphabetically',
+    2 => 'By ID',
+    );
+  $form['taxonomy_image_link_sort_links'] = array(
+    '#type' => 'radios',
+    '#options' => $sort_options,
+    '#title' => t('Sort links'),
+    '#default_value' => variable_get('taxonomy_image_link_sort_links', 0),
+    '#description' => t('Do you want the links reordered? If selected, vocabulary and term weight will be most important.
+      "Alphabetically" will sort the vocabularies and terms by name;
+      "By ID" will sort the vocabularies and terms by their IDs.'),
+    '#prefix' => '<div class="taxonomy_image_radios">',
+    '#suffix' => '</div>',
+    );
+
+  if (module_exists('imagecache')) {
+    $form['taxonomy_image_link_preset'] = array(
+      '#type' => 'radios',
+      '#title' => t('Imagecache Preset'),
+      '#options' => drupal_map_assoc(_taxonomy_image_presets()),
+      '#default_value' => variable_get('taxonomy_image_link_preset', variable_get('taxonomy_image_imagecache_preset', 'ORIGINAL')),
+      '#prefix' => '<div class="taxonomy_image_radios">',
+      '#suffix' => '</div><div class="clear-block"></div><br />',
+      );
+  }
+
+  return system_settings_form($form);
+}
