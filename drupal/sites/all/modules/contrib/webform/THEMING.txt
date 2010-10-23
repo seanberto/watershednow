@@ -100,4 +100,17 @@ of the phptemplate engine.
   you have good reason to do so (like you're forwarding your webform to a custom
   PHP or PERL script).
 
-$Id: THEMING.txt,v 1.12 2010/02/10 02:30:53 quicksketch Exp $
+Theme display of a webform submission display
+---------------------------------------------
+
+Theming the display of a webform submission works the same way as theming a
+webform form. Webform uses Drupal "renderable" style arrays for the display of
+submissions, just like most forms in Drupal.
+
+The template file for theming submissions is webform-submission.tpl.php. You can
+use webform-submission-[node id here].tpl.php for individual nodes if desired.
+Note that the contents of this template are used not only for display of
+submissions in the Webform interface but also in e-mails when printing out
+the %email_values token.
+
+$Id: THEMING.txt,v 1.12.2.1 2010/08/30 17:01:54 quicksketch Exp $

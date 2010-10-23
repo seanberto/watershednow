@@ -1,5 +1,5 @@
 <?php
-// $Id: webform-mail.tpl.php,v 1.3.2.2 2010/03/25 02:07:29 quicksketch Exp $
+// $Id: webform-mail.tpl.php,v 1.3.2.3 2010/08/30 20:22:15 quicksketch Exp $
 
 /**
  * @file
@@ -20,19 +20,18 @@
  * when using the "default" e-mail template.
  */
 ?>
-<?php print t('Submitted on %date'); ?>
+<?php print ($email['html'] ? '<p>' : '') . t('Submitted on %date'). ($email['html'] ? '</p>' : ''); ?>
 
 <?php if ($user->uid): ?>
-<?php print t('Submitted by user: %username'); ?>
+<?php print ($email['html'] ? '<p>' : '') . t('Submitted by user: %username') . ($email['html'] ? '</p>' : ''); ?>
 <?php else: ?>
-<?php print t('Submitted by anonymous user: [%ip_address]'); ?>
+<?php print ($email['html'] ? '<p>' : '') . t('Submitted by anonymous user: [%ip_address]') . ($email['html'] ? '</p>' : ''); ?>
 <?php endif; ?>
 
-
-<?php print t('Submitted values are') ?>:
+<?php print ($email['html'] ? '<p>' : '') . t('Submitted values are') . ':' . ($email['html'] ? '</p>' : ''); ?>
 
 %email_values
 
-<?php print t('The results of this submission may be viewed at:') ?>
+<?php print ($email['html'] ? '<p>' : '') . t('The results of this submission may be viewed at:') . ($email['html'] ? '</p>' : '') ?>
 
-%submission_url
+<?php print ($email['html'] ? '<p>' : ''); ?>%submission_url<?php print ($email['html'] ? '</p>' : ''); ?>

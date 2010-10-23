@@ -1,5 +1,5 @@
 <?php
-// $Id: date.inc,v 1.29.2.12 2010/08/19 03:00:45 quicksketch Exp $
+// $Id: date.inc,v 1.29.2.16 2010/10/18 07:20:54 quicksketch Exp $
 
 /**
  * @file
@@ -17,13 +17,13 @@ function _webform_defaults_date() {
     'weight' => 0,
     'value' => '',
     'mandatory' => 0,
-    'email' => 1,
     'extra' => array(
       'timezone' => 'user',
       'year_start' => '-2',
       'year_end' => '+2',
       'year_textfield' => 0,
       'datepicker' => 1,
+      'title_display' => 0,
       'description' => '',
     ),
   );
@@ -117,21 +117,23 @@ function _webform_edit_date($component) {
 /**
  * Implementation of _webform_render_component().
  */
-function _webform_render_date($component, $value = NULL) {
+function _webform_render_date($component, $value = NULL, $filter = TRUE) {
   $element = array(
-    '#title' => $component['name'],
+    '#title' => $filter ? _webform_filter_xss($component['name']) : $component['name'],
+    '#title_display' => $component['extra']['title_display'] ? $component['extra']['title_display'] : 'before',
     '#weight' => $component['weight'],
     '#type' => 'date',
-    '#description' => _webform_filter_descriptions($component['extra']['description']),
-    '#prefix' => '<div class="webform-component webform-component-' . $component['type'] . '" id="webform-component-' . $component['form_key'] . '">',
-    '#suffix' => '</div>',
+    '#description' => $filter ? _webform_filter_descriptions($component['extra']['description']) : $component['extra']['description'],
     '#required' => $component['mandatory'],
     '#year_start' => $component['extra']['year_start'],
     '#year_end' => $component['extra']['year_end'],
-    '#webform_component' => $component,
     '#process' => array('webform_expand_date'),
     '#theme' => 'webform_date',
+    '#theme_wrappers' => array('webform_element_wrapper'),
+    '#pre_render' => array('webform_element_title_display'),
+    '#post_render' => array('webform_element_wrapper'),
     '#element_validate' => array('webform_validate_date'),
+    '#webform_component' => $component,
   );
 
   if ($component['extra']['datepicker'] && function_exists('date_popup_load')) {
@@ -313,11 +315,11 @@ function _webform_display_date($component, $value, $format = 'html') {
     '#title' => $component['name'],
     '#weight' => $component['weight'],
     '#theme' => 'webform_display_date',
-    '#theme_wrappers' => $format == 'html' ? array('webform_element') : array('webform_element_text'),
+    '#theme_wrappers' => $format == 'html' ? array('webform_element', 'webform_element_wrapper') : array('webform_element_text'),
     '#post_render' => array('webform_element_wrapper'),
-    '#component' => $component,
     '#format' => $format,
     '#value' => $value,
+    '#webform_component' => $component,
   );
 }
 

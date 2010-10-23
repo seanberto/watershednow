@@ -1,10 +1,10 @@
-// $Id: webform-admin.js,v 1.1.2.2 2010/04/11 06:13:51 quicksketch Exp $
+// $Id: webform-admin.js,v 1.1.2.6 2010/10/17 18:55:11 quicksketch Exp $
 
 /**
  * Webform node form interface enhancments.
  */
 
-Drupal.behaviors.webform = function(context) {
+Drupal.behaviors.webformAdmin = function(context) {
   // Apply special behaviors to fields with default values.
   Drupal.webform.defaultValues(context);
   // On click or change, make a parent radio button selected.
@@ -46,8 +46,9 @@ Drupal.webform.defaultValues = function(context) {
 };
 
 Drupal.webform.setActive = function(context) {
-  var setActive = function() {
+  var setActive = function(e) {
     $('.form-radio', $(this).parent().parent()).attr('checked', true);
+    e.preventDefault();
   };
   $('.webform-set-active', context).click(setActive).change(setActive);
 };
@@ -67,8 +68,13 @@ Drupal.webform.updateTemplate = function(context) {
   }
 
   var updateTemplateText = function() {
-    if ($(this).val() == 'default') {
-      $templateTextarea.val(defaultTemplate);
+    if ($(this).val() == 'default' && $templateTextarea.val() != defaultTemplate) {
+      if (confirm(Drupal.settings.webform.revertConfirm)) {
+        $templateTextarea.val(defaultTemplate);
+      }
+      else {
+        $(this).val('custom');
+      }
     }
   }
 

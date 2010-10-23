@@ -1,5 +1,5 @@
 <?php
-// $Id: webform_hooks.php,v 1.9.2.6 2010/07/27 06:22:05 quicksketch Exp $
+// $Id: webform_hooks.php,v 1.9.2.9 2010/10/17 21:52:38 quicksketch Exp $
 
 /**
  * @file
@@ -23,6 +23,7 @@
  *   be an array with the following additional keys:
  *     - title: The translated title for this list.
  *     - options callback: The name of the function that will return the list.
+ *     - options arguments: Any additional arguments to send to the callback.
  *     - file: Optional. The file containing the options callback, relative to
  *       the module root.
  */
@@ -264,7 +265,13 @@ function hook_webform_component_info() {
       // If this field can be used as a conditional SOURCE. All fields may
       // always be displayed conditionally, regardless of this setting.
       // Defaults to TRUE.
-      'conditonal' => TRUE,
+      'conditional' => TRUE,
+      // If this field allows other fields to be grouped within it (like a 
+      // fieldset or tabs). Defaults to FALSE.
+      'group' => FALSE,
+      // If this field saves a file that can be used as an e-mail attachment.
+      // Defaults to FALSE.
+      'attachment' => FALSE,
     ),
     'file' => 'components/textfield.inc',
   );
@@ -311,7 +318,6 @@ function _webform_defaults_component() {
   return array(
     'name' => '',
     'form_key' => NULL,
-    'email' => 1,
     'mandatory' => 0,
     'pid' => 0,
     'weight' => 0,

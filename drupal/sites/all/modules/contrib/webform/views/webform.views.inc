@@ -1,5 +1,5 @@
 <?php
-// $Id: webform.views.inc,v 1.2 2010/02/09 20:08:04 quicksketch Exp $
+// $Id: webform.views.inc,v 1.2.2.1 2010/09/11 02:18:53 quicksketch Exp $
 
 /**
 * @file
@@ -145,7 +145,7 @@ function webform_views_data() {
  * Implementation of hook_views_data_alter().
  */
 function webform_views_data_alter(&$data) {
-  // submission count (node)
+  // Submission count (node).
   $data['node']['webform_submission_count_node'] = array(
     'field' => array(
       'title' => t('Webform submission count'),
@@ -155,7 +155,7 @@ function webform_views_data_alter(&$data) {
     ),
   );
 
-  // submission count (user)
+  // Submission count (user).
   $data['users']['webform_submission_count_user'] = array(
     'field' => array(
       'title' => t('Webform submission count'),
@@ -165,7 +165,25 @@ function webform_views_data_alter(&$data) {
     ),
   );
 
-  // webform body
+  // Link for editing the webform.
+  $data['node']['webform_edit'] = array(
+    'field' => array(
+      'title' => t('Webform edit link'),
+      'help' => t('Provide a simple link to edit the webform components and configuration.'),
+      'handler' => 'webform_handler_field_node_link_edit',
+    ),
+  );
+
+  // Link for viewing webform results.
+  $data['node']['webform_results'] = array(
+    'field' => array(
+      'title' => t('Webform results link'),
+      'help' => t('Provide a simple link to view the results of a webform.'),
+      'handler' => 'webform_handler_field_node_link_results',
+    ),
+  );
+
+  // Webform form content.
   $data['node']['webform_form_body'] = array(
     'field' => array(
       'title' => t('Webform form body'),
@@ -191,6 +209,12 @@ function webform_views_handlers() {
       'webform_handler_field_submission_count' => array(
         'parent' => 'views_handler_field',
         'file' => 'webform_handler_field_submission_count.inc',
+      ),
+      'webform_handler_field_node_link_edit' => array(
+        'parent' => 'views_handler_field_node_link',
+      ),
+      'webform_handler_field_node_link_results' => array(
+        'parent' => 'views_handler_field_node_link',
       ),
       'webform_handler_field_form_body' => array(
         'parent' => 'views_handler_field',

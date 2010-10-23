@@ -1,17 +1,14 @@
-/* $Id: webform-admin.css,v 1.1.2.2 2010/08/19 03:00:45 quicksketch Exp $ */
+/* $Id: webform-admin.css,v 1.1.2.5 2010/10/18 07:20:54 quicksketch Exp $ */
 
-.webform-display-item {
-  margin-top: 0.5em;
-  margin-bottom: 0.5em;
-}
-.webform-display-item label {
-  display: inline;
-}
 .webform-submission-navigation {
   text-align: right;
 }
 .webform-submission-next {
   margin-left: 20px;
+}
+.webform-component-select-wrapper {
+  max-height: 300px;
+  overflow: auto;
 }
 .webform-component-select-table table {
   margin: 0;
@@ -60,7 +57,8 @@ td.webform-pagebreak {
   text-align: center;
   width: 40px;
 }
-.webform-container-inline div {
+.webform-container-inline div,
+.webform-container-inline div.form-item {
   display: inline;
 }
 .webform-default-value {

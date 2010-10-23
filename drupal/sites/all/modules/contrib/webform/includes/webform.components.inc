@@ -1,5 +1,5 @@
 <?php
-// $Id: webform.components.inc,v 1.25.2.17 2010/08/14 21:02:25 quicksketch Exp $
+// $Id: webform.components.inc,v 1.25.2.27 2010/10/20 03:05:15 quicksketch Exp $
 
 /**
  * @file
@@ -72,6 +72,9 @@ function webform_components_form($form_state, $node) {
       '#default_value' => $component['mandatory'],
       '#access' => webform_component_feature($component['type'], 'required'),
     );
+    if (!isset($max_weight) || $component['weight'] > $max_weight) {
+      $max_weight = $component['weight'];
+    }
   }
 
   $form['add']['name'] = array(
@@ -97,10 +100,28 @@ function webform_components_form($form_state, $node) {
     '#default_value' => (isset($_GET['cid']) && isset($node->webform['components'][$_GET['cid']])) ? $node->webform['components'][$_GET['cid']]['pid'] : 0,
   );
   $form['add']['weight'] = array(
-    '#type' => 'weight',
+    '#type' => 'textfield',
+    '#size' => 4,
     '#delta' => count($node->webform['components']) > 10 ? count($node->webform['components']) : 10,
-    '#default_value' => (isset($_GET['cid']) && isset($node->webform['components'][$_GET['cid']])) ? $node->webform['components'][$_GET['cid']]['weight'] + 1: count($node->webform['components']),
   );
+
+  if (isset($_GET['cid']) && isset($node->webform['components'][$_GET['cid']])) {
+    // Make the new component appear by default directly after the one that was
+    // just added.
+    $form['add']['weight']['#default_value'] = $node->webform['components'][$_GET['cid']]['weight'] + 1;
+    foreach (array_keys($node->webform['components']) as $cid) {
+      // Adjust all later components also, to make sure none of them have the
+      // same weight as the new component.
+      if ($form['components'][$cid]['weight']['#default_value'] >= $form['add']['weight']['#default_value']) {
+        $form['components'][$cid]['weight']['#default_value']++;
+      }
+    }
+  }
+  else {
+    // If no component was just added, the new component should appear by
+    // default at the end of the list.
+    $form['add']['weight']['#default_value'] = isset($max_weight) ? $max_weight + 1 : 0;
+  }
 
   $form['add']['add'] = array(
     '#type' => 'submit',
@@ -345,7 +366,7 @@ function webform_component_edit_form(&$form_state, $node, $component, $clone = F
     '#type' => 'textfield',
     '#default_value' => empty($component['form_key']) ? _webform_safe_name($component['name']) : $component['form_key'],
     '#title' => t('Field Key'),
-    '#description' => t('Enter a machine readable key for this form element. May contain only lowercase alphanumeric characters and underscores. This key will be used as the name attribute of the form element. This value has no effect on the way data is saved, but may be helpful if using Additional Processing or Validation code.'),
+    '#description' => t('Enter a machine readable key for this form element. May contain only lowercase alphanumeric characters and underscores. This key will be used as the name attribute of the form element. This value has no effect on the way data is saved, but may be helpful if doing custom form processing.'),
     '#required' => TRUE,
     '#weight' => -9,
   );
@@ -364,6 +385,15 @@ function webform_component_edit_form(&$form_state, $node, $component, $clone = F
     '#collapsible' => TRUE,
     '#collapsed' => FALSE,
     '#weight' => 8,
+  );
+  $form['display']['title_display'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Hide component title'),
+    '#default_value' => !empty($component['extra']['title_display']),
+    '#return_value' => 'none',
+    '#description' => t('Do not display the title or label of this field in the form.'),
+    '#weight' => 8,
+    '#parents' => array('extra', 'title_display'),
   );
 
   // Validation settings.
@@ -502,9 +532,6 @@ function webform_component_edit_form(&$form_state, $node, $component, $clone = F
   if (isset($additional_form_elements['display'])) {
     $form['display'] = array_merge($form['display'], $additional_form_elements['display']);
     unset($additional_form_elements['display']);
-  }
-  else {
-    unset($form['display']);
   }
   if (isset($additional_form_elements['validation'])) {
     $form['validation'] = array_merge($form['validation'], $additional_form_elements['validation']);
@@ -733,7 +760,7 @@ function webform_component_feature($type, $feature) {
     'spam_analysis' => FALSE,
     'group' => FALSE,
   );
-  return isset($components[$type]['features'][$feature]) ? $components[$type]['features'][$feature] : $defaults[$feature];
+  return isset($components[$type]['features'][$feature]) ? $components[$type]['features'][$feature] : !empty($defaults[$feature]);
 }
 
 /**
@@ -778,6 +805,20 @@ function webform_component_list($node, $component_filter = NULL, $indent = TRUE,
     }
   }
 
+  // Remove groups that do not have any children.
+  $previous_cid = 0;
+  foreach ($options as $cid => $label) {
+    if (isset($node->webform['components'][$previous_cid]['type']) && webform_component_feature($node->webform['components'][$previous_cid]['type'], 'group') && webform_component_feature($node->webform['components'][$cid]['type'], 'group')) {
+      unset($options[$cid]);
+    }
+  }
+
+  // Remove the last item from the list if it's a group.
+  if (webform_component_feature($node->webform['components'][$cid]['type'], 'group')) {
+    unset($options[$cid]);
+  }
+
+  // Convert page breaks into optgroups.
   if ($optgroups) {
     $grouped_options = $options;
     $options = array();
@@ -806,14 +847,13 @@ function webform_component_select($element) {
       '#title' => $label,
       '#type' => 'checkbox',
       '#default_value' => array_search($key, $element['#value']) !== FALSE,
+      '#return_value' => $key,
       '#parents' => array_merge($element['#parents'], array($key)),
       '#indent' => $indents,
     );
   }
 
-  // Set value to NULL so that Drupal doesn't output "Array" as the markup.
-  $element['#value'] = NULL;
-  $element['#type'] = 'markup';
+  $element['#type'] = 'webform_component_select';
   $element['#theme'] = 'webform_component_select';
 
   return $element;
@@ -828,17 +868,28 @@ function theme_webform_component_select($element) {
 
   $rows = array();
   $header = array();
-  $header = array(array('class' => 'select-all', 'data' => ' ' . t('Include all components')));
+  if (!isset($element['#all_checkbox']) || $element['#all_checkbox']) {
+    $header = array(array('class' => 'select-all', 'data' => ' ' . t('Include all components')));
+  }
   foreach (element_children($element) as $key) {
     $rows[] = array(
       theme('indentation', $element[$key]['#indent']) . drupal_render($element[$key]),
     );
   }
-  $element['#collapsible'] = TRUE;
-  $element['#collapsed'] = TRUE;
+
+  $element['#collapsible'] = isset($element['#collapsible']) ? $element['#collapsible'] : TRUE;
+  $element['#collapsed'] = isset($element['#collapsed']) ? $element['#collapsed'] : TRUE;
 
   $element['#attributes']['class'] = 'webform-component-select-table';
-  $element['#children'] = theme('table', $header, $rows);;
+  if (empty($rows)) {
+    $element['#children'] = t('No available components.');
+  }
+  else {
+    $element['#children'] = '<div class="webform-component-select-wrapper">' . theme('table', $header, $rows) . '</div>';
+  }
+
+  $element['#value'] = NULL;
+
   return theme('fieldset', $element);
 }
 
@@ -882,10 +933,12 @@ function webform_component_defaults(&$component) {
  * Validate an element value is unique with no duplicates in the database.
  */
 function webform_validate_unique($element, $form_state) {
-  $nid = $form_state['values']['details']['nid'];
-  $sid = $form_state['values']['details']['sid'];
-  $count = db_result(db_query("SELECT count(*) FROM {webform_submitted_data} WHERE nid = %d AND cid = %d AND sid <> %d AND LOWER(data) = '%s'", $nid, $element['#webform_component']['cid'], $sid, $element['#value']));
-  if ($count) {
-    form_error($element, t('The value %value has already been submitted once for the %title field. You may have already submitted this form, or you need to use a different value.', array('%value' => $element['#value'], '%title' => $element['#title'])));
+  if ($element['#value'] !== '') {
+    $nid = $form_state['values']['details']['nid'];
+    $sid = $form_state['values']['details']['sid'];
+    $count = db_result(db_query("SELECT count(*) FROM {webform_submitted_data} WHERE nid = %d AND cid = %d AND sid <> %d AND LOWER(data) = '%s'", $nid, $element['#webform_component']['cid'], $sid, $element['#value']));
+    if ($count) {
+      form_error($element, t('The value %value has already been submitted once for the %title field. You may have already submitted this form, or you need to use a different value.', array('%value' => $element['#value'], '%title' => $element['#title'])));
+    }
   }
 }

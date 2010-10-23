@@ -1,5 +1,5 @@
 <?php
-// $Id: fckeditor.inc,v 1.17.2.3 2010/04/02 14:05:54 sun Exp $
+// $Id: fckeditor.inc,v 1.17.2.2 2010/01/23 00:51:32 sun Exp $
 
 /**
  * @file
@@ -52,9 +52,6 @@ function wysiwyg_fckeditor_editor() {
  */
 function wysiwyg_fckeditor_version($editor) {
   $library = $editor['library path'] . '/fckeditor.js';
-  if (!file_exists($library)) {
-    return;
-  }
   $library = fopen($library, 'r');
   $max_lines = 100;
   while ($max_lines && $line = fgets($library, 60)) {

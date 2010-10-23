@@ -1,5 +1,5 @@
 <?php
-// $Id: markup.inc,v 1.13.2.3 2010/03/21 03:38:12 quicksketch Exp $
+// $Id: markup.inc,v 1.13.2.5 2010/10/18 07:20:54 quicksketch Exp $
 
 /**
  * @file
@@ -38,8 +38,9 @@ function _webform_edit_markup($component) {
   // Add the filter form.
   $form['markup']['format'] = filter_form($component['extra']['format'], 0, array('extra', 'format'));
 
-  // No description for markup.
-  $form['extra']['description'] = array();
+  $form['extra']['description'] = array(); // No description for markup.
+  $form['display'] = array('#type' => 'markup'); // Hide the display options.
+  $form['display']['title_display'] = array();
 
   return $form;
 }
@@ -49,13 +50,14 @@ function _webform_edit_markup($component) {
  */
 function _webform_render_markup($component, $value = NULL, $filter = TRUE) {
   $element = array(
-    '#type'   => 'markup',
-    '#title'  => $component['name'],
+    '#type' => 'markup',
+    '#title' => $filter ? NULL : $component['name'],
     '#weight' => $component['weight'],
     '#markup' => $filter ? _webform_filter_values(check_markup($component['value'], $component['extra']['format'], FALSE), NULL, NULL, NULL, FALSE) : $component['value'],
     '#input_format' => $component['extra']['format'],
-    '#prefix' => '<div class="webform-component webform-component-' . $component['type'] . '" id="webform-component-' . $component['form_key'] . '">',
-    '#suffix' => '</div>',
+    '#theme_wrappers' => array('webform_element_wrapper'),
+    '#post_render' => array('webform_element_wrapper'),
+    '#webform_component' => $component,
   );
 
   // TODO: Remove when #markup becomes available in D7.

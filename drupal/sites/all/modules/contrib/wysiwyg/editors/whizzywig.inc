@@ -1,5 +1,5 @@
 <?php
-// $Id: whizzywig.inc,v 1.3.2.3 2010/04/02 14:24:52 sun Exp $
+// $Id: whizzywig.inc,v 1.3.2.1 2010/02/06 17:33:58 sun Exp $
 
 /**
  * @file
@@ -46,14 +46,9 @@ function wysiwyg_whizzywig_editor() {
  */
 function wysiwyg_whizzywig_version($editor) {
   $script = $editor['library path'] . '/whizzywig.js';
-  if (!file_exists($script)) {
-    return;
-  }
   $script = fopen($script, 'r');
   $line = fgets($script, 43);
-  // 55: Whizzywig v55i
-  // 60: Whizzywig 60
-  if (preg_match('@Whizzywig v?([0-9]+)@', $line, $version)) {
+  if (preg_match('@Whizzywig v([0-9]+)@', $line, $version)) {
     fclose($script);
     return $version[1];
   }
@@ -83,10 +78,6 @@ function wysiwyg_whizzywig_settings($editor, $config, $theme) {
   }
   if (file_exists($editor['library path'] . '/WhizzywigToolbar.png')) {
     $settings['toolbarImagePath'] = base_path() . $editor['library path'] . '/WhizzywigToolbar.png';
-  }
-  // Filename changed in version 60.
-  elseif (file_exists($editor['library path'] . '/icons.png')) {
-    $settings['toolbarImagePath'] = base_path() . $editor['library path'] . '/icons.png';
   }
 
   // Add configured buttons or all available.
