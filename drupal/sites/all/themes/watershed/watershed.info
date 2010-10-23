@@ -29,6 +29,7 @@ features[] = secondary_links
 stylesheets[all][] = css/default.css
 stylesheets[all][] = css/layout.css
 stylesheets[all][] = css/style.css
+stylesheets[all][] = css/forms.css
 stylesheets[all][] = css/hp_callout.css
 stylesheets[all][] = css/follow.css
 stylesheets[print][] = css/print.css
