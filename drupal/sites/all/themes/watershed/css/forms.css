@@ -1,0 +1,18 @@
+#edit-title{
+  font-size: 24px;
+}
+#system-themes-form img{
+  width:100px;
+}
+.form-item .description{
+  font-style:italic;
+  line-height:1.2em;
+  font-size:0.8em;
+  margin-top:5px;
+  color:#777;
+}
+#edit-delete{
+  color:#c00;
+}
+
+#box-editor .form-text { width:96%; }
