@@ -46,7 +46,7 @@ function wn_map_node_info() {
     'map_feature' => array(
       'name' => t('Map feature'),
       'module' => 'features',
-      'description' => t('A <em>Map Feature</em> represents a point of interest on a map of a watershed. A watershed feature can be a point, a polyline or a polygon - or a collection of any of the three.'),
+      'description' => t('A <em>Map Feature</em> represents a point of interest on a map. A map feature can be a point, a polyline or a polygon - or a collection of any of the three.'),
       'has_title' => '1',
       'title_label' => t('Title'),
       'has_body' => '0',

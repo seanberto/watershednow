@@ -1,6 +1,15 @@
 <?php
 
 /**
+ * Implementation of Hook_install().
+ */
+function wn_map_install() {
+  // Install/enable run before strongarm config is picked up. We want to create the map icon directory
+  // under /sites/default/files before taxonomy_image creates a default.
+  variable_set('taxonomy_image_path', 'map_icons');
+}
+
+/**
  * Implementation of Hook_enable().
  *
  * Checks to make sure that we have a taxonomy vocabulary for "Map point type". If not, creates

@@ -9,11 +9,11 @@ function wn_map_openlayers_presets() {
   $openlayers_presets->disabled = FALSE; /* Edit this to true to make a default openlayers_presets disabled initially */
   $openlayers_presets->api_version = 1;
   $openlayers_presets->name = 'main_map';
-  $openlayers_presets->title = 'Watershed map';
-  $openlayers_presets->description = 'The main watershed map';
+  $openlayers_presets->title = 'Map';
+  $openlayers_presets->description = 'The main map';
   $openlayers_presets->data = array(
     'width' => 'auto',
-    'height' => '700px',
+    'height' => '500px',
     'image_path' => '/sites/all/modules/features/wn_map/openlayers_themes/wn/',
     'css_path' => '/sites/all/modules/features/wn_map/openlayers_themes/wn/style.css',
     'proxy_host' => '',
@@ -31,7 +31,7 @@ function wn_map_openlayers_presets() {
     'behaviors' => array(
       'openlayers_behavior_popup' => array(
         'layers' => array(
-          'watershed_feature_data_openlayers_1' => 'watershed_feature_data_openlayers_1',
+          'map_feature_data_openlayers_1' => 'map_feature_data_openlayers_1',
         ),
       ),
       'openlayers_behavior_fullscreen' => array(
@@ -39,6 +39,8 @@ function wn_map_openlayers_presets() {
       ),
       'openlayers_behavior_layerswitcher' => array(
         'ascending' => 1,
+        'roundedCorner' => 0,
+        'roundedCornerColor' => 'darkblue',
       ),
       'openlayers_behavior_mouseposition' => array(),
       'openlayers_behavior_navigation' => array(
@@ -48,7 +50,7 @@ function wn_map_openlayers_presets() {
       'openlayers_behavior_permalink' => array(),
       'openlayers_behavior_scaleline' => array(),
       'openlayers_behavior_zoomtolayer' => array(
-        'zoomtolayer' => 'watershed_feature_data_openlayers_1',
+        'zoomtolayer' => 'map_feature_data_openlayers_1',
         'point_zoom_level' => '5',
       ),
     ),
@@ -58,16 +60,16 @@ function wn_map_openlayers_presets() {
       'google_hybrid' => 'google_hybrid',
       'google_normal' => 'google_normal',
       'google_physical' => 'google_physical',
-      'watershed_feature_data_openlayers_1' => 'watershed_feature_data_openlayers_1',
+      'map_feature_data_openlayers_1' => 'map_feature_data_openlayers_1',
     ),
     'layer_styles' => array(
-      'watershed_feature_data_openlayers_1' => 'features',
+      'map_feature_data_openlayers_1' => 'features',
     ),
     'layer_activated' => array(
-      'watershed_feature_data_openlayers_1' => 'watershed_feature_data_openlayers_1',
+      'map_feature_data_openlayers_1' => 'map_feature_data_openlayers_1',
     ),
     'layer_switcher' => array(
-      'watershed_feature_data_openlayers_1' => 'watershed_feature_data_openlayers_1',
+      'map_feature_data_openlayers_1' => 'map_feature_data_openlayers_1',
     ),
     'projection' => '900913',
     'displayProjection' => '4326',
@@ -84,7 +86,7 @@ function wn_map_openlayers_presets() {
   $openlayers_presets->api_version = 1;
   $openlayers_presets->name = 'picker_map';
   $openlayers_presets->title = 'Picker map';
-  $openlayers_presets->description = 'A watershed location picker map';
+  $openlayers_presets->description = 'A location picker map';
   $openlayers_presets->data = array(
     'width' => 'auto',
     'height' => '350px',
@@ -167,21 +169,21 @@ function wn_map_openlayers_presets() {
       ),
       'openlayers_behavior_panzoom' => array(),
       'openlayers_behavior_zoomtolayer' => array(
-        'zoomtolayer' => 'watershed_feature_data_with_args_openlayers_1',
+        'zoomtolayer' => 'map_feature_data_with_args_openlayers_1',
         'point_zoom_level' => '5',
       ),
     ),
     'default_layer' => 'google_physical',
     'layers' => array(
       'google_physical' => 'google_physical',
-      'watershed_feature_data_with_args_openlayers_1' => 'watershed_feature_data_with_args_openlayers_1',
+      'map_feature_data_with_args_openlayers_1' => 'map_feature_data_with_args_openlayers_1',
     ),
     'layer_styles' => array(
-      'watershed_feature_data_openlayers_1' => 'features',
-      'watershed_feature_data_with_args_openlayers_1' => 'sidebar_features',
+      'map_feature_data_openlayers_1' => 'features',
+      'map_feature_data_with_args_openlayers_1' => 'sidebar_features',
     ),
     'layer_activated' => array(
-      'watershed_feature_data_with_args_openlayers_1' => 'watershed_feature_data_with_args_openlayers_1',
+      'map_feature_data_with_args_openlayers_1' => 'map_feature_data_with_args_openlayers_1',
     ),
     'layer_switcher' => array(),
     'projection' => '900913',
