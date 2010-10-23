@@ -11,10 +11,10 @@ function wn_blog_default_box() {
   $box->delta = 'blog_description';
   $box->plugin_key = 'simple';
   $box->title = 'About our updates';
-  $box->description = 'Description of our blog';
+  $box->description = 'Blog callout';
   $box->options = array(
-    'body' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-    'format' => '1',
+    'body' => '<p>This is a callout block that appears on your updates (blog) landing page. You can use this callout say a little more about your team and bloggers on your site. You can also simply delete the title and body of this block to remove this sidebar. It\'s up to you. You can always add this content back from the <a href="/admin/dashboard">Dashboard</a>.</p>',
+    'format' => '3',
   );
 
   $export['blog_description'] = $box;

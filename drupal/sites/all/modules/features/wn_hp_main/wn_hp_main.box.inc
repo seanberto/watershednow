@@ -10,10 +10,10 @@ function wn_hp_main_default_box() {
   $box->api_version = 1;
   $box->delta = 'homepage_promo';
   $box->plugin_key = 'simple';
-  $box->title = 'Lorem ipsum lorem ipsum lorem ipsum';
+  $box->title = 'Welcome to your new Watershed Now website';
   $box->description = 'Homepage promo';
   $box->options = array(
-    'body' => '<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>',
+    'body' => '<p>This is your primary homepage callout, which you can edit by clicking the "Edit" link that you see when logged into the site as an admin, and hovering your mouse over this content area. The purpose of this homepage call out is to let people know what you do. You are encouraged to keep this callout fresh, though it\'s probably not content that you are going to change everyday. You homepage can also have a rotating image-based callout above - as well as pull in dynamic side bar listings of upcoming events and news.</p>',
     'format' => '3',
   );
 
@@ -26,7 +26,7 @@ function wn_hp_main_default_box() {
   $box->title = 'Sidebar callout';
   $box->description = 'Homepage secondary callout';
   $box->options = array(
-    'body' => '<p>This is a secondary callout on the homepage. Users can enter rich HTML blah blah blah blah blah. lorem lorem lorem....</p>',
+    'body' => '<p>This is a secondary callout on the homepage. If you don\'t need this callout, feel free to click the edit link, and then delete the title and body of this block content. You can always add this content back from the <a href="/admin/dashboard">Dashboard</a>.</p>',
     'format' => '3',
   );
 

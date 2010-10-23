@@ -11,9 +11,9 @@ function wn_donations_default_box() {
   $box->delta = 'donate';
   $box->plugin_key = 'simple';
   $box->title = '';
-  $box->description = 'Donation description';
+  $box->description = 'Donation callout';
   $box->options = array(
-    'body' => '<p>This is example sidebar text for the listing of opportunities to donate. As you build online donation campaigns, they will be listed here. Edit this header to provide an overview of your campaigns. You can also simply delete this header all together.</p>',
+    'body' => '<p>This is a callout block that appears on your organization\'s "Donate" page. You can use this callout to make quick updates or to describe why people should give to your organization. You can also simply delete the title and body of this block to remove this sidebar. It\'s up to you. You can always add this content back from the <a href="/admin/dashboard">Dashboard</a>.</p>',
     'format' => '3',
   );
 

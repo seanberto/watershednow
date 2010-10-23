@@ -174,11 +174,11 @@ users[admin][status] = 1
 theme = watershed
 
 variables[site_name] = Watershed Now Example
-variables[site_mail] = no-reply@thinkshout.com
+variables[site_mail] = noreply@thinkshout.com
 ; Note: we use the site_mail variable for the default contact form recipiant as well.
-variables[site_slogan] = Lorem ipsum eam sale postea eu.
+variables[site_slogan] = Your tagline will go right here if you have one.
 
-variables[site_mission] = 'Lorem ipsum eam sale postea eu, lorem ipsum vis ex natum doctus expetendis.'
+variables[site_mission] = 'This is your site mission statement, which you can <a href="/admin/settings/site-information">customize</a> if you are a site administrator.'
 
 variables[site_footer] = '&copy; 2010 Watershed Now is a <a href="http://thinkshout.com">ThinkShout</a> open source product.'
 
@@ -190,8 +190,8 @@ variables[site_newsletter] = '<form name="newsletter"><input type="text" name="u
 ; follow[uid][network] = url
 ; 0 for uid is sitewide
 ; declare in the order you want them presented
-follow[0][facebook] = http://facebook.com/profile
-follow[0][twitter]  = http://twitter.com/profile
+follow[0][facebook] = http://facebook.com
+follow[0][twitter]  = http://twitter.com
 follow[0][flickr]   = http://flickr.com
 follow[0][linkedin] = http://linkedin.com
 follow[0][feed]     = http://example.com/feed.rss
@@ -203,7 +203,7 @@ follow[0][myspace]  = http://myspace.com
 ; (Note: these run after features are installed so the variables below should override defaults.)
 
 ; placeholder for google analytics key
-; placeholder for OpenLayers google maps key
+; variables[openlayers_layers_google_api] = ABQIAAAAXcM0kIV0KYcm1CAyqIc4qRTBRbjBNDIac9IBLAsNWawmb_4ssxQf6kE73jz8wpJw5kIFRn2w7rXMJA
 
 ; ==============================================
 
