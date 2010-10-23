@@ -30,7 +30,7 @@ div.olLayerDiv {
 }
 .olControlScale {
     right: 3px;
-    bottom: 110px;
+    bottom: 10px;
     display: block;
     position: absolute;
     font-size: smaller;
@@ -39,7 +39,7 @@ div.olLayerDiv {
    display: block;
    position: absolute;
    left: 10px;
-   bottom: 110px;
+   bottom: 60px;
    font-size: xx-small;
 }
 .olControlScaleLineBottom {
@@ -56,14 +56,14 @@ div.olLayerDiv {
 
 .olControlPermalink {
     right: 3px;
-    bottom: 120px;
+    bottom: 20px;
     display: block;
     position: absolute;
     font-size: normal;
 } 
 
 div.olControlMousePosition {
-    bottom: 105px;
+    bottom: 5px;
     right: 3px;
     display: block;
     position: absolute;

@@ -34,6 +34,8 @@ stylesheets[all][] = css/hp_callout.css
 stylesheets[all][] = css/follow.css
 stylesheets[print][] = css/print.css
 
+scripts[] = js/scripts.js
+
 settings[watershed_search_help]          = 'Explore our watershed'
 settings[watershed_search_button]        = 'Go'
 settings[watershed_zen_tabs]             = 1
