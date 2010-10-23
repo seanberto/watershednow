@@ -76,7 +76,6 @@ modules[contrib][] = imagefield_extended
 modules[contrib][] = emfield
 modules[contrib][] = emvideo
 modules[contrib][] = media_flickr
-modules[contrib][] = link
 modules[contrib][] = optionwidgets
 modules[contrib][] = nodereference
 
