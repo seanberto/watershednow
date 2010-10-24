@@ -234,7 +234,7 @@ function wn_blog_views_default_views() {
     'type' => 'normal',
     'title' => 'Updates',
     'description' => 'Updates from the field',
-    'weight' => '0',
+    'weight' => '8',
     'name' => 'primary-links',
   ));
   $handler->override_option('tab_options', array(

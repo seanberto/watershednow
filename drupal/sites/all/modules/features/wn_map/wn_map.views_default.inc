@@ -32,9 +32,9 @@ function wn_map_views_default_views() {
   $handler->override_option('path', 'map');
   $handler->override_option('menu', array(
     'type' => 'normal',
-    'title' => 'Map',
+    'title' => 'Explore',
     'description' => 'Explore, conserve, recreate.',
-    'weight' => '0',
+    'weight' => '5',
     'name' => 'primary-links',
   ));
   $handler->override_option('tab_options', array(

@@ -84,7 +84,7 @@ function wn_donations_views_default_views() {
     'type' => 'normal',
     'title' => 'Donate',
     'description' => 'Donate',
-    'weight' => '6',
+    'weight' => '15',
     'name' => 'primary-links',
   ));
   $handler->override_option('tab_options', array(

@@ -89,10 +89,10 @@ function _watershednow_create_menu_items() {
 
   $secondary_links = array(
     'about-us'    => 'About Us',
-    'explore'     => 'Explore',
+    'map'     => 'Explore',
     'updates'     => 'Blog',
     'events'      => 'Events',
-    'take_action' => 'Take Action',
+    'take-action' => 'Take Action',
     'donate'      => 'Donate',
     'contact'     => 'Contact'
   );

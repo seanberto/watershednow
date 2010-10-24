@@ -231,7 +231,7 @@ function wn_events_views_default_views() {
     'type' => 'normal',
     'title' => 'Events',
     'description' => 'See our upcoming events',
-    'weight' => '2',
+    'weight' => '10',
     'name' => 'primary-links',
   ));
   $handler->override_option('tab_options', array(

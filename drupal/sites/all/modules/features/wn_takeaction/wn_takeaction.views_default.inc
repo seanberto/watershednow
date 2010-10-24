@@ -79,12 +79,12 @@ function wn_takeaction_views_default_views() {
     'comments' => 0,
   ));
   $handler = $view->new_display('page', 'Page - Take action', 'page_1');
-  $handler->override_option('path', 'take_action');
+  $handler->override_option('path', 'take-action');
   $handler->override_option('menu', array(
     'type' => 'normal',
     'title' => 'Take action',
     'description' => 'Take action',
-    'weight' => '5',
+    'weight' => '12',
     'name' => 'primary-links',
   ));
   $handler->override_option('tab_options', array(
