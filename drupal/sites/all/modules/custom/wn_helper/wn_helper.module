@@ -31,9 +31,10 @@ function wn_helper_theme_registry_alter(&$theme_registry) {
  */
 function wn_helper_form_alter(&$form, $form_state, $form_id) {
   switch ($form_id) {
+
     case 'system_site_information_settings':
 
-      global $user; // Some of the display is dependent upon access.
+      global $user; // Some display is dependent upon access.
     
       // Allow for custom page title on site front page
       $form['site_name']['#title'] = 'Website Name';
@@ -66,6 +67,14 @@ function wn_helper_form_alter(&$form, $form_state, $form_id) {
         unset($form[$theme]);
         unset($form['status']['#options'][$theme]);
         unset($form['theme_default']['#options'][$theme]);
+      }
+      break;
+    
+    case 'contact_mail_page':
+    // @FIXME - Hackery to add an edit link on the top of the contact form.
+      if (user_access('administer site-wide contact form')) { // If user can administer contact form, add link.
+        $admin = '<div class="edit-contact"><a href="/admin/build/contact/settings">[Edit]</a></div>';
+        $form['contact_information']['#value'] = $admin . $form['contact_information']['#value'];
       }
       break;
   }
