@@ -1,5 +1,5 @@
 <?php
-// $Id: tinymce.inc,v 1.35.2.5 2010/09/25 00:13:14 twod Exp $
+// $Id: tinymce.inc,v 1.35.2.3 2010/02/10 21:16:50 twod Exp $
 
 /**
  * @file
@@ -82,12 +82,9 @@ function wysiwyg_tinymce_editor() {
  */
 function wysiwyg_tinymce_version($editor) {
   $script = $editor['library path'] . '/tiny_mce.js';
-  if (!file_exists($script)) {
-    return;
-  }
   $script = fopen($script, 'r');
-  // Version is contained in the first 200 chars.
-  $line = fgets($script, 200);
+  // Version is contained in the first 100 chars.
+  $line = fgets($script, 100);
   // 2.x: this.majorVersion="2";this.minorVersion="1.3"
   // 3.x: majorVersion:'3',minorVersion:'2.0.1'
   if (preg_match('@majorVersion[=:]["\'](\d).+?minorVersion[=:]["\']([\d\.]+)@', $line, $version)) {

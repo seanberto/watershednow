@@ -1,5 +1,5 @@
 <?php
-// $Id: select.inc,v 1.39.2.16 2010/08/16 15:39:39 quicksketch Exp $
+// $Id: select.inc,v 1.39.2.26 2010/10/18 07:20:54 quicksketch Exp $
 
 /**
  * @file
@@ -13,7 +13,6 @@ function _webform_defaults_select() {
   return array(
     'name' => '',
     'form_key' => NULL,
-    'email' => 1,
     'mandatory' => 0,
     'pid' => 0,
     'weight' => 0,
@@ -25,6 +24,7 @@ function _webform_defaults_select() {
       'optrand' => 0,
       'other_option' => NULL,
       'other_text' => t('Other...'),
+      'title_display' => 0,
       'description' => '',
       'custom_keys' => FALSE,
       'options_source' => '',
@@ -129,6 +129,7 @@ function _webform_edit_select($component) {
       '#rows' => 5,
       '#weight' => 0,
       '#required' => TRUE,
+      '#wysiwyg' => FALSE,
       '#element_validate' => array('_webform_edit_validate_select'),
     );
 
@@ -257,10 +258,15 @@ function _webform_edit_validate_options($element, &$form_state) {
  */
 function _webform_render_select($component, $value = NULL, $filter = TRUE) {
   $element = array(
-    '#title'         => $component['name'],
-    '#required'      => $component['mandatory'],
-    '#weight'        => $component['weight'],
-    '#description'   => $filter ? _webform_filter_descriptions($component['extra']['description']) : $component['extra']['description'],
+    '#title' => $filter ? _webform_filter_xss($component['name']) : $component['name'],
+    '#title_display' => $component['extra']['title_display'] ? $component['extra']['title_display'] : 'before',
+    '#required' => $component['mandatory'],
+    '#weight' => $component['weight'],
+    '#description' => $filter ? _webform_filter_descriptions($component['extra']['description']) : $component['extra']['description'],
+    '#theme_wrappers' => array('webform_element_wrapper'),
+    '#pre_render' => array('webform_element_title_display'),
+    '#post_render' => array('webform_element_wrapper'),
+    '#webform_component' => $component,
   );
 
   // Convert the user-entered options list into an array.
@@ -354,9 +360,6 @@ function _webform_render_select($component, $value = NULL, $filter = TRUE) {
     }
   }
 
-  $element['#prefix'] = '<div class="webform-component webform-component-' . $element['#type'] . '" id="webform-component-' . $component['form_key'] . '">';
-  $element['#suffix'] = '</div>';
-
   return $element;
 }
 
@@ -382,10 +385,27 @@ function webform_expand_checkboxes($element) {
     $element[$key]['#return_value'] = check_plain($element[$key]['#return_value']);
     $element[$key]['#name'] = $element['#name'] . '[' . $element[$key]['#return_value'] . ']';
     $element[$key]['#value_callback'] = 'webform_checkbox_value';
+    $element[$key]['#pre_render'][] = 'webform_checkbox_prerender';
   }
 
   foreach ($default_value as $key => $val) {
     $element[$key]['#default_value'] = $val;
+  }
+  return $element;
+}
+
+/**
+ * Helper function to ensure that the default value of "0" checkboxes renders.
+ *
+ * The default handling of checkboxes only checks checkboxes based on the #value
+ * property. If a checkbox has a value of "0" (as a string), the checkbox
+ * doesn't print out the way it should.
+ *
+ * @see theme_checkbox()
+ */
+function webform_checkbox_prerender($element) {
+  if ($element['#value'] === '0') {
+    $element['#value'] = TRUE;
   }
   return $element;
 }
@@ -397,12 +417,12 @@ function webform_expand_checkboxes($element) {
  * a checked checkbox that has a value of '0'. This value callback will return
  * NULL instead of an integer 0 for checkboxes that are not checked.
  *
- * @see form_checkbox_value()
+ * @see form_type_checkbox_value()
  */
 function webform_checkbox_value($form, $edit = FALSE) {
   if ($edit !== FALSE) {
     if (empty($form['#disabled'])) {
-      return !empty($edit) ? $form['#return_value'] : NULL; // 0 in core.
+      return $edit !== NULL ? $form['#return_value'] : NULL; // 0 in core.
     }
     else {
       return $form['#default_value'];
@@ -435,11 +455,11 @@ function _webform_display_select($component, $value, $format = 'html') {
     '#title' => $component['name'],
     '#weight' => $component['weight'],
     '#theme' => 'webform_display_select',
-    '#theme_wrappers' => $format == 'html' ? array('webform_element') : array('webform_element_text'),
+    '#theme_wrappers' => $format == 'html' ? array('webform_element', 'webform_element_wrapper') : array('webform_element_text'),
     '#post_render' => array('webform_element_wrapper'),
-    '#component' => $component,
     '#format' => $format,
     '#value' => (array) $value,
+    '#webform_component' => $component,
   );
 }
 
@@ -484,7 +504,7 @@ function _webform_submit_select($component, $value) {
  * Format the text output for this component.
  */
 function theme_webform_display_select($element) {
-  $component = $element['#component'];
+  $component = $element['#webform_component'];
 
   // Convert submitted 'safe' values to un-edited, original form.
   $options = _webform_select_options($component, TRUE);
@@ -664,7 +684,12 @@ function _webform_csv_data_select($component, $export_options, $value) {
     foreach ($options as $key => $item) {
       $index = array_search($key, (array) $value);
       if ($index !== FALSE) {
-        $return[] = ($export_options['select_format'] == 'separate') ? 'X' : $key;
+        if ($export_options['select_format'] == 'separate') {
+          $return[] = 'X';
+        }
+        else {
+          $return[] = $export_options['select_keys'] ? $key : $item;
+        }
         unset($value[$index]);
       }
       elseif ($export_options['select_format'] == 'separate') {
@@ -678,7 +703,13 @@ function _webform_csv_data_select($component, $export_options, $value) {
     }
   }
   else {
-    $return = isset($options[$value[0]]) ? $options[$value[0]] : $value[0];
+    $key = $value[0];
+    if ($export_options['select_keys']){
+      $return = $key;
+    }
+    else {
+      $return = isset($options[$key]) ? $options[$key] : $key;
+    }
   }
 
   if ($component['extra']['multiple'] && $export_options['select_format'] == 'compact') {
@@ -770,7 +801,13 @@ function _webform_select_options_callback($name, $component, $flat = FALSE, $fil
   // Execute the callback function.
   if (isset($info[$name]['options callback']) && function_exists($info[$name]['options callback'])) {
     $function = $info[$name]['options callback'];
-    return $function($component, $flat, $filter);
+
+    $options_args = array();
+    if (isset($info[$name]['options arguments'])) {
+      $arguments = $info[$name]['options arguments'];
+    }
+
+    return $function($component, $flat, $filter, $arguments);
   }
 }
 

@@ -1,5 +1,5 @@
 <?php
-// $Id: ckeditor.inc,v 1.2.6.7 2010/09/10 02:14:07 sun Exp $
+// $Id: ckeditor.inc,v 1.2.6.5 2010/02/14 00:03:28 sun Exp $
 
 /**
  * @file
@@ -60,9 +60,6 @@ function wysiwyg_ckeditor_editor() {
  */
 function wysiwyg_ckeditor_version($editor) {
   $library = $editor['library path'] . '/ckeditor.js';
-  if (!file_exists($library)) {
-    return;
-  }
   $library = fopen($library, 'r');
   $max_lines = 8;
   while ($max_lines && $line = fgets($library, 140)) {
@@ -103,7 +100,6 @@ function wysiwyg_ckeditor_themes($editor, $profile) {
       }
     }
     closedir($dir_handle);
-    natcasesort($themes);
     return !empty($themes) ? $themes : array('default');
   }
   else {

@@ -1,5 +1,5 @@
 <?php
-// $Id: file.inc,v 1.17.2.4 2010/03/21 19:41:15 quicksketch Exp $
+// $Id: file.inc,v 1.17.2.11 2010/10/18 07:20:54 quicksketch Exp $
 
 /**
  * @file
@@ -13,7 +13,6 @@ function _webform_defaults_file() {
   return array(
     'name' => '',
     'form_key' => NULL,
-    'email' => 1,
     'mandatory' => 0,
     'pid' => 0,
     'weight' => 0,
@@ -25,6 +24,7 @@ function _webform_defaults_file() {
       ),
       'savelocation' => '',
       'width' => '',
+      'title_display' => 0,
       'description' => '',
       'attributes' => array(),
     ),
@@ -120,15 +120,18 @@ function _webform_edit_file($component) {
       '#description' => t('Enter the max file size a user may upload (in KB).'),
       '#size' => 10,
       '#weight' => 3,
+      '#field_suffix' => t('KB'),
       '#default_value' => $component['extra']['filtering']['size'],
       '#parents' => array('extra', 'filtering', 'size'),
+      '#element_validate' => array('_webform_edit_file_size_validate'),
     );
     $form['extra']['savelocation'] = array(
       '#type' => 'textfield',
       '#title' => t('Upload Directory'),
       '#default_value' => $component['extra']['savelocation'],
-      '#description' => '<div style="display: block">' . t('Webform uploads are always saved in the site files directory. You may optionally specify a subfolder to store your files.') . '</div>',
+      '#description' => t('Webform uploads are always saved in the site files directory. You may optionally specify a subfolder to store your files.'),
       '#weight' => 3,
+      '#field_prefix' => file_directory_path() . '/webform/',
       '#element_validate' => array('_webform_edit_file_check_directory'),
       '#after_build' => array('_webform_edit_file_check_directory'),
     );
@@ -146,6 +149,17 @@ function _webform_edit_file($component) {
 }
 
 /**
+ * A Form API element validate function to check filesize is numeric.
+ */
+function _webform_edit_file_size_validate($element) {
+  if (!empty($element['#value'])) {
+    if (!is_numeric($element['#value']) || intval($element['#value']) != $element['#value']) {
+      form_error($element, t('Max upload size must be a number in KB.'));
+    }
+  }
+}
+
+/**
  * A Form API after build function.
  *
  * Ensure that the destination directory exists and is writable.
@@ -155,6 +169,11 @@ function _webform_edit_file_check_directory($element) {
   $base_success = file_check_directory($base_dir, FILE_CREATE_DIRECTORY);
 
   $destination_dir = $base_dir . '/' . $element['#value'];
+
+  // Try to make the directory recursively before calling file_check_directory().
+  // This may be removed in D7, as recusive is the default there.
+  @mkdir($destination_dir, 0775, TRUE);
+
   $destination_success = file_check_directory($destination_dir, FILE_CREATE_DIRECTORY);
   if (!$base_success || !$destination_success) {
     form_set_error('savelocation', t('The save directory %directory could not be created. Check that the webform files directory is writtable.', array('%directory' => $destination_dir)));
@@ -270,39 +289,37 @@ function theme_webform_edit_file($form) {
 
   $output = drupal_render($form);
 
-  // Prefix the upload location field with the default path for webform.
-  $output = str_replace('Upload Directory: </label>', 'Upload Directory: </label>' . file_directory_path() . '/webform/', $output);
-
   return $output;
 }
 
 /**
  * Implementation of _webform_render_component().
  */
-function _webform_render_file($component, $value = NULL) {
+function _webform_render_file($component, $value = NULL, $filter = TRUE) {
   $node = node_load($component['nid']);
   $form_key = implode('_', webform_component_parent_keys($node, $component));
   $element[$form_key] = array(
-    '#type'          => $component['type'],
-    '#title'         => $component['name'],
-    //'#required'      => $component['mandatory'], // Drupal core bug with required file uploads.
-    '#weight'        => $component['weight'],
-    '#description'   => _webform_filter_descriptions($component['extra']['description']),
-    '#attributes'    => $component['extra']['attributes'],
-    '#tree'          => FALSE, // file_check_upload assumes a flat $_FILES structure.
+    '#type' => $component['type'],
+    '#title' => $filter ? _webform_filter_xss($component['name']) : $component['name'],
+    '#title_display' => $component['extra']['title_display'] ? $component['extra']['title_display'] : 'before',
+    //'#required' => $component['mandatory'], // Drupal core bug with required file uploads.
+    '#description' => $filter ? _webform_filter_descriptions($component['extra']['description']) : $component['extra']['description'],
+    '#attributes' => $component['extra']['attributes'],
+    '#tree' => FALSE, // file_check_upload assumes a flat $_FILES structure.
     '#element_validate' => array(
       '_webform_validate_file',
       '_webform_required_file',  // Custom required routine.
     ),
+    '#pre_render' => array('webform_element_title_display'),
     '#webform_component' => $component,
   );
   $element['#webform_required'] = $component['mandatory'];
   $element['#webform_form_key'] = $form_key;
   $element['#weight'] = $component['weight'];
   $element['#theme'] = 'webform_render_file';
-  $element['#prefix'] = '<div class="webform-component webform-component-' . $component['type'] . '" id="webform-component-' . $component['form_key'] . '">';
-  $element['#suffix'] = '</div>';
-
+  $element['#theme_wrappers'] = array('webform_element_wrapper');
+  $element['#post_render'] = array('webform_element_wrapper');
+  $element['#webform_component'] = $component;
 
   // Change the 'width' option to the correct 'size' option.
   if ($component['extra']['width'] > 0) {
@@ -340,7 +357,11 @@ function theme_webform_render_file($element) {
     $element[$element['#webform_form_key']]['#required'] = TRUE;
   }
 
-  return drupal_render($element);
+  $output = '';
+  foreach (element_children($element) as $key) {
+    $output .= drupal_render($element[$key]);
+  }
+  return $output;
 }
 
 /**
@@ -483,9 +504,9 @@ function _webform_display_file($component, $value, $format = 'html') {
      '#value' => $fid ? webform_get_file($fid) : NULL,
      '#weight' => $component['weight'],
      '#theme' => 'webform_display_file',
-     '#theme_wrappers' => $format == 'text' ? array('webform_element_text') : array('webform_element'),
+     '#theme_wrappers' => $format == 'html' ? array('webform_element', 'webform_element_wrapper') : array('webform_element_text'),
      '#post_render' => array('webform_element_wrapper'),
-     '#component' => $component,
+     '#webform_component' => $component,
      '#format' => $format,
   );
 }

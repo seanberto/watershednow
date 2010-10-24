@@ -1,5 +1,5 @@
 <?php
-// $Id: yui.inc,v 1.6.2.4 2010/04/02 14:05:54 sun Exp $
+// $Id: yui.inc,v 1.6.2.3 2010/02/06 18:17:49 sun Exp $
 
 /**
  * @file
@@ -66,9 +66,6 @@ function wysiwyg_yui_editor() {
  */
 function wysiwyg_yui_version($editor) {
   $library = $editor['library path'] . '/editor/editor.js';
-  if (!file_exists($library)) {
-    return;
-  }
   $library = fopen($library, 'r');
   $max_lines = 10;
   while ($max_lines && $line = fgets($library, 60)) {

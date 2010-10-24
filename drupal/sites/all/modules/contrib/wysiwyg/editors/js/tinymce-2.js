@@ -1,4 +1,4 @@
-// $Id: tinymce-2.js,v 1.10.2.3 2010/09/25 02:59:36 twod Exp $
+// $Id: tinymce-2.js,v 1.10.2.2 2010/02/13 23:58:41 sun Exp $
 (function($) {
 
 /**
@@ -48,11 +48,6 @@ Drupal.wysiwyg.editor.attach.tinymce = function(context, params, settings) {
   for (var setting in settings) {
     tinyMCE.settings[setting] = settings[setting];
   }
-
-  // #715228: Remove extra mceItem class added by Wysiwyg < v2.1.
-  $field = $('#' + params.field);
-  $field.val($field.val().replace(/class=(['"].*?)\bmceItem\b(.*?['"])/ig, 'class=$1$2'));
-
   // Attach editor.
   tinyMCE.execCommand('mceAddControl', true, params.field);
 };

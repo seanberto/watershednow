@@ -555,7 +555,7 @@ class WebformTestCase extends DrupalWebTestCase {
      'webform' => array(
         'confirmation' => 'Thanks!',
         'confirmation_format' => FILTER_FORMAT_DEFAULT,
-        'redirect_url' => '',
+        'redirect_url' => '<confirmation>',
         'teaser' => '0',
         'allow_draft' => '1',
         'submit_text' => '',

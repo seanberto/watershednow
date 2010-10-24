@@ -1,5 +1,5 @@
 <?php
-// $Id: webform.submissions.inc,v 1.18.2.10 2010/08/15 16:04:56 quicksketch Exp $
+// $Id: webform.submissions.inc,v 1.18.2.12 2010/09/08 05:23:47 quicksketch Exp $
 
 /**
  * @file
@@ -146,7 +146,7 @@ function webform_submission_delete_form($form_state, $node, $submission) {
   if (isset($_GET['destination'])) {
     $destination = $_GET['destination'];
   }
-  elseif (user_access('access all webform results') || ($node->uid == $user->uid && user_access('access own webform results'))) {
+  elseif (webform_results_access($node)) {
     $destination = 'node/' . $node->nid . '/webform-results';
   }
   else {
@@ -196,7 +196,7 @@ function webform_submission_page($node, $submission, $format) {
   }
 
   // Add navigation for administrators.
-  if (user_access('access all webform results') || (user_access('access own webform results') && $user->uid == $node->uid)) {
+  if (webform_results_access($node)) {
     $navigation = ($mode != 'pdf') ? theme('webform_submission_navigation', $node, $submission, $mode) : NULL;
     $information = theme('webform_submission_information', $node, $submission);
   }
@@ -228,6 +228,9 @@ function webform_submission_render($node, $submission, $email, $format) {
   $renderable['#submission'] = $submission;
   $renderable['#email'] = $email;
   $renderable['#format'] = $format;
+
+  // Set the theme function for submissions.
+  $renderable['#theme'] = array('webform_submission_' . $node->nid, 'webform_submission');
 
   _webform_components_tree_build($node->webform['components'], $component_tree, 0, $page_count);
 
@@ -476,7 +479,17 @@ function _webform_submission_limit_check($node) {
 }
 
 /**
- * Preprocess function for webform-submission-navigation.tpl.php
+ * Preprocess function for webform-submission.tpl.php.
+ */
+function template_preprocess_webform_submission(&$vars) {
+  $vars['node'] = $vars['renderable']['#node'];
+  $vars['submission'] = $vars['renderable']['#submission'];
+  $vars['email'] = $vars['renderable']['#email'];
+  $vars['format'] = $vars['renderable']['#format'];
+}
+
+/**
+ * Preprocess function for webform-submission-navigation.tpl.php.
  */
 function template_preprocess_webform_submission_navigation(&$vars) {
   $start_path = ($vars['mode'] == 'print') ? 'print/' : 'node/';
@@ -487,7 +500,7 @@ function template_preprocess_webform_submission_navigation(&$vars) {
 }
 
 /**
- * Preprocess function for webform-submission-navigation.tpl.php
+ * Preprocess function for webform-submission-navigation.tpl.php.
  */
 function template_preprocess_webform_submission_information(&$vars) {
   $vars['account'] = user_load($vars['submission']->uid);

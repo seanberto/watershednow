@@ -5,9 +5,9 @@ core = 6.x
 package = Webform
 php = 5.0
 
-; Information added by drupal.org packaging script on 2010-08-26
-version = "6.x-3.2"
+; Information added by drupal.org packaging script on 2010-10-20
+version = "6.x-3.4"
 core = "6.x"
 project = "webform"
-datestamp = "1282828910"
+datestamp = "1287598574"
 

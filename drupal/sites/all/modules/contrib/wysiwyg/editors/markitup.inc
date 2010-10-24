@@ -1,5 +1,5 @@
 <?php
-// $Id: markitup.inc,v 1.7.2.2 2010/04/02 14:05:54 sun Exp $
+// $Id: markitup.inc,v 1.7.2.1 2009/08/03 22:37:15 sun Exp $
 
 /**
  * @file
@@ -49,9 +49,6 @@ function wysiwyg_markitup_editor() {
  */
 function wysiwyg_markitup_version($editor) {
   $changelog = $editor['library path'] . '/readme.txt';
-  if (!file_exists($changelog)) {
-    return;
-  }
   $changelog = fopen($changelog, 'r');
   $line = fgets($changelog);
   if (preg_match('@([0-9\.]+)@', $line, $version)) {

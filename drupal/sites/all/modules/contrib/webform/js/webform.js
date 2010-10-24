@@ -1,4 +1,4 @@
-// $Id: webform.js,v 1.1.2.4 2010/08/26 11:14:42 quicksketch Exp $
+// $Id: webform.js,v 1.1.2.5 2010/08/30 16:58:02 quicksketch Exp $
 
 /**
  * JavaScript behaviors for the front-end display of webforms.
@@ -32,7 +32,7 @@ Drupal.webform.datepicker = function(context) {
     $calendar.datepicker({
       dateFormat: 'yy-mm-dd',
       yearRange: startYear + ':' + endYear,
-      firstDay: firstDay,
+      firstDay: parseInt(firstDay),
       onSelect: function(dateText, inst) {
         var date = dateText.split('-');
         $webformDatepicker.find('select.year, input.year').val(+date[0]);

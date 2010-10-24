@@ -1,5 +1,5 @@
 <?php
-// $Id: hidden.inc,v 1.21.2.3 2010/06/21 03:35:13 quicksketch Exp $
+// $Id: hidden.inc,v 1.21.2.5 2010/10/18 07:20:54 quicksketch Exp $
 
 /**
  * @file
@@ -47,6 +47,8 @@ function _webform_edit_hidden($component) {
     '#weight' => 0,
   );
   $form['extra']['description'] = array(); // Hide the description box.
+  $form['display'] = array('#type' => 'markup'); // Hide the display options.
+  $form['display']['title_display'] = array();
   return $form;
 }
 
@@ -55,10 +57,10 @@ function _webform_edit_hidden($component) {
  */
 function _webform_render_hidden($component, $value = NULL, $filter = TRUE) {
   $element = array(
-    '#type'          => 'hidden',
-    '#title'         => $component['name'],
+    '#type' => 'hidden',
+    '#title' => $filter ? _webform_filter_xss($component['name']) : $component['name'],
     '#default_value' => $filter ? _webform_filter_values($component['value']) : $component['value'],
-    '#weight'        => $component['weight'],
+    '#weight' => $component['weight'],
   );
 
   if (isset($value[0])) {
@@ -77,11 +79,11 @@ function _webform_display_hidden($component, $value, $format = 'html') {
     '#value' => isset($value[0]) ? $value[0] : NULL,
     '#weight' => $component['weight'],
     '#theme' => 'webform_display_hidden',
-    '#component' => $component,
     '#format' => $format,
     '#theme' => 'webform_display_hidden',
-    '#theme_wrappers' => $format == 'text' ? array('webform_element_text') : array('webform_element'),
+    '#theme_wrappers' => $format == 'html' ? array('webform_element', 'webform_element_wrapper') : array('webform_element_text'),
     '#post_render' => array('webform_element_wrapper'),
+    '#webform_component' => $component,
   );
 
   // TODO: This check is unusual. It shows hidden fields in e-mails but not

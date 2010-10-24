@@ -1,5 +1,5 @@
 <?php
-// $Id: pagebreak.inc,v 1.9 2010/02/09 05:39:08 quicksketch Exp $
+// $Id: pagebreak.inc,v 1.9.2.1 2010/09/28 22:43:56 quicksketch Exp $
 
 /**
  * @file
@@ -35,16 +35,15 @@ function _webform_theme_pagebreak() {
  */
 function _webform_edit_pagebreak($component) {
   $form = array();
-  // No description.
-  $form['extra']['description'] = array(
-    '#type' => 'hidden',
-    '#value' => '',
-  );
   // Force the parent to always be root.
   $form['position']['pid'] = array(
     '#type' => 'hidden',
     '#value' => '0',
   );
+
+  $form['extra']['description'] = array();  // No description.
+  $form['display'] = array('#type' => 'markup'); // Hide the display options.
+  $form['display']['title_display'] = array();
 
   return $form;
 }
@@ -69,8 +68,8 @@ function _webform_display_pagebreak($component, $value = NULL, $format = 'html')
     '#theme' => 'webform_display_pagebreak',
     '#title' => $component['name'],
     '#weight' => $component['weight'],
-    '#component' => $component,
     '#format' => $format,
+    '#webform_component' => $component,
   );
   return $element;
 }

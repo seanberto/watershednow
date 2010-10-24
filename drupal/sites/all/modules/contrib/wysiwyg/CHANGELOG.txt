@@ -1,4 +1,4 @@
-// $Id: CHANGELOG.txt,v 1.149.2.52 2010/09/25 11:53:54 twod Exp $
+// $Id: CHANGELOG.txt,v 1.149.2.41 2010/03/08 15:49:15 sun Exp $
 
 Wysiwyg x.x-x.x, xxxx-xx-xx
 ---------------------------
@@ -6,17 +6,6 @@ Wysiwyg x.x-x.x, xxxx-xx-xx
 
 Wysiwyg 6.x-2.x, xxxx-xx-xx
 ---------------------------
-#651490 by TwoD: Fixed Whizzywig width.
-#715228 by TwoD: Fixed TinyMCE image popups not launching for existing images.
-#606952 by TwoD: Fixed inserting content in fullscreen TinyMCE.
-#593008 by TwoD: Fixed third-party scripts breaking Wysiwyg.
-#695398 by RichieB, Cl1mh4224rd, mcpuddin: Fixed TinyMCE 3.3.9.1 detection.
-#737318 by dboune: Fixed CKEditor default skin depends on filesystem order.
-#775608 by TwoD: Fixed FCKEditor crashes IE on save.
-#824710 by TwoD: CKEditor not disabled upon enabling.
-#752516 by nquocbao, sun: Fixed openwysiwyg version callback.
-#753536 by TwoD: Fixed version detection for Whizzywig.
-#752516 by nquocbao, sun: Fixed file stream warnings in version callbacks.
 
 
 Wysiwyg 6.x-2.1, 2010-03-08

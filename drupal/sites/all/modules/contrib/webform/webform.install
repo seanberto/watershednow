@@ -1,5 +1,5 @@
 <?php
-// $Id: webform.install,v 1.40.2.15 2010/08/26 09:33:52 quicksketch Exp $
+// $Id: webform.install,v 1.40.2.22 2010/10/18 08:08:59 quicksketch Exp $
 
 /**
  * @file
@@ -37,6 +37,14 @@ function webform_schema() {
         'description' => 'The URL a user is redirected to after submitting a form.',
         'type' => 'varchar',
         'length' => 255,
+        'default' => '<confirmation>',
+      ),
+      'block' => array(
+         'description' => 'Boolean value for whether this form be available as a block.',
+         'type' => 'int',
+         'size' => 'tiny',
+         'not null' => TRUE,
+         'default' => 0,
       ),
       'teaser' => array(
         'description' => 'Boolean value for whether the entire form should be displayed on the teaser.',
@@ -57,7 +65,7 @@ function webform_schema() {
         'type' => 'int',
         'size' => 'tiny',
         'not null' => TRUE,
-        'default' => 0,
+        'default' => 1,
       ),
       'submit_text' => array(
         'description' => 'The title of the submit button on the form.',
@@ -200,7 +208,22 @@ function webform_schema() {
         'description' => 'A list of components that will not be included in the %email_values token. A list of CIDs separated by commas.',
         'type' => 'text',
         'not null' => TRUE,
-        'default' => '',
+      ),
+      'html' => array(
+        'description' => 'Determines if the e-mail will be sent in an HTML format. Requires Mime Mail module.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'size' => 'tiny',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'attachments' => array(
+        'description' => 'Determines if the e-mail will include file attachments. Requires Mime Mail module.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'size' => 'tiny',
+        'not null' => TRUE,
+        'default' => 0,
       ),
     ),
     'primary key' => array('nid', 'eid'),
@@ -351,12 +374,18 @@ function webform_install() {
  */
 function webform_uninstall() {
   // Unset webform variables.
+  variable_del('webform_node_types');
+  variable_del('webform_node_types_redirect');
   variable_del('webform_use_cookies');
   variable_del('webform_enable_fieldset');
   variable_del('webform_default_from_address');
   variable_del('webform_default_from_name');
   variable_del('webform_default_subject');
+  variable_del('webform_default_format');
+  variable_del('webform_format_override');
   variable_del('webform_csv_delimiter');
+  variable_del('webform_allowed_tags');
+  variable_del('webform_blocks');
 
   $component_list = array();
   $path = drupal_get_path('module', 'webform') . '/components';
@@ -721,6 +750,10 @@ function webform_update_6304() {
   if (!db_affected_rows()) {
     $ret[] = update_sql("INSERT INTO {node_type} (type, name, module, description, help, has_title, title_label, has_body, body_label, min_word_count, custom, modified, locked, orig_type) VALUES ('webform', 'Webform', 'node', 'Create a new form or questionnaire accessible to users. Submission results and statistics are recorded and accessible to privileged users.', '', 1, 'Title', 1, 'Body', 0, 1, 1, 0, 'webform')");
   }
+
+  // This variable for some reason must be set manually.
+  variable_set('webform_node_types', array('webform'));
+
   return $ret;
 }
 
@@ -807,7 +840,7 @@ function webform_update_6308() {
   $ret = array();
 
   // Add the new column to the e-mail table.
-  db_add_field($ret, 'webform_emails', 'excluded_components', array('type' => 'text', 'not null' => TRUE, 'default' => ''));
+  db_add_field($ret, 'webform_emails', 'excluded_components', array('type' => 'text', 'not null' => TRUE, 'initial' => ''));
 
   // Build up our EXCLUSION lists, finding all components not in e-mails.
   $result = db_query("SELECT nid, cid FROM {webform_component} WHERE email = 0 ORDER BY nid");
@@ -1178,6 +1211,50 @@ function webform_update_6317() {
 function webform_update_6318() {
   $ret = array();
   db_change_field($ret, 'webform', 'confirmation_format', 'confirmation_format', array('type' => 'int', 'size' => 'tiny', 'not null' => TRUE, 'default' => 0));
+  return $ret;
+}
+
+/**
+ * Add columns for e-mail HTML and attachment settings.
+ */
+function webform_update_6319() {
+  $ret = array();
+  if (!db_column_exists('webform_emails', 'html')) {
+    db_add_field($ret, 'webform_emails', 'html', array('type' => 'int', 'size' => 'tiny', 'unsigned' => TRUE, 'default' => 0, 'not null' => TRUE));
+    db_add_field($ret, 'webform_emails', 'attachments', array('type' => 'int', 'size' => 'tiny', 'unsigned' => TRUE, 'default' => 0, 'not null' => TRUE));
+  }
+  return $ret;
+}
+
+/**
+ * Set the default for the "submit_notice" column to 1.
+ */
+function webform_update_6320() {
+  $ret = array();
+  db_change_field($ret, 'webform', 'submit_notice', 'submit_notice', array('type' => 'int', 'size' => 'tiny', 'not null' => TRUE, 'default' => 1));
+  return $ret;
+}
+
+/**
+ * Add field for block feature and redirection setting.
+ */
+function webform_update_6321() {
+  $ret = array();
+  db_add_field($ret, 'webform', 'block', array('type' => 'int', 'size' => 'tiny', 'not null' => TRUE, 'default' => 0));
+  db_change_field($ret, 'webform', 'redirect_url', 'redirect_url', array('type' => 'varchar', 'length' => 255, 'default' => '<confirmation>'));
+  update_sql("UPDATE {webform} SET redirect_url = '<confirmation>' WHERE redirect_url = ''");
+  return $ret;
+}
+
+/**
+ * Set additional_validate and additional_submit columns to allow NULL.
+ */
+function webform_update_6322() {
+  $ret = array();
+  if (db_column_exists('webform', 'additional_validate')) {
+    db_change_field($ret, 'webform', 'additional_validate', 'additional_validate', array('type' => 'text', 'not null' => FALSE));
+    db_change_field($ret, 'webform', 'additional_submit', 'additional_submit', array('type' => 'text', 'not null' => FALSE));
+  }
   return $ret;
 }
 

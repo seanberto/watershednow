@@ -1,5 +1,5 @@
 <?php
-// $Id: wymeditor.inc,v 1.4.2.4 2010/04/02 14:05:54 sun Exp $
+// $Id: wymeditor.inc,v 1.4.2.3 2010/02/04 17:17:30 twod Exp $
 
 /**
  * @file
@@ -53,9 +53,6 @@ function wysiwyg_wymeditor_editor() {
  */
 function wysiwyg_wymeditor_version($editor) {
   $script = $editor['library path'] . '/jquery.wymeditor.js';
-  if (!file_exists($script)) {
-    return;
-  }
   $script = fopen($script, 'r');
   fgets($script);
   $line = fgets($script);
