@@ -10,10 +10,10 @@ function wn_takeaction_default_box() {
   $box->api_version = 1;
   $box->delta = 'take_action';
   $box->plugin_key = 'simple';
-  $box->title = '';
+  $box->title = 'Take Action page callout';
   $box->description = 'Take Action description';
   $box->options = array(
-    'body' => '<p>This is example text for the listing of opportunities to take action. As you build online campaigns, they will be listed here. Edit this header to provide an overview of your campaigns. You can also simply delete this header all together.</p>',
+    'body' => '<p>This is a callout block that appears on the "Take Action" listing page. You can use this callout to emphasize where folks can take action to support your mission. You can also simply delete the title and body of this block to remove this sidebar. It\'s up to you. You can always add this content back from the <a href="/admin/dashboard">Dashboard</a>.</p>',
     'format' => '3',
   );
 
