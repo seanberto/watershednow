@@ -1,0 +1,117 @@
+# German translation of search404 (6.x-1.4)
+# Copyright (c) 2009 by the German translation team
+# Generated from files:
+#  search404.module,v 1.15.2.1 2008/07/28 08:17:46 zyxware
+#  search404.info,v 1.3.2.1 2008/07/28 08:17:46 zyxware
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: search404 (6.x-1.4)\n"
+"POT-Creation-Date: 2009-01-17 18:28+0100\n"
+"PO-Revision-Date: 2009-01-17 18:28+0100\n"
+"Last-Translator: Markus Opolka <markus@martialblog.de>\n"
+"Language-Team: German\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=0; plural=;\n"
+
+#: search404.module:10
+msgid "Page not found"
+msgstr "Seite nicht gefunden"
+
+#: search404.module:17
+msgid "Search 404 settings"
+msgstr "404-Suche Einstellungen"
+
+#: search404.module:18
+msgid "Administer search 404."
+msgstr "404-Suche verwalten"
+
+#: search404.module:103
+msgid "The page you requested was not found."
+msgstr "Die angeforderte Seite wurde nicht gefunden."
+
+#: search404.module:117
+msgid "The page you requested does not exist. A search for %keys resulted in this page."
+msgstr "Die von Ihnen angeforderte Seite wurde nicht gefunden. Eine Suche nach %keys hat diese Seite gefunden."
+
+#: search404.module:129
+msgid "The page you requested does not exist. For your convenience, a search was performed using the query %keys."
+msgstr "Die von Ihnen angeforderte Seite wurde nicht gefunden. Zu Ihrer Unterstützung wurde automatisch eine Suche nach %keys ausgeführt."
+
+#: search404.module:145
+msgid "Search results"
+msgstr "Suchergebnisse"
+
+#: search404.module:177
+msgid "Jump directly to the search result when there is only one result."
+msgstr "Wenn die Suche nur ein Ergebnis liefert, dieses sofort öffnen."
+
+#: search404.module:182
+msgid "Jump directly to the first search result when there are multiple results."
+msgstr "Wenn die Suche mehrere Ergebnisse liefert, das erste Ergebnis sofort öffnen."
+
+#: search404.module:188
+msgid "Show Left and Right blocks in Page when a 404 Search occurs"
+msgstr "Linke und rechte Seitenleiste (Blöcke) während der 404-Suche anzeigen"
+
+#: search404.module:193
+msgid "Advanced settings"
+msgstr "Erweiterte Einstellungen"
+
+#: search404.module:194
+msgid "WARNING. Some of these settings can mess up stuff, don't touch unless you know what you are\n\t\tdoing."
+msgstr "WARNUNG: Einige dieser Einstellungen können unerwünschte Nebeneffekte haben. Verwenden Sie diese Einstellungen nur, wenn Sie sich über die Konsequenzen im Klaren sind."
+
+#: search404.module:201
+msgid "Use OR between keywords when searching."
+msgstr "OR-Verknüpfung zur Suche nach mehreren Schlüsselworten verwenden."
+
+#: search404.module:206
+msgid "Use auto-detection of keywords from search engine referer. BETA! Not for production sites, use at your own risk."
+msgstr "Schlüsselworte automatisch aus Suchmaschinen-Referrer ermitteln. BETA - nicht für Produktivumgebungen verwenden. Verwendung auf eigene Gefahr!"
+
+#: search404.module:211
+msgid "Words to ignore"
+msgstr "Zu ignorierende Worte"
+
+#: search404.module:212
+msgid "These words will be ignored from query. Separate words with a space, e.g.: \"and or the\"."
+msgstr "Diese Worte werden bei der Suche ignoriert. Geben Sie mehrere Worte durch Leerzeichen getrennt an, z. B. \"und oder der die das\"."
+
+#: search404.module:217
+msgid "Extensions to ignore"
+msgstr "Zu ignorierende Dateiendungen"
+
+#: search404.module:218
+msgid "These extensions will be ignored from query. Separate extensions with a space, e.g.: \"htm html php\". Do not include leading dot."
+msgstr "Diese Dateiendungen werden bei der Suche ignoriert. Geben Sie mehrere Endungen durch Leerzeichen getrennt an, z. B. \"htm html php\". Geben Sie keinen Punkt vor der Endung an."
+
+#: search404.module:223
+msgid "Extensions to abort search"
+msgstr "Abbruch bei Dateiendungen"
+
+#: search404.module:224
+msgid "A search will not be performed for a query ending in the following extensions. Separate extensions with a space, e.g.: \"gif jpg jpeg bmp png\". Do not include leading dot."
+msgstr "Für Anfragen, die mit einer dieser Dateiendungen enden, wird keine Suche ausgeführt. Geben Sie mehrere Endungen durch Leerzeichen getrennt an, z. B. \"gif jpg jpeg bmp png\". Geben Sie keinen Punkt vor der Endung an."
+
+#: search404.module:229
+msgid "PCRE REGEX"
+msgstr "Perl-kompatibler regulärer Ausdruck (PCRE)"
+
+#: search404.module:230
+msgid "This regex will applied to all queries. It uses the code:<p>%code</p>Look directly at the source code to understand underlying syntax. See also <a href=\"http://php.net/pcre\">PCRE pages in the PHP Manual</a>."
+msgstr "Dieser reguläre Ausdruck wird auf alle Anfragen angewendet. Dazu wird folgender Aufruf verwendet:<p>%code</p>Schlagen Sie die Verwendung im Quelltext nach, um die zugrundeliegende Syntax zu verstehen. Weitere Informationen finden Sie in der <a href=\"http://php.net/pcre\">PCRE-Beschreibung der PHP-Dokumentation</a>."
+
+#: search404.module:0
+msgid "search404"
+msgstr "search404"
+
+#: search404.info:0
+msgid "Search 404"
+msgstr "404-Suche"
+
+#: search404.info:0
+msgid "Other"
+msgstr "Sonstige"

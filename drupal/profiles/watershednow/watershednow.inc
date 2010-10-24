@@ -104,9 +104,11 @@ function _watershednow_create_menu_items() {
 }
 
 function _watershednow_create_nodes() {
-  // @FIXME - For some reason, this value isn't being obeyed in wn_common's strongarm settings.
+  // @FIXME - Strongarm settings don't seem to be picked up until after the install process runs.
   // Set pathauto default for nodes. Do so before creating nodes below.
   variable_set('pathauto_node_pattern', '[title-raw]');
+  // While at it, set pathauto default for taxonomy terms.
+  variable_set('pathauto_taxonomy_pattern', '[vocab-raw]/[catpath-raw]');  
 
   // Create a few placeholder nodes and add them to the menu structure.
   // @TODO: Find the correct input filter. Right now, we rely on _watershednow_filters_wysiwyg() being called first..

@@ -1,0 +1,125 @@
+# $Id: uk.po,v 1.1.2.1 2009/05/14 22:10:59 podarok Exp $
+#
+# LANGUAGE translation of Drupal (general)
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+# Generated from files:
+#  search404.module,v 1.15.2.3 2008/12/19 08:57:16 zyxware
+#  search404.info,v 1.3.2.3 2008/12/22 05:15:45 zyxware
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: search404 uk translation\n"
+"POT-Creation-Date: 2009-05-14 23:36+0300\n"
+"PO-Revision-Date: 2009-05-15 00:04+0300\n"
+"Last-Translator: Andriy Podanenko <podarok@ua.fm>\n"
+"Language-Team: uk <podarok@ua.fm>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: ($n%10==1 && $n%100!=11) ? 0 : (($n%10>=2 && $n%10<=4 && ($n%100<10 || $n%100>=20)) ? 1 : 2)\n"
+"X-Poedit-Language: Ukrainian\n"
+"X-Poedit-Country: UKRAINE\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#: search404.module:10
+msgid "Page not found"
+msgstr "Сторінку не знайдено"
+
+#: search404.module:17
+msgid "Search 404 settings"
+msgstr "Параметри Пошуку на сторінці 404"
+
+#: search404.module:18
+msgid "Administer search 404."
+msgstr "Адміністрування модуля search404"
+
+#: search404.module:103
+msgid "The page you requested was not found."
+msgstr "Запитувана Вами сторінка не знайдена."
+
+#: search404.module:117;123
+msgid "The page you requested does not exist. A search for %keys resulted in this page."
+msgstr "Запитувана Вами сторінка неіснує. ВІдображено пошуко для %keys по сайту."
+
+#: search404.module:129
+msgid "The page you requested does not exist. For your convenience, a search was performed using the query %keys."
+msgstr "Запитувана Вами сторінка неіснує. Для Вашої зручності - результати пошуку для %keys."
+
+#: search404.module:145
+msgid "Search results"
+msgstr "Результати пошуку"
+
+#: search404.module:177
+msgid "Jump directly to the search result when there is only one result."
+msgstr "Перенаправляти прямо до результатів пошуку, якщо тільки один результат."
+
+#: search404.module:182
+msgid "Jump directly to the first search result when there are multiple results."
+msgstr "Перенаправляти прямо до першого результату, якщо їх багато."
+
+#: search404.module:188
+msgid "Show Left and Right blocks in Page when a 404 Search occurs"
+msgstr "ВІдображати лівий і правий блоки на сторінці пошуку 404."
+
+#: search404.module:193
+msgid "Advanced settings"
+msgstr "Розширені налагодження"
+
+#: search404.module:194
+msgid ""
+"WARNING. Some of these settings can mess up stuff, don't touch unless you know what you are\n"
+"\t\tdoing."
+msgstr "ПОПЕРЕДЖЕННЯ! Деякі з цих параметрів можуть нашкодити, тому не змінюйте їх якщо не знаєте, що ви робите."
+
+#: search404.module:201
+msgid "Use OR between keywords when searching."
+msgstr "Використовувати OR між словами при пошуку."
+
+#: search404.module:206
+msgid "Use auto-detection of keywords from search engine referer. BETA! Not for production sites, use at your own risk."
+msgstr "Використовувати автовизначення ключових слів з реферерів пошукових систем. ТЕСТУВАННЯ! Не для продакшн сайтів. "
+
+#: search404.module:211
+msgid "Words to ignore"
+msgstr "Слова, що ігнорувати"
+
+#: search404.module:212
+msgid "These words will be ignored from query. Separate words with a space, e.g.: \"and or the\"."
+msgstr "Ці слова будуть проігноровані в запиті. Розділяйте слова пропусками."
+
+#: search404.module:217
+msgid "Extensions to ignore"
+msgstr "Розширення для ігнорування"
+
+#: search404.module:218
+msgid "These extensions will be ignored from query. Separate extensions with a space, e.g.: \"htm html php\". Do not include leading dot."
+msgstr "Ці розширення будуть проігноровані з пошукового запиту. Розділяйте їх з допомогою пропусків. Приклад: html php"
+
+#: search404.module:223
+msgid "Extensions to abort search"
+msgstr "Розширення для зупинки пошуку"
+
+#: search404.module:224
+msgid "A search will not be performed for a query ending in the following extensions. Separate extensions with a space, e.g.: \"gif jpg jpeg bmp png\". Do not include leading dot."
+msgstr "Пошук не буде запропоновано для запитів, що закінчуються наступними розширеннями. Розділяйте їх пропусками без крапок. Приклад: gif jpg bmp"
+
+#: search404.module:229
+msgid "PCRE REGEX"
+msgstr "PCRE REGEX"
+
+#: search404.module:230
+msgid "This regex will applied to all queries. It uses the code:<p>%code</p>Look directly at the source code to understand underlying syntax. See also <a href=\"http://php.net/pcre\">PCRE pages in the PHP Manual</a>."
+msgstr "Ця формула буде застосована до всіх запитів. Використовується код: <p>%code</p> Дивіться безпосередньо в вихідний код для розуміння синтаксису. Дивіться також <a href=\"http://php.net/pcre\">PCRE сторінки в PHP документації</a>."
+
+#: search404.module:0
+msgid "search404"
+msgstr "search404"
+
+#: search404.info:0;0
+msgid "Search 404"
+msgstr "Search 404"
+
+#: search404.info:0
+msgid "Other"
+msgstr "Інше"
+

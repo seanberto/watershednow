@@ -1,0 +1,332 @@
+<?php
+/* $Id: search404.module,v 1.15.2.20 2010/03/23 08:20:35 zyxware Exp $ */
+
+/* @file
+ * The search404 module files, does all the searching
+ * when a 404 occurs
+ */
+
+/**
+ * Implementation of hook_menu().
+ */
+function search404_menu() {
+  $items = array();
+
+  $items['search404'] = array(
+    'title' => t('Page not found'),
+    'access callback' => TRUE,
+    'page callback' => 'search404_page',
+    'type' => MENU_LOCAL_TASK
+  );
+
+  $items['admin/settings/search404'] = array(
+    'title' => t('Search 404 settings'),
+    'description' => t('Administer search 404.'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('search404_settings'),
+    'access callback' => 'user_access',
+    'access arguments' => array('administer site configuration'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+
+  return $items;
+}
+
+/**
+ * Replacement for search_get_keys
+ * WARNING: This function can potentially return dangerous
+ *              potential SQL inject/XSS
+ * data. Return must be sanatized before use.
+ */
+function search404_get_keys() {
+  global $language;
+
+  // Abort query on certain extensions, e.g: gif jpg jpeg png
+  $extensions = preg_split('/\s+/', variable_get('search404_ignore_query', 'gif jpg jpeg bmp png'));
+  $extensions = trim(implode('|', $extensions));
+  if (!empty($extensions) && preg_match("/\.($extensions)$/", $_REQUEST['destination'])) {
+    return FALSE;
+  }
+  $keys = $_REQUEST['destination'] ? $_REQUEST['destination'] : $_REQUEST['q'];
+  //Remove the Language Prefix Appended to Search String (http://drupal.org/node/560426)
+  if (LANGUAGE_NEGOTIATION_PATH_DEFAULT && $language->language) {
+    $keys = preg_replace("/^".$language->language."\//", '', $keys);
+  }
+  $regex_filter = variable_get('search404_regex', '');
+  $keys_array[] = $keys;
+  if (!empty($regex_filter)) {
+    $keys = preg_replace("/". $regex_filter ."/", '', $keys);
+  }
+  // Ingore certain extensions from query
+  $extensions = preg_split('/\s+/', variable_get('search404_ignore_extensions', 'htm html php'));
+  $extensions = trim(implode('|', $extensions));
+  if (!empty($extensions)) {
+    $keys = preg_replace("/\.($extensions)$/", '', $keys);
+  }
+
+  $keys = preg_split('/['. PREG_CLASS_SEARCH_EXCLUDE .']+/u', $keys);
+
+  // Ignore certain words
+  $keys = array_diff($keys, explode(' ', variable_get('search404_ignore', 'and or the')));
+  //Sanitize the keys
+  foreach ($keys as $a => $b) {
+    $keys[$a] = check_plain($b);
+  }
+  $modifier = variable_get('search404_use_or', FALSE) ? ' OR ' : ' ';
+  $keys = trim(implode($modifier, $keys));
+  return $keys;
+}
+
+/**
+ * Detect search from search engine
+ */
+function search404_search_engine_query() {
+  $engines = array(
+    'altavista' => 'q',
+    'aol' => 'query',
+    'google' => 'q',
+    'bing' => 'q',
+    'lycos' => 'query',
+    'yahoo' => 'p',
+  );
+  $parsed_url = parse_url($_SERVER['HTTP_REFERER']);
+  $remote_host = $parsed_url['host'];
+  $query_string = $parsed_url['query'];
+  parse_str($query_string, $query);
+
+  if (!$parsed_url === FALSE && !empty($remote_host) && !empty($query_string) && count($query)) {
+    foreach ($engines as $host => $key) {
+      if (strpos($remote_host, $host) !== FALSE && array_key_exists($key, $query)) {
+        return trim($query[$key]);
+      }
+    }
+  }
+
+  return FALSE;
+}
+
+/**
+ * Main search function.
+ * Started with: http://drupal.org/node/12668
+ * Updated to be more similar to search_view
+ * Beware of messy code
+ */
+function search404_page() {
+  drupal_set_title(t(variable_get('search404_page_title', '')));
+  if (module_exists('search') && (user_access('search content') || user_access('search by page'))) {
+    $keys = "";
+    // if apachesolr_search or luceneapi is installed use them instead default node search
+    $type_search = (module_exists('apachesolr_search')) ? 'apachesolr_search' : ((module_exists('luceneapi_node')) ? 'luceneapi_node' : 'node');
+    if (variable_get('search404_use_search_engine', FALSE)) {
+      $keys = search404_search_engine_query();
+    }
+    if (!$keys) {
+      $keys = search404_get_keys();
+    }
+    if ($keys) {
+      // TODO: watchdog?
+      if (module_exists('search_by_page') && variable_get('search404_do_search_by_page', FALSE)) {
+        drupal_set_message(t('The page you requested does not exist. For your convenience, a search was performed using the query %keys.', array('%keys' => check_plain($keys))), 'error');
+        if (variable_get('search404_redirect_301', false)) {
+          drupal_goto ('search_pages/'. $keys , NULL ,NULL , 301);
+        }
+        else {
+          drupal_goto('search_pages/'. $keys);
+        }
+        // EVIL HAXX!
+        $oldgetq = $_GET['q'];
+        $olddestination = $_REQUEST['destination'];
+        unset($_REQUEST['destination']);
+        $_GET['q'] = "search/$type_search/$keys";
+        $results = theme('search_results', $results, 'node');
+        $_GET['q'] = $oldgetq;
+        $_REQUEST['destination'] = $olddestination;
+        // END OF EVIL HAXX!
+      }
+      elseif (module_exists('google') && user_access('search Google CSE') && variable_get('search404_do_google_cse', FALSE)) {
+        drupal_set_message(t('The page you requested does not exist. For your convenience, a google search was performed using the query %keys.', array('%keys' => check_plain($keys))), 'error');
+        $_REQUEST['destination'] = 'search/google/'. $keys;
+        if (variable_get('search404_redirect_301', false)) {
+          drupal_goto ("" , NULL ,NULL , 301);
+        }
+        else {
+          drupal_goto();
+        }
+      }
+      else {
+        $results = module_invoke($type_search, 'search', 'search', $keys);
+        if (isset($results) && is_array($results) && count($results) == 1 && variable_get('search404_jump', FALSE)) {
+          // First, check to see if there is exactly 1 result
+          drupal_set_message(t('The page you requested does not exist. A search for %keys resulted in this page.', array('%keys' => check_plain($keys))), 'status');
+          // overwrite $_REQUEST['destination'] because it is set by drupal_not_found()
+          $_REQUEST['destination'] = 'node/'. $results[0]['node']->nid;
+          if (variable_get('search404_redirect_301', false)) {
+            drupal_goto ("" , NULL ,NULL , 301);
+          }
+          else {
+            drupal_goto();
+          }
+        }
+        elseif (isset($results) && is_array($results) && count($results) > 1 && variable_get('search404_first', FALSE)) {
+          drupal_set_message(t('The page you requested does not exist. A search for %keys resulted in this page.', array('%keys' => check_plain($keys))), 'status');
+          // overwrite $_REQUEST['destination'] because it is set by drupal_not_found()
+          $_REQUEST['destination'] = 'node/'. $results[0]['node']->nid;
+          if (variable_get('search404_redirect_301', false)) {
+            drupal_goto ("" , NULL ,NULL , 301);
+          }
+          else {
+            drupal_goto();
+          }
+        }
+        else {
+          drupal_set_message(t('The page you requested does not exist. For your convenience, a search was performed using the query %keys.', array('%keys' => check_plain($keys))), 'error');
+          if (isset($results) && is_array($results) && count($results) > 0) {
+            drupal_add_css(drupal_get_path('module', 'search') .'/search.css', 'module', 'all', FALSE);
+            // EVIL HAXX!
+              $oldgetq = $_GET['q'];
+              $olddestination = $_REQUEST['destination'];
+              unset($_REQUEST['destination']);
+              $_GET['q'] = "search/$type_search/$keys";
+              $results = theme('search_results', $results, 'node');
+              $_GET['q'] = $oldgetq;
+              $_REQUEST['destination'] = $olddestination;
+            // END OF EVIL HAXX!
+          }
+          else {
+            $results = search_help('search#noresults', drupal_help_arg());
+          }
+          $results = theme('box', t('Search results'), $results);
+        }
+      }
+    }
+    // Construct the search form.
+    $output = variable_get('search404_page_text', '') . drupal_get_form('search_form', NULL, $keys, $type_search) . $results;
+  }
+
+  /*
+   * Start EVIL HAXX 2
+   * This was done to display sidebars left and right of page, if the option is set from Search404
+   * Settings Page.
+   */
+  if (variable_get('search404_block_show', FALSE)) {
+    print theme('page', $output);
+    drupal_page_footer();
+    unset($output);
+    exit(0);
+  }
+  else {
+    return $output;
+  }
+  // End of EVIL HAXX 2
+
+}
+
+/**
+ * Search404 administration settings
+ */
+function search404_settings() {
+  $form['search404_jump'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Jump directly to the search result when there is only one result.'),
+    '#default_value' => variable_get('search404_jump', FALSE),
+  );
+  $form['search404_first'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Jump directly to the first search result even when there are multiple results.'),
+    '#default_value' => variable_get('search404_first', FALSE),
+  );
+  //Added for displaying blocks for 404 searches
+  $form['search404_block_show'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Show left and right sidebars in page when a 404 search occurs'),
+    '#default_value' => variable_get('search404_block_show', FALSE),
+  );
+
+  $form['search404_do_google_cse'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Do a Google CSE Search instead of a Drupal Search when a 404 Occurs'),
+    '#description' => t('Requires Google CSE and Google CSE Search Modules to be Enabled'),
+    '#attributes' => module_exists('google') ? array()  : array('disabled' => 'disabled'),
+    '#default_value' => variable_get('search404_do_google_cse', FALSE),
+  );
+
+  $form['search404_do_search_by_page'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Do a "Search by page" Search instead of a Drupal Search when a 404 Occurs'),
+    '#description' => t('Requires "Search by page" module to be Enabled'),
+    '#attributes' => module_exists('search_by_page') ? array()  : array('disabled' => 'disabled'),
+    '#default_value' => variable_get('search404_do_search_by_page', FALSE),
+  );
+
+  //Added for having a 301 redirect instead of the standard 302 (offered by the drupal_goto)
+  $form['search404_redirect_301'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Use a redirect 301 instead of redirect 302'),
+    '#default_value' => variable_get('search404_redirect_301', false),
+  );
+
+  $form['advanced'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Advanced settings'),
+    //'#description' => t("WARNING. Some of these settings can mess up stuff, don't touch unless you know what you are doing."),
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+  );
+  $form['advanced']['search404_use_or'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Use OR between keywords when searching.'),
+    '#default_value' => variable_get('search404_use_or', FALSE),
+  );
+  $form['advanced']['search404_use_search_engine'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Use auto-detection of keywords from search engine referer.'),
+    '#description' => t('This feature will conduct a search based on the query string got from a search engine if the URL of the search result points to a 404 page in the current website. Currently supported search engines: Google, Yahoo, Altavista, Lycos, Bing and AOL'),
+    '#default_value' => variable_get('search404_use_search_engine', FALSE),
+  );
+  $form['advanced']['search404_ignore'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Words to ignore'),
+    '#description' => t('These words will be ignored from the search query. Separate words with a space, e.g.: "and or the".'),
+    '#default_value' => variable_get('search404_ignore', 'and or the'),
+  );
+  $form['advanced']['search404_ignore_extensions'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Extensions to ignore'),
+    '#description' => t('These extensions will be ignored from the search query, e.g.: http://www.example.com/invalid/page.php will only search for "invalid page". Separate extensions with a space, e.g.: "htm html php". Do not include leading dot.'),
+    '#default_value' => variable_get('search404_ignore_extensions', 'htm html php'),
+  );
+  $form['advanced']['search404_ignore_query'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Extensions to abort search'),
+    '#description' => t('A search will not be performed for a query ending in these extensions. Separate extensions with a space, e.g.: "gif jpg jpeg bmp png". Do not include leading dot.'),
+    '#default_value' => variable_get('search404_ignore_query', 'gif jpg jpeg bmp png'),
+  );
+  $form['advanced']['search404_regex'] = array(
+    '#type' => 'textfield',
+    '#title' => t('PCRE filter'),
+    '#description' => t('This regular expression will be applied to filter all queries. The parts of the path that match the expression will be EXCLUDED from the search. You do NOT have to enclose the regex in forward slashes when defining the PCRE. e.g.: use "[foo]bar" instead of "/[foo]bar/". On how to use a PCRE Regex please refer <a href="http://php.net/pcre">PCRE pages in the PHP Manual</a>.'),
+    '#default_value' => variable_get('search404_regex', ''),
+  );
+
+  $form['advanced']['search404_page_title'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Custom Page Title'),
+    '#description' => t('You can enter a value that will displayed at the title of the Webpage e.g. "Page not found"'),
+    '#default_value' => variable_get('search404_page_title', 'Page not found'),
+  );
+
+  $form['advanced']['search404_page_text'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Custom Page Text'),
+    '#default_value' => variable_get('search404_page_text', ''),
+    '#description' => t('You can enter a custom text message that can be displayed at the top of the search results, HTML formatting can be used'),
+  );
+
+  //Helps reset the site404 variable to search404 in case the user changes it manually
+  $form['advanced']['search404_variable'] = array(
+    '#type' => 'hidden',
+    '#value' => variable_set('site_404', 'search404'),
+  );
+
+  return system_settings_form($form);
+}

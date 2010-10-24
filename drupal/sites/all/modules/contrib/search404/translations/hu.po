@@ -1,0 +1,170 @@
+# Hungarian translation of search404 (6.x-1.1)
+# Copyright (c) 2008 by the Hungarian translation team
+# Generated from files:
+#  search404.module,v 1.15.2.1 2008/07/28 08:17:46 zyxware
+#  search404.info,v 1.3.2.1 2008/07/28 08:17:46 zyxware
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: search404 (6.x-1.1)\n"
+"POT-Creation-Date: 2008-11-19 10:16-0600\n"
+"PO-Revision-Date: 2008-11-14 12:57-0600\n"
+"Language-Team: Hungarian\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
+
+#: search404.module:9
+msgid "Page not found"
+msgstr "Az oldal nem található"
+
+#: search404.module:143
+msgid "Search results"
+msgstr "Találatok"
+
+#: search404.info:0
+msgid "Other"
+msgstr "Egyéb"
+
+#: search404.module:169
+msgid "Advanced settings"
+msgstr "Haladó beállítások"
+
+#: search404.module:15
+msgid "Search 404 settings"
+msgstr "Keresés 404 beállítások"
+
+#: search404.module:16
+msgid "Administer search 404."
+msgstr "Keresés 404 adminisztrációja."
+
+#: search404.module:101
+msgid "The page you requested was not found."
+msgstr "A kért oldal nem található."
+
+#: search404.module:115
+msgid ""
+"The page you requested does not exist. A search for %keys resulted in "
+"this page."
+msgstr ""
+"A kért oldal nem létezik, vagy átnevezték. <em>%keys</em> "
+"kifejezés keresési eredménye látható az oldalon."
+
+#: search404.module:121,121
+msgid ""
+"The page you requested does not exist. A search for %keys resulted in "
+"this page."
+msgstr ""
+"A kért oldal nem létezik, vagy átnevezték. <em>%keys</em> "
+"kifejezés keresési eredménye látható az oldalon."
+
+#: search404.module:127
+msgid ""
+"The page you requested does not exist. For your convenience, a search "
+"was performed using the query %keys."
+msgstr ""
+"A kért oldal nem létezik, vagy átnevezték. <em>%keys</em> "
+"kulcsszó használatával a rendszer végrehajtott egy keresést a "
+"kényelmetlenség elkerülésére."
+
+#: search404.module:159
+msgid "Jump directly to the search result when there is only one result."
+msgstr "Ugrás a keresési eredmény találatára, ha csak egy találat van."
+
+#: search404.module:164
+msgid ""
+"Jump directly to the first search result when there are multiple "
+"results."
+msgstr ""
+"Ugrás a keresési eredmény első találatára, ha több találat is "
+"van."
+
+#: search404.module:170
+msgid ""
+"WARNING. Some of these settings can mess up stuff, don't touch unless "
+"you know what you are\n"
+"\t\tdoing."
+msgstr ""
+"FIGYELEM! Ezek a beállítások összezavarhatják a modul "
+"működését, ezért átállítani csak a következmények pontos "
+"ismeretében ajánlott!"
+
+#: search404.module:177
+msgid "Use OR between keywords when searching."
+msgstr "Kereséshez a kulcsszavak között az OR (vagy) használható."
+
+#: search404.module:182
+msgid ""
+"Use auto-detection of keywords from search engine referer. BETA! Not "
+"for production sites, use at your own risk."
+msgstr ""
+"Ha a hivatkozó egy keresőmotor, akkor automatikusan ismerje fel a "
+"kulcsszavakat. BÉTA! Nem ajánlott hivatalos webhelyekre, használata "
+"csak saját felelősségre!"
+
+#: search404.module:187
+msgid "Words to ignore"
+msgstr "Mellőzött szavak"
+
+#: search404.module:188
+msgid ""
+"These words will be ignored from query. Separate words with a space, "
+"e.g.: \"and or the\"."
+msgstr ""
+"Az alábbi szavakat mellőzi a kérésből. A szavakat szóközzel "
+"elválasztva kell megadni, pl.: „és vagy a”."
+
+#: search404.module:193
+msgid "Extensions to ignore"
+msgstr "Mellőzött kiterjesztések"
+
+#: search404.module:194
+msgid ""
+"These extensions will be ignored from query. Separate extensions with "
+"a space, e.g.: \"htm html php\". Do not include leading dot."
+msgstr ""
+"Az alábbi kiterjesztéseket mellőzi a kérésből. A szavakat "
+"szóközzel elválasztva kell megadni, pl.: „htm html php”. A pont "
+"nem szükséges."
+
+#: search404.module:199
+msgid "Extensions to abort search"
+msgstr "Kiterjesztések, melyek megszakítják a keresést"
+
+#: search404.module:200
+msgid ""
+"A search will not be performed for a query ending in the following "
+"extensions. Separate extensions with a space, e.g.: \"gif jpg jpeg bmp "
+"png\". Do not include leading dot."
+msgstr ""
+"A keresés nem lesz végrehajtva, ha a kérés végén a következő "
+"kiterjesztések szerepelnek. A szavakat szóközzel elválasztva kell "
+"megadni, pl.: „gif jpg jpeg bmp png”. A pont nem szükséges."
+
+#: search404.module:205
+msgid "PCRE REGEX"
+msgstr "PCRE REGEX"
+
+#: search404.module:206
+msgid ""
+"This regex will applied to all queries. It uses the "
+"code:<p>%code</p>Look directly at the source code to understand "
+"underlying syntax. See also <a href=\"http://php.net/pcre\">PCRE pages "
+"in the PHP Manual</a>."
+msgstr ""
+"Ezt a regulásris kifejezést alkalmazza minden kéréshez. A "
+"következő kódot használja:<p>%code</p>Az alapul szolgáló "
+"szintaxis megértéséhez a forráskód közvetlen megtekintése ad "
+"támpontot. További információkat a <a "
+"href=\"http://php.net/pcre\">PHP kézikönyv PCRE oldalai</a> "
+"szolgáltatnak."
+
+#: search404.module:0
+msgid "search404"
+msgstr "search404"
+
+#: search404.info:0
+msgid "Search 404"
+msgstr "Keresés 404"
+

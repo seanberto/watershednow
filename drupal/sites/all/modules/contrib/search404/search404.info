@@ -1,0 +1,15 @@
+; $Id: search404.info,v 1.3.2.8 2009/07/10 08:28:08 zyxware Exp $
+
+name = Search 404
+description = Search 404
+dependencies[] = 'search'
+core = 6.x
+
+
+
+; Information added by drupal.org packaging script on 2010-03-25
+version = "6.x-1.9"
+core = "6.x"
+project = "search404"
+datestamp = "1269503417"
+

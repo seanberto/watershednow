@@ -1,0 +1,93 @@
+# translation of search404-5.x-1.1.po to russian
+# $Id: it.po,v 1.1.2.1 2010/03/22 09:06:20 zyxware Exp $
+# LANGUAGE translation of Drupal (general)
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+# Generated from files:
+#  search404.module,v 1.13.2.5 2007/04/22 15:12:26 forngren
+#  search404.info,v 1.2 2007/02/28 15:23:49 forngren
+#
+# Vlad Savitsky <vs@solti.com.ua>, 2007.
+msgid ""
+msgstr ""
+"Project-Id-Version: search404-5.x-1.1\n"
+"POT-Creation-Date: 2007-11-07 12:16+0200\n"
+"PO-Revision-Date: 2007-11-07 13:32+0200\n"
+"Last-Translator: Augusto Fagioli<augustofagioli@gmail.com>\n"
+"Language-Team: italian <italian@drupal.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: KBabel 1.11.4\n"
+
+#: search404.module:12
+msgid "Page not found"
+msgstr "Pagina non trovata"
+
+#: search404.module:16
+msgid "Search 404 settings"
+msgstr "Impostazioni Search 404"
+
+#: search404.module:17
+msgid "Administer search 404."
+msgstr "Amministra search 404"
+
+#: search404.module:98
+msgid "The page you requested was not found."
+msgstr "La pagina richiesta non e' disponibile."
+
+#: search404.module:113
+msgid "The page you requested does not exist. A search for %keys resulted in this page."
+msgstr "La pagina che hai richiesto non e' disponibile. La ricerca delle parole %keys porta a questa pagina."
+
+#: search404.module:119
+msgid "The page you requested does not exist. For your convenience, a search was performed using the query %keys."
+msgstr "La pagina che hai richiesto non e' disponibile. Eseguiamo una ricerca per %keys  ."
+
+#: search404.module:135
+msgid "Search results"
+msgstr "Risultati della ricerca"
+
+#: search404.module:152
+msgid "Jump directly to the search result when there is only one result."
+msgstr "Salta direttamente al risultato se la ricerca porta un solo risultato."
+
+#: search404.module:157
+msgid "Use OR between keywords when searching."
+msgstr "Esegui la ricerca con OR fra le parole"
+
+#: search404.module:162
+msgid "Use auto-detection of keywords from search engine referer. BETA! Not for production sites, use at your own risk."
+msgstr "Usa rilevamento automatico delle keywords dal motore di ricerca Referer. BETA! Usa su siti di produzione  a tuo rischio."
+
+#: search404.module:167
+msgid "Words to ignore"
+msgstr "Parole da ignorare"
+
+#: search404.module:168
+msgid "These words will be ignored from query. Separate words with a space, e.g.: \"and or the\"."
+msgstr "Queste parole saranno ignorate dalla query. Separa le parole con uno spazio, esempio \"and or the\"."
+
+#: search404.module:173
+msgid "Extensions to ignore"
+msgstr "Estensioni da ignorare"
+
+#: search404.module:174
+msgid "These extensions will be ignored from query. Separate extensions with a space, e.g.: \"htm html php\". Do not include leading dot."
+msgstr "Queste estensioni satanno ignorate dalla query. Separa le estensioni con uno spazio, esempio: \"htm html php\". Non inserire il punto iniziale"      
+
+#: search404.module:179
+msgid "Extensions to abort search"
+msgstr "Non cercare i file con queste estensioni"
+
+#: search404.module:180
+msgid "A search will not be performed for a query ending in the following extensions. Separate extensions with a space, e.g.: \"gif jpg jpeg bmp png\". Do not include leading dot."
+msgstr "La ricerca non sara' eseguita per una query che finisce con le seguenti estensioni. Separa estensioni con uno spazio, esempio : \"gif jpg jpeg bmp png\". Non inserire il punto iniziale"
+
+#: search404.module:0
+msgid "search404"
+msgstr "search404"
+
+#: search404.info:0;0
+msgid "Search 404"
+msgstr "Ricerca 404"

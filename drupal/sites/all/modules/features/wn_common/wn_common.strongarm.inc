@@ -75,6 +75,78 @@ function wn_common_strongarm() {
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'comment_notify_available_alerts';
+  $strongarm->value = array(
+    1 => 1,
+    2 => 2,
+  );
+
+  $export['comment_notify_available_alerts'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'comment_notify_default_anon_mailalert';
+  $strongarm->value = '1';
+
+  $export['comment_notify_default_anon_mailalert'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'comment_notify_default_mailtext';
+  $strongarm->value = 'Hi !name,
+
+!commname has commented on: "!node_title"
+
+The post is about
+----
+!node_teaser
+----
+
+You can view the comment at the following url
+!comment_url
+
+You can stop receiving emails when someone replies to this post,
+by going to !link1
+
+If you have auto-following enabled in your account, you will receive emails like this for all replies to a blog post you commented on. You can disable this by logging in and going to your account settings or unchecking the flag at the time you post the comment.
+
+You can set up auto-following feature for all future posts
+by creating your own user with a few clicks here !uri/user/register
+
+Thanks for your feedback,
+
+Webmaster of !site
+!mission
+!uri';
+
+  $export['comment_notify_default_mailtext'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'comment_notify_default_registered_mailalert';
+  $strongarm->value = '1';
+
+  $export['comment_notify_default_registered_mailalert'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'comment_notify_node_types';
+  $strongarm->value = array(
+    'update' => 'update',
+    'donation' => 0,
+    'event' => 0,
+    'wn_hp_callout' => 0,
+    'map_kml' => 0,
+    'map_feature' => 0,
+    'page' => 0,
+    'take_action' => 0,
+    'update_feed' => 0,
+  );
+
+  $export['comment_notify_node_types'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'comment_page';
   $strongarm->value = '0';
 
@@ -323,6 +395,31 @@ function wn_common_strongarm() {
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'node_notify_default_mailalert';
+  $strongarm->value = 1;
+
+  $export['node_notify_default_mailalert'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'node_notify_default_mailtext';
+  $strongarm->value = 'Hi !name,
+
+You have received a comment on: "!node_title"
+
+You can view the comment at the following url
+!comment_url
+
+You will receive emails like this for all replies to your posts. You can disable this by logging in and going to your account settings.
+
+Webmaster of !site
+!mission
+!uri';
+
+  $export['node_notify_default_mailtext'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'node_options_page';
   $strongarm->value = array(
     0 => 'status',
@@ -343,6 +440,125 @@ function wn_common_strongarm() {
   $strongarm->value = '[title-raw]';
 
   $export['pathauto_node_pattern'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'pathauto_taxonomy_pattern';
+  $strongarm->value = '[vocab-raw]/[catpath-raw]';
+
+  $export['pathauto_taxonomy_pattern'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'search404_block_show';
+  $strongarm->value = 1;
+
+  $export['search404_block_show'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'search404_do_google_cse';
+  $strongarm->value = 0;
+
+  $export['search404_do_google_cse'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'search404_do_search_by_page';
+  $strongarm->value = 0;
+
+  $export['search404_do_search_by_page'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'search404_first';
+  $strongarm->value = 0;
+
+  $export['search404_first'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'search404_ignore';
+  $strongarm->value = 'and or the';
+
+  $export['search404_ignore'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'search404_ignore_extensions';
+  $strongarm->value = 'htm html php';
+
+  $export['search404_ignore_extensions'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'search404_ignore_query';
+  $strongarm->value = 'gif jpg jpeg bmp png';
+
+  $export['search404_ignore_query'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'search404_jump';
+  $strongarm->value = 1;
+
+  $export['search404_jump'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'search404_page_text';
+  $strongarm->value = '';
+
+  $export['search404_page_text'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'search404_page_title';
+  $strongarm->value = 'Page not found';
+
+  $export['search404_page_title'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'search404_redirect_301';
+  $strongarm->value = 0;
+
+  $export['search404_redirect_301'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'search404_regex';
+  $strongarm->value = '';
+
+  $export['search404_regex'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'search404_use_or';
+  $strongarm->value = 0;
+
+  $export['search404_use_or'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'search404_use_search_engine';
+  $strongarm->value = 0;
+
+  $export['search404_use_search_engine'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'search404_variable';
+  $strongarm->value = '';
+
+  $export['search404_variable'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'site_404';
+  $strongarm->value = 'search404';
+
+  $export['site_404'] = $strongarm;
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;

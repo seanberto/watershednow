@@ -1,0 +1,88 @@
+# $Id: nl.po,v 1.1.2.1 2009/03/11 09:48:33 zyxware Exp $
+#
+# Dutch translation of Drupal (general)
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+# Generated from files:
+# search404.module,v 1.13.2.5 2007/04/22 15:12:26 Summit
+# search404.info,v 1.2 2007/02/28 15:23:49 Summit
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2008-01-08 11:45+0100\n"
+"PO-Revision-Date: 2008-01-08 11:45+0100\n"
+"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Dutch <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
+
+#: search404.module:12
+msgid "Page not found"
+msgstr "Pagina niet gevonden"
+
+#: search404.module:16
+msgid "Search 404 settings"
+msgstr "Instellingen Search 404"
+
+#: search404.module:17
+msgid "Administer search 404."
+msgstr "Search 404 Beheren"
+
+#: search404.module:98
+msgid "The page you requested was not found."
+msgstr "De pagina die opgevraagd werd is niet gevonden"
+
+#: search404.module:113
+msgid "The page you requested does not exist. A search for %keys resulted in this page."
+msgstr "De pagina die opgevraagd werd bestaat niet. Een zoekopdracht op %keys leidt tot deze pagina."
+
+#: search404.module:119
+msgid "The page you requested does not exist. For your convenience, a search was performed using the query %keys."
+msgstr "De pagina die opgevraagd werd bestaat niet. Er is een zoekopdracht uitgevoerd op %keys"
+
+#: search404.module:135
+msgid "Search results"
+msgstr "Resultaten zoekopdracht"
+
+#: search404.module:152
+msgid "Jump directly to the search result when there is only one result."
+msgstr "Ga meteen naar het zoekresultaat wanneer er maar 1 resultaat is gevonden."
+
+#: search404.module:157
+msgid "Use OR between keywords when searching."
+msgstr "Gebruik OR tussen de zoekwoorden bij het zoeken"
+
+#: search404.module:162
+msgid "Use auto-detection of keywords from search engine referer. BETA! Not for production sites, use at your own risk."
+msgstr "Gebruik auto-detectie van zoekwoorden van verwijzende zoekmachines. BETA! Niet voor productiesites, op eigen risico gebruiken"
+
+#: search404.module:167
+msgid "Words to ignore"
+msgstr "Woorden om te negeren"
+
+#: search404.module:168
+msgid "These words will be ignored from query. Separate words with a space, e.g.: \"and or the\"."
+msgstr "Deze woorden zullen worden genegeerd bij het opstellen van de query. Spatie tussenvoegen als scheiding van de woorden bijvoorbeeld: \"and or the\"."
+
+#: search404.module:173
+msgid "Extensions to ignore"
+msgstr "Extentie om te negeren"
+
+#: search404.module:174
+msgid "These extensions will be ignored from query. Separate extensions with a space, e.g.: \"htm html php\". Do not include leading dot."
+msgstr "Deze extensies zullen worden genegeerd bij het opstellen van de query. Spatie tussenvoegen als scheiding van de woorden bijvoorbeeld: \"htm html php\"."
+
+#: search404.module:179
+msgid "Extensions to abort search"
+msgstr "Extensies om zoekopdracht af te breken"
+
+#: search404.module:180
+msgid "A search will not be performed for a query ending in the following extensions. Separate extensions with a space, e.g.: \"gif jpg jpeg bmp png\". Do not include leading dot."
+msgstr "Zoekopdrachten worden niet uitgevoerd bij queries met de volgende extensies. Extensies scheiden met een spatie. Voorbeeld: \"gif jpg jpeg bmp png\". Punten weglaten."
+
+#: search404.info:0;0
+msgid "Search 404"
+msgstr "Search 404" 

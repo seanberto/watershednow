@@ -390,6 +390,10 @@ function wn_map_content_default_fields() {
       'thumbnail_height' => '90',
       'thumbnail_default_path' => '',
       'thumbnail_link_title' => 'See video',
+      'meta_fields' => array(
+        'title' => 0,
+        'description' => 0,
+      ),
       'providers' => array(
         'flickr_sets' => 'flickr_sets',
         'vimeo' => 'vimeo',
@@ -434,10 +438,6 @@ function wn_map_content_default_fields() {
       'media_flickr_controlbar_preview' => 'none',
       'media_flickr_allowfullscreen_preview' => 1,
       'media_flickr_logo_preview' => '',
-      'meta_fields' => array(
-        'title' => 0,
-        'description' => 0,
-      ),
       'label' => 'Videos and slideshows',
       'weight' => 0,
       'description' => 'Enter the URL(s) of Vimeo or YouTube videos, or Flickr slideshows, that are associated with the map feature.<br /> (For videos, enter the URL of the individual video. For Flickr slideshows, enter the URL of a photo set.)',

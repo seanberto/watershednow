@@ -1,0 +1,117 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Search404\n"
+"POT-Creation-Date: 2009-07-12 19:59+0200\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Guillaume Duveau <guix_d-gnu@yahoo.fr>\n"
+"Language-Team: guix <guix_d-gnu@yahoo.fr>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1)\n"
+"X-Poedit-Language: French\n"
+
+#: search404.module:10;102
+msgid "Page not found"
+msgstr "Page non trouvée"
+
+#: search404.module:17
+msgid "Search 404 settings"
+msgstr "Search 404"
+
+#: search404.module:18
+msgid "Administer search 404."
+msgstr "Administrer search 404."
+
+#: search404.module:116
+msgid "The page you requested does not exist. For your convenience, a google search was performed using the query %keys."
+msgstr "La page que vous avez demandée n'existe pas. Une recherche Google sur la requête %keys a été effectuée."
+
+#: search404.module:122;128
+msgid "The page you requested does not exist. A search for %keys resulted in this page."
+msgstr "La page que vous avez demandée n'existe pas. Une recherche sur %keys a été effectuée dans cette page."
+
+#: search404.module:134
+msgid "The page you requested does not exist. For your convenience, a search was performed using the query %keys."
+msgstr "La page que vous avez demandée n'existe pas. Une recherche sur la requête %keys a été effectuée."
+
+#: search404.module:150
+msgid "Search results"
+msgstr "Résultats de la recherche"
+
+#: search404.module:182
+msgid "Jump directly to the search result when there is only one result."
+msgstr "Sauter directement au résultat de la recherche lorsqu'il n'y a qu'un seul résultat."
+
+#: search404.module:187
+msgid "Jump directly to the first search result even when there are multiple results."
+msgstr "Sauter directement au premier résultat de la recherche quand il y a plusieurs résultats."
+
+#: search404.module:193
+msgid "Show left and right sidebars in page when a 404 search occurs"
+msgstr "Montrer les barres latérales gauche et droite lorsqu'une erreur 404 se produit."
+
+#: search404.module:199
+msgid "Do a Google CSE Search instead of a Drupal Search when a 404 Occurs"
+msgstr "Effectuer une recherche Google CSE au lieu d'une recherche Drupal quand une erreur 404 se produit"
+
+#: search404.module:200
+msgid "Requires Google CSE and Google CSE Search Modules to be Enabled"
+msgstr "Nécessite que les modules Google CSE et Google CSE Search soient activés"
+
+#: search404.module:207
+msgid "Advanced settings"
+msgstr "Réglages avancés"
+
+#: search404.module:214
+msgid "Use OR between keywords when searching."
+msgstr "Utilisez OR entre les mots-clés lors de la recherche."
+
+#: search404.module:219
+msgid "Use auto-detection of keywords from search engine referer."
+msgstr "Utiliser la détection automatique des mots-clés des referers des moteurs de recherche."
+
+#: search404.module:220
+msgid "This feature will conduct a search based on the query string got from a search engine if the URL of the search result points to a 404 page in the current website. Currently supported search engines: Google, Yahoo, Altavista, Lycos, Bing and AOL"
+msgstr "Cette fonctionnalité effectuera une recherche basée sur la requête tapée dans un moteur de recherche quand l'URL de ce résultat pointera vers une page 404 sur votre site. Moteurs de recherche actuellement supportés : Google, Yahoo, Altavista, Lycos, Bing et AOL"
+
+#: search404.module:225
+msgid "Words to ignore"
+msgstr "Mots à exclure"
+
+#: search404.module:226
+msgid "These words will be ignored from the search query. Separate words with a space, e.g.: \"and or the\"."
+msgstr "Ces mots seront exclus de la requête de la recherche.Séparez les mots par un espace, ex : \"et ou le\"."
+
+#: search404.module:231
+msgid "Extensions to ignore"
+msgstr "Extensions à exclure"
+
+#: search404.module:232
+msgid "These extensions will be ignored from the search query, e.g.: http://www.example.com/invalid/page.php will only search for \"invalid page\". Separate extensions with a space, e.g.: \"htm html php\". Do not include leading dot."
+msgstr "Ces extensions seront exclues de la requête de la recherche, ex : http://www.example.com/invalid/page.php cherchera seulement \"invalid page\". Separez les extensions par un espace, ex : \"htm html php\". N'incluez pas le point les précédant."
+
+#: search404.module:237
+msgid "Extensions to abort search"
+msgstr "Extensions qui annulent la recherche"
+
+#: search404.module:238
+msgid "A search will not be performed for a query ending in these extensions. Separate extensions with a space, e.g.: \"gif jpg jpeg bmp png\". Do not include leading dot."
+msgstr "Aucune recherche ne sera effectuée pour une requête finissant dans ces extensions. Séparez les extensions par un espace, ex : \"gif jpg jpeg bmp png\". N'incluez pas le point les précédant."
+
+#: search404.module:243
+msgid "PCRE filter"
+msgstr "Filtre PCRE"
+
+#: search404.module:244
+msgid "This regular expression will be applied to filter all queries. The parts of the path that match the expression will be EXCLUDED from the search. You do NOT have to enclose the regex in forward slashes when defining the PCRE. e.g.: use \"[foo]bar\" instead of \"/[foo]bar/\". On how to use a PCRE Regex please refer <a href=\"http://php.net/pcre\">PCRE pages in the PHP Manual</a>."
+msgstr "Cette expression régulière sera appliquée pour filtrer toutes les requêtes. Les parties du chemin qui vérifient l'expression seront EXCLUES de la recherche. Vous n'avez pas à englober la regex avec des slash quand vous définissez la PCRE. Ex : utilisez \"[foo]bar\" au lieu de \"/[foo]bar/\". Pour savoir comment utiliser une regex PCRE, consultez les <a href=\"http://php.net/pcre\">pages PCRE dans la manuel PHP</a>."
+
+#: search404.module:0
+msgid "search404"
+msgstr "search404"
+
+#: search404.info:0;0
+msgid "Search 404"
+msgstr "Search 404"
+

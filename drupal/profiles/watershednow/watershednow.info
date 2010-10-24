@@ -44,6 +44,8 @@ modules[contrib][] = googleanalytics
 modules[contrib][] = galleryformatter
 modules[contrib][] = vertical_tabs
 modules[contrib][] = follow
+modules[contrib][] = search404
+modules[contrib][] = comment_notify
 
 ;Admin
 modules[contrib][] = admin_menu
