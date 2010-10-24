@@ -38,6 +38,13 @@ function watershednow_profile_tasks(&$task, $url) {
   if( $task == 'watershednow-configure' ) {
     _watershednow_configure($config);
     drupal_flush_all_caches();
+
+    /*
+     * enable all watershed themes
+     * this must happen after clearing caches due to static variable
+     * that can not be reset.
+     */
+    db_query("UPDATE {system} SET status = 1 WHERE type = 'theme' and filename LIKE '%watershed%'");
     $task = 'profile-finished'; //hand control back to the installer
   }
   return '';
