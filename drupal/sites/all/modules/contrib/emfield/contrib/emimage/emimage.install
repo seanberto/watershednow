@@ -1,5 +1,5 @@
 <?php
-// $Id: emimage.install,v 1.1.2.6 2009/09/21 16:20:09 aaron Exp $
+// $Id: emimage.install,v 1.1.2.6.2.2 2010/02/03 18:29:39 aaron Exp $
 
 /**
  * @file
@@ -73,6 +73,13 @@ function emimage_update_1() {
 }
 
 function emimage_update_6001() {
+  // We added options to themes, so need to rebuild the theme registry.
+  drupal_rebuild_theme_registry();
+
+  return array();
+}
+
+function emimage_update_6002() {
   // We added options to themes, so need to rebuild the theme registry.
   drupal_rebuild_theme_registry();
 

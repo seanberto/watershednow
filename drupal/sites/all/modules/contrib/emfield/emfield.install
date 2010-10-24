@@ -1,5 +1,5 @@
 <?php
-// $Id: emfield.install,v 1.1.6.14 2009/11/08 13:19:00 aaron Exp $
+// $Id: emfield.install,v 1.1.6.14.2.8 2010/10/20 20:15:54 aaron Exp $
 
 /**
  * @file
@@ -10,12 +10,29 @@
  * Implementation of hook_install().
  */
 function emfield_install() {
+  $success = drupal_install_schema('emfield');
+
+  if ($success) {
+    drupal_set_message(st('The Embedded Media Field module installed tables successfully.'));
+  }
+  else {
+    drupal_set_message(st('The installation of Embedded Media Field module failed.'), 'error');
+  }
 }
 
 /**
  * Implementation of hook_uninstall().
  */
 function emfield_uninstall() {
+  drupal_uninstall_schema('emfield');
+
+  // Remove all variables that live in our namespace.
+  $result = db_query("SELECT name FROM {variable} WHERE name LIKE 'emfield_%'");
+  while ($row = db_fetch_object($result)) {
+    variable_del($row->name);
+  }
+
+  drupal_set_message(t('Embedded Media Field has been uninstalled.'));
 }
 
 /**
@@ -28,10 +45,54 @@ function emfield_enable() {
  * Implementation of hook_disable().
  */
 function emfield_disable() {
+  cache_clear_all('*', 'cache_emfield_xml', TRUE);
+}
+
+function emfield_requirements($phase) {
+  $requirements = array();
+  // Ensure translations don't break at install time
+  $t = get_t();
+
+  // Check the existance of third party media providers.
+  if ($phase == 'runtime') {
+    $providers = emfield_audit();
+    $emvideo_list = module_exists('emvideo') && emfield_system_list('emvideo');
+    $emimage_list = module_exists('emimage') && emfield_system_list('emimage');
+    $emaudio_list = module_exists('emaudio') && emfield_system_list('emaudio');
+    if (empty($providers) && empty($emvideo_list) && empty($emimage_list) && empty($emaudio_list)) {
+      $value = t('No providers');
+      $description = t('You have no third party media providers enabled. You will need to install additional modules for these; see the !emfield module page for a listing of available modules.', array('!emfield' => l(t('Embedded Media Field'), 'http://drupal.org/project/emfield', array('attributes' => array('target' => '_blank')))));
+      $severity = REQUIREMENT_WARNING;
+    }
+    else if (empty($providers)) {
+      $value = t('Providers enabled');
+      $description = t('All media fields are properly associated with third party media providers. You may still wish to install additional modules; see the !emfield module page for a listing of available modules.', array('!emfield' => l(t('Embedded Media Field'), 'http://drupal.org/project/emfield', array('attributes' => array('target' => '_blank')))));
+      $severity = REQUIREMENT_OK;
+    }
+    else {
+      $value = t('Missing providers');
+      $description = t('The following third party media providers found in existing media fields are currently missing from the system: %providers. You must install the corresponding modules supporting the provider(s) to support them. See the !emfield module page for a listing of available modules.', array('%providers' => implode(', ', $providers), '!emfield' => l(t('Embedded Media Field'), 'http://drupal.org/project/emfield', array('attributes' => array('target' => '_blank')))));
+      $items = array();
+      foreach ($providers as $provider) {
+        $items[] = l($provider, 'http://drupal.org/project/media_'. $provider, array('attributes' => array('target' => '_blank')));
+      }
+      $description .= t('<p>You may be able to locate the missing provider(s) at one or more of the following project pages. Note that these are educated guesses, and may actually not be an existing Drupal project:</p>!list', array('!list' => theme('item_list', $items)));
+      $description .= t('<p>Finally, you might be able to locate the missing provider(s) at one of the %flotsam project pages, such as !video, !image, or !audio. Note that these three are placeholder projects, seriously in need of proper homes. Please contribute if you are able!</p>', array('%flotsam' => t('Media: Flotsam'), '!video' => l(t('Media: Video Flotsam'), 'http://drupal.org/project/media_video_flotsam', array('attributes' => array('target' => '_blank'))), '!image' => l(t('Media: Image Flotsam'), 'http://drupal.org/project/media_image_flotsam', array('attributes' => array('target' => '_blank'))), '!audio' => l(t('Media: Audio Flotsam'), 'http://drupal.org/project/media_audio_flotsam', array('attributes' => array('target' => '_blank')))));
+      $severity = REQUIREMENT_ERROR;
+    }
+    $requirements['emfield'] = array(
+      'title' => $t('Embedded Media Field'),
+      'value' => $value,
+      'description' => $description,
+      'severity' => $severity,
+    );
+  }
+
+  return $requirements;
 }
 
 /**
- *  Botched this the first time. Redo in 6003.
+ * Botched this the first time. Redo in 6003.
  */
 function emfield_update_6001() {
   $ret = array();
@@ -39,7 +100,7 @@ function emfield_update_6001() {
 }
 
 /**
- *  Rebuild themes and views.
+ * Rebuild themes and views.
  */
 function emfield_update_6002() {
   drupal_rebuild_theme_registry();
@@ -54,14 +115,14 @@ function emfield_update_6002() {
 }
 
 /**
- *  This caused an infinite loop in some cases. Redo in 6005.
+ * This caused an infinite loop in some cases. Redo in 6005.
  */
 function emfield_update_6003() {
   return array();
 }
 
 /**
- *  Rebuild themes.
+ * Rebuild themes.
  */
 function emfield_update_6004() {
   drupal_rebuild_theme_registry();
@@ -69,7 +130,7 @@ function emfield_update_6004() {
 }
 
 /**
- *  Add a provider data version column to existing fields.
+ * Add a provider data version column to existing fields.
  */
 function emfield_update_6005() {
   $ret = array();
@@ -148,17 +209,111 @@ function emfield_update_6005() {
 }
 
 /**
- *  Batch function to retrieve the most recent data from providers.
+ * Add new menu item for removing messages for obsolete providers.
+ */
+function emfield_update_6006() {
+  menu_rebuild();
+  return array();
+}
+
+/**
+ * Build a table to cache XML results.
+ */
+function emfield_update_6200() {
+  $schema = array();
+
+  $schema['cache_emfield_xml'] = drupal_get_schema_unprocessed('system', 'cache');
+  $schema['cache_emfield_xml']['description'] = 'Cache table used to store third party XML files for Embedded Media Field.';
+
+  $ret = array();
+  db_create_table($ret, 'cache_emfield_xml', $schema['cache_emfield_xml']);
+  return $ret;
+}
+
+/**
+ * Rebuild menu for new admin settings pages.
+ */
+function emfield_update_6201() {
+  menu_rebuild();
+  return array();
+}
+
+/**
+ * Add a new column to fields for media status.
+ */
+function emfield_update_6202() {
+  $ret = array();
+
+  include_once(drupal_get_path('module', 'content') .'/includes/content.admin.inc');
+
+  // Build a list of fields that need data updating.
+  $fields = array();
+  foreach (content_types_install() as $type_name => $type_fields) {
+    foreach ($type_fields as $field) {
+      if (in_array($field['module'], array('emvideo', 'emimage', 'emaudio'))) {
+        // We only process a given field once.
+        $fields[$field['field_name']] = $field;
+      }
+    }
+  }
+
+  // Update database storage.
+  foreach ($fields as $field) {
+    $new_field = $field;
+
+    unset($field['version']);
+    content_alter_db($field, $new_field);
+
+    $ret[] = array(
+      'query' => t('Added media availability status to the %field field.', array('%field' => $field['field_name'])),
+      'success' => TRUE,
+    );
+  }
+
+  content_clear_type_cache(TRUE);
+  content_associate_fields('emvideo');
+  content_associate_fields('emaudio');
+  content_associate_fields('emimage');
+
+  return $ret;
+}
+
+/**
+ * Rebuild themes and views.
+ */
+function emfield_update_6203() {
+  drupal_rebuild_theme_registry();
+
+  $ret = array();
+
+  if (module_exists('views')) {
+    $ret[] = update_sql("DELETE FROM {cache_views}");
+  }
+
+  return $ret;
+}
+
+/**
+ * Give a warning regarding obsolete providers.
+ */
+function emfield_update_6204() {
+  $warning = t('Embedded Media Field no longer offers default third party media providers. If you have not already done so, you will most likely need to visit the !project project page and install the module(s) supporting the provider(s) you wish to include.', array('!project' => l(t('Embedded Media Field'), 'http://drupal.org/project/emfield', array('attributes' => array('target' => '_blank')))));
+  drupal_set_message($warning, 'warning');
+  return array(array('query' => $warning, 'success' => TRUE));
+}
+
+/**
+ * Batch function to retrieve the most recent data from providers.
  *
- *  @param $field
- *    The field definition.
- *  @param $providers
- *    An optional array of providers to check.
- *  @param $old_data_keys
- *    An optional array of the original version key in the data,
- *    keyed by provider.
- *  @param &$context
- *    The context for the batch operations.
+ * @param $field
+ *   The field definition.
+ * @param $providers
+ *   An optional array of providers to check.
+ * @param $old_data_keys
+ *   An optional array of the original version key in the data,
+ *   keyed by provider.
+ * @param &$context
+ *   The context for the batch operations.
  */
 function _emfield_update_fix_data($field, $providers = array(), $old_data_keys = array(), &$context) {
   // Setup the sandbox the first time through.
@@ -235,4 +390,16 @@ function _emfield_update_fix_data($field, $providers = array(), $old_data_keys =
   else {
     $context['finished'] = 1;
   }
+}
+
+/**
+ * Implementation of hook_schema().
+ */
+function emfield_schema() {
+  $schema = array();
+
+  $schema['cache_emfield_xml'] = drupal_get_schema_unprocessed('system', 'cache');
+  $schema['cache_emfield_xml']['description'] = 'Cache table used to store third party XML files for Embedded Media Field.';
+
+  return $schema;
 }

@@ -1,5 +1,5 @@
 <?php
-// $Id: emimage.theme.inc,v 1.1.2.8 2010/07/19 17:16:26 aaron Exp $
+// $Id: emimage.theme.inc,v 1.1.2.6.2.3 2010/07/19 17:15:51 aaron Exp $
 
 /**
  *  @file
@@ -110,11 +110,20 @@ function theme_emimage_image_full($field, $item, $formatter, $node, $options = a
   return $output;
 }
 
+function theme_emimage_formatter_image_link($element) {
+  $field = content_fields($element['#field_name'], $element['#type_name']);
+  return module_invoke('emimage', 'field_formatter', $field, $element['#item'], $element['#formatter'], $element['#node']);
+}
+
 /**
  *  Format the image using the Default (Full Image) preset.
  */
 function theme_emimage_default($field, $item, $formatter, $node, $options = array()) {
   return theme('emimage_image_full', $field, $item, $formatter, $node, $options);
+}
+
+function theme_emimage_image_link($field, $item, $formatter, $node, $options = array()) {
+  return module_invoke('emimage', $item['provider'] .'_embedded_link', $item['value']);
 }
 
 /**

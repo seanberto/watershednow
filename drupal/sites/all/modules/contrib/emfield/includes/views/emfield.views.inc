@@ -1,5 +1,5 @@
 <?php
-// $Id: emfield.views.inc,v 1.1.2.1 2009/09/30 15:11:01 aaron Exp $
+// $Id: emfield.views.inc,v 1.1.2.1.2.1 2010/05/12 21:46:30 aaron Exp $
 
 /**
  * @file
@@ -26,6 +26,9 @@ function emfield_views_handlers() {
       'emfield_handler_argument_provider' => array(
         'parent' => 'content_handler_argument_string',
       ),
+      'emfield_handler_argument_status' => array(
+        'parent' => 'content_handler_argument_numeric',
+      ),
 //       'emfield_handler_argument_numeric' => array(
 //         'parent' => 'views_handler_argument_numeric',
 //       ),
@@ -38,6 +41,9 @@ function emfield_views_handlers() {
 
       // field handlers
       'emfield_handler_field_provider' => array(
+        'parent' => 'content_handler_field_multiple',
+      ),
+      'emfield_handler_field_status' => array(
         'parent' => 'content_handler_field_multiple',
       ),
 //       'emfield_handler_field_multiple' => array(
@@ -78,9 +84,6 @@ function theme_emfield_handler_field_provider($item, $field, $node, $values, $fo
     $module = $field['module'];
     $info = emfield_include_invoke($module, $provider, 'info');
     switch ($format) {
-      case 'provider':
-        $output = check_plain($info['name']);
-        break;
       case 'provider_raw':
         $output = check_plain($info['provider']);
         break;
@@ -96,7 +99,30 @@ function theme_emfield_handler_field_provider($item, $field, $node, $values, $fo
       case 'provider_original_url':
         $output = url(emfield_include_invoke($module, $provider, 'embedded_link', $item['value']));
         break;
+      case 'provider':
+      default:
+        $output = check_plain($info['name']);
+        break;
     }
   }
   return $output;
+}
+
+function theme_emfield_handler_field_status($item, $field, $node, $values, $format) {
+  $output = '';
+  if (!empty($item) || $item == '0') {
+    switch ($format) {
+      case 'status':
+      default:
+        switch ($item['status']) {
+          case EMFIELD_STATUS_UNAVAILABLE:
+            return t('unavailable');
+          case EMFIELD_STATUS_PRIVATE:
+            return t('private');
+          case EMFIELD_STATUS_AVAILABLE:
+          default:
+            return t('available');
+        }
+    }
+  }
 }

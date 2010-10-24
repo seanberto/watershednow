@@ -1,12 +1,12 @@
-; $Id: emimage.info,v 1.1.2.3 2008/09/14 20:07:59 alexua Exp $
+; $Id: emimage.info,v 1.1.2.3.2.1 2010/08/02 02:21:54 alexua Exp $
 name = Embedded Image Field
 description = Defines a field type for displaying images from third party providers, such as Flickr or Photobucket.
 dependencies[] = emfield
-package = CCK
+package = Media
 core = 6.x
-; Information added by drupal.org packaging script on 2010-09-22
-version = "6.x-1.25"
+; Information added by drupal.org packaging script on 2010-10-20
+version = "6.x-2.2"
 core = "6.x"
 project = "emfield"
-datestamp = "1285164662"
+datestamp = "1287608170"
 

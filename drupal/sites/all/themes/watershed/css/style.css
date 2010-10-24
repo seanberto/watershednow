@@ -176,3 +176,8 @@ h3.block-title { margin-bottom:.25em; }
   height: 100px;
   margin-top: -100px;*/
 }
+
+/* @FIXME - There's a bug that prevents content-top blocks from displaying on OL map views w/o a title. So we hide it. */
+body.page-map h1.title {
+  display: none;
+}

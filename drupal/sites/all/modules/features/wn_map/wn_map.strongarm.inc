@@ -533,6 +533,24 @@ function wn_map_strongarm() {
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'media_vimeo__on_screen_info';
+  $strongarm->value = array(
+    'portrait' => 'portrait',
+    'title' => 'title',
+    'byline' => 'byline',
+  );
+
+  $export['media_vimeo__on_screen_info'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'media_youtube__zend_path';
+  $strongarm->value = 'sites/all/libraries/ZendGdata-1.10.8/library';
+
+  $export['media_youtube__zend_path'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'node_options_map_feature';
   $strongarm->value = array(
     0 => 'status',
@@ -721,5 +739,12 @@ function wn_map_strongarm() {
   $strongarm->value = 0;
 
   $export['taxonomy_image_wrapper'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'wysiwyg_imagefield_map_feature';
+  $strongarm->value = 'field_image_assets';
+
+  $export['wysiwyg_imagefield_map_feature'] = $strongarm;
   return $export;
 }

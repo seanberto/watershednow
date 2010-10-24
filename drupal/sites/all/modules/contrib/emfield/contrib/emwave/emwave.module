@@ -1,5 +1,5 @@
 <?php
-// $Id: emwave.module,v 1.1.2.1 2009/10/13 13:26:44 aaron Exp $
+// $Id: emwave.module,v 1.1.2.1.2.1 2009/12/08 21:19:21 aaron Exp $
 
 /**
  * @file
@@ -37,6 +37,7 @@ function emwave_menu() {
 function emwave_emfield_info() {
   return array(
     '#name' => t('Embedded Wave Field'),
+    '#settings_title' => t('Waves'),
     '#settings_description' => t('The following settings configure content with any fields controlled by Embedded Wave Field.'),
   );
 }
@@ -207,7 +208,7 @@ function emwave_widget_settings($op, $widget) {
         $color = variable_get('emwave_default_thumbnail_height', EMWAVE_DEFAULT_COLOR);
         $font = variable_get('emwave_default_thumbnail_height', EMWAVE_DEFAULT_FONT);
         $font_size = variable_get('emwave_default_thumbnail_height', EMWAVE_DEFAULT_FONT_SIZE);
-        
+
         $form['style'] = array(
           '#type' => 'fieldset',
           '#title' => t('Style Settings'),
@@ -289,7 +290,7 @@ function emwave_widget_settings($op, $widget) {
           form_set_error('preview_height', t('"Preview height" must be an integer.'));
         }
        // @TODO Add validators for color and font settings.
-       
+
        // @TODO Add validators for comment and participant settings.
       }
       break;

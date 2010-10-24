@@ -1,0 +1,15 @@
+; $Id: media_youtube.info,v 1.1.2.2 2010/02/19 00:46:38 aaron Exp $
+
+name = Media: YouTube
+description = Provides YouTube support to the Embedded Media Field module.
+package = "Media"
+core = 6.x
+dependencies[] = emfield
+dependencies[] = emvideo
+
+; Information added by drupal.org packaging script on 2010-04-09
+version = "6.x-1.1"
+core = "6.x"
+project = "media_youtube"
+datestamp = "1270840208"
+

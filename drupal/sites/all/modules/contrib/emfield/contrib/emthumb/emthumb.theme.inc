@@ -1,5 +1,5 @@
 <?php
-// $Id: emthumb.theme.inc,v 1.1.2.1 2009/10/21 16:25:20 aaron Exp $
+// $Id: emthumb.theme.inc,v 1.1.2.1.2.2 2010/10/20 20:21:22 aaron Exp $
 
 /**
  * @file
@@ -103,6 +103,18 @@ function theme_emthumb_imagecache_formatter_preview($element) {
 }
 
 /**
+ *  Returns the imagecache image linked to a modal colorbox.
+ */
+function theme_emthumb_imagecache_formatter_colorbox($element) {
+  $options = _emthumb_formatter_theme_helper($element);
+  $options['thumbnail'] = _emthumb_imagecache_formatter_default($element);
+  switch ($options['module']) {
+    case 'emvideo':
+      return theme('emvideo_colorbox', $options['field'], $options['item'], $options['formatter'], $options['node'], $options);
+  }
+}
+
+/**
  *  Returns the imagecache image linked to a modal thickbox.
  */
 function theme_emthumb_imagecache_formatter_thickbox($element) {
@@ -146,18 +158,20 @@ function _emthumb_imagecache_formatter_default($element, $options = NULL) {
   if (!isset($options)) {
     $options = _emthumb_formatter_theme_helper($element);
   }
-  if ($thumbnail = emthumb_thumbnail_path($options['item'])) {
-    return theme('imagecache', $options['presetname'], $thumbnail);
-  }
-  switch ($options['module']) {
-    case 'emvideo':
-      // Look for a local file first for imagecaching.
-      $options['return_url'] = $options['raw'] = TRUE;
-      $thumbnail = theme('emvideo_video_thumbnail', $options['field'], $options['item'], $options['formatter'], $options['node'], TRUE, $options);
-      if (url($thumbnail) != url($thumbnail, array('absolute' => TRUE))) {
-        return theme('imagecache', $options['presetname'], $thumbnail);
-      }
-      return theme('image', $thumbnail);
+  if ($options['item']['value']) {
+    if ($thumbnail = emthumb_thumbnail_path($options['item'])) {
+      return theme('imagecache', $options['presetname'], $thumbnail);
+    }
+    switch ($options['module']) {
+      case 'emvideo':
+        // Look for a local file first for imagecaching.
+        $options['return_url'] = $options['raw'] = TRUE;
+        $thumbnail = theme('emvideo_video_thumbnail', $options['field'], $options['item'], $options['formatter'], $options['node'], TRUE, $options);
+        if (url($thumbnail) != url($thumbnail, array('absolute' => TRUE))) {
+          return theme('imagecache', $options['presetname'], $thumbnail);
+        }
+        return theme('image', $thumbnail);
+    }
   }
 }
 

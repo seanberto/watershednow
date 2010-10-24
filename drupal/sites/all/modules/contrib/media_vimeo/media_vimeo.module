@@ -1,0 +1,143 @@
+<?php
+// $Id: media_vimeo.module,v 1.1.2.1 2010/09/23 21:04:55 aaron Exp $
+
+/**
+ *  @file media_vimeo/media_vimeo.module
+ *  Embedded Video Field provider file for Vimeo.com.
+ */
+
+/* ***************************************** */
+/* INCLUDES                                  */
+/* ***************************************** */
+
+// A registry of variable_get defaults.
+include_once('includes/media_vimeo.variables.inc');
+
+/**
+ * Implementation of hook_menu().
+ */
+function media_vimeo_menu() {
+  return array(
+    'admin/settings/media_vimeo' => array(
+      'title' => 'Media: Vimeo',
+      'description' => 'Administer the Media: Vimeo module.',
+      'page callback' => 'drupal_get_form',
+      'page arguments' => array('media_vimeo_settings'),
+      'access arguments' => array('administer site configuration'),
+      'file' => 'includes/media_vimeo.admin.inc',
+    ),
+  );
+}
+
+/**
+ * Implementation of hook_theme().
+ */
+function media_vimeo_theme($existing, $type, $theme, $path) {
+  return array(
+    'media_vimeo' => array(
+      'file' => 'media_vimeo.theme.inc',
+      'path' => $path .'/themes',
+      'arguments' => array('video_code' => NULL, 'options' => array()),
+      'template' => 'media-vimeo',
+    ),
+    'media_vimeo_flash' => array(
+      'file' => 'media_vimeo.theme.inc',
+      'path' => $path .'/themes',
+      'arguments' => array('video_code' => NULL, 'options' => array()),
+      'template' => 'media-vimeo-flash',
+    ),
+    'media_vimeo_universal' => array(
+      'file' => 'media_vimeo.theme.inc',
+      'path' => $path .'/themes',
+      'arguments' => array('video_code' => NULL, 'options' => array()),
+      'template' => 'media-vimeo-universal',
+    ),
+  );
+}
+
+/**
+ * Implementation of hook_emfield_providers().
+ */
+function media_vimeo_emfield_providers($module, $provider = NULL) {
+  // We know this module only includes the main provider file, avoid needless
+  // PHP warnings.
+  if ($module == 'emvideo' && (!isset($provider) || ($provider == 'vimeo'))) {
+    static $path;
+    // Cache the result for later.
+    if (!isset($path)) {
+      $found = drupal_system_listing("$provider\.inc$", drupal_get_path('module', 'media_vimeo') ."/includes/providers/$module", 'name', 0);
+      if (is_array($found) && !empty($found)) {
+        $path = $found;
+      }
+    }
+    return $path;
+  }
+}
+
+/**
+ * Return the direct URL to this video.
+ *
+ * @param string $video_code
+ *  The Vimeo video id.
+ *
+ * @return string
+ *  The direct URL to the video in question.
+ */
+function media_vimeo_video_url($video_code) {
+  return url('http://www.vimeo.com/'. $video_code);
+}
+
+/**
+ * The URL to the thumbnail video still for the media.
+ *
+ * @param $string $video_code
+ *  The Vimeo video ID.
+ *
+ * @return string
+ *  The URL to the thumbnail.
+ */
+function media_vimeo_thumbnail_url($video_code) {
+  $data = media_vimeo_data($video_code);
+  if (isset($data['thumbnail_large'])) {
+    return $data['thumbnail_large'];
+  }
+  else if (isset($data['thumbnail_medium'])) {
+    return $data['thumbnail_medium'];
+  }
+  if (isset($data['thumbnail_small'])) {
+    return $data['thumbnail_small'];
+  }
+
+  // Fallback to oembed.
+  $xml = emfield_request_xml('vimeo', 'http://vimeo.com/api/oembed.xml?url=http%3A//vimeo.com/'. $video_code, array(), TRUE, FALSE, $video_code);
+  return url($xml['OEMBED']['THUMBNAIL_URL'][0]);
+}
+
+/**
+ * Return an array of external metadata provided by Vimeo.
+ *
+ * @param string $video_code
+ *  The Vimeo video ID.
+ *
+ * @return array
+ *  The metadata associated with the video.
+ */
+function media_vimeo_data($video_code) {
+  $url = url('http://vimeo.com/api/v2/video/'. $video_code .'.php');
+  $xml = emfield_request_xml('vimeo', $url, array(), TRUE, FALSE, $video_code, TRUE);
+  return array_pop($xml);
+}
+
+/**
+ * Return the duration of a Vimeo video.
+ *
+ * @param string $video_code
+ *  The Vimeo video ID.
+ *
+ * @return integer
+ *  The duration in seconds.
+ */
+function media_vimeo_duration($video_code) {
+  $data = media_vimeo_data($video_code);
+  return $data['duration'];
+}

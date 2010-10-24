@@ -1,0 +1,173 @@
+<?php
+// $Id: media_youtube.module,v 1.1.2.6 2010/04/08 20:35:49 aaron Exp $
+
+/**
+ *  @file
+ *  Embedded Video Field provider file for YouTube.com.
+ */
+
+/* ***************************************** */
+/* INCLUDES                                  */
+/* ***************************************** */
+
+// A registry of variable_get defaults.
+include_once('includes/media_youtube.variables.inc');
+
+/**
+ * Implementation of hook_menu().
+ */
+function media_youtube_menu() {
+  return array(
+    'admin/settings/media_youtube' => array(
+      'title' => 'Media: YouTube',
+      'description' => 'Administer the Media: YouTube module.',
+      'page callback' => 'drupal_get_form',
+      'page arguments' => array('media_youtube_settings'),
+      'access arguments' => array('administer media youtube'),
+      'file' => 'includes/media_youtube.admin.inc',
+    ),
+  );
+}
+
+/**
+ * Implementation of hook_emfield_providers().
+ */
+function media_youtube_emfield_providers($module, $provider = NULL) {
+  // We know this module only includes the main provider file, avoid needless
+  // PHP warnings.
+  if ($module == 'emvideo' && (!isset($provider) || ($provider == 'youtube'))) {
+    static $path;
+    // Cache the result for later.
+    if (!isset($path)) {
+      $found = drupal_system_listing("$provider\.inc$", drupal_get_path('module', 'media_youtube') ."/providers/$module", 'name', 0);
+      if (is_array($found) && !empty($found)) {
+        $path = $found;
+      }
+    }
+    return $path;
+  }
+}
+
+/**
+ * Implementation of media_mover hook
+ * @param $op is the operator to return
+ * @param $action is which action is being called
+ * @param $verb is the verb being run
+ * @param $configuration is the specific configuration saved for the action for this configuration
+ * @param $file is the file in use
+ * @param $job is the full configuration data currently running
+ */
+function media_youtube_media_mover($op = NULL, $action = NULL, $configuration = NULL, &$file=array(), $job = NULL, $nid = NULL) {
+  switch ($op) {
+    case 'name':
+      return t('Media: YouTube');
+      break;
+
+    case 'actions':
+      return array(
+        'process' => array(
+          1 => t('Upload video to YouTube.'),
+        ),
+        'storage' => array(
+          2 => t('Upload video to YouTube.'),
+        ),
+      );
+      break;
+
+    case 'process':
+    case 'storage':
+      module_load_include('inc', 'media_youtube', 'includes/media_youtube.media_mover');
+      return media_youtube_upload_video($file, $configuration);
+      break;
+
+    case 'config':
+      switch ($action) {
+        case '1':
+        case '2':
+          module_load_include('inc', 'media_youtube', 'includes/media_youtube.media_mover');
+          return media_youtube_config($configuration);
+      }
+      break;
+  }
+}
+
+/**
+ * Return the direct URL to this video.
+ *
+ * @param string $id
+ *  The YouTube video id.
+ *
+ * @return string
+ *  The direct URL to the video in question.
+ */
+function media_youtube_video_url($id) {
+  return url('http://www.youtube.com/watch', array('query' => 'v='. $id));
+}
+
+/**
+ * Validation function for Media: YouTube's Media Mover configuration form.
+ *
+ * @see media_youtube_config().
+ */
+function media_youtube_validate_configuration($element, &$form_state) {
+  if ($values = media_mover_api_extract_form_data($element, $form_state)) {
+    foreach (array('media_youtube_default_title' => t('Default title'), 'media_youtube_default_description' => t('Default description')) as $field => $field_name) {
+      if (empty($values[$field])) {
+        // @TODO: Need to use 1 or 2 as specified by the configuration.
+        form_set_error('storage--media_youtube--1--'. $field, t('%field field is required.', array('%field' => $field_name)));
+      }
+    }
+  }
+//   if (strlen($values['media_youtube_default_description']) > media_youtube_variable_get('description_length')) {
+//     form_set_error('storage--media_youtube--1--media_youtube_default_description', t('The default description must be @length characters or less.', array('@length' => media_youtube_variable_get('description_length'))));
+//   }
+}
+
+/**
+ * Implementation of hook_init().
+ */
+function media_youtube_init() {
+  // Autoload the Zend_Loader class when needed.
+  spl_autoload_register('media_youtube_autoload');
+}
+
+/**
+ * Autoload the Zend_Loader class when needed.
+ */
+function media_youtube_autoload($class_name) {
+  if ($class_name == 'Zend_Loader') {
+    include_once(media_youtube_zend_path() .'/Zend/Loader.php');
+  }
+}
+
+/**
+ * Return the path to the Zend library.
+ *
+ * If media_youtube_variable_get('zend_path') has not yet been set, then
+ * this will attempt to autodiscover the path if the Gdata.php file exists
+ * within sites/all/libraries/* or sites/example.com/libraries/*. It will also
+ * set the path to media_youtube_variable_get('zend_path').
+ *
+ * The library is available from http://framework.zend.com/download/gdata/.
+ *
+ * @param boolean $reset
+ *  (Optional) If TRUE, then reset the variable and attempt a new autodiscovery.
+ * @return string
+ *  The path to the Zend Gdata.php and related files.
+ */
+function media_youtube_zend_path($reset = FALSE) {
+  static $path;
+
+  if (!isset($path) || $reset) {
+    if (!($path = media_youtube_variable_get('zend_path')) || $reset) {
+      $files = drupal_system_listing('^Gdata\.php$', 'libraries', 'basename', 0);
+      if (isset($files['Gdata.php'])) {
+        $path = dirname($files['Gdata.php']->filename);
+        $path = substr($path,0,-strlen(strrchr($path,"/")));
+        media_youtube_variable_set('zend_path', $path);
+      }
+    }
+  }
+
+  return $path;
+}

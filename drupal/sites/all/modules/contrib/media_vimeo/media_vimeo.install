@@ -1,0 +1,66 @@
+<?php
+// $Id: media_vimeo.install,v 1.1 2010/09/17 16:16:33 aaron Exp $
+
+/**
+ * @file
+ * This is Media: Vimeo's installation, configuration, and removal file.
+ */
+
+/**
+ * Implementation of hook_install().
+ */
+function media_vimeo_install() {
+  // Ensure we have the required variable namespace.
+  drupal_load('module', 'media_vimeo');
+
+  return _media_vimeo_convert_old_variables();
+}
+
+/**
+ * Implementation of hook_uninstall().
+ */
+function media_vimeo_uninstall() {
+  foreach (media_vimeo_variable_default() as $variable => $value) {
+    media_vimeo_variable_del($variable);
+  }
+  return array(array('success' => TRUE, 'query' => "Deleted all variables in the Media: Vimeo namespace."));
+}
+
+/**
+ * Convert pre-existing variables to the Media: Vimeo variable namespace.
+ */
+function _media_vimeo_convert_old_variables() {
+  $ret = array();
+
+  $variables = array(
+    'emvideo_vimeo_color_override' => 'color_override',
+    'emvideo_vimeo_color' => 'color',
+    'emvideo_vimeo_on_screen_info' => 'on_screen_info',
+    'emvideo_vimeo_full_screen' => 'full_screen',
+    'emvideo_vimeo_api_key' => 'api_key',
+    'emvideo_vimeo_api_secret' => 'api_secret',
+    'emvideo_vimeo_thumb_size' => 'thumb_size',
+  );
+
+  foreach ($variables as $old_variable => $new_variable) {
+    _media_vimeo_migrate_variable($old_variable, $new_variable);
+  }
+  $ret[] = array('success' => TRUE, 'query' => "Converted variables to the Media: Brightcove variable namespace.");
+
+  // Add the new settings page to the menu.
+  menu_rebuild();
+  $ret[] = array('success' => TRUE, 'query' => "Rebuilt the menu for the new administrative settings page.");
+
+  return $ret;
+}
+
+/**
+ * Migrate a variable from the old namespace.
+ */
+function _media_vimeo_migrate_variable($old_variable, $new_variable) {
+  $value = variable_get($old_variable, media_vimeo_variable_default($new_variable));
+  if (media_vimeo_variable_get($new_variable) != $value) {
+    media_vimeo_variable_set($new_variable, $value);
+  }
+  variable_del($old_variable);
+}

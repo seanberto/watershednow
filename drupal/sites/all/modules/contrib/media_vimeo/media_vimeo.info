@@ -1,0 +1,15 @@
+; $Id: media_vimeo.info,v 1.1 2010/09/17 16:16:33 aaron Exp $
+
+name = Media: Vimeo
+description = Provides Vimeo support to the Embedded Media Field module.
+package = "Media"
+core = 6.x
+dependencies[] = emfield
+dependencies[] = emvideo
+
+; Information added by drupal.org packaging script on 2010-09-23
+version = "6.x-1.1"
+core = "6.x"
+project = "media_vimeo"
+datestamp = "1285276865"
+

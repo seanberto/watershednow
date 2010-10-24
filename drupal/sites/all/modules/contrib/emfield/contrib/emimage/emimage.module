@@ -1,5 +1,5 @@
 <?php
-// $Id: emimage.module,v 1.1.2.14 2009/09/21 16:20:09 aaron Exp $
+// $Id: emimage.module,v 1.1.2.14.2.2 2010/02/03 18:26:09 aaron Exp $
 
 /**
  * @file
@@ -34,6 +34,7 @@ function emimage_menu() {
 function emimage_emfield_info() {
   return array(
     '#name' => t('Embedded Image Field'),
+    '#settings_title' => t('Images'),
     '#settings_description' => t('The following settings configure content with any fields controlled by Embedded Image Field.'),
   );
 }
@@ -109,6 +110,10 @@ function emimage_field_formatter_info() {
     ),
     'image_embed' => array(
       'label' => t('Embed Code'),
+      'field types' => $types,
+    ),
+    'image_link' => array(
+      'label' => t('Link to Image'),
       'field types' => $types,
     ),
   );
@@ -317,6 +322,14 @@ function emimage_theme(){
         'options' => array(),
       ),
       'file' => 'emimage.theme.inc',
+    ),
+    'emimage_image_link' => array(
+        'arguments' => array('element' => NULL),
+        'file' => 'emimage.theme.inc'
+    ),
+    'emimage_formatter_image_link' => array(
+        'arguments' => array('element' => NULL),
+        'file' => 'emimage.theme.inc'
     ),
     'emimage_image_image' => array(
       'arguments' => array(

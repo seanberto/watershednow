@@ -1,5 +1,5 @@
 <?php
-// $Id: emfield.cck.inc,v 1.1.2.35 2010/07/20 13:52:06 aaron Exp $
+// $Id: emfield.cck.inc,v 1.1.2.30.2.6 2010/07/21 20:12:01 aaron Exp $
 
 /**
  * @file
@@ -23,11 +23,14 @@ function _emfield_field_columns($field) {
     // An array for any extra data required by this media,
     // such as unique thumbnail requirements or rss feed data.
     'data' => array('type' => 'text', 'size' => 'big', 'not null' => TRUE, 'not null' => FALSE, 'sortable' => FALSE),
+    // Some providers may have media that appears in results, but may be
+    // unavailable or private.
+    'status' => array('description' => "The availability status of this media.", 'type' => 'int', 'unsigned' => 'TRUE', 'not null' => TRUE, 'default' => EMFIELD_STATUS_AVAILABLE),
     // The version of the provider's data, as an integer. In general, this
     // number will be increased incrementally as changes to the API are
     // introduced, or the module introduces or requires new data.
     // Emfield uses this periodically in its updates.
-    'version' => array('description' => t("The version of the provider's data."), 'type' => 'int', 'unsigned' => TRUE, 'not null' => TRUE, 'default' => 0),
+    'version' => array('description' => "The version of the provider's data.", 'type' => 'int', 'unsigned' => TRUE, 'not null' => TRUE, 'default' => 0),
   );
 
   // Allow other modules to add new columns.
@@ -263,6 +266,8 @@ function _emfield_emfield_field_settings($op, $field) {
     case 'views data':
       $table_alias = content_views_tablename($field);
       $data = content_views_field_views_data($field);
+
+      // Add provider views support.
       $field_provider = $field['field_name'] .'_provider';
       $data[$table_alias][$field_provider] = $data[$table_alias][$field['field_name'] .'_embed'];
       $data[$table_alias][$field_provider]['title'] .= t(' - Provider');
@@ -275,6 +280,20 @@ function _emfield_emfield_field_settings($op, $field) {
       $data[$table_alias][$field_provider]['argument']['handler'] = 'emfield_handler_argument_provider';
       $data[$table_alias][$field_provider]['filter']['field'] = $field_provider;
       $data[$table_alias][$field_provider]['sort']['field'] = $field_provider;
+
+      // Add status views support.
+      $field_status = $field['field_name'] .'_status';
+      $data[$table_alias][$field_status] = $data[$table_alias][$field['field_name'] .'_embed'];
+      $data[$table_alias][$field_status]['title'] .= t(' - Status');
+      $data[$table_alias][$field_status]['field']['title'] = $data[$table_alias][$field_status]['title'];
+      $data[$table_alias][$field_status]['title short'] = t('Status');
+      $data[$table_alias][$field_status]['field']['title short'] = $data[$table_alias][$field_status]['title short'];
+      $data[$table_alias][$field_status]['field']['field'] = $field_status;
+      $data[$table_alias][$field_status]['field']['handler'] = 'emfield_handler_field_status';
+      $data[$table_alias][$field_status]['argument']['field'] = $field_status;
+      $data[$table_alias][$field_status]['argument']['handler'] = 'content_handler_argument_number';
+      $data[$table_alias][$field_status]['filter']['field'] = $field_status;
+      $data[$table_alias][$field_status]['sort']['field'] = $field_status;
       return $data;
     case 'database columns':
       return emfield_field_columns($field);

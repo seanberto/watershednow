@@ -1,5 +1,5 @@
 <?php
-// $Id: emvideo.theme.inc,v 1.1.2.39 2010/07/19 17:11:35 aaron Exp $
+// $Id: emvideo.theme.inc,v 1.1.2.38.2.11 2010/10/20 20:33:21 aaron Exp $
 
 /**
  * @file
@@ -36,6 +36,24 @@ function theme_emvideo_video_thumbnail_no_link($field, $item, $formatter, $node,
 function theme_emvideo_video_thumbnail_provider_link($field, $item, $formatter, $node, $options = array()) {
   $options['link_url'] = isset($options['link_url']) ? $options['link_url'] : emfield_include_invoke('emvideo', $item['provider'], 'embedded_link', $item['value'], $item['data']);
   return theme('emvideo_video_thumbnail', $field, $item, $formatter, $node, FALSE, $options);
+}
+
+/**
+ * Returns the relative path to the video thumbnail.
+ */
+function theme_emvideo_video_thumbnail_path($field, $item, $formatter, $node, $options = array()) {
+  $options['return_url'] = TRUE;
+  return theme('emvideo_video_thumbnail', $field, $item, $formatter, $node, TRUE, $options);
+}
+
+/**
+ * Returns the absolute URL to the video thumbnail.
+ */
+function theme_emvideo_video_thumbnail_url($field, $item, $formatter, $node, $options = array()) {
+  $options['return_url'] = TRUE;
+  $options['raw'] = TRUE;
+  $path = theme('emvideo_video_thumbnail', $field, $item, $formatter, $node, TRUE, $options);
+  return url($path, array('absolute' => TRUE));
 }
 
 /**
@@ -105,15 +123,18 @@ function theme_emvideo_video_thumbnail($field, $item, $formatter, $node, $no_lin
   $link_url = isset($options['link_url']) ? $options['link_url'] : 'node/'. $node->nid;
 
   // Define the title/alt to display for the link hover.
-  $link_title = isset($options['link_title']) ? $options['link_title'] : (isset($options['title']) ? $options['title'] : (isset($field['widget']['thumbnail_link_title']) ? $field['widget']['thumbnail_link_title'] : variable_get('emvideo_default_thumbnail_link_title', t('See video'))));
+  $link_title = isset($options['link_title']) ? $options['link_title'] : (isset($options['title']) ? $options['title'] : (isset($field['widget']['thumbnail_link_title']) ? $field['widget']['thumbnail_link_title'] : (isset($item['title']) ? $item['title'] : variable_get('emvideo_default_thumbnail_link_title', t('See video')))));
   if (module_exists('token')) {
     // Allow the editor to use [title] tokens.
     $link_title = token_replace($link_title, 'global', $node);
   }
-  $image_title = isset($options['image_title']) ? $options['image_title'] : $link_title;
-  $image_alt = isset($options['image_alt']) ? $options['image_alt'] : $link_title;
+  $image_title = isset($options['image_title']) ? $options['image_title'] : (isset($item['title']) ? $item['title'] : $link_title);
+  $image_alt = isset($options['image_alt']) ? $options['image_alt'] : (isset($item['description']) ? $item['description'] : $link_title);
 
   if (isset($thumbnail_url)) {
+    if (!empty($options['absolute'])) {
+      $thumbnail_url = url($thumbnail_url, array('absolute' => $options['absolute']));
+    }
     if (isset($options['return_url'])) {
       return $options['raw'] ? $thumbnail_url : url($thumbnail_url);
     }
@@ -156,7 +177,7 @@ function theme_emvideo_video_video($field, $item, $formatter, $node, $options = 
     $height = isset($options['height']) ? $options['height'] : ($field['widget']['video_height'] ? $field['widget']['video_height'] : variable_get('emvideo_default_video_height', EMVIDEO_DEFAULT_VIDEO_HEIGHT));
     $autoplay = isset($options['autoplay']) ? $options['autoplay'] : $field['widget']['video_autoplay'];
     $options['node'] = $node;
-    $output = module_invoke('emfield', 'include_invoke', 'emvideo', $item['provider'], 'video', $embed, $width, $height, $field, $item, $node, $autoplay, $options);
+    $output = emfield_include_invoke('emvideo', $item['provider'], 'video', $embed, $width, $height, $field, $item, $node, $autoplay, $options);
     $output = '<div class="emvideo emvideo-video emvideo-'. check_plain($item['provider']) .'">'. $output .'</div>';
   }
 
@@ -188,15 +209,15 @@ function theme_emvideo_video_preview($field, $item, $formatter, $node, $options 
     $height = isset($options['height']) ? $options['height'] : (isset($field['widget']['preview_height']) ? $field['widget']['preview_height'] : variable_get('emvideo_default_preview_height', EMVIDEO_DEFAULT_PREVIEW_HEIGHT));
     $autoplay = isset($options['autoplay']) ? $options['autoplay'] : (isset($field['widget']['preview_autoplay']) ? $field['widget']['preview_autoplay'] : FALSE);
     $options['node'] = $node;
-    $output = module_invoke('emfield', 'include_invoke', 'emvideo', $item['provider'], 'preview', $embed, $width, $height, $field, $item, $node, $autoplay, $options);
+    $output = emfield_include_invoke('emvideo', $item['provider'], 'preview', $embed, $width, $height, $field, $item, $node, $autoplay, $options);
     $output = '<div class="emvideo emvideo-preview emvideo-'. check_plain($item['provider']) .'">'. $output .'</div>';
-}
+  }
 
   return $output;
 }
 
 function theme_emvideo_modal_generic($field, $item, $formatter, $node, $options = array()) {
-  $title = isset($options['title']) ? $options['title'] : (isset($node->title) ? $node->title : (isset($node->node_title) ? $node->node_title : (isset($field['widget']['thumbnail_link_title']) ? $field['widget']['thumbnail_link_title'] : variable_get('emvideo_default_thumbnail_link_title', t('See video')))));
+  $title = isset($options['title']) ? $options['title'] : (isset($item['title']) ? $item['title'] : (isset($node->title) ? $node->title : (isset($node->node_title) ? $node->node_title : (isset($field['widget']['thumbnail_link_title']) ? $field['widget']['thumbnail_link_title'] : variable_get('emvideo_default_thumbnail_link_title', t('See video'))))));
   $thumbnail = isset($options['thumbnail']) ? $options['thumbnail'] : theme('emvideo_video_thumbnail', $field, $item, 'video_thumbnail', $node, TRUE, $options);
   $width = ($formatter == 'video_replace_preview') ? $field['widget']['preview_width'] : $field['widget']['video_width'];
   $height = ($formatter == 'video_replace_preview') ? $field['widget']['preview_height'] : $field['widget']['video_height'];
@@ -220,6 +241,9 @@ function theme_emvideo_modal_generic($field, $item, $formatter, $node, $options 
     // Shadowbox needs a .php extension so it knows to open as an iFrame.
     $destination .= '/index.php';
   }
+  else if ($options['modal'] == 'colorbox-load') {
+    $attributes['query'] = 'width='. ($width + 4) .'&height='. ($height + 7) .'&iframe=true';
+  }
 
   if (($options['modal'] == 'lightbox2') && function_exists('lightbox2_add_files')) {
     lightbox2_add_files();
@@ -237,7 +261,14 @@ function theme_emvideo_modal_generic($field, $item, $formatter, $node, $options 
   if ($options['wrapper-class']) {
     $class .= ' '. $options['wrapper-class'];
   }
-  $output = '<div class="'. $class .'">'. l($thumbnail, $destination, $attributes) .'</div>';
+  $display_title = '';
+  // Create "title" container
+  if (isset($options['title'])) {
+    $display_title = '<div class="item-title">'. $options['title'] ."</div>";
+  } else if (isset($item['title'])) {
+    $display_title = '<div class="item-title">'. $item['title']. "</div>";
+  }
+  $output = '<div class="'. $class .'">'. l($thumbnail, $destination, $attributes) . $display_title .'</div>';
   return $output;
 }
 
@@ -246,6 +277,14 @@ function theme_emvideo_modal_generic($field, $item, $formatter, $node, $options 
  */
 function theme_emvideo_thickbox($field, $item, $formatter, $node, $options = array()) {
   $options['modal'] = 'thickbox';
+  return theme('emvideo_modal_generic', $field, $item, $formatter, $node, $options);
+}
+
+/**
+ *  Display the video as a Colorbox modal popup. Requires the Colorbox module.
+ */
+function theme_emvideo_colorbox($field, $item, $formatter, $node, $options = array()) {
+  $options['modal'] = 'colorbox-load';
   return theme('emvideo_modal_generic', $field, $item, $formatter, $node, $options);
 }
 
@@ -310,6 +349,9 @@ function theme_emvideo_formatter_video_thumbnail($element) {
 function theme_emvideo_formatter_video_flash($element) {
   return _emvideo_formatter_theme_helper($element);
 }
+function theme_emvideo_formatter_colorbox($element) {
+  return _emvideo_formatter_theme_helper($element);
+}
 function theme_emvideo_formatter_thickbox($element) {
   return _emvideo_formatter_theme_helper($element);
 }
@@ -331,13 +373,19 @@ function theme_emvideo_formatter_video_thumbnail_no_link($element) {
 function theme_emvideo_formatter_video_thumbnail_provider_link($element) {
   return _emvideo_formatter_theme_helper($element);
 }
+function theme_emvideo_formatter_video_thumbnail_path($element) {
+  return _emvideo_formatter_theme_helper($element);
+}
+function theme_emvideo_formatter_video_thumbnail_url($element) {
+  return _emvideo_formatter_theme_helper($element);
+}
 
 /**
  *  This ultimately calls theme('emvideo_[formatter]').
  */
 function _emvideo_formatter_theme_helper($element) {
   $field = content_fields($element['#field_name'], $element['#type_name']);
-  return module_invoke('emvideo', 'field_formatter', $field, $element['#item'], $element['#formatter'], $element['#node']);
+  return emvideo_field_formatter($field, $element['#item'], $element['#formatter'], $element['#node']);
 }
 
 /**

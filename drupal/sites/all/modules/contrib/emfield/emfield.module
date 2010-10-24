@@ -1,10 +1,14 @@
 <?php
-// $Id: emfield.module,v 1.12.4.47 2010/03/22 17:15:06 aaron Exp $
+// $Id: emfield.module,v 1.12.4.46.2.14 2010/10/10 19:26:02 aaron Exp $
 
 /**
  * @file
  *   Embedded Media Field is a CCK-based framework for 3rd party media files.
  */
+
+define('EMFIELD_STATUS_UNAVAILABLE', 0x0000);
+define('EMFIELD_STATUS_AVAILABLE', 0x0001);
+define('EMFIELD_STATUS_PRIVATE', 0x0002);
 
 /**
  * Implementation of hook_menu().
@@ -20,12 +24,32 @@ function emfield_menu() {
   );
   $items['admin/content/emfield/media'] = array(
     'file' => 'emfield.admin.inc',
-    'title' => 'Media settings',
+    'title' => 'General',
     'description' => 'Configure Embedded Media Field: Allow content types to use various 3rd party providers, enter API keys, etc.',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('emfield_settings'),
     'access arguments' => array('administer site configuration'),
     'type' => MENU_DEFAULT_LOCAL_TASK,
+    'weight' => -3,
+  );
+  foreach (module_implements('emfield_info', TRUE) as $module) {
+    $emfield_info = module_invoke($module, 'emfield_info');
+    $items['admin/content/emfield/'. $module] = array(
+      'title' => $emfield_info['#settings_title'],
+      'description' => $emfield_info['#settings_description'],
+      'file' => 'emfield.admin.inc',
+      'page callback' => 'drupal_get_form',
+      'page arguments' => array('emfield_module_settings', 3),
+      'access arguments' => array('administer site configuration'),
+      'type' => MENU_LOCAL_TASK,
+    );
+  }
+  $items['admin/content/emfield/obsolete'] = array(
+    'file' => 'emfield.admin.inc',
+    'title' => 'Disable obsolete provider',
+    'page callback' => 'emfield_disable_obsolete_provider',
+    'access arguments' => array('administer site configuration'),
+    'type' => MENU_CALLBACK,
   );
 
   if (module_exists('job_queue')) {
@@ -37,6 +61,7 @@ function emfield_menu() {
       'page arguments' => array('emfield_settings_jobqueue'),
       'access arguments' => array('administer site configuration'),
       'type' => MENU_LOCAL_TASK,
+      'weight' => 3,
     );
   }
 
@@ -124,7 +149,7 @@ function emfield_implement_types($cached = TRUE) {
           // If this field type is defined by this module, then include it here.
           if (!empty($modules[$field_types[$field['type']]['module']])) {
             // Settings per content type per module.
-			$module = $modules[$field_types[$field['type']]['module']];
+      $module = $modules[$field_types[$field['type']]['module']];
             $types[$module][$content_type][$field_type] = $field;
           }
         }
@@ -201,9 +226,14 @@ function _emfield_field_submit_id($field, $item, $module) {
   if (!isset($item['provider'])) {
     $item['provider'] = '';
   }
+
   $item = array_merge($item, emfield_parse_embed($field, $item['embed'], $module));
   $item['data'] = (array)emfield_include_invoke($module, $item['provider'], 'data', $field, $item);
   $item['version'] = intval(emfield_include_invoke($module, $item['provider'], 'data_version', $field, $item));
+  $info = emfield_include_invoke($module, $item['provider'], 'info');
+  if ($info['module'] && module_hook($info['module'], 'emfield_status')) {
+    $item['status'] = module_invoke($info['module'], 'emfield_status', $item, $field, $module);
+  }
 
   return $item;
 }
@@ -304,32 +334,39 @@ function emfield_nodeapi(&$node, $op, $teaser = NULL, $page = NULL) {
 }
 
 /**
- * When an include file requires to read an xml to receive information, such as for thumbnails,
- * this script can be used to request the xml and return it as an array.
- * @TODO convert to simplexml
- *   @param $provider
- *     the string of the third party provider, such as 'youtube', 'flikr', or 'google'
- *   @param $url
- *     the url for the xml request
- *   @param $args
- *     an array of args to pass to the xml url
- *   @param $cached
- *     optional; if TRUE, the result of this xml request will be cached. good to play nice w/
- *     the third party folks so they don't stop providing service to your site...
- *   @param $return_errors
- *     optional; if TRUE and an error is encountered, a descriptive error array will be returned with elements for
- *     code, message and stat => 'error'
- *   @param $hash_extra
- *     optional; The key for caching is created from the arguments.  If your provider does not use arguments
- *     (or uses the same arguments for each media item, you must pass a unique string as $hash_extra.  Currently
- *     this is only used by bliptv and archive.org
- *   @param $serialized
- *     optional; Most uses of this function are expecting an XML file to be returned.  However some providers (Flickr)
- *     can instead return a serialized PHP array.  In this case set $serialized to TRUE.
+ * When an include file requires to read an xml to receive information, such as
+ * for thumbnails, this script can be used to request the xml and return it as
+ * an array.
+ *
+ * Note that emfield_retrieve_xml() in most cases will be better, as it's a
+ * wrapper around simplexml.
+ *
+ *  @param $provider
+ *    The string of the third party provider, such as 'youtube' or 'flickr'.
+ *  @param $url
+ *    The url for the xml request.
+ *  @param $args
+ *    An array of args to pass to the xml url.
+ *  @param $cached
+ *    (Optional) If TRUE, the result of this xml request will be cached. good to
+ *    play nice with the third party folks so they don't stop providing service
+ *    to your site...
+ *  @param $return_errors
+ *    (Optional) If TRUE and an error is encountered, a descriptive error array
+ *    will be returned with elements for code, message and stat => 'error'.
+ *  @param $hash_extra
+ *    (Optional) The key for caching is created from the arguments.  If your
+ *    provider does not use arguments (or uses the same arguments for each media
+ *    item, you must pass a unique string as $hash_extra.  Currently this is
+ *    only used by bliptv and archive.org
+ *  @param $serialized
+ *    (Optional) Most uses of this function are expecting an XML file to be
+ *    returned.  However some providers (Flickr) can instead return a serialized
+ *    PHP array.  In this case set $serialized to TRUE.
  *  @param $json
- *    If TRUE, then the result will be a json encoded string.
- *   @return
- *     the xml results returned as an array
+ *   If TRUE, then the result will be a json encoded string.
+ *  @return
+ *    The xml results returned as an array.
  */
 function emfield_request_xml($provider, $url, $args = array(), $cached = TRUE, $return_errors = FALSE, $hash_extra = FALSE, $serialized = FALSE, $json = FALSE) {
   ksort($args);
@@ -348,18 +385,18 @@ function emfield_request_xml($provider, $url, $args = array(), $cached = TRUE, $
     $url .= '?'. implode('&', $encoded_params);
   }
 
-  // some providers, such as bliptv, actually change the url, and not just the queries.
-  // we provide an extra section for a unique identifier in that case
+  // Some providers, such as bliptv, actually change the url, and not just the
+  // queries. We provide an extra section for a unique identifier in that case.
   if (isset($hash_extra)) {
     $arghash .= ':'. $hash_extra;
   }
 
-  // if it's a cachable request, try to load a cached value
+  // If it's a cachable request, try to load a cached value.
   if ($cached && $cache = cache_get($arghash, 'cache')) {
     return $cache->data;
   }
 
-  // connect and fetch a value
+  // Connect and fetch a value.
   $result = drupal_http_request($url);
 
   if (!empty($result->error)) {
@@ -370,7 +407,7 @@ function emfield_request_xml($provider, $url, $args = array(), $cached = TRUE, $
         'message' => 'HTTP Error: '. $result->error,
       );
     }
-    emfield_set_error(t("Could not connect to @provider, HTTP error @error", array('@error' => $result->code, '@provider' => $provider)));
+    emfield_set_error(t("Could not connect to @provider to request XML: HTTP error @error.", array('@error' => $result->code, '@provider' => $provider)));
 
     return array();
   }
@@ -438,19 +475,20 @@ function emfield_request_xml($provider, $url, $args = array(), $cached = TRUE, $
 /**
  * Get the HTTP Header of media, for mime-type and length.
  *
- * @param $provider
- *   The string of the third party provider, such as 'youtube', 'flikr', or 'google'.
- * @param $url
- *   The url for the media.
- * @param $cached
- *   Optional; if TRUE, the result of this xml request will be cached. good to play nice w/
- *   the third party folks so they don't stop providing service to your site...
- * @return
+ *  @param $provider
+ *    The string of the third party provider, such as 'youtube' or 'flickr'.
+ *  @param $url
+ *    The url for the media.
+ *  @param $cached
+ *    (Optional) If TRUE, the result of this xml request will be cached. good to
+ *    play nice with the third party folks so they don't stop providing service
+ *    to your site...
+ *  @return
  *   The header results, returned as an array.
  */
 function emfield_request_header($provider, $url, $cached = TRUE, $return_errors = TRUE) {
   // if it's cacheable, try to load a cached value
-  if ($cached && $cache = cache_get($url, 'cache')) {
+  if ($cached && $cache = cache_get('emfield:request-header:'. $url, 'cache_emfield_xml')) {
     return $cache->data;
   }
 
@@ -461,13 +499,13 @@ function emfield_request_header($provider, $url, $cached = TRUE, $return_errors 
       return $result;
     }
 
-    emfield_set_error(t("Could not connect to @provider, HTTP error @error", array('@error' => $result->code, '@provider' => $provider)));
+    emfield_set_error(t("Could not connect to @provider: HTTP error @error.", array('@error' => $result->code, '@provider' => $provider)));
 
     return array();
   }
 
-  // @todo does this not want to be changing 'cache' to 'cache_emfield' or similar
-  cache_set($url, $result, 'cache', time() + variable_get('emfield_cache_duration', 3600));
+  // Cache the result.
+  cache_set('emfield:request-header:'. $url, $result, 'cache_emfield_xml', time() + variable_get('emfield_cache_duration', 3600));
 
   return $result;
 }
@@ -479,17 +517,18 @@ function _emfield_http_request_header($url, $retry = 4) {
   $result = drupal_http_request($url, array(), 'HEAD', NULL, 0);
 
   switch ($result->code) {
-    // the intention here is to retry if the correct information isn't available
-    // so far it's just tuned for YouTube
-    // it's possible/probable that Moved Temporarily will give the headers required elsewhere
-    // and it maybe best to test on the content of the header
+    // The intention is to retry if the correct information isn't available;
+    // so far it's just tuned for YouTube. It's possible/probable that Moved
+    // Temporarily will give the headers required elsewhere, and it maybe best
+    // to test on the content of the header.
     case 200: // OK
-    case 304: // Not modified - this shouldn't happen here
+    case 304: // Not modified - this shouldn't happen here.
       break;
-    case 301: // Moved permanently
-    case 302: // Moved temporarily
-    case 303: // See Other <-- drupal_http_request doesn't deal with this we need this for youtube
-    case 307: // Moved temporarily
+    case 301: // Moved permanently.
+    case 302: // Moved temporarily.
+    case 303: // See Other <-- drupal_http_request doesn't deal with this; we
+              // need this for YouTube.
+    case 307: // Moved temporarily.
       $location = $result->headers['Location'];
       if ($retry > 0) {
         $result = _emfield_http_request_header($result->headers['Location'], --$retry);
@@ -510,59 +549,42 @@ function emfield_set_error($error) {
 
 /**
  * Return an array of installed .inc files and/or loads them upon request.
- * This routine is modeled after drupal_system_listing() (and also depends on it).
- * It's major difference, however, is that it loads .inc files by default.
+ * This routine is modeled after drupal_system_listing() (and also depends on
+ * it). It's major difference, however, is that it loads .inc files by default.
  *
- * @param $provider
- *   Optional; name of the passed $provider to find (e.g. "youtube", "google", etc.).
- * @param $load
- *   Defaults to TRUE; whether to include matching files into memory.
- * @return
+ *  @param $provider
+ *   (Optional) Name of the passed $provider to find (e.g. "youtube", "google").
+ *  @return
  *   An array of file objects optionally matching $provider.
  */
-function emfield_system_list($module, $provider = NULL, $load = TRUE) {
-  // Maintain a static list of providers.
-  static $files;
+function emfield_system_list($module, $provider = NULL, $options = array()) {
+  $files = $override_files = module_invoke_all('emfield_providers', $module, $provider);
+//   $files = drupal_system_listing("$provider\.inc$", drupal_get_path('module', $module) ."/providers", 'name', 0);
+//   $files = array_merge($files, $override_files);
 
-  if (!isset($files)) {
-    // Initialize our static variable.
-    $files = array();
-  }
-  if (!isset($files[$module])) {
-    // Initialize the file listing for the invoking module.
-    $files[$module] = array();
-  }
+  ksort($files);
 
-  if ((!isset($provider) && empty($files[$module])) || (isset($provider) && !isset($files[$module][$provider]))) {
-    // First find any providers external to the emfield set of modules.
-    $override_files = module_invoke_all('emfield_providers', $module, $provider);
-
-    // Next get the default providers. Note this is being phased out in v2.
-    $provider_files = drupal_system_listing("$provider\.inc$", drupal_get_path('module', $module) ."/providers", 'name', 0);
-
-    // Merge the files, allowing provider overrides.
-    $provider_files = array_merge($provider_files, $override_files);
-    $files[$module] = array_merge($files[$module], $provider_files);
-
-    // Sort the providers alphabetically.
-    ksort($files[$module]);
-  }
-
-  if ($load) {
-    if (isset($provider) && isset($files[$module][$provider])) {
-      emfield_include_list($files[$module][$provider]);
-    }
-    else {
-      foreach ($files[$module] as $key => $file) {
-        emfield_include_list($file);
+  foreach ($files as $provider => $file) {
+    emfield_include_list($file);
+    if (!function_exists($module .'_'. $provider .'_info')) {
+      emfield_include_list($file, TRUE);
+      unset($files[$provider]);
+      if (function_exists($module .'_'. $provider .'_obsolete') && variable_get('emfield_'. $module .'_allow_'. $provider, TRUE)) {
+        if (isset($options['suppress_errors']) && $options['suppress_errors']) {
+          continue;
+        }
+        $error = t('Attempted to load obsolete provider: %provider at @file.', array('%provider' => $provider, '@file' => $file->filename));
+        emfield_set_error($error);
+        if (user_access('administer site configuration')) {
+          drupal_set_message($error, error);
+          call_user_func($module .'_'. $provider .'_obsolete');
+          drupal_set_message(t('You may also choose to !turn_off this warning about the missing or obsolete Embedded Media Field %provider provider file.', array('%provider' => $provider, '!turn_off' => l(t('turn off'), 'admin/content/emfield/obsolete/'. $module .'/'. $provider, array('query' => 'destination='. $_GET['q'])))), 'error');
+        }
       }
     }
   }
 
-  if (isset($provider)) {
-    return $files[$module][$provider];
-  }
-  return $files[$module];
+  return $files;
 }
 
 /**
@@ -570,15 +592,20 @@ function emfield_system_list($module, $provider = NULL, $load = TRUE) {
  *
  * @param $file
  *   Optional; a file object (from emfield_system_list()) to be included.
+ * @param $remove
+ *   Optional boolean; if TRUE, then remove the file from the list.
  * @return
  *   An array of all loaded includes (without the .inc extension).
  */
-function emfield_include_list($file = NULL) {
+function emfield_include_list($file = NULL, $remove = FALSE) {
   static $list = array();
 
-  if ($file && !isset($list[$file->filename])) {
+  if ($file && $file->filename && !isset($list[$file->filename])) {
     include_once('./'. $file->filename);
     $list[$file->filename] = $file->name;
+  }
+  if ($file && $remove) {
+    unset($list[$file->filename]);
   }
 
   return $list;
@@ -588,11 +615,12 @@ function emfield_include_list($file = NULL) {
  * Determine whether an include implements a hook, cf. module_hook.
  *
  * @param $provider
- *   The name of the provider file (without the .inc extension), such as 'youtube' or 'google'.
+ *  The name of the provider file (without the .inc extension), such as
+ *  'youtube' or 'google'.
  * @param $hook
- *   The name of the hook (e.g. "thumbnail", "settings", etc.).
+ *  The name of the hook (e.g. "thumbnail", "settings", etc.).
  * @return
- *   TRUE if the provider is loaded and the hook is implemented.
+ *  TRUE if the provider is loaded and the hook is implemented.
  */
 function emfield_include_hook($module, $provider, $hook) {
   return function_exists($module .'_'. $provider .'_'. $hook);
@@ -640,7 +668,9 @@ function emfield_views_handler_filter_is_not_null($op, $filter, $filterinfo, &$q
 
 /**
  * Create a list of providers.
- *  @TODO: Is this legacy? Not sure if it's called, and seems specific to emvideo.
+ *  @TODO: Is this legacy? Not sure if it's called, and seems specific to
+ *  emvideo. However, it's possible this was never extended beyond emvideo.
+ *  @TODO: Allow views listings of other supported modules.
  */
 function emfield_views_handler_filter_provider_list($op) {
   $providers = array();
@@ -677,7 +707,8 @@ function emfield_views_handler_filter_provider($op, $filter, $filterinfo, &$quer
 }
 
 /**
- * Handle the provider argument. This is called from a wrapper that includes the module.
+ * Handle the provider argument. This is called from a wrapper that includes the
+ * module.
  */
 function _emfield_handler_arg_provider($op, &$query, $argtype, $arg = '', $module = '') {
   if ($op == 'filter') {
@@ -688,7 +719,8 @@ function _emfield_handler_arg_provider($op, &$query, $argtype, $arg = '', $modul
   }
 
   $field = content_fields($field_name);
-  $db_info = content_database_info($field); // TODO: This hook no longer exists in D6.
+  // @TODO: This hook no longer exists in D6.
+  $db_info = content_database_info($field);
   $main_column = $db_info['columns']['provider'];
 
   // The table name used here is the Views alias for the table, not the actual
@@ -723,6 +755,12 @@ function _emfield_handler_arg_provider($op, &$query, $argtype, $arg = '', $modul
   }
 }
 
+/**
+ * Allow providers to create their own themes.
+ *
+ * @TODO: Remove this once we've moved all providers outside emfield, as their
+ * wrapping modules can use standard Drupal hooks.
+ */
 function emfield_provider_themes($module, $provider = NULL) {
   $themes = array();
 
@@ -740,6 +778,12 @@ function emfield_provider_themes($module, $provider = NULL) {
   return $themes;
 }
 
+/**
+ * Allow providers to create their own menus.
+ *
+ * @TODO: Remove this once we've moved all providers outside emfield, as their
+ * wrapping modules can use standard Drupal hooks.
+ */
 function emfield_provider_menus($module, $provider = NULL) {
   $menus = array();
 
@@ -758,30 +802,17 @@ function emfield_provider_menus($module, $provider = NULL) {
 }
 
 /**
- *  Returns the URL to the registered JW Flash Media Player, if such exists.
+ * Returns the URL to the registered JW Flash Media Player, if such exists.
  */
 function emfield_flvmediaplayer_url($reset = FALSE) {
   static $path;
 
-  if (is_null($path) || $reset) {
+  if (!isset($path) || $reset) {
     if (module_exists('flvmediaplayer')) {
       $path = variable_get('flvmediaplayer_path', drupal_get_path('module', 'flvmediaplayer') .'/mediaplayer.swf');
     }
-    else if (is_null($path = variable_get('emfield_flvmediaplayer_url', NULL)) || (!$path && $reset)) {
-      global $base_path;
-      $path = '';
-      $files = drupal_system_listing('(^player-viral\.swf$|^player\.swf$|^mediaplayer\.swf$)', 'plugins', 'basename', 0);
-      if (!empty($files)) {
-        $file = array_pop($files);
-        $path = $file->filename;
-      }
-      else {
-        $files = drupal_system_listing('(^player-viral\.swf$|^player\.swf$|^mediaplayer\.swf$)', 'modules', 'basename', 0);
-        if (!empty($files)) {
-          $file = array_pop($files);
-          $path = $file->filename;
-        }
-      }
+    else if ($reset || ($path = variable_get('emfield_flvmediaplayer_url', NULL) && !$path)) {
+      $path = _emfield_autodiscover_path('(^player-viral\.swf$|^player\.swf$|^mediaplayer\.swf$)');
       variable_set('emfield_flvmediaplayer_url', $path);
     }
   }
@@ -790,32 +821,32 @@ function emfield_flvmediaplayer_url($reset = FALSE) {
 }
 
 /**
- *  Returns the URL to the registered JW Image Rotator, if such exists.
+ * Returns the URL to the registered JW Image Rotator, if such exists.
  */
 function emfield_imagerotator_url($reset = FALSE) {
   static $path;
 
   if (is_null($path) || $reset) {
     if (is_null($path = variable_get('emfield_imagerotator_url', NULL)) || (!$path && $reset)) {
-      global $base_path;
-      $path = '';
-      $files = drupal_system_listing('(^imagerotator\.swf$)', 'plugins', 'basename', 0);
-      if (!empty($files)) {
-        $file = array_pop($files);
-        $path = $file->filename;
-      }
-      else {
-        $files = drupal_system_listing('(^imagerotator\.swf$)', 'modules', 'basename', 0);
-        if (!empty($files)) {
-          $file = array_pop($files);
-          $path = $file->filename;
-        }
-      }
+      $path = _emfield_autodiscover_path('(^imagerotator\.swf$)');
       variable_set('emfield_imagerotator_url', $path);
     }
   }
 
   return $path;
+}
+
+/**
+ * Search site library paths for the specific pattern.
+ */
+function _emfield_autodiscover_path($pattern) {
+  foreach (array('libraries', 'plugins', 'modules') as $folder) {
+    $files = drupal_system_listing($pattern, $folder, 'basename', 0);
+    if (!empty($files)) {
+      $file = array_pop($files);
+      return $file->filename;
+    }
+  }
 }
 
 /**
@@ -866,10 +897,103 @@ function emfield_theme() {
     'emfield_handler_field_provider' => array(
       'arguments' => array('item' => NULL, 'field' => NULL, 'node' => NULL, 'values' => NULL, 'format' => NULL),
     ),
+    'emfield_handler_field_status' => array(
+      'arguments' => array('item' => NULL, 'field' => NULL, 'node' => NULL, 'values' => NULL, 'format' => NULL),
+    ),
     'emfield_swfobject' =>array(
       'arguments' => array("url" => NULL, '$div_id' => NULL, 'width' => NULL, 'height' => NULL, 'version' => "8"),
       'path' => drupal_get_path('module', 'emfield') . '/includes/themes',
       'file' => 'emfield.themes.inc',
     ),
   );
+}
+
+/**
+ *  A wrapper around simplexml to retrieve a given XML file.
+ *
+ *  @param $url
+ *    The URL to the XML to retrieve.
+ *  @param $display_errors
+ *    Optional; if TRUE, then we'll display errors to the end user. They'll be
+ *    logged to the watchdog in any case.
+ *  @param $refresh
+ *    Optional; if TRUE, then we'll force a new load of the XML. Otherwise,
+ *    a cached version will be retrieved if possible.
+ *  @return
+ *    A fully populated object, or FALSE on an error.
+ */
+function emfield_retrieve_xml($url, $display_errors = FALSE, $refresh = FALSE) {
+  module_load_include('inc', 'emfield', 'includes/emfield.xml');
+  return _emfield_retrieve_xml($url, $display_errors, $refresh);
+}
+
+/**
+ * This will audit all nodes to ensure all emfield providers are present.
+ *
+ * The function will pass through all emfield fields to see if there is any
+ * content in the system without a provider.
+ *
+ * @return array
+ *  An array of all missing providers. Ideally the array will be empty.
+ */
+function emfield_audit() {
+  module_load_include('inc', 'emfield', 'includes/emfield.audit');
+  return _emfield_audit();
+}
+
+/**
+ * Implementation of hook_init().
+ */
+function emfield_init() {
+  global $emfield_registered_classes;
+
+  // Build our media object class registry.
+  foreach (module_implements('emfield_register') as $module) {
+    foreach (module_invoke($module, 'emfield_register') as $class_name => $class) {
+      $emfield_registered_classes[$class_name] = is_array($class) ? $class : array();
+      if (!isset($emfield_registered_classes[$class_name]['class_name'])) {
+        $emfield_registered_classes[$class_name]['class_name'] = $class_name;
+      }
+      if (!isset($emfield_registered_classes[$class_name]['name'])) {
+        $emfield_registered_classes[$class_name]['name'] = $class_name;
+      }
+      if (!isset($emfield_registered_classes[$class_name]['path'])) {
+        $emfield_registered_classes[$class_name]['path'] = drupal_get_path('module', $module);
+      }
+      if (!isset($emfield_registered_classes[$class_name]['file'])) {
+        $emfield_registered_classes[$class_name]['file'] = $class_name .'.inc';
+      }
+    }
+  }
+
+  // Ensure the proper files are loaded when a new media object is initiated.
+  spl_autoload_register('emfield_autoload');
+}
+
+/**
+ * Autoload the media object classes when needed.
+ */
+function emfield_autoload($class_name) {
+  global $emfield_registered_classes;
+
+  if (isset($emfield_registered_classes[$class_name])) {
+    include_once($emfield_registered_classes[$class_name]['path'] .'/'. $emfield_registered_classes[$class_name]['file']);
+  }
+}
+
+/**
+ * Builds and returns a media object based on the parsed URL.
+ */
+function emfield_media($url, $overrides = array()) {
+  global $emfield_registered_classes;
+
+  // First parse the URL.
+  foreach ($emfield_registered_classes as $provider => $class) {
+    if ($class['parse callback'] && $class['class_name']) {
+      if ($parsed = $class['parse callback']($url, $overrides)) {
+        // If we have a provider class, then implement and return it.
+        return new $class['class_name']($parsed['code'], $overrides);
+      }
+    }
+  }
 }

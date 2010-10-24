@@ -1,5 +1,5 @@
 <?php
-// $Id: emvideo.install,v 1.1.2.34 2010/09/21 20:14:21 aaron Exp $
+// $Id: emvideo.install,v 1.1.2.31.2.4 2010/09/21 20:17:53 aaron Exp $
 
 /**
  * @file
@@ -246,7 +246,7 @@ function emvideo_update_6002() {
 }
 
 /**
- *  Add new formatters for Lightbox2 & Shadowbox.
+ *  Add new formatters for Lightbox2 & Shadowbox, and new menu callback.
  */
 function emvideo_update_6003() {
   return _emvideo_update_add_new_formatters();
@@ -422,16 +422,16 @@ function emvideo_update_6016() {
 }
 
 /**
- * Rebuild the theme to accomodate optional Colorbox support.
+ * New formatters for video thumbnail path & url & Colorbox support.
  */
-function emvideo_update_6018() {
+function emvideo_update_6100() {
   return _emvideo_update_add_new_formatters();
 }
 
 /**
  * Rebuild the menu to check content access at emvideo/modal.
  */
-function emvideo_update_6019() {
+function emvideo_update_6101() {
   menu_rebuild();
 
   return array();
@@ -491,8 +491,8 @@ function _emvideo_update_get_duration($field, &$context) {
  *  Rebuild the theme for new formatters.
  */
 function _emvideo_update_add_new_formatters($message = NULL) {
-  if (!isset($output)) {
-    $output = t('Rebuilt the theme to accommodate new formatters.');
+  if (!isset($message)) {
+    $message = t('Rebuilt the theme to accommodate new display formatters.');
   }
 
   // Adding new formatters, so need to rebuild the theme.

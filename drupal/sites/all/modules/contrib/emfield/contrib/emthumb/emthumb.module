@@ -1,5 +1,5 @@
 <?php
-// $Id: emthumb.module,v 1.7.2.39 2010/07/19 15:12:47 aaron Exp $
+// $Id: emthumb.module,v 1.7.2.36.2.10 2010/10/20 20:42:09 aaron Exp $
 
 /**
  *  @file
@@ -23,10 +23,14 @@ function emthumb_emfield_field_extra($op, &$node, $field, &$items, $teaser, $pag
           $existing_data = array();
           if (isset($file['data']) && isset($file['data']['emthumb']) && is_array($file['data']['emthumb'])) {
             $existing_data = $file['data']['emthumb'];
+            $items[$delta]['data']['emthumb'] = $existing_data;
           }
 
           // Merge new file with existing data so we include alt tag data.
-          $items[$delta]['data']['emthumb'] = array_merge($existing_data, _emthumb_file_load($file['data']['emthumb']['fid']));
+          if (!empty($file['data']['emthumb']['fid'])) {
+            $thumbnail = _emthumb_file_load($file['data']['emthumb']['fid']);
+            $items[$delta]['data']['emthumb'] = array_merge($existing_data, $thumbnail);
+          }
         }
         return array($field['field_name'] => $items);
       }
@@ -38,6 +42,9 @@ function emthumb_emfield_field_extra($op, &$node, $field, &$items, $teaser, $pag
       if (count($items)) {
         $values = array();
         foreach ($items as $delta => $file) {
+          if (empty($file['data']['emthumb']['fid'])) {
+            continue;
+          }
           $thumbnail = _emthumb_file_load($file['data']['emthumb']['fid']);
           if (isset($thumbnail['filepath'])) {
             $options = array('absolute' => TRUE);
@@ -131,7 +138,10 @@ function emthumb_widget_element_process($element, $edit, &$form_state) {
       '#name' => $upload_op,
       '#attributes' => array('id' => $fieldname .'-attach-button'),
       '#tree' => FALSE,
-      '#submit' => array('emthumb_widget_upload_button_submit'),
+      '#submit' => array(
+        'node_form_submit_build_node',
+        'emthumb_widget_upload_button_submit'
+      ),
       '#weight' => 10,
     );
   }
@@ -519,7 +529,7 @@ function _emthumb_file_load($fid = NULL) {
  *    The path to the custom thumbnail file.
  */
 function emthumb_thumbnail_path($item) {
-  if ($item['data']['emthumb']['filepath']) {
+  if (is_array($item['data']['emthumb']) && !empty($item['data']['emthumb']['filepath'])) {
     return file_create_path($item['data']['emthumb']['filepath']);
   }
 }
@@ -587,9 +597,8 @@ function emthumb_fetch_remote_thumbnail($item, $field) {
         $file->filename = $basename_arr['path'];
         $file->filepath = $filepath_arr['path'];
 
-        // If we have mimedetect, then do so. Otherwise we make a best guess
-        // based on the filename.
-        $file->filemime = module_exists('mimedetect') ? mimedetect_mime($file) : file_get_mimetype($file->filename);
+        // Make a best guess on mimetype.
+        $file->filemime = file_get_mimetype($file->filename);
 
         // Rename potentially executable files, to help prevent exploits.
         if (preg_match('/\.(php|pl|py|cgi|asp|js)$/i', $file->filename) && (substr($file->filename, -4) != '.txt')) {
@@ -633,6 +642,9 @@ function emthumb_fetch_remote_thumbnail($item, $field) {
           watchdog('file', 'Upload error. Could not move file %file to destination %destination.', array('%file' => $file->filename, '%destination' => $file->destination));
           return 0;
         }
+        // If we have mimedetect, then do so, unless we forced text/plain earlier.
+        $file->filemime = (($file->filemime != 'text/plain') && module_exists('mimedetect')) ? mimedetect_mime($file) : $file->filemime;
+
         // If we made it this far it's safe to record this file in the database.
         $file->status = FILE_STATUS_PERMANENT;
         $file->timestamp = time();
@@ -650,6 +662,8 @@ function emthumb_fetch_remote_thumbnail($item, $field) {
       }
     }
   }
+
+  return array();
 }
 
 /**
@@ -717,6 +731,11 @@ function emthumb_theme() {
       $themes['emthumb_formatter_'. $preset['presetname'] .'_preview'] = array(
         'arguments' => array('element' => NULL),
         'function' => 'theme_emthumb_imagecache_formatter_preview',
+        'file' => 'emthumb.theme.inc',
+      );
+      $themes['emthumb_formatter_'. $preset['presetname'] .'_colorbox'] = array(
+        'arguments' => array('element' => NULL),
+        'function' => 'theme_emthumb_imagecache_formatter_colorbox',
         'file' => 'emthumb.theme.inc',
       );
       $themes['emthumb_formatter_'. $preset['presetname'] .'_thickbox'] = array(
@@ -846,6 +865,13 @@ function emthumb_field_formatter_info() {
       'label' => t('@preset image -> Preview Size Media', array('@preset' => $preset['presetname'])),
       'field types' => $field_types,
     );
+    // Add colorbox formatter if colorbox module exists.
+    if (module_exists('colorbox')) {
+      $formatters[$preset['presetname'] .'_colorbox'] = array(
+        'label' => t('Colorbox: @preset image -> Full Size Media', array('@preset' => $preset['presetname'])),
+        'field types' => $field_types,
+        );
+    }
     // Add thickbox formatter if thickbox module exists.
     if (module_exists('thickbox')) {
       $formatters[$preset['presetname'] .'_thickbox'] = array(

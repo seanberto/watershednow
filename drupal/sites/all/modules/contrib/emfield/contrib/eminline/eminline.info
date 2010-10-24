@@ -1,13 +1,13 @@
-; $Id: eminline.info,v 1.1.4.3 2010/07/19 15:29:09 aaron Exp $
+; $Id: eminline.info,v 1.1.4.2.2.2 2010/08/02 02:21:54 alexua Exp $
 name = Embedded Inline Media
 description = Allows users to embed media into text-areas.
 dependencies[] = emfield
 dependencies[] = emvideo
 core = 6.x
-
-; Information added by drupal.org packaging script on 2010-09-22
-version = "6.x-1.25"
+package = Media
+; Information added by drupal.org packaging script on 2010-10-20
+version = "6.x-2.2"
 core = "6.x"
 project = "emfield"
-datestamp = "1285164662"
+datestamp = "1287608170"
 

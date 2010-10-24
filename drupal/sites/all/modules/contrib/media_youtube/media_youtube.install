@@ -1,0 +1,44 @@
+<?php
+// $Id: media_youtube.install,v 1.1.2.3 2010/04/08 20:35:49 aaron Exp $
+
+/**
+ * @file
+ * This is Media: YouTube's installation, configuration, and removal file.
+ */
+
+/**
+ * Convert variables to the Media: YouTube variable namespace.
+ */
+function media_youtube_update_6001() {
+  $ret = array();
+
+  $variables = array(
+    'emvideo_youtube_api_key' => 'api_key',
+    'emvideo_youtube_api_secret' => 'api_secret',
+    'emvideo_youtube_show_related_videos' => 'show_related_videos',
+    'emvideo_youtube_show_colors' => 'show_colors',
+    'emvideo_youtube_show_border' => 'show_border',
+    'emvideo_youtube_colors_color1' => 'colors_color1',
+    'emvideo_youtube_colors_color2' => 'colors_color2',
+    'emvideo_youtube_full_screen' => 'full_screen',
+    'emvideo_youtube_high_quality' => 'high_quality',
+    'emvideo_youtube_display_info' => 'display_info',
+    'emvideo_youtube_enablejsapi' => 'enablejsapi',
+    'emvideo_youtube_use_jw_flv' => 'use_jw_flv',
+  );
+
+  foreach ($variables as $old_variable => $new_variable) {
+    $value = variable_get($old_variable, '');
+    if (media_youtube_variable_get($new_variable) != $value) {
+      media_youtube_variable_set($new_variable, $value);
+    }
+    variable_del($old_variable);
+  }
+  $ret[] = array('success' => TRUE, 'query' => "Converted variables to the Media: YouTube variable namespace.");
+
+  // Add the new settings page to the menu.
+  menu_rebuild();
+  $ret[] = array('success' => TRUE, 'query' => "Rebuilt the menu for the new administrative settings page.");
+
+  return $ret;
+}
