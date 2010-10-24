@@ -2,7 +2,11 @@
   <div class="block-inner">
 
     <?php if (!empty($block->subject)): ?>
-      <h3 class="title block-title"><?php print $block->subject; ?></h3>
+      <?php if(($block->region == 'content_top') || ($block->region == 'content_bottom')): ?>
+        <h1 class="title block-title"><?php print $block->subject; ?></h1>
+      <?php else: ?>
+        <h3 class="title block-title"><?php print $block->subject; ?></h3>
+      <?php endif; ?>
     <?php endif; ?>
 
     <div class="content">

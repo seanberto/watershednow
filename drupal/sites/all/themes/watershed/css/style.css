@@ -181,3 +181,6 @@ h3.block-title { margin-bottom:.25em; }
 body.page-map h1.title {
   display: none;
 }
+body.page-map h1.title.block-title {
+  display: block;
+}
