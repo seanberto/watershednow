@@ -102,18 +102,6 @@ function wn_common_context_default_contexts() {
           'region' => 'right',
           'weight' => 0,
         ),
-        'menu-secondary-links' => array(
-          'module' => 'menu',
-          'delta' => 'secondary-links',
-          'region' => 'footer_second',
-          'weight' => 0,
-        ),
-        'follow-site' => array(
-          'module' => 'follow',
-          'delta' => 'site',
-          'region' => 'footer_second',
-          'weight' => 1,
-        ),
       ),
     ),
   );

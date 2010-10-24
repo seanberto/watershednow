@@ -37,6 +37,7 @@ function watershed_preprocess_page(&$vars, $hook) {
     $vars['mission'] = theme('block',(object)array(
       'subject' => 'about us',
       'delta' => 'mission',
+      'module' => 'watershed',
       'content' => $vars['mission']
     ));
   }
@@ -45,6 +46,7 @@ function watershed_preprocess_page(&$vars, $hook) {
     $vars['search_box'] = theme('block',(object)array(
       'subject' => 'search',
       'delta' => 'search',
+      'module' => 'watershed',
       'content' => $vars['search_box']
     ));
   }
@@ -53,7 +55,29 @@ function watershed_preprocess_page(&$vars, $hook) {
     $vars['newsletter'] = theme('block',(object)array(
       'subject' => 'newsletter signup',
       'delta' => 'newsletter',
+      'module' => 'watershed',
       'content' => $vars['newsletter']
+    ));
+  }
+
+  if( function_exists('_follow_block_content') ) {
+    $follow_content = _follow_block_content();
+    if( !empty($follow_content) ) {
+      $vars['follow_links'] = theme('block',(object)array(
+        'subject' => '',
+        'delta' => 'site',
+        'module' => 'follow',
+        'content' => $follow_content
+      ));
+    }
+  }
+
+  if( !empty($vars['secondary_links']) ) {
+    $vars['secondary_links'] = theme('block',(object)array(
+      'subject' => 'navigate',
+      'delta' => 'secondary_links',
+      'module' => 'watershed',
+      'content' => theme('links',$vars['secondary_links'])
     ));
   }
 
@@ -195,24 +219,6 @@ function watershed_preprocess_node(&$vars, $hook) {
 
 function watershed_preprocess_block(&$vars, $hook) {
     $block = $vars['block'];
-
-    $subject = $block->subject;
-    switch( $block->module.'_'.$block->delta ) {
-      case 'menu_secondary-links':
-        $subject = t('navigate');
-        break;
-      case 'follow_site':
-        $subject = t('stay in the loop');
-        break;
-      case 'boxes_customizable_footer':
-        $subject = 'about us';
-        break;
-      case 'search_0':
-        $subject = 'search';
-        break;
-    }
-    $block->subject = $subject;
-
     // special block classes
     $classes = array('block');
     $classes[] = watershed_id_safe('block-' . $vars['block']->module);

@@ -136,9 +136,11 @@
           <div id="footer-first"><?php print $footer_first; ?></div><!-- /#footer-first -->
           <div id="footer-second">
             <?php print $mission ?>
-            <?php print $footer_second; ?>
+            <?php print $secondary_links ?>
+            <?php print $follow_links ?>
             <?php print $search_box; ?>
             <?php print $newsletter; ?>
+            <?php print $footer_second; ?>
           </div><!-- /#footer-second -->
           <div id="footer-message"><?php print $footer_message; ?></div><!-- /#footer-message -->
         </div> <!-- /footer -->
