@@ -64,7 +64,7 @@ function watershed_preprocess_page(&$vars, $hook) {
     $follow_content = _follow_block_content();
     if( !empty($follow_content) ) {
       $vars['follow_links'] = theme('block',(object)array(
-        'subject' => '',
+        'subject' => 'stay in the loop',
         'delta' => 'site',
         'module' => 'follow',
         'content' => $follow_content
