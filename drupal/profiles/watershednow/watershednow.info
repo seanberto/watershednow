@@ -200,7 +200,7 @@ follow[0][twitter]  = http://twitter.com
 follow[0][flickr]   = http://flickr.com
 follow[0][linkedin] = http://linkedin.com
 follow[0][feed]     = http://example.com/feed.rss
-follow[0][myspace]  = http://myspace.com
+follow[0][youtube]  = http://youtube.com
 
 ; ----------------------------------------------
 

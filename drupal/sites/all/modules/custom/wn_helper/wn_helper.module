@@ -35,11 +35,11 @@ function wn_helper_form_alter(&$form, $form_state, $form_id) {
     case 'system_site_information_settings':
 
       global $user; // Some display is dependent upon access.
-    
+
       // Allow for custom page title on site front page
       $form['site_name']['#title'] = 'Website Name';
       $form['site_name']['#description'] = 'The name of this website - Generally recommended to be your organization\'s name.';
-      
+
       // Add more applicable help text for Site Mission field.
       // Note for Watershed Now themes based upon "Watershed" parent theme, mission displays on all pages.
       $form['site_mission']['#description'] = 'This mission statement is presented under "About Us" in the footer of themes that come with the Watershed Now distribution.';
@@ -59,7 +59,7 @@ function wn_helper_form_alter(&$form, $form_state, $form_id) {
       $form['buttons']['#weight'] = 10; //make sure buttons are at the bottom
 
       break;
-      
+
     case 'system_themes_form':
     // Hide cruddy themes that we don't want folks to use, as well as admin themes that are fixed.
       $hidden_themes = array('bluemarine', 'chameleon', 'garland', 'minnelli', 'marvin', 'pushbutton');
@@ -69,7 +69,7 @@ function wn_helper_form_alter(&$form, $form_state, $form_id) {
         unset($form['theme_default']['#options'][$theme]);
       }
       break;
-    
+
     case 'contact_mail_page':
     // @FIXME - Hackery to add an edit link on the top of the contact form.
       if (user_access('administer site-wide contact form')) { // If user can administer contact form, add link.
@@ -110,7 +110,7 @@ function wn_helper_follow_networks_alter(&$networks) {
     'feed',
     'flickr',
     'linkedin',
-    'myspace',
+    'youtube',
     'twitter',
   );
   foreach( $sites as $k => $site ) {
