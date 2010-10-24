@@ -227,7 +227,7 @@ function watershed_preprocess_block(&$vars, $hook) {
 
     $vars['block_classes'] = implode(' ', $classes); // Concatenate with spaces
 
-    if (theme_get_setting('watershed_block_editing') && user_access('administer blocks')) {
+    if (theme_get_setting('watershed_block_editing') && user_access('administer blocks') && ($block->module != 'boxes')) {
         // Display 'edit block' for custom blocks.
         if ($block->module == 'block') {
           $edit_links[] = l('<span>' . t('edit block') . '</span>', 'admin/build/block/configure/' . $block->module . '/' . $block->delta,

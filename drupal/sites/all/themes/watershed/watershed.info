@@ -41,5 +41,5 @@ settings[watershed_search_button]        = 'Go'
 settings[watershed_zen_tabs]             = 1
 settings[watershed_wireframe]            = 0
 settings[watershed_breadcrumb]           = 0
-settings[watershed_block_editing]        = 0
+settings[watershed_block_editing]        = 1
 settings[watershed_rebuild_registry]     = 0
