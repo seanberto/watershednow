@@ -27,3 +27,11 @@ features[] = primary_links
 features[] = secondary_links
 
 stylesheets[all][] = css/whiteoak.css
+
+settings[wn_whiteoak_search_help]          = 'Explore our watershed'
+settings[wn_whiteoak_search_button]        = 'Go'
+settings[wn_whiteoak_zen_tabs]             = 1
+settings[wn_whiteoak_wireframe]            = 0
+settings[wn_whiteoak_breadcrumb]           = 0
+settings[wn_whiteoak_block_editing]        = 1
+settings[wn_whiteoak_rebuild_registry]     = 0
