@@ -9,6 +9,11 @@ if (theme_get_setting($active_theme . '_rebuild_registry')) {
   drupal_rebuild_theme_registry();
 }
 
+// Add a color palette stylesheet based upon theme settings.
+if ($color = theme_get_setting($active_theme . '_color_palette')) {
+  drupal_add_css( drupal_get_path('theme', $active_theme) .'/css/colors/' . $color . '.css', 'theme');
+}
+
 // Add Zen Tabs styles
 if (theme_get_setting($active_theme . '_zen_tabs')) {
   drupal_add_css( drupal_get_path('theme', 'watershed') .'/css/tabs.css', 'theme', 'screen');

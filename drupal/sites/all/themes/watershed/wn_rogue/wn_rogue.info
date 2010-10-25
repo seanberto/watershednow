@@ -29,7 +29,9 @@ features[] = primary_links
 features[] = secondary_links
 
 stylesheets[all][] = css/rogue.css
+stylesheets[all][] = css/hp_callout.css
 
+settings[wn_rogue_color_palette]        = 'blue'
 settings[wn_rogue_search_help]          = 'Explore our watershed'
 settings[wn_rogue_search_button]        = 'Go'
 settings[wn_rogue_zen_tabs]             = 1

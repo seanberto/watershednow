@@ -7,10 +7,25 @@ function wn_whiteoak_settings($saved_settings, $subtheme_defaults = array()) {
 
   // Merge the saved variables and their default values.
   $settings = array_merge($defaults, $saved_settings);
+  
+  // Get color palette options by scanning optional css stylesheets.
+  $colors_dir = drupal_get_path('theme', 'wn_whiteoak') . '/css/colors';
+  $options = file_scan_directory($colors_dir, '\.css$', $nomask = array('.', '..', 'CVS'), $callback = 0, $recurse = TRUE, $key = 'name');
+  foreach ($options as $color) {
+    $colors[$color->name] = $color->name;
+  }
 
   /*
    * Create the form using Forms API
    */
+
+  $form['wn_whiteoak_color_palette'] = array(
+    '#type' => 'radios',
+    '#title' => t('Color Options'),
+    '#options' => $colors,
+    '#description' => t('Choose a color palette for this theme.'),
+    '#default_value' => $settings['wn_whiteoak_color_palette'],
+  );
 
   $form['wn_whiteoak_search_help'] = array(
     '#type'          => 'textfield',

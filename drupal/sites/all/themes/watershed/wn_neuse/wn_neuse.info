@@ -28,8 +28,8 @@ features[] = secondary_links
 
 stylesheets[all][] = css/neuse.css
 stylesheets[all][] = css/hp_callout.css
-stylesheets[all][] = css/colors/blue.css
 
+settings[wn_neuse_color_palette]        = 'blue'
 settings[wn_neuse_search_help]          = 'Explore our watershed'
 settings[wn_neuse_search_button]        = 'Go'
 settings[wn_neuse_zen_tabs]             = 1
