@@ -1,17 +1,21 @@
 <?php
 
+// Grab the active theme. Adjust theme variable calls. That way, we don't have to repeat these calls in
+// each child theme.
+$active_theme = variable_get('theme_default', 'watershed');
+
 // Auto-rebuild the theme registry during theme development.
-if (theme_get_setting('watershed_rebuild_registry')) {
+if (theme_get_setting($active_theme . '_rebuild_registry')) {
   drupal_rebuild_theme_registry();
 }
 
 // Add Zen Tabs styles
-if (theme_get_setting('watershed_zen_tabs')) {
+if (theme_get_setting($active_theme . '_zen_tabs')) {
   drupal_add_css( drupal_get_path('theme', 'watershed') .'/css/tabs.css', 'theme', 'screen');
 }
 
 // Add "wireframing CSS" to sketch out layout
-if (theme_get_setting('watershed_wireframe')) {
+if (theme_get_setting($active_theme . '_wireframe')) {
   drupal_add_css(drupal_get_path('theme', 'watershed') .'/css/wireframing.css', 'theme');
 }
 
@@ -87,7 +91,7 @@ function watershed_preprocess_page(&$vars, $hook) {
   if (user_access('administer blocks')) {
 	  $body_classes[] = 'admin';
 	}
-	if (theme_get_setting('watershed_wireframe')) {
+	if (theme_get_setting($active_theme . '_wireframe')) {
     $body_classes[] = 'with-wireframes'; // Optionally add the wireframes style.
   }
   if (!empty($vars['primary_links']) or !empty($vars['secondary_links'])) {
@@ -233,7 +237,7 @@ function watershed_preprocess_block(&$vars, $hook) {
 
     $vars['block_classes'] = implode(' ', $classes); // Concatenate with spaces
 
-    if (theme_get_setting('watershed_block_editing') && user_access('administer blocks') && ($block->module != 'boxes')) {
+    if (theme_get_setting($active_theme . '_block_editing') && user_access('administer blocks') && ($block->module != 'boxes')) {
         // Display 'edit block' for custom blocks.
         if ($block->module == 'block') {
           $edit_links[] = l('<span>' . t('edit block') . '</span>', 'admin/build/block/configure/' . $block->module . '/' . $block->delta,
@@ -435,7 +439,7 @@ function watershed_id_safe($string) {
  */
 
 function watershed_breadcrumb($breadcrumb) {
-  if (theme_get_setting('watershed_breadcrumb') && !empty($breadcrumb)) {
+  if (theme_get_setting($active_theme . '_breadcrumb') && !empty($breadcrumb)) {
     return '<div class="breadcrumb">'. implode(' » ', $breadcrumb) .'</div>';
   }
 }
