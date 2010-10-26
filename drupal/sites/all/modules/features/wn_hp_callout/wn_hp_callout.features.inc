@@ -18,13 +18,13 @@ function wn_hp_callout_node_info() {
     'wn_hp_callout' => array(
       'name' => t('Homepage Callout'),
       'module' => 'features',
-      'description' => '',
+      'description' => 'A <em>Homepage callout</em> is an image with text used in an image carousel on the homepage.',
       'has_title' => '0',
       'title_label' => t('Title'),
       'has_body' => '0',
-      'body_label' => t('Body'),
+      'body_label' => t(''),
       'min_word_count' => '0',
-      'help' => '',
+      'help' => 'Upload an image to be used in the homepage slideshow callout. Once you have uploaded an image, you can provide additional descriptive text about the image.',
     ),
   );
   return $items;
