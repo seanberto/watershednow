@@ -146,10 +146,6 @@ modules[contrib][] = feeds_ui
 
 
 ; ==============================================
-
-; PROFILER MODULE - DEFAULT SETUP
-; (If applicable)
-
 ; ==============================================
 
 ; PROFILER MODULE - SITE-SPECIFIC CONFIGURATIONS
@@ -191,6 +187,7 @@ variables[site_newsletter] = '<form name="newsletter"><input type="text" name="u
 variables[date_default_timezone_name] = America/New_York
 
 ; ----------------------------------------------
+
 ; Follow Links
 ; follow[uid][network] = url
 ; 0 for uid is sitewide
@@ -201,6 +198,13 @@ follow[0][flickr]   = http://flickr.com
 follow[0][linkedin] = http://linkedin.com
 follow[0][feed]     = updates/rss.xml
 follow[0][youtube]  = http://youtube.com
+
+; ----------------------------------------------
+
+; RSS Feeds import (Add multiple URLS below)
+; feeds[] = url
+; URLs should be absolute URL to the .xml feed of an RSS feed.
+feeds[] = http://watershednow.posterous.com/rss.xml
 
 ; ----------------------------------------------
 

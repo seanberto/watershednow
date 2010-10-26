@@ -31,6 +31,8 @@ function _watershednow_configure( $config ) {
   _watershednow_create_nodes(); // Call after setting up filters.
 
   _watershednow_create_menu_items();
+  
+  _watershednow_add_sample_update_feed( $config['feeds'] );
 
   _watershednow_create_follow_links( $config['follow'] );
 
@@ -453,4 +455,28 @@ function _watershednow_install_themes() {
     variable_set('theme_' . $current_theme . '_settings', $settings);
     db_query("UPDATE {system} SET status = 1 WHERE type = 'theme' and name ='%s'", $current_theme);
   } 
+}
+
+/**
+ * Helper module to create a Update Feed node on install. This function creates a new node, and then
+ * runs it's import process to create additional update node(s).
+ *
+ * NOTE: Would prefer to use node_save() instead of drupal_execute(), but node_save() doesn't create
+ * feeds job appropriately.
+ *
+ * For more information on creating complex nodes via drupal_execute, see:
+ * http://thedrupalblog.com/programmatically-create-any-node-type-using-drupal-execute
+ */
+function _watershednow_add_sample_update_feed($feeds) {
+  foreach ($feeds as $feed) {
+    // Create a new node. Note: we don't need to pass a node title b/c Feeds module looks it up for us.
+    $form_state = array();
+    module_load_include('inc', 'node', 'node.pages'); // Process node form submit.
+    module_load_include('inc', 'node', 'feeds.pages'); // Needed to run node through Feed module's secret sauce.
+    $node = array('type' => 'update_feed'); // Our targetted content type.
+    $form_state['values']['feeds'] = array('FeedsHTTPFetcher' => array('source' => $feed)); // The RSS feed we want to add.
+    $form_state['values']['name'] = 'admin'; // Node author.
+    $form_state['values']['op'] = t('Save');
+    drupal_execute('update_feed_node_form', $form_state, (object)$node);
+  }
 }

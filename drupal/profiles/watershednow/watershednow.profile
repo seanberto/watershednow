@@ -40,9 +40,9 @@ function watershednow_profile_tasks(&$task, $url) {
     drupal_flush_all_caches();
 
     /*
-     * enable all watershed themes
+     * Enable all watershed themes
      * this must happen after clearing caches due to static variable
-     * that can not be reset.
+     * that can not be reset. Extra steps included to add theme variables to variables table.
      */
     _watershednow_install_themes();
     $task = 'profile-finished'; //hand control back to the installer
