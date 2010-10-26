@@ -9,7 +9,7 @@ if (theme_get_setting($active_theme . '_rebuild_registry')) {
   drupal_rebuild_theme_registry();
 }
 
-// Add a color palette stylesheet based upon theme settings.
+// If applicable, add a color palette stylesheet based upon theme settings.
 if ($color = theme_get_setting($active_theme . '_color_palette')) {
   drupal_add_css( drupal_get_path('theme', $active_theme) .'/css/colors/' . $color . '.css', 'theme');
 }
@@ -33,6 +33,11 @@ if (theme_get_setting($active_theme . '_wireframe')) {
  *	  The name of the theme function being called ("page" in this case.)
  */
 function watershed_preprocess_page(&$vars, $hook) {
+  
+  // Grab the active theme. Adjust theme variable calls. That way, we don't have to repeat these calls in
+  // each child theme.
+  $active_theme = variable_get('theme_default', 'watershed');
+  
   // Don't display empty help from node_help().
   if ($vars['help'] == '<div class="help"><p></p>\n</div>') {
     $vars['help'] = '';
@@ -41,7 +46,8 @@ function watershed_preprocess_page(&$vars, $hook) {
   $vars['mission'] = variable_get('site_mission', '');  //add mission to all pages
   $vars['newsletter'] = variable_get('site_newsletter', '');
 
-  // theme the mission statement similar to a block
+  // Theme the mission statement and other theme variables similar to a block.
+  // This cuts down on hardcoding in page.tpl.php and also lets us add hover edit links in hook_preprocess_block().
   if( !empty($vars['mission']) ) {
     $vars['mission'] = theme('block',(object)array(
       'subject' => 'about us',
@@ -132,38 +138,6 @@ function watershed_preprocess_page(&$vars, $hook) {
       }
     }
   }
-  /*  // Check what the user's browser is and add it as a body class
-      // DEACTIVATED - Only works if page cache is deactivated
-      $user_agent = $_SERVER['HTTP_USER_AGENT'];
-      if($user_agent) {
-        if (strpos($user_agent, 'MSIE')) {
-          $body_classes[] = 'browser-ie';
-        } else if (strpos($user_agent, 'MSIE 6.0')) {
-          $body_classes[] = 'browser-ie6';
-        } else if (strpos($user_agent, 'MSIE 7.0')) {
-          $body_classes[] = 'browser-ie7';
-        } else if (strpos($user_agent, 'MSIE 8.0')) {
-          $body_classes[] = 'browser-ie8';
-        } else if (strpos($user_agent, 'Firefox/2')) {
-          $body_classes[] = 'browser-firefox2';
-        } else if (strpos($user_agent, 'Firefox/3')) {
-          $body_classes[] = 'browser-firefox3';
-        }else if (strpos($user_agent, 'Safari')) {
-          $body_classes[] = 'browser-safari';
-        } else if (strpos($user_agent, 'Opera')) {
-          $body_classes[] = 'browser-opera';
-        }
-      }
-
-  /* Add template suggestions based on content type
-   * You can use a different page template depending on the
-   * content type or the node ID
-   * For example, if you wish to have a different page template
-   * for the story content type, just create a page template called
-   * page-type-story.tpl.php
-   * For a specific node, use the node ID in the name of the page template
-   * like this : page-node-22.tpl.php (if the node ID is 22)
-   */
 
   if ($vars['node']->type != '') {
       $vars['template_files'][] = 'page-type-' . $vars['node']->type;
@@ -227,80 +201,98 @@ function watershed_preprocess_node(&$vars, $hook) {
  */
 
 function watershed_preprocess_block(&$vars, $hook) {
-    $block = $vars['block'];
-    // special block classes
-    $classes = array('block');
-    $classes[] = watershed_id_safe('block-' . $vars['block']->module);
-    $classes[] = watershed_id_safe('block-' . $vars['block']->region);
-    $classes[] = watershed_id_safe('block-id-' . $vars['block']->bid);
-    $classes[] = 'clearfix';
+  
+  // Grab the active theme. Adjust theme variable calls. That way, we don't have to repeat these calls in
+  // each child theme.
+  $active_theme = variable_get('theme_default', 'watershed');
+        
+  $block = $vars['block'];
+  // special block classes
+  $classes = array('block');
+  $classes[] = watershed_id_safe('block-' . $vars['block']->module);
+  $classes[] = watershed_id_safe('block-' . $vars['block']->region);
+  $classes[] = watershed_id_safe('block-id-' . $vars['block']->bid);
+  $classes[] = 'clearfix';
 
-    // support for Skinr Module
-    if (module_exists('skinr')) {
-      $classes[] = $vars['skinr'];
-    }
-
-    $vars['block_classes'] = implode(' ', $classes); // Concatenate with spaces
-
-    if (theme_get_setting($active_theme . '_block_editing') && user_access('administer blocks') && ($block->module != 'boxes')) {
-        // Display 'edit block' for custom blocks.
-        if ($block->module == 'block') {
-          $edit_links[] = l('<span>' . t('edit block') . '</span>', 'admin/build/block/configure/' . $block->module . '/' . $block->delta,
-            array(
-              'attributes' => array(
-                'title' => t('edit the content of this block'),
-                'class' => 'block-edit',
-              ),
-              'query' => drupal_get_destination(),
-              'html' => TRUE,
-            )
-          );
-        }
-        // Display 'configure' for other blocks.
-        else {
-          $edit_links[] = l('<span>' . t('configure') . '</span>', 'admin/build/block/configure/' . $block->module . '/' . $block->delta,
-            array(
-              'attributes' => array(
-                'title' => t('configure this block'),
-                'class' => 'block-config',
-              ),
-              'query' => drupal_get_destination(),
-              'html' => TRUE,
-            )
-          );
-        }
-        // Display 'edit menu' for Menu blocks.
-        if (($block->module == 'menu' || ($block->module == 'user' && $block->delta == 1)) && user_access('administer menu')) {
-          $menu_name = ($block->module == 'user') ? 'navigation' : $block->delta;
-          $edit_links[] = l('<span>' . t('edit menu') . '</span>', 'admin/build/menu-customize/' . $menu_name,
-            array(
-              'attributes' => array(
-                'title' => t('edit the menu that defines this block'),
-                'class' => 'block-edit-menu',
-              ),
-              'query' => drupal_get_destination(),
-              'html' => TRUE,
-            )
-          );
-        }
-        // Display 'edit menu' for Menu block blocks.
-        elseif ($block->module == 'menu_block' && user_access('administer menu')) {
-          list($menu_name, ) = split(':', variable_get("menu_block_{$block->delta}_parent", 'navigation:0'));
-          $edit_links[] = l('<span>' . t('edit menu') . '</span>', 'admin/build/menu-customize/' . $menu_name,
-            array(
-              'attributes' => array(
-                'title' => t('edit the menu that defines this block'),
-                'class' => 'block-edit-menu',
-              ),
-              'query' => drupal_get_destination(),
-              'html' => TRUE,
-            )
-          );
-        }
-        $vars['edit_links_array'] = $edit_links;
-        $vars['edit_links'] = '<div class="edit">' . implode(' ', $edit_links) . '</div>';
-      }
+  // support for Skinr Module
+  if (module_exists('skinr')) {
+    $classes[] = $vars['skinr'];
   }
+
+  $vars['block_classes'] = implode(' ', $classes); // Concatenate with spaces
+
+  if (theme_get_setting($active_theme . '_block_editing') && user_access('administer blocks') && ($block->module != 'boxes')) {
+      // Display 'edit block' for custom blocks.
+      if ($block->module == 'block') {
+        $edit_links[] = l('<span>' . t('edit block') . '</span>', 'admin/build/block/configure/' . $block->module . '/' . $block->delta,
+          array(
+            'attributes' => array(
+              'title' => t('edit the content of this block'),
+              'class' => 'block-edit',
+            ),
+            'query' => drupal_get_destination(),
+            'html' => TRUE,
+          )
+        );
+      }
+      // Display 'configure link' for site settings pseudo-blocks.
+      elseif ($block->module == 'watershed') {
+        $edit_links[] = l('<span>' . t('configure') . '</span>', 'admin/settings/site-information',
+          array(
+            'attributes' => array(
+              'title' => t('Configure site settings'),
+              'class' => 'block-config',
+            ),
+            'query' => drupal_get_destination(),
+            'html' => TRUE,
+          )
+        );  
+      }
+      // Display 'configure' for other blocks.
+      else {
+        $edit_links[] = l('<span>' . t('configure') . '</span>', 'admin/build/block/configure/' . $block->module . '/' . $block->delta,
+          array(
+            'attributes' => array(
+              'title' => t('configure this block'),
+              'class' => 'block-config',
+            ),
+            'query' => drupal_get_destination(),
+            'html' => TRUE,
+          )
+        );
+      }
+      // Display 'edit menu' for Menu blocks.
+      if (($block->module == 'menu' || ($block->module == 'user' && $block->delta == 1)) && user_access('administer menu')) {
+        $menu_name = ($block->module == 'user') ? 'navigation' : $block->delta;
+        $edit_links[] = l('<span>' . t('edit menu') . '</span>', 'admin/build/menu-customize/' . $menu_name,
+          array(
+            'attributes' => array(
+              'title' => t('edit the menu that defines this block'),
+              'class' => 'block-edit-menu',
+            ),
+            'query' => drupal_get_destination(),
+            'html' => TRUE,
+          )
+        );
+      }
+      // Display 'edit menu' for Menu block blocks.
+      elseif ($block->module == 'menu_block' && user_access('administer menu')) {
+        list($menu_name, ) = split(':', variable_get("menu_block_{$block->delta}_parent", 'navigation:0'));
+        $edit_links[] = l('<span>' . t('edit menu') . '</span>', 'admin/build/menu-customize/' . $menu_name,
+          array(
+            'attributes' => array(
+              'title' => t('edit the menu that defines this block'),
+              'class' => 'block-edit-menu',
+            ),
+            'query' => drupal_get_destination(),
+            'html' => TRUE,
+          )
+        );
+      }
+      $vars['edit_links_array'] = $edit_links;
+      $vars['edit_links'] = '<div class="edit">' . implode(' ', $edit_links) . '</div>';
+    }
+}
 
 /*
  * Override or insert PHPTemplate variables into the block templates.
@@ -444,6 +436,10 @@ function watershed_id_safe($string) {
  */
 
 function watershed_breadcrumb($breadcrumb) {
+  // Grab the active theme. Adjust theme variable calls. That way, we don't have to repeat these calls in
+  // each child theme.
+  $active_theme = variable_get('theme_default', 'watershed');
+  
   if (theme_get_setting($active_theme . '_breadcrumb') && !empty($breadcrumb)) {
     return '<div class="breadcrumb">'. implode(' » ', $breadcrumb) .'</div>';
   }
