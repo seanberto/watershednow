@@ -90,7 +90,7 @@ function _watershednow_create_menu_items() {
   $secondary_links = array(
     'about-us'    => 'About Us',
     'map'     => 'Explore',
-    'updates/rss.xml'     => 'Blog',
+    'updates'     => 'Blog',
     'events'      => 'Events',
     'take-action' => 'Take Action',
     'donate'      => 'Donate',
@@ -116,7 +116,7 @@ function _watershednow_create_nodes() {
 
   $page = new stdClass;
   $page->title = 'About Us';
-  $page->body = 'This is a placeholder "about us" page. Here readers can learn more about this website and the orgaization behind it.';
+  $page->body = '<p>This is a placeholder <b>"about us" page</b>. Here readers can learn more about this website and the orgaization behind it.</p><p>When you are logged into the site as an administrator, you will see an "edit" link below the title of this page. Follow that link to edit/delete this page content. You can easily embed images, videos, forms and other rich HTML. Or, you can simply use our "WYSIWYG" (What you see is what you get) editor to edit this page like you would the body of an email with Google or Yahoo mail.</p><p>After you get to know the basics, there are many additional content management features that you are sure to enjoy - such as the ability to create menu links to specific pages and the ability to add sidebar content per page.</p>';
   $page->format = 2;
   $page->menu = 'primary_links';
   $page->menuitem_description = 'Learn more about us';
@@ -125,7 +125,7 @@ function _watershednow_create_nodes() {
 
   $page = new stdClass;
   $page->title = 'Staff';
-  $page->body = 'This is a placeholder page about our staff';
+  $page->body = '<p>This is a placeholder page about <b>our staff</b>. It\'s provided here to show how subpages work.</p><p>When you are logged into the site as an administrator, you will see an "edit" link below the title of this page. Follow that link to edit/delete this page content. You can easily embed images, videos, forms and other rich HTML. Or, you can simply use our "WYSIWYG" (What you see is what you get) editor to edit this page like you would the body of an email with Google or Yahoo mail.</p><p>After you get to know the basics, there are many additional content management features that you are sure to enjoy - such as the ability to create menu links to specific pages and the ability to add sidebar content per page.</p>';
   $page->format = 2;
   $page->menu = 'primary_links';
   $page->menuitem_description = 'Get to know our staff. Feel free to rename or even delete this page. It\'s provided here to show how subpages work.';
@@ -134,7 +134,7 @@ function _watershednow_create_nodes() {
 
   $page = new stdClass;
   $page->title = 'History';
-  $page->body = 'This is a placeholder page about our organizational history. Feel free to rename or even delete this page. It\'s provided here to show how subpages work.';
+  $page->body = 'This is a placeholder page about <b>our organizational history</b>. It\'s provided here to show how subpages work.</p><p>When you are logged into the site as an administrator, you will see an "edit" link below the title of this page. Follow that link to edit/delete this page content. You can easily embed images, videos, forms and other rich HTML. Or, you can simply use our "WYSIWYG" (What you see is what you get) editor to edit this page like you would the body of an email with Google or Yahoo mail.</p><p>After you get to know the basics, there are many additional content management features that you are sure to enjoy - such as the ability to create menu links to specific pages and the ability to add sidebar content per page.</p>';
   $page->format = 2;
   $page->menu = 'primary_links';
   $page->menuitem_description = 'Get to know our history.';

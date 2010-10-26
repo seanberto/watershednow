@@ -161,12 +161,12 @@ modules[contrib][] = feeds_ui
 
 users[superduper][uid] = 1
 users[superduper][name] = admin
-users[superduper][mail] = noreply@thinkshout.com
+users[superduper][mail] = noreply@watershednow.com
 users[superduper][status] = 1
 
 users[admin][uid] = 2
 users[admin][name] = web admin
-users[admin][mail] = noreply+1@thinkshout.com
+users[admin][mail] = noreply+1@watershednow.com
 users[admin][status] = 1
 
 ; ----------------------------------------------
@@ -199,7 +199,7 @@ follow[0][facebook] = http://facebook.com
 follow[0][twitter]  = http://twitter.com
 follow[0][flickr]   = http://flickr.com
 follow[0][linkedin] = http://linkedin.com
-follow[0][feed]     = http://example.com/feed.rss
+follow[0][feed]     = /updates/rss.xml
 follow[0][youtube]  = http://youtube.com
 
 ; ----------------------------------------------
