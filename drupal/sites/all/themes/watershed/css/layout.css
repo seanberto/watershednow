@@ -1,24 +1,24 @@
 
 /** Layout
 ---------------------------------
-*  Using a negative margin technique, adapted from ZEN. The page is loaded by this order:
-*  
-*  1. Header
-*  2. Content
-*  3. Navigation menus
-*  4. Sidebar Left
-*  5. Sideabr Right
-*	
+* Using a negative margin technique, adapted from ZEN. The page is loaded by this order:
+*
+* 1. Header
+* 2. Content
+* 3. Navigation menus
+* 4. Sidebar Left
+* 5. Sideabr Right
+*
 */
 
 #page {
-	width: 960px; /* edit to change the width of the page */
-	margin: 0 auto; /* remove 'auto' and the width to switch to a fluid width */
+  width: 960px; /* edit to change the width of the page */
+  margin: 0 auto; /* remove 'auto' and the width to switch to a fluid width */
 }
 
 /** LAYOUT RULES
 ---------------------------------
-*  do not change if you're not sure you know what you're doing
+* do not change if you're not sure you know what you're doing
 */
 
 #content {
@@ -40,7 +40,7 @@
 
 #callout {
   height: 360px;
-  overflow:hidden;
+  overflow: hidden;
 }
 
 /* Layout Helpers */
@@ -51,55 +51,57 @@
 
 /** Sidebars width
 ---------------------------------
-*  Changing the width of the sidebars is dead easy, just change the
-*  values below corresponding to the sidebar you want to modify.
-*  Make sure you keep negative values as negative values.
-*  For example, if I want to increase the width of the left sidebar
-*  to 300px, I would have to change each '300' to '300'.
+* Changing the width of the sidebars is dead easy, just change the
+* values below corresponding to the sidebar you want to modify.
+* Make sure you keep negative values as negative values.
+* For example, if I want to increase the width of the left sidebar
+* to 300px, I would have to change each '300' to '300'.
 */
 
 .two-sidebars .center,
 .sidebar-left .center {
-  margin-left: 220px;     /* LEFT value */
+  margin-left: 220px; /* LEFT value */
 }
 #sidebar-first {
-  width: 220px;           /* LEFT value */
-	margin-right: -220px;    /* negative LEFT value */
+  width: 220px; /* LEFT value */
+  margin-right: -220px; /* negative LEFT value */
 }
 .two-sidebars .center,
 .sidebar-right .center {
-  margin-right: 300px;    /* RIGHT value */
+  margin-right: 300px; /* RIGHT value */
 }
 #sidebar-second {
-  width: 300px;           /* RIGHT value */
+  width: 300px; /* RIGHT value */
 }
 
-#content-inner { padding:0 40px 40px 40px; }
+#content-inner {
+  padding: 0 40px 40px 40px;
+}
 
 /** Columns inner
 ---------------------------------
-*  You can change the padding inside the columns without changing the
-*  width of them by just usinbg the INNER div of each column
+* You can change the padding inside the columns without changing the
+* width of them by just usinbg the INNER div of each column
 */
 
 .inner {
-	padding: 0px;
+  padding: 0px;
 }
 
 /** Navigation styles
 ---------------------------------
-*  The navigation is loaded after the content, so we need to make space
-*  for it, equal to its height, so if you change the height of the navigation,
-*  remember to adapt the margin top of the content and sidebars.
+* The navigation is loaded after the content, so we need to make space
+* for it, equal to its height, so if you change the height of the navigation,
+* remember to adapt the margin top of the content and sidebars.
 */
 
 #nav, #nav * {
-  margin:0;
-  padding:0;
-  font-size:100%;
+  margin: 0;
+  padding: 0;
+  font-size: 100%;
 }
 #nav {
-  height:3em;
+  height: 3em;
   margin-left: 0;
   margin-right: -100%;
   padding: 0;
@@ -109,114 +111,3 @@
 .with-navigation .sidebar {
   margin-top: 3em;/* Navigation Height */
 }
-#nav, #nav li {
-  font-size:100%;
-  background:#000;
-  color:#fff;
-}
-
-#nav li {
-  float:left;
-}
-
-#nav a {
-  padding-left:1em;
-  line-height:2.3;
-  color:#fff;
-}
-
-/* =Header
-------------- */
-#header {
-  position:relative;
-}
-
-#logo-title {
-  margin-bottom:1em;
-}
-#site-name {
-  margin:0;
-  padding:0;
-}
-
-
-/*= Search
-------------- */
-#search-theme-form, #search-block-form {
-  height: 35px;
-  width: 160px;
-  position:relative;
-}
-
-#search-input input {
-  width:100%;
-  height:24px;
-  padding-left:10px;
-}
-
-#search-button {
-  position:absolute;
-  top:6px;
-  right:-10px; /* negative padding left of search input */
-}
-
-/*= Newsletter
-------------- */
-#block-watershed-newsletter .content {
-  position:relative;
-  width:151px;
-}
-#block-watershed-newsletter input[type=text] {
-  width:100%;
-  height:24px;
-  padding-left:10px;
-  padding-right:50px;
-  border:1px solid #000;
-
-}
-#block-watershed-newsletter input[type=submit] {
-  background:url(../images/send.gif) 0 0 no-repeat;
-  border:0;
-  text-indent:-9999px;
-  width:50px;
-  height:15px;
-  position:absolute;
-  top:6px;
-  right:-60px; /* negative padding left of search input */
-  cursor:pointer;
-  cursor:hand;
-}
-
-/*= Footer
-------------- */
-#footer-message { clear:both; }
-#footer-second .block-title {
-  font-size:125%;
-  margin-bottom:0;
-}
-#footer-second .block {
-  float:left;
-  margin-right:1%;
-}
-
-#block-watershed-mission  { width:33%; }
-#block-watershed-secondary_links { width:23%; }
-#block-follow-site { width:17%; }
-#block-follow-site .content  { width:150px; }
-#block-watershed-search  { width:27%; margin-right:0; }
-
-#block-watershed-secondary_links ul {
-  margin:0;
-  padding:0;
-}
-#block-watershed-secondary_links li {
-  float:left;
-  width:48%;
-  margin:0;
-  padding:0;
-  list-style:none;
-}
-
-div.block .edit a { color:#000 !important; }
-
-

@@ -27,3 +27,6 @@ a.follow-link-linkedin:hover  { background-position:-96px 100%; }
 a.follow-link-feed:hover      { background-position:-128px 100%; }
 a.follow-link-this-site:hover { background-position:-128px 100%; }
 a.follow-link-youtube:hover   { background-position:-160px 100%; }
+
+/* @FIXME - Don't display inline edit links for Follow block. Should be in a hook. Nasty using CSS. */
+#block-follow-site li.follow_edit, #block-follow-site li.follow_configure { display: none; }

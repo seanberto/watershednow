@@ -61,7 +61,6 @@ function watershed_preprocess_page(&$vars, $hook) {
     $vars['search_box'] = theme('block',(object)array(
       'subject' => 'search',
       'delta' => 'search',
-      'module' => 'watershed',
       'content' => $vars['search_box']
     ));
   }
@@ -91,7 +90,7 @@ function watershed_preprocess_page(&$vars, $hook) {
     $vars['secondary_links'] = theme('block',(object)array(
       'subject' => 'navigate',
       'delta' => 'secondary_links',
-      'module' => 'watershed',
+      'module' => 'menu',
       'content' => theme('links',$vars['secondary_links'])
     ));
   }
@@ -282,6 +281,19 @@ function watershed_preprocess_block(&$vars, $hook) {
           array(
             'attributes' => array(
               'title' => t('edit the menu that defines this block'),
+              'class' => 'block-edit-menu',
+            ),
+            'query' => drupal_get_destination(),
+            'html' => TRUE,
+          )
+        );
+      }
+      // Display 'edit links' for Follow blocks.
+      elseif ($block->module == 'follow' && user_access('edit site follow links')) {
+        $edit_links[] = l('<span>' . t('edit links') . '</span>', 'admin/build/follow',
+          array(
+            'attributes' => array(
+              'title' => t('edit the follow links'),
               'class' => 'block-edit-menu',
             ),
             'query' => drupal_get_destination(),

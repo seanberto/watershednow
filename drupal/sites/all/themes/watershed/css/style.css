@@ -1,15 +1,15 @@
 
-/** Font styles 
+/** Font styles
 ---------------------------------*/
 
 body {
   margin: 0;
   /*
-   * Setting up font size, leading and font family
-   * http://www.markboulton.co.uk/journal/comments/five-simple-steps-to-better-typography
-   */
+  * Setting up font size, leading and font family
+  * http://www.markboulton.co.uk/journal/comments/five-simple-steps-to-better-typography
+  */
   font: 13px/1.5em "Helvetica Neue", helvetica, Arial, sans-serif;
-  letter-spacing:0.03em;
+  letter-spacing: 0.03em;
 }
 
 /* Links */
@@ -24,69 +24,105 @@ a:hover, a:active {
   text-decoration: underline;
 }
 
-/* Titles  */
+/* Titles */
 
-h1, h2, h3, h4, h5, h6 {line-height:1.3em;}
-
-h1 {
-	font-size: 2.2em;
-	font-weight:300;
-	padding: 0 0 0.5em;
-	margin: 0;
+h1, h2, h3, h4, h5, h6 {
+  line-height: 1.3em;
 }
 
-h2 {font-size:1.8em;font-weight:300;margin-bottom:0.75em;}
-h3 {font-size:1.4em;margin-bottom:1em;}
-h4 {font-size:1.2em;margin-bottom:0.8em;}
-h5 {font-size:1.1em;font-weight:600;margin-bottom:0;}
-h6 {font-size:1em;font-weight:bold;}
+h1 {
+  font-size: 2.2em;
+  font-weight: 300;
+  padding: 0 0 0.5em;
+  margin: 0;
+}
+
+h2 {
+  font-size: 1.8em;
+  font-weight: 300;
+  margin-bottom: 0.75em;
+}
+h3 {
+  font-size: 1.4em;
+  margin-bottom: 1em;
+}
+h4 {
+  font-size: 1.2em;
+  margin-bottom: 0.8em;
+}
+h5 {
+  font-size: 1.1em;
+  font-weight: 600;
+  margin-bottom: 0;
+}
+h6 {
+  font-size: 1em;
+  font-weight: bold;
+}
 
 /* Paragraph Styles */
 
 p {
-  margin:0 0 1em 0;
+  margin: 0 0 1em 0;
 }
 
-/* List Styles  */
+/* List Styles */
 
 ul, ol {
   margin-left: 0;
   padding-left: 2em;
 }
 
-/* Table Styles  */
+/* Table Styles */
 
 table {
-	width: 99%;
+  width: 99%;
 }
 tr.even td, tr.odd td {
-	padding: 10px 5px;
+  padding: 10px 5px;
 }
 tr.odd {
-	background-color: #fff;
+  background-color: #fff;
 }
 
 /* Code */
 
-pre, code, tt {font:1em 'andale mono', 'lucida console', monospace;line-height:1.5;}
+pre, code, tt {
+  font: 1em 'andale mono', 'lucida console', monospace;
+  line-height: 1.5;
+}
 
 pre {
-	background-color: #efefef;
-	display: block;
-	padding: 5px;
-	margin: 5px 0;
-	border: 1px solid #aaa;
+  background-color: #efefef;
+  display: block;
+  padding: 5px;
+  margin: 5px 0;
+  border: 1px solid #aaa;
 }
 
 /* List Styles */
 
-ul          { list-style-type: disc; }
-ul ul       { list-style-type: circle; }
-ul ul ul    { list-style-type: square; }
-ul ul ul ul { list-style-type: circle; }
-ol          { list-style-type: decimal; }
-ol ol       { list-style-type: lower-alpha; }
-ol ol ol    { list-style-type: decimal; }
+ul {
+  list-style-type: disc;
+}
+ul ul {
+  list-style-type: circle;
+}
+ul ul ul {
+  list-style-type: square;
+}
+ul ul ul ul {
+  list-style-type: circle;
+}
+ol {
+  list-style-type: decimal;
+}
+ol ol {
+  list-style-type: lower-alpha;
+}
+ol ol ol {
+  list-style-type: decimal;
+}
 
 /* Abbreviation */
 
@@ -97,8 +133,8 @@ abbr {
 }
 
 /**
- * Console, style from Slate theme
- */
+* Console, style from Slate theme
+*/
 div.messages {
   padding: 9px;
   margin: 1em 0;
@@ -122,7 +158,19 @@ div.status {
   border-color: #be7;
 }
 
-/* Header and navigation styles */
+/* =Header and =Navigation styles */
+
+#header {
+  position: relative;
+}
+
+#logo-title {
+  margin-bottom: 1em;
+}
+#site-name {
+  margin: 0;
+  padding: 0;
+}
 
 #header, #main {
   float: left;
@@ -134,34 +182,151 @@ div.status {
   margin-left: 10px;
 }
 
+#nav, #nav li {
+  font-size: 100%;
+  background: #000;
+  color: #fff;
+}
+
+#nav li {
+  float: left;
+}
+
+#nav a {
+  padding-left: 1em;
+  line-height: 2.3;
+  color: #fff;
+}
+
 input#edit-search-theme-form-1 {
   color: #777;
   font-size: 0.7em;
   width: 100px;
 }
 
-#secondary {
-}
-
 #primary {
   font-size: 1.2em;
 }
 
-/* Block */
-h3.block-title { margin-bottom:.25em; }
-.block { margin-bottom:1em; }
+/* =Block */
+h3.block-title {
+  margin-bottom: .25em;
+}
+
+.block {
+  margin-bottom: 1em;
+}
 
 /* Donation widget styles */
 .simple-donations {
-/*  float: right;
+  /* float: right;
   height: 100px;
   margin-top: -100px;*/
 }
 
+/*= Newsletter
+------------- */
+#block-watershed-newsletter .content {
+  position: relative;
+  width: 151px;
+}
+
+#block-watershed-newsletter input[type=text] {
+  width: 100%;
+  height: 24px;
+  padding-left: 10px;
+  padding-right: 50px;
+  border: 1px solid #000;
+}
+
+#block-watershed-newsletter input[type=submit] {
+  background: url(../images/send.gif) 0 0 no-repeat;
+  border: 0;
+  text-indent: -9999px;
+  width: 50px;
+  height: 15px;
+  position: absolute;
+  top: 6px;
+  right: -60px; /* negative padding left of search input */
+  cursor:pointer;
+  cursor: hand;
+}
+
+/*= Search
+------------- */
+#search-theme-form, #search-block-form {
+  height: 35px;
+  width: 160px;
+  position: relative;
+}
+
+#search-input input {
+  width: 100%;
+  height: 24px;
+  padding-left: 10px;
+}
+
+#search-button {
+  position: absolute;
+  top: 6px;
+  right: -10px; /* negative padding left of search input */
+}
+
+/*= Footer
+------------- */
+#footer-message {
+  clear: both;
+}
+#footer-second .block-title {
+  font-size: 125%;
+  margin-bottom: 0;
+}
+#footer-second .block {
+  float: left;
+  margin-right: 1%;
+}
+
+#block-watershed-mission {
+  width: 33%;
+}
+#block-menu-secondary_links {
+  width: 23%;
+}
+#block-follow-site {
+  width: 17%;
+}
+#block-follow-site .content {
+  width: 150px;
+}
+#block-watershed-search {
+  width: 27%;
+  margin-right: 0;
+}
+
+#block-menu-secondary_links ul {
+  margin: 0;
+  padding: 0;
+}
+
+#block-menu-secondary_links li {
+  float: left;
+  width: 48%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* =Map */
 /* @FIXME - There's a bug that prevents content-top blocks from displaying on OL map views w/o a title. So we hide it. */
 body.page-map h1.title {
   display: none;
 }
+
 body.page-map h1.title.block-title {
   display: block;
+}
+
+/* =Miscellaneous Tweaks */
+div.block .edit a {
+  color: #000 !important;
 }
