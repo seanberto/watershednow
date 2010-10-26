@@ -23,12 +23,12 @@ function _watershednow_configure( $config ) {
   _watershednow_configure_roles();
 
   // Configure Input formats and WYSIWYG editor
-  _watershednow_fiters_wysiwyg();
+  _watershednow_filters_wysiwyg();
 
   // Remove the default content type that Webform Module adds. It's cruft.
   node_type_delete('webform');
 
-  _watershednow_create_nodes();
+  _watershednow_create_nodes(); // Call after setting up filters.
 
   _watershednow_create_menu_items();
 
@@ -249,7 +249,7 @@ function _watershednow_define_perms() {
  * @FIXME: Also, should use install_get_rid() to make sure that RIDs are consistent with those
  * created for "web admin" and "staff" roles. Fragile as is.
  */
-function _watershednow_fiters_wysiwyg() {
+function _watershednow_filters_wysiwyg() {
 
   // Setting up Better Formats
   db_query("DELETE FROM {better_formats_defaults}");
