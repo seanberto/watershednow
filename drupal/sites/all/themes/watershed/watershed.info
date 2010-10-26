@@ -21,6 +21,7 @@ regions[footer] = Footer
 
 features[] = logo
 features[] = name
+features[] = slogan
 features[] = search
 features[] = favicon
 features[] = primary_links
