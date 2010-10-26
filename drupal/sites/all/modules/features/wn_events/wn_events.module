@@ -51,7 +51,9 @@ function wn_events_block($op = 'list', $delta = 0, $edit = array()) {
 function _wn_events_homepage_list() {
   $view = views_get_view('events'); // Great the events view.
   $view->set_display('block_1'); // Set the display.
-  $view->set_items_per_page(variable_get('wn_events_number', '3')); // Look up the number of events to display. 
-  $output = $view->render($view_display); // Output the view.
+  $view->set_items_per_page(variable_get('wn_events_number', '3')); // Look up the number of events to display.
+  if (!empty($view->result)) {
+    $output = $view->render($view_display); // If view returns results, output the view.
+  }
   return $output;
 }
