@@ -235,7 +235,7 @@ function watershed_preprocess_block(&$vars, $hook) {
         );
       }
       // Display 'configure link' for site settings pseudo-blocks.
-      elseif ($block->module == 'watershed') {
+      elseif ($block->module == 'watershed' && user_access('administer site configuration')) {
         $edit_links[] = l('<span>' . t('configure') . '</span>', 'admin/settings/site-information',
           array(
             'attributes' => array(
