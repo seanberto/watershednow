@@ -44,7 +44,7 @@ function watershednow_profile_tasks(&$task, $url) {
      * this must happen after clearing caches due to static variable
      * that can not be reset.
      */
-    db_query("UPDATE {system} SET status = 1 WHERE type = 'theme' and filename LIKE '%watershed%'");
+    _watershednow_install_themes();
     $task = 'profile-finished'; //hand control back to the installer
   }
   return '';

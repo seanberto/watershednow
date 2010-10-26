@@ -33,7 +33,7 @@ if (theme_get_setting($active_theme . '_wireframe')) {
  *	  The name of the theme function being called ("page" in this case.)
  */
 function watershed_preprocess_page(&$vars, $hook) {
-  
+
   // Grab the active theme. Adjust theme variable calls. That way, we don't have to repeat these calls in
   // each child theme.
   $active_theme = variable_get('theme_default', 'watershed');

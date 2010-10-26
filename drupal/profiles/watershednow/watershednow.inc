@@ -37,7 +37,6 @@ function _watershednow_configure( $config ) {
   // Do some additional clean up.
   db_query("UPDATE {blocks} SET status = 0, region = ''"); // disable all DB blocks
   db_query("UPDATE {system} SET status = 0 WHERE type = 'theme' and name ='%s'", 'garland');
-  db_query("UPDATE {system} SET status = 1 WHERE type = 'theme' and name ='%s'", 'watershed');
   variable_set('admin_theme', 'seven'); // set the admin theme to Rubik
   variable_set('node_admin_theme', 1); // Use the admin theme for content editing
 }
@@ -318,6 +317,10 @@ function _watershednow_filters_wysiwyg() {
   };
 }
 
+/**
+ * Helper function to configure roles.
+ */
+
 function _watershednow_configure_roles() {
   // Leverage Install Profile API to create roles and perms.
   $default_roles = array('web admin', 'staff'); // Adding roles and perms.
@@ -338,4 +341,31 @@ function _watershednow_configure_roles() {
   // Now remove some crufy permissions
   install_remove_permissions('1', $default_perms['to_remove']);
   install_remove_permissions('2', $default_perms['to_remove']);
+}
+
+/**
+ * Installing themes is a PITA. It's easy to enable themes, but setting their variables is not straight forward.
+ * @TODO - There's gotta be a better way to set these variables.
+ */
+function _watershednow_install_themes() {
+  $all_themes = system_theme_data();
+  $wn_themes = array(
+    'watershed' => $all_themes['watershed'],
+    'wn_neuse' =>$all_themes['wn_neuse'],
+    'wn_rogue' => $all_themes['wn_rogue'],
+    'wn_whiteoak' => $all_themes['wn_whiteoak']
+    );
+  $defaults = theme_get_settings(); // Get site's default settings as an array.
+  foreach($wn_themes as $current_theme => $theme) {
+    $settings = array();
+    foreach($theme->info['settings'] as $key => $setting) {
+      $settings[$key] = $setting;
+    }
+    foreach($theme->info['features'] as $feature) {
+      $settings['toggle_' . $feature] = 1;
+    }
+    $settings = array_merge($defaults, $settings);
+    variable_set('theme_' . $current_theme . '_settings', $settings);
+    db_query("UPDATE {system} SET status = 1 WHERE type = 'theme' and name ='%s'", $current_theme);
+  } 
 }
