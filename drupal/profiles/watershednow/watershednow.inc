@@ -409,12 +409,13 @@ function _watershednow_filters_wysiwyg() {
  */
 
 function _watershednow_configure_roles() {
-  // Leverage Install Profile API to create roles and perms.
-  $default_roles = array('web admin', 'staff'); // Adding roles and perms.
+  // Leverage Install Profile API to create perms and ad to roles.
+  $default_roles = user_roles(); // Adding roles and perms.
   $default_perms = _watershednow_define_perms(); // Grabbing array of permissions.
-  foreach ($default_roles as $role) {
-    install_add_role($role);
-    $rid = install_get_rid($role); // Get the RID so we can add perms.
+  foreach ($default_roles as $rid => $role) {
+    if ($role == 'support') {
+      //install_add_permissions($rid, $default_perms['support']);
+    }
     if ($role == 'staff') {
       install_add_permissions($rid, $default_perms['staff']);
     }

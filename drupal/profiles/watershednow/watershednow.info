@@ -154,16 +154,34 @@ modules[contrib][] = feeds_ui
 ; ----------------------------------------------
 
 ; Set up admin users.
+; Note: when adding multiple roles to the same user account, comma-separate w/o whitespace.
 
-users[superduper][uid] = 1
-users[superduper][name] = admin
-users[superduper][mail] = noreply@watershednow.com
-users[superduper][status] = 1
+; 'User 1' account - the Drupal super user, not used for day-to-day tasks.
+users[watershednow][uid] = 1
+users[watershednow][name] = watershednow
+users[watershednow][mail] = noreply@watershednow.com
+users[watershednow][status] = 1
 
-users[admin][uid] = 2
-users[admin][name] = web admin
-users[admin][mail] = noreply+1@watershednow.com
+; A special account for technical Drupal support team.
+users[support][uid] = 2
+users[support][name] = support
+users[support][mail] = noreply+1@watershednow.com
+users[support][roles] = support
+users[support][status] = 1
+
+; A web admin account - for user management and more advanced site managment tasks.
+users[admin][uid] = 3
+users[admin][name] = admin
+users[admin][mail] = noreply+2@watershednow.com
+users[admin][roles] = web admin
 users[admin][status] = 1
+
+; A general staff account for managing day-to-day tasks. (Set here for testing.)
+users[staff][uid] = 4
+users[staff][name] = staff
+users[staff][mail] = noreply+3@watershednow.com
+users[staff][roles] = staff
+users[staff][status] = 1
 
 ; ----------------------------------------------
 
