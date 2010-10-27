@@ -1,0 +1,11 @@
+#footer-wrapper {
+  background: #30a9a5;
+}
+
+.title {
+  color: #30a9a5;
+}
+
+#nav li.active {
+    background: url(teal/nav_bg_active_teal.png) repeat-x 0 0 transparent;
+}

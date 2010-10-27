@@ -1,1 +1,124 @@
-body { background:#ffe; }
+html, body, #page {
+  height: 100%;
+}
+
+body { 
+  font: 13px/1.4em "Helvetica Neue",helvetica,Arial,sans-serif;
+}
+
+#content-inner {
+  padding: 0 25px 25px;
+}
+
+.title, .block-title, #nav a {
+  font-family: "Trebuchet MS", "Helvetica Neue",helvetica,Arial,sans-serif;
+}
+
+#sidebar-second .block .block-inner {
+  padding: 1em;
+}
+
+#sidebar-second .block.odd {
+  background: #eff0f0;
+}
+
+#page {
+  margin-top: 25px;
+}
+
+#page-inner {
+}
+
+#main {
+}
+
+a {
+  outline: none;
+}
+
+#nav {
+  background: url(../images/nav_bg.png) repeat-x 0 0 transparent;
+}
+
+#nav li {
+  background: url(../images/divider.png) no-repeat right 0 transparent;
+}
+
+#nav li.last {
+  background: none;
+}
+
+#nav li.active {
+  height: 3em;
+}
+
+#nav li a {
+  padding: 0 1em;
+}
+
+h1.title {
+  font-weight: bold;
+  font-size: 1.8em;
+  text-transform: uppercase;
+}
+
+/*
+ *  Header styles
+ */
+ 
+#slogan {
+  color: #58595b;
+  font-style: italic;
+  font-size: 1.1em;
+  margin-left: 100px;
+}
+ 
+#block-watershed-newsletter {
+  float: right;
+  width: 215px;
+  margin-top: 25px;
+}
+
+#block-watershed-newsletter h3.title {
+  font-weight: normal;
+}
+
+
+/*
+ *  Footer styles
+ */
+ 
+#footer-wrapper {
+  height: 225px;
+  width: 100%;
+}
+
+#footer {
+  color: #fff;
+  width: 960px;
+  margin: 0 auto;
+  padding: 35px;
+}
+
+#footer a {
+  color: #fff;
+}
+
+#footer .title {
+  font-weight: bold;
+  font-size: 1.3em;
+  margin-bottom: .5em;
+  color: #fff;
+}
+ 
+#footer-message {
+  border-top: 1px dotted #fff;
+  margin-top: 1em;
+}
+ 
+#block-watershed-mission {
+  width: 35%;
+}
+
+#block-menu-secondary_links {
+}
