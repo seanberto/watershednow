@@ -4,22 +4,7 @@ html, body, #page {
 
 body { 
   font: 13px/1.4em "Helvetica Neue",helvetica,Arial,sans-serif;
-}
-
-#content-inner {
-  padding: 0 25px 25px;
-}
-
-.title, .block-title, #nav a {
-  font-family: "Trebuchet MS", "Helvetica Neue",helvetica,Arial,sans-serif;
-}
-
-#sidebar-second .block .block-inner {
-  padding: 1em;
-}
-
-#sidebar-second .block.odd {
-  background: #eff0f0;
+  color: #414042;
 }
 
 #page {
@@ -32,11 +17,29 @@ body {
 #main {
 }
 
+#content-inner {
+  padding: 0 25px 25px;
+}
+
+h1.title {
+  font-weight: bold;
+  font-size: 1.8em;
+  text-transform: uppercase;
+}
+
+.title, .block-title, #nav a {
+  font-family: "Trebuchet MS", "Helvetica Neue",helvetica,Arial,sans-serif;
+}
+
 a {
   outline: none;
 }
 
-#nav {
+/*
+ *  Navigation styles
+ */
+
+ #nav {
   background: url(../images/nav_bg.png) repeat-x 0 0 transparent;
 }
 
@@ -56,10 +59,25 @@ a {
   padding: 0 1em;
 }
 
-h1.title {
-  font-weight: bold;
-  font-size: 1.8em;
-  text-transform: uppercase;
+/*
+ *  Sidebar styles
+ */
+ 
+.block-title {
+  font-size: 1.2em;
+  text-transform: lowercase;
+}
+
+#sidebar-second .block .content {
+  font-size: .9em;
+}
+
+#sidebar-second .block .block-inner {
+  padding: 1em;
+}
+
+#sidebar-second .block.odd {
+  background: #eff0f0;
 }
 
 /*
