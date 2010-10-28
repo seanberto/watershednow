@@ -52,6 +52,7 @@ modules[contrib][] = admin_menu
 
 ; Views
 modules[contrib][] = views
+modules[contrib][] = views_bonus_export
 modules[contrib][] = views_calc
 modules[contrib][] = draggableviews
 
@@ -228,8 +229,15 @@ feeds[] = http://watershednow.posterous.com/rss.xml
 ; Set up additional contrib configurations.
 ; (Note: these run after features are installed so the variables below should override defaults.)
 
+; Paypal sandbox mode (defaults to "true")
+variables[simple_payments_paypal_sandbox] = 1
+; Paypal email address for processing payments. (defaults to a sandbox account.)
+variables[simple_payments_paypal_account] = waters_1288290444_biz@thinkshout.com
+
 ; placeholder for google analytics key
-; variables[openlayers_layers_google_api] = ABQIAAAAXcM0kIV0KYcm1CAyqIc4qRTBRbjBNDIac9IBLAsNWawmb_4ssxQf6kE73jz8wpJw5kIFRn2w7rXMJA
+
+; Set the Google API key for OpenLayer's maping
+variables[openlayers_layers_google_api] = ABQIAAAAXcM0kIV0KYcm1CAyqIc4qRTBRbjBNDIac9IBLAsNWawmb_4ssxQf6kE73jz8wpJw5kIFRn2w7rXMJA
 
 ; ==============================================
 
