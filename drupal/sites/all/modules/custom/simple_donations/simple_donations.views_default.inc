@@ -262,7 +262,7 @@ function simple_donations_views_default_views() {
     'detailed_values' => '0',
   ));
   $handler = $view->new_display('page', 'Page - Report', 'page_1');
-  $handler->override_option('path', 'admin/dashboard/donations');
+  $handler->override_option('path', 'admin/content/donations');
   $handler->override_option('menu', array(
     'type' => 'normal',
     'title' => 'Donation Campaigns',
