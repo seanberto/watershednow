@@ -141,7 +141,7 @@ function simple_donations_menu() {
  */
 function _simple_donations_list_received($node) {
   $view = views_get_view('donations');
-  $view_display = 'page_2';
+  $view_display = 'default';
   $view_args = array($node->nid);
   $output .=  $view->preview($view_display, $view_args);
   return $output;

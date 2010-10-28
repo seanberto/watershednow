@@ -25,6 +25,313 @@ function simple_donations_views_default_views() {
     ),
   ));
   $handler->override_option('fields', array(
+    'timestamp' => array(
+      'label' => 'Payment date',
+      'alter' => array(
+        'alter_text' => 0,
+        'text' => '',
+        'make_link' => 0,
+        'path' => '',
+        'link_class' => '',
+        'alt' => '',
+        'prefix' => '',
+        'suffix' => '',
+        'target' => '',
+        'help' => '',
+        'trim' => 0,
+        'max_length' => '',
+        'word_boundary' => 1,
+        'ellipsis' => 1,
+        'html' => 0,
+        'strip_tags' => 0,
+      ),
+      'empty' => '',
+      'hide_empty' => 0,
+      'empty_zero' => 0,
+      'date_format' => 'small',
+      'custom_date_format' => '',
+      'exclude' => 0,
+      'id' => 'timestamp',
+      'table' => 'simple_payment',
+      'field' => 'timestamp',
+      'relationship' => 'none',
+    ),
+    'payer_email' => array(
+      'label' => 'Payer email',
+      'alter' => array(
+        'alter_text' => 0,
+        'text' => '',
+        'make_link' => 0,
+        'path' => '',
+        'link_class' => '',
+        'alt' => '',
+        'prefix' => '',
+        'suffix' => '',
+        'target' => '',
+        'help' => '',
+        'trim' => 0,
+        'max_length' => '',
+        'word_boundary' => 1,
+        'ellipsis' => 1,
+        'html' => 0,
+        'strip_tags' => 0,
+      ),
+      'empty' => '',
+      'hide_empty' => 0,
+      'empty_zero' => 0,
+      'exclude' => 0,
+      'id' => 'payer_email',
+      'table' => 'simple_payment',
+      'field' => 'payer_email',
+      'relationship' => 'none',
+    ),
+    'name' => array(
+      'label' => 'Username (if applicable)',
+      'alter' => array(
+        'alter_text' => 0,
+        'text' => '',
+        'make_link' => 0,
+        'path' => '',
+        'link_class' => '',
+        'alt' => '',
+        'prefix' => '',
+        'suffix' => '',
+        'target' => '',
+        'help' => '',
+        'trim' => 0,
+        'max_length' => '',
+        'word_boundary' => 1,
+        'ellipsis' => 1,
+        'html' => 0,
+        'strip_tags' => 0,
+      ),
+      'empty' => '',
+      'hide_empty' => 0,
+      'empty_zero' => 0,
+      'link_to_user' => 1,
+      'overwrite_anonymous' => 1,
+      'anonymous_text' => '',
+      'exclude' => 0,
+      'id' => 'name',
+      'table' => 'users',
+      'field' => 'name',
+      'relationship' => 'uid',
+    ),
+    'amount' => array(
+      'label' => 'Amount',
+      'alter' => array(
+        'alter_text' => 0,
+        'text' => '',
+        'make_link' => 0,
+        'path' => '',
+        'link_class' => '',
+        'alt' => '',
+        'prefix' => '',
+        'suffix' => '',
+        'target' => '',
+        'help' => '',
+        'trim' => 0,
+        'max_length' => '',
+        'word_boundary' => 1,
+        'ellipsis' => 1,
+        'html' => 0,
+        'strip_tags' => 0,
+      ),
+      'empty' => '',
+      'hide_empty' => 0,
+      'empty_zero' => 0,
+      'set_precision' => FALSE,
+      'precision' => 0,
+      'decimal' => '.',
+      'separator' => ',',
+      'prefix' => '$',
+      'suffix' => '',
+      'exclude' => 0,
+      'id' => 'amount',
+      'table' => 'simple_payment',
+      'field' => 'amount',
+      'relationship' => 'none',
+    ),
+  ));
+  $handler->override_option('arguments', array(
+    'nid' => array(
+      'default_action' => 'not found',
+      'style_plugin' => 'default_summary',
+      'style_options' => array(),
+      'wildcard' => 'all',
+      'wildcard_substitution' => 'All',
+      'title' => 'Donations for %1',
+      'breadcrumb' => '',
+      'default_argument_type' => 'fixed',
+      'default_argument' => '',
+      'validate_type' => 'none',
+      'validate_fail' => 'not found',
+      'break_phrase' => 0,
+      'not' => 0,
+      'id' => 'nid',
+      'table' => 'node',
+      'field' => 'nid',
+      'validate_user_argument_type' => 'uid',
+      'validate_user_roles' => array(
+        '2' => 0,
+        '5' => 0,
+        '3' => 0,
+        '4' => 0,
+      ),
+      'relationship' => 'none',
+      'default_options_div_prefix' => '',
+      'default_argument_fixed' => '',
+      'default_argument_user' => 0,
+      'default_argument_php' => '',
+      'validate_argument_node_type' => array(
+        'update' => 0,
+        'update_feed' => 0,
+        'page' => 0,
+        'donation' => 0,
+        'event' => 0,
+        'wn_hp_callout' => 0,
+        'map_feature' => 0,
+        'map_kml' => 0,
+        'take_action' => 0,
+      ),
+      'validate_argument_node_access' => 0,
+      'validate_argument_nid_type' => 'nid',
+      'validate_argument_vocabulary' => array(
+        '1' => 0,
+      ),
+      'validate_argument_type' => 'tid',
+      'validate_argument_transform' => 0,
+      'validate_user_restrict_roles' => 0,
+      'validate_argument_signup_status' => 'any',
+      'validate_argument_signup_node_access' => 0,
+      'validate_argument_php' => '',
+    ),
+  ));
+  $handler->override_option('filters', array(
+    'type' => array(
+      'operator' => 'in',
+      'value' => array(
+        'donation' => 'donation',
+      ),
+      'group' => '0',
+      'exposed' => FALSE,
+      'expose' => array(
+        'operator' => FALSE,
+        'label' => '',
+      ),
+      'id' => 'type',
+      'table' => 'node',
+      'field' => 'type',
+      'override' => array(
+        'button' => 'Override',
+      ),
+      'relationship' => 'none',
+    ),
+    'timestamp' => array(
+      'operator' => '>=',
+      'value' => array(
+        'type' => 'date',
+        'value' => '',
+        'min' => '',
+        'max' => '',
+      ),
+      'group' => '0',
+      'exposed' => TRUE,
+      'expose' => array(
+        'use_operator' => 1,
+        'operator' => 'timestamp_op',
+        'identifier' => 'timestamp',
+        'label' => 'Payment date',
+        'optional' => 1,
+        'remember' => 0,
+      ),
+      'id' => 'timestamp',
+      'table' => 'simple_payment',
+      'field' => 'timestamp',
+      'relationship' => 'none',
+    ),
+    'amount' => array(
+      'operator' => '>=',
+      'value' => array(
+        'value' => '',
+        'min' => '',
+        'max' => '',
+      ),
+      'group' => '0',
+      'exposed' => TRUE,
+      'expose' => array(
+        'use_operator' => 1,
+        'operator' => 'amount_op',
+        'identifier' => 'amount',
+        'label' => 'Donation Amount',
+        'optional' => 1,
+        'remember' => 0,
+      ),
+      'id' => 'amount',
+      'table' => 'simple_payment',
+      'field' => 'amount',
+      'relationship' => 'none',
+    ),
+  ));
+  $handler->override_option('access', array(
+    'type' => 'perm',
+    'perm' => 'administer simple payments',
+  ));
+  $handler->override_option('cache', array(
+    'type' => 'none',
+  ));
+  $handler->override_option('title', 'Donation Campaigns');
+  $handler->override_option('empty', '<div class="messages">Sorry, but no donations were found for this campaign.</div>');
+  $handler->override_option('empty_format', '2');
+  $handler->override_option('items_per_page', 0);
+  $handler->override_option('style_plugin', 'views_calc');
+  $handler->override_option('style_options', array(
+    'grouping' => '',
+    'override' => 0,
+    'sticky' => 0,
+    'order' => 'asc',
+    'columns' => array(
+      'timestamp' => 'timestamp',
+      'payer_email' => 'payer_email',
+      'name' => 'name',
+      'amount' => 'amount',
+    ),
+    'info' => array(
+      'timestamp' => array(
+        'sortable' => 1,
+        'separator' => '',
+        'justification' => 'views_calc_justify_none',
+        'has_calc' => 0,
+        'calc' => array(),
+      ),
+      'payer_email' => array(
+        'separator' => '',
+        'justification' => 'views_calc_justify_none',
+        'has_calc' => 0,
+        'calc' => array(),
+      ),
+      'name' => array(
+        'sortable' => 1,
+        'separator' => '',
+        'justification' => 'views_calc_justify_none',
+        'has_calc' => 0,
+        'calc' => array(),
+      ),
+      'amount' => array(
+        'sortable' => 1,
+        'separator' => '',
+        'justification' => 'views_calc_justify_none',
+        'has_calc' => 1,
+        'calc' => array(
+          'SUM' => 'SUM',
+        ),
+      ),
+    ),
+    'default' => 'timestamp',
+    'detailed_values' => '0',
+  ));
+  $handler = $view->new_display('page', 'Page - Report', 'page_1');
+  $handler->override_option('fields', array(
     'title' => array(
       'label' => 'Campaign',
       'alter' => array(
@@ -183,6 +490,7 @@ function simple_donations_views_default_views() {
       'relationship' => 'none',
     ),
   ));
+  $handler->override_option('arguments', array());
   $handler->override_option('filters', array(
     'type' => array(
       'operator' => 'in',
@@ -203,65 +511,78 @@ function simple_donations_views_default_views() {
       ),
       'relationship' => 'none',
     ),
+    'timestamp' => array(
+      'operator' => '>=',
+      'value' => array(
+        'type' => 'date',
+        'value' => '',
+        'min' => '',
+        'max' => '',
+      ),
+      'group' => '0',
+      'exposed' => TRUE,
+      'expose' => array(
+        'use_operator' => 1,
+        'operator' => 'timestamp_op',
+        'identifier' => 'timestamp',
+        'label' => 'Payment date',
+        'optional' => 1,
+        'remember' => 0,
+      ),
+      'id' => 'timestamp',
+      'table' => 'simple_payment',
+      'field' => 'timestamp',
+      'relationship' => 'none',
+    ),
+    'amount' => array(
+      'operator' => '>=',
+      'value' => array(
+        'value' => '',
+        'min' => '',
+        'max' => '',
+      ),
+      'group' => '0',
+      'exposed' => TRUE,
+      'expose' => array(
+        'use_operator' => 1,
+        'operator' => 'amount_op',
+        'identifier' => 'amount',
+        'label' => 'Donation Amount',
+        'optional' => 1,
+        'remember' => 0,
+      ),
+      'id' => 'amount',
+      'table' => 'simple_payment',
+      'field' => 'amount',
+      'relationship' => 'none',
+    ),
+    'title' => array(
+      'operator' => 'word',
+      'value' => '',
+      'group' => '0',
+      'exposed' => TRUE,
+      'expose' => array(
+        'use_operator' => 0,
+        'operator' => 'title_op',
+        'identifier' => 'title',
+        'label' => 'Search campaign titles',
+        'optional' => 1,
+        'remember' => 0,
+      ),
+      'case' => 0,
+      'id' => 'title',
+      'table' => 'node',
+      'field' => 'title',
+      'override' => array(
+        'button' => 'Use default',
+      ),
+      'relationship' => 'none',
+    ),
   ));
-  $handler->override_option('access', array(
-    'type' => 'perm',
-    'perm' => 'administer simple payments',
-  ));
-  $handler->override_option('cache', array(
-    'type' => 'none',
-  ));
-  $handler->override_option('title', 'Donation Campaigns');
+  $handler->override_option('header', '<div class="messages">Use the form below to sort, query, and export donations data across all of your donation campaigns.</div>');
+  $handler->override_option('header_format', '2');
+  $handler->override_option('header_empty', 1);
   $handler->override_option('empty', '<div class="messages">Sorry, but no donations were found.</div>');
-  $handler->override_option('empty_format', '2');
-  $handler->override_option('items_per_page', 0);
-  $handler->override_option('style_plugin', 'views_calc');
-  $handler->override_option('style_options', array(
-    'grouping' => '',
-    'override' => 0,
-    'sticky' => 0,
-    'order' => 'asc',
-    'columns' => array(
-      'timestamp' => 'timestamp',
-      'payer_email' => 'payer_email',
-      'name' => 'name',
-      'amount' => 'amount',
-    ),
-    'info' => array(
-      'timestamp' => array(
-        'sortable' => 1,
-        'separator' => '',
-        'justification' => 'views_calc_justify_none',
-        'has_calc' => 0,
-        'calc' => array(),
-      ),
-      'payer_email' => array(
-        'separator' => '',
-        'justification' => 'views_calc_justify_none',
-        'has_calc' => 0,
-        'calc' => array(),
-      ),
-      'name' => array(
-        'sortable' => 1,
-        'separator' => '',
-        'justification' => 'views_calc_justify_none',
-        'has_calc' => 0,
-        'calc' => array(),
-      ),
-      'amount' => array(
-        'sortable' => 1,
-        'separator' => '',
-        'justification' => 'views_calc_justify_none',
-        'has_calc' => 1,
-        'calc' => array(
-          'SUM' => 'SUM',
-        ),
-      ),
-    ),
-    'default' => 'timestamp',
-    'detailed_values' => '0',
-  ));
-  $handler = $view->new_display('page', 'Page - Report', 'page_1');
   $handler->override_option('path', 'admin/content/donations');
   $handler->override_option('menu', array(
     'type' => 'normal',
@@ -277,8 +598,72 @@ function simple_donations_views_default_views() {
     'weight' => 0,
     'name' => 'navigation',
   ));
-  $handler = $view->new_display('page', 'Page - Per Campaign', 'page_2');
+  $handler = $view->new_display('feed', 'Per campaign download', 'feed_1');
+  $handler->override_option('style_plugin', 'views_xls');
+  $handler->override_option('style_options', array(
+    'mission_description' => FALSE,
+    'description' => '',
+    'attach_text' => 'XLS',
+    'provide_file' => 1,
+    'filename' => 'donations.xls',
+    'parent_sort' => 1,
+  ));
+  $handler->override_option('row_plugin', '');
+  $handler->override_option('path', 'node/%/donations.xls');
+  $handler->override_option('menu', array(
+    'type' => 'none',
+    'title' => '',
+    'description' => '',
+    'weight' => 0,
+    'name' => 'navigation',
+  ));
+  $handler->override_option('tab_options', array(
+    'type' => 'none',
+    'title' => '',
+    'description' => '',
+    'weight' => 0,
+    'name' => 'navigation',
+  ));
+  $handler->override_option('displays', array(
+    'default' => 'default',
+    'page_1' => 0,
+  ));
+  $handler->override_option('sitename_title', FALSE);
+  $handler = $view->new_display('feed', 'All donations download', 'feed_2');
   $handler->override_option('fields', array(
+    'title' => array(
+      'label' => 'Campaign',
+      'alter' => array(
+        'alter_text' => 0,
+        'text' => '',
+        'make_link' => 0,
+        'path' => '',
+        'link_class' => '',
+        'alt' => '',
+        'prefix' => '',
+        'suffix' => '',
+        'target' => '',
+        'help' => '',
+        'trim' => 0,
+        'max_length' => '',
+        'word_boundary' => 1,
+        'ellipsis' => 1,
+        'html' => 0,
+        'strip_tags' => 0,
+      ),
+      'empty' => '',
+      'hide_empty' => 0,
+      'empty_zero' => 0,
+      'link_to_node' => 0,
+      'exclude' => 0,
+      'id' => 'title',
+      'table' => 'node',
+      'field' => 'title',
+      'override' => array(
+        'button' => 'Use default',
+      ),
+      'relationship' => 'none',
+    ),
     'timestamp' => array(
       'label' => 'Payment date',
       'alter' => array(
@@ -407,77 +792,125 @@ function simple_donations_views_default_views() {
       'relationship' => 'none',
     ),
   ));
-  $handler->override_option('arguments', array(
-    'nid' => array(
-      'default_action' => 'empty',
-      'style_plugin' => 'default_summary',
-      'style_options' => array(),
-      'wildcard' => 'all',
-      'wildcard_substitution' => 'All',
-      'title' => 'Donations for %1',
-      'breadcrumb' => '',
-      'default_argument_type' => 'fixed',
-      'default_argument' => '',
-      'validate_type' => 'none',
-      'validate_fail' => 'not found',
-      'break_phrase' => 0,
-      'not' => 0,
-      'id' => 'nid',
-      'table' => 'node',
-      'field' => 'nid',
-      'validate_user_argument_type' => 'uid',
-      'validate_user_roles' => array(
-        '2' => 0,
-        '4' => 0,
-        '3' => 0,
+  $handler->override_option('arguments', array());
+  $handler->override_option('filters', array(
+    'type' => array(
+      'operator' => 'in',
+      'value' => array(
+        'donation' => 'donation',
       ),
+      'group' => '0',
+      'exposed' => FALSE,
+      'expose' => array(
+        'operator' => FALSE,
+        'label' => '',
+      ),
+      'id' => 'type',
+      'table' => 'node',
+      'field' => 'type',
+      'override' => array(
+        'button' => 'Override',
+      ),
+      'relationship' => 'none',
+    ),
+    'timestamp' => array(
+      'operator' => '>=',
+      'value' => array(
+        'type' => 'date',
+        'value' => '',
+        'min' => '',
+        'max' => '',
+      ),
+      'group' => '0',
+      'exposed' => TRUE,
+      'expose' => array(
+        'use_operator' => 1,
+        'operator' => 'timestamp_op',
+        'identifier' => 'timestamp',
+        'label' => 'Payment date',
+        'optional' => 1,
+        'remember' => 0,
+      ),
+      'id' => 'timestamp',
+      'table' => 'simple_payment',
+      'field' => 'timestamp',
+      'relationship' => 'none',
+    ),
+    'amount' => array(
+      'operator' => '>=',
+      'value' => array(
+        'value' => '',
+        'min' => '',
+        'max' => '',
+      ),
+      'group' => '0',
+      'exposed' => TRUE,
+      'expose' => array(
+        'use_operator' => 1,
+        'operator' => 'amount_op',
+        'identifier' => 'amount',
+        'label' => 'Donation Amount',
+        'optional' => 1,
+        'remember' => 0,
+      ),
+      'id' => 'amount',
+      'table' => 'simple_payment',
+      'field' => 'amount',
+      'relationship' => 'none',
+    ),
+    'title' => array(
+      'operator' => 'contains',
+      'value' => '',
+      'group' => '0',
+      'exposed' => TRUE,
+      'expose' => array(
+        'use_operator' => 0,
+        'operator' => 'title_op',
+        'identifier' => 'title',
+        'label' => 'Node: Title',
+        'optional' => 1,
+        'remember' => 0,
+      ),
+      'case' => 0,
+      'id' => 'title',
+      'table' => 'node',
+      'field' => 'title',
       'override' => array(
         'button' => 'Use default',
       ),
       'relationship' => 'none',
-      'default_options_div_prefix' => '',
-      'default_argument_fixed' => '',
-      'default_argument_user' => 0,
-      'default_argument_php' => '',
-      'validate_argument_node_type' => array(
-        'donation' => 0,
-        'take_action' => 0,
-        'update' => 0,
-        'update_feed' => 0,
-        'page' => 0,
-        'event' => 0,
-        'map_point' => 0,
-        'webform' => 0,
-      ),
-      'validate_argument_node_access' => 0,
-      'validate_argument_nid_type' => 'nid',
-      'validate_argument_vocabulary' => array(
-        '1' => 0,
-      ),
-      'validate_argument_type' => 'tid',
-      'validate_argument_transform' => 0,
-      'validate_user_restrict_roles' => 0,
-      'validate_argument_signup_status' => 'any',
-      'validate_argument_signup_node_access' => 0,
-      'validate_argument_php' => '',
     ),
   ));
-  $handler->override_option('empty', '<div class="messages">Sorry, but no donations were found for this campaign.</div>');
-  // $handler->override_option('path', 'node/%/reports/donations');
-  // $handler->override_option('menu', array(
-  //   'type' => 'tab',
-  //   'title' => 'Donations',
-  //   'description' => 'Donations received for this campaign',
-  //   'weight' => '10',
-  //   'name' => 'navigation',
-  // ));
-  // $handler->override_option('tab_options', array(
-  //   'type' => 'none',
-  //   'title' => '',
-  //   'description' => '',
-  //   'weight' => 0,
-  //   'name' => 'navigation',
-  // ));
+  $handler->override_option('style_plugin', 'views_xls');
+  $handler->override_option('style_options', array(
+    'mission_description' => FALSE,
+    'description' => '',
+    'attach_text' => 'XLS',
+    'provide_file' => 1,
+    'filename' => 'donations.xls',
+    'parent_sort' => 1,
+  ));
+  $handler->override_option('row_plugin', '');
+  $handler->override_option('path', 'admin/content/donations/donations.xls');
+  $handler->override_option('menu', array(
+    'type' => 'none',
+    'title' => '',
+    'description' => '',
+    'weight' => 0,
+    'name' => 'navigation',
+  ));
+  $handler->override_option('tab_options', array(
+    'type' => 'none',
+    'title' => '',
+    'description' => '',
+    'weight' => 0,
+    'name' => 'navigation',
+  ));
+  $handler->override_option('displays', array(
+    'page_1' => 'page_1',
+    'default' => 0,
+  ));
+  $handler->override_option('sitename_title', FALSE);
   $views[$view->name] = $view;
 
   return $views;

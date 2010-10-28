@@ -7,5 +7,7 @@ package = Simple payments
 dependencies[] = simple_payments
 dependencies[] = simple_payments_paypal
 dependencies[] = views
+dependencies[] = views_bonus_export
+dependencies[] = views_calc
 core = "6.x"
 version = "6.x-1.0"
