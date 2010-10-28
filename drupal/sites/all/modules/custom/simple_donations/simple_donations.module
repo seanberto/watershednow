@@ -95,6 +95,11 @@ function simple_donations_nodeapi(&$node, $op, $teaser = NULL, $page = NULL) {
     case 'view':
       // If viewing a node of a content type enabled for donations, add simple payment form.
       if (variable_get('simple_donations_allowed_'. $node->type, 0)){
+        
+        // If PayPal is in sandbox module, add a friendly message.
+        if (variable_get('simple_payments_paypal_sandbox', '1')) {
+          drupal_set_message('Donation processing is currently in "sandbox" mode.', 'warning');
+        }
     
         global $user; // Who's about to make a donation.
     
