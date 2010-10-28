@@ -46,6 +46,7 @@ modules[contrib][] = vertical_tabs
 modules[contrib][] = follow
 modules[contrib][] = search404
 modules[contrib][] = comment_notify
+modules[contrib][] = role_delegation
 
 ;Admin
 modules[contrib][] = admin_menu
