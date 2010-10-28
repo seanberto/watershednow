@@ -304,7 +304,6 @@ function wn_admin_views_default_views() {
     'default' => '-1',
   ));
   $handler = $view->new_display('page', 'Page', 'page_1');
-  $handler->override_option('header', '');
   $handler->override_option('header_format', '2');
   $handler->override_option('header_empty', 0);
   $handler->override_option('path', 'admin/content/list_content');

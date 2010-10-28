@@ -55,7 +55,6 @@ modules[contrib][] = admin_menu
 modules[contrib][] = views
 modules[contrib][] = views_calc
 modules[contrib][] = draggableviews
-modules[contrib][] = web_widgets
 
 ; Features Related Tools
 modules[contrib][] = ctools
