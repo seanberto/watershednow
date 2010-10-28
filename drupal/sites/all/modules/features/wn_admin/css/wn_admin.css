@@ -16,12 +16,17 @@ th.sorted-desc {
   background: url('/misc/arrow-desc.png') no-repeat right;
 }
 
+.quicklinks td {
+  padding-top: 0.3em;
+  padding-bottom: 0.3em;
+}
+
 /* Styles applied to Content listing */
 
 div.messages ul.links li {
   display: block;
   margin-left: 10px;
-  font-size: 0.9em;
+  font-size: 0.8em;
 }
 
 .view-all-content #edit-date-filter-value-datepicker-popup-0-wrapper {

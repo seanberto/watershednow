@@ -12,6 +12,14 @@ function wn_admin_init() {
 }
 
 /**
+ * Implementation of Hook_perm().
+ * Provides permission for accessing WN's custom dashboard.
+ */
+function wn_admin_perm() {
+  return array('access wn dashboard');
+}
+
+/**
  * Implementation of hook_help().
  *
  * Adds a help message our our custom dashboard.
@@ -19,7 +27,7 @@ function wn_admin_init() {
 function wn_admin_help($path, $arg) {
   switch ($path) {
     case 'admin/dashboard':
-      return 'Welcome to the Watershed Now Dashboard. Here you will find quick links and other tools for managing your site. If you get stuck, consider reaching out to the maintainers of Watershed Now, <a href="http://thinkshout.com/contact" target="_blank">ThinkShout.com</a>.';
+      return 'Welcome to the Watershed Now Dashboard. Here you will find quick links and other tools for managing your site. If you get stuck, consider reaching out to the maintainers of Watershed Now @ <a href="http://thinkshout.com/contact" target="_blank">ThinkShout.com</a>.';
   }
 }
 
@@ -34,7 +42,7 @@ function wn_admin_menu() {
   $items['admin/dashboard'] = array(
     'title' => 'Watershed Now Dashboard',
     'page callback' => 'wn_admin_dashboard',
-    'access arguments' => array('administer site configuration'),
+    'access arguments' => array('access wn dashboard'),
     'type' => MENU_NORMAL_ITEM,
     'file' => 'wn_admin.admin.inc',
     'weight' => -20,
@@ -61,7 +69,7 @@ function _wn_admin_create_links() {
   $links = array();
   foreach ($types as $key => $type) {
     if (node_access('create', $type)) {
-      $links[] = array('title' => 'Create ' . $type->name, 'href' => 'node/add/' . str_replace('_', '-', $key));
+      $links[] = array('title' => 'Create ' . $type->name, 'href' => 'node/add/' . str_replace('_', '-', $key)); // Create a collection of "create content" links.
     }
   }
   $output = 'Use the form below to query all content posted on this site. You can also create content using the quick links here, or <a href="/node/add">learn more</a> about the types of content you can create.';
