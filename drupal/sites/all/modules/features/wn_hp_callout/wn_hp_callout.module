@@ -12,7 +12,10 @@ function wn_hp_callout_db_rewrite_sql($query, $primary_table, $primary_field, $a
   }
 }
 
-
+/**
+ * Implementation of Hook_nodeapi().
+ * Used to add CSS and javascript when viewing a callout node.
+ */
 function wn_hp_callout_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
   if( $node->type != 'wn_hp_callout' ) {
     return;
