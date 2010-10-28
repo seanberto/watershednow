@@ -304,9 +304,9 @@ function wn_admin_views_default_views() {
     'default' => '-1',
   ));
   $handler = $view->new_display('page', 'Page', 'page_1');
-  $handler->override_option('header', '<div class="messages">Use the form below to query all content posted on this site. You can also <a href="/node/add">create content</a>.</div>');
+  $handler->override_option('header', '');
   $handler->override_option('header_format', '2');
-  $handler->override_option('header_empty', 1);
+  $handler->override_option('header_empty', 0);
   $handler->override_option('path', 'admin/content/list_content');
   $handler->override_option('menu', array(
     'type' => 'normal',

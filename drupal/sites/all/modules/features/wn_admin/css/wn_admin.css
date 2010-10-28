@@ -15,3 +15,19 @@ th.sorted-asc {
 th.sorted-desc {
   background: url('/misc/arrow-desc.png') no-repeat right;
 }
+
+/* Styles applied to Content listing */
+
+div.messages ul.links li {
+  display: block;
+  margin-left: 10px;
+  font-size: 0.9em;
+}
+
+.view-all-content #edit-date-filter-value-datepicker-popup-0-wrapper {
+  margin-top: -20px;
+}
+
+.view-all-content .views-exposed-widget {
+  width: 30%;
+}

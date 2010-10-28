@@ -42,3 +42,30 @@ function wn_admin_menu() {
 
   return $items;
 }
+
+/**
+ * Implementation of hook_views_pre_render(&$view).
+ * Add content creation links at the top of the content listing.
+ */
+function wn_admin_views_pre_render(&$view) {
+  if (($view->name == 'all_content') && ($view->current_display == 'page_1')) {
+    $view->exposed_widgets = _wn_admin_create_links() . $view->exposed_widgets;
+  }
+}
+
+/**
+ * Helper function for adding create content links.
+ */
+function _wn_admin_create_links() {
+  $types = node_get_types();
+  $links = array();
+  foreach ($types as $key => $type) {
+    if (node_access('create', $type)) {
+      $links[] = array('title' => 'Create ' . $type->name, 'href' => 'node/add/' . str_replace('_', '-', $key));
+    }
+  }
+  $output = 'Use the form below to query all content posted on this site. You can also create content using the quick links here, or <a href="/node/add">learn more</a> about the types of content you can create.';
+  $output .=  theme_links($links);
+  $output = '<div class="messages">' . $output . '</div>';
+  return $output;
+}
