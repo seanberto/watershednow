@@ -23,7 +23,6 @@ modules[contrib][] = better_formats
 
 ; Core
 modules[core][] = dblog
-modules[core][] = syslog
 modules[core][] = comment
 modules[core][] = contact
 modules[core][] = help
@@ -46,15 +45,16 @@ modules[contrib][] = vertical_tabs
 modules[contrib][] = follow
 modules[contrib][] = search404
 modules[contrib][] = comment_notify
+modules[contrib][] = role_delegation
 
 ;Admin
 modules[contrib][] = admin_menu
 
 ; Views
 modules[contrib][] = views
+modules[contrib][] = views_bonus_export
 modules[contrib][] = views_calc
 modules[contrib][] = draggableviews
-modules[contrib][] = web_widgets
 
 ; Features Related Tools
 modules[contrib][] = ctools
@@ -154,16 +154,34 @@ modules[contrib][] = feeds_ui
 ; ----------------------------------------------
 
 ; Set up admin users.
+; Note: when adding multiple roles to the same user account, comma-separate w/o whitespace.
 
-users[superduper][uid] = 1
-users[superduper][name] = admin
-users[superduper][mail] = noreply@watershednow.com
-users[superduper][status] = 1
+; 'User 1' account - the Drupal super user, not used for day-to-day tasks.
+users[watershednow][uid] = 1
+users[watershednow][name] = watershednow
+users[watershednow][mail] = noreply@watershednow.com
+users[watershednow][status] = 1
 
-users[admin][uid] = 2
-users[admin][name] = web admin
-users[admin][mail] = noreply+1@watershednow.com
+; A special account for technical Drupal support team.
+users[support][uid] = 2
+users[support][name] = support
+users[support][mail] = noreply+1@watershednow.com
+users[support][roles] = support
+users[support][status] = 1
+
+; A web admin account - for user management and more advanced site managment tasks.
+users[admin][uid] = 3
+users[admin][name] = admin
+users[admin][mail] = noreply+2@watershednow.com
+users[admin][roles] = web admin
 users[admin][status] = 1
+
+; A general staff account for managing day-to-day tasks. (Set here for testing.)
+users[staff][uid] = 4
+users[staff][name] = staff
+users[staff][mail] = noreply+3@watershednow.com
+users[staff][roles] = staff
+users[staff][status] = 1
 
 ; ----------------------------------------------
 
@@ -211,8 +229,15 @@ feeds[] = http://watershednow.posterous.com/rss.xml
 ; Set up additional contrib configurations.
 ; (Note: these run after features are installed so the variables below should override defaults.)
 
+; Paypal sandbox mode (defaults to "true")
+variables[simple_payments_paypal_sandbox] = 1
+; Paypal email address for processing payments. (defaults to a sandbox account.)
+variables[simple_payments_paypal_account] = waters_1288290444_biz@thinkshout.com
+
 ; placeholder for google analytics key
-; variables[openlayers_layers_google_api] = ABQIAAAAXcM0kIV0KYcm1CAyqIc4qRTBRbjBNDIac9IBLAsNWawmb_4ssxQf6kE73jz8wpJw5kIFRn2w7rXMJA
+
+; Set the Google API key for OpenLayer's maping
+variables[openlayers_layers_google_api] = ABQIAAAAXcM0kIV0KYcm1CAyqIc4qRTBRbjBNDIac9IBLAsNWawmb_4ssxQf6kE73jz8wpJw5kIFRn2w7rXMJA
 
 ; ==============================================
 

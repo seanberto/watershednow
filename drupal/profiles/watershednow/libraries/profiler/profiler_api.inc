@@ -371,6 +371,21 @@ function profiler_install_terms($terms, $config, &$identifiers) {
  * Component install callback for 'users'.
  */
 function profiler_install_users($users) {
+  // First we need to create roles that don't already exist.
+  $new_roles = '';
+  foreach (array_filter($users) as $array) {
+    if (isset($array['roles'])) {
+      $new_roles .= $array['roles'] .','; // Add all assigned roles to a single string.
+    }
+  }
+  $new_roles = explode(',', $new_roles); // Explode that string into an array.
+  $new_roles = array_unique($new_roles); // Dedup the new roles array.
+  foreach($new_roles as $role) {
+    trim($role); // Get rid of any whitespace in the role value.
+    if ($role != '') { // If role isn't blank (happens b/c of trailing comma), add role.
+      db_query("INSERT INTO {role} (name) VALUES ('%s')", $role);
+    }
+  }
   foreach (array_filter($users) as $array) {
     // For some reason db_last_insert_id() doesn't get the uid of the newly created
     // user, so we need to separate out roles first, create the account, then save

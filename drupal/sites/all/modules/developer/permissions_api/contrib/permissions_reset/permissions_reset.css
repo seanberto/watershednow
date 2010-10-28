@@ -1,9 +1,0 @@
-/* Nice formatting for permission reset form on top of User permission page. */
-fieldset.permissions-reset .form-item {
-  float:left;
-  padding-right:10px;
-}
-fieldset.permissions-reset input.form-submit {
-  margin-top:125px;
-  float:none;
-}

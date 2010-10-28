@@ -354,6 +354,26 @@ function wn_map_views_default_views() {
     ),
   ));
   $handler->override_option('filters', array(
+    'type_1' => array(
+      'operator' => 'in',
+      'value' => array(
+        'map_feature' => 'map_feature',
+        'map_kml' => 'map_kml',
+      ),
+      'group' => '0',
+      'exposed' => FALSE,
+      'expose' => array(
+        'operator' => FALSE,
+        'label' => '',
+      ),
+      'id' => 'type_1',
+      'table' => 'node',
+      'field' => 'type',
+      'override' => array(
+        'button' => 'Override',
+      ),
+      'relationship' => 'none',
+    ),
     'type' => array(
       'operator' => 'in',
       'value' => array(
@@ -420,6 +440,8 @@ function wn_map_views_default_views() {
     'type' => 'none',
   ));
   $handler->override_option('title', 'Map Data');
+  $handler->override_option('empty', '<div class="messages">We\'re sorry, but your search did not return any map data.</div>');
+  $handler->override_option('empty_format', '2');
   $handler->override_option('items_per_page', 30);
   $handler->override_option('use_pager', '1');
   $handler->override_option('style_plugin', 'table');
