@@ -13,6 +13,21 @@ function wn_hp_callout_db_rewrite_sql($query, $primary_table, $primary_field, $a
 }
 
 /**
+ * Implementation of hook_form_FORMID_alter().
+ *
+ * Add the option of switching homepage callout slideshow formats.
+ */
+function wn_hp_callout_form_system_site_information_settings_alter(&$form, $form_state) {
+  $form['hp_slideshow'] = array(
+     '#type' => 'radios',
+     '#title' => t('Homepage slideshow'),
+     '#options' => array('full' => 'Full-width image', 'half' => 'With textbox'),
+     '#default_value' => variable_get('hp_slideshow', 'full'),
+     '#description' => t('Which of the two slideshow options would like you like for your homepage?'),
+   );
+}
+
+/**
  * Implementation of Hook_nodeapi().
  * Used to add CSS and javascript when viewing a callout node.
  */
