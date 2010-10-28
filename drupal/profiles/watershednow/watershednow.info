@@ -23,7 +23,6 @@ modules[contrib][] = better_formats
 
 ; Core
 modules[core][] = dblog
-modules[core][] = syslog
 modules[core][] = comment
 modules[core][] = contact
 modules[core][] = help
