@@ -13,7 +13,6 @@
 
   <body class="<?php print $body_classes; ?>">
     <div id="page">
-      <div id="page-inner">
 
       <!-- ______________________ HEADER _______________________ -->
 
@@ -131,10 +130,12 @@
 
         </div> <!-- /main -->
         
-        </div> <!-- /page-inner -->
-
       <!-- ______________________ FOOTER _______________________ -->
-
+      
+    <div id="push"></div> <!-- this div is to achieve a working sticky footer -->
+    
+    </div> <!-- /page -->
+    
       <?php if(!empty($footer_message) || !empty($footer) || !empty($footer_second)): ?>
         <div id="footer" class="clear-block">
           <div id="footer-inner">
@@ -151,7 +152,6 @@
           </div> <!-- /footer-inner -->
         </div> <!-- /footer -->
       <?php endif; ?>
-    </div> <!-- /page -->
     <?php print $closure; ?>
   </body>
 </html>

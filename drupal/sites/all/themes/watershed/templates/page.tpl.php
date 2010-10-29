@@ -12,14 +12,12 @@
   </head>
 
   <body class="<?php print $body_classes; ?>">
-    <div id="skip"><a href="#content"><?php print t('Skip to Content'); ?></a> <a href="#nav"><?php print t('Skip to nav'); ?></a></div>
     <div id="page">
-      <div id="page-inner">
 
       <!-- ______________________ HEADER _______________________ -->
 
       <div id="header">
-
+      
         <div id="logo-title">
           <div id="name-and-slogan">
             <?php if (!empty($site_name)): ?>
@@ -38,6 +36,7 @@
             <?php print $header; ?>
           </div>
         <?php endif; ?>
+        
 
         <?php //print $search_box; Turned off in parent theme. ?>
 
@@ -129,10 +128,12 @@
 
         </div> <!-- /main -->
         
-        </div> <!-- /page-inner -->
-
       <!-- ______________________ FOOTER _______________________ -->
-
+      
+    <div id="push"></div> <!-- this div is to achieve a working sticky footer -->
+    
+    </div> <!-- /page -->
+    
       <?php if(!empty($footer_message) || !empty($footer) || !empty($footer_second)): ?>
         <div id="footer" class="clear-block">
           <div id="footer-inner">
@@ -142,15 +143,14 @@
               <?php print $mission ?>
               <?php print $secondary_links ?>
               <?php print $follow_links ?>
-              <?php print $search_box; ?>
               <?php print $newsletter; ?>
+              <?php print $search_box; ?>
               <?php print $footer_second; ?>
             </div><!-- /#footer-second -->
             <div id="footer-message"><?php print $footer_message; ?></div><!-- /#footer-message -->
           </div> <!-- /footer-inner -->
         </div> <!-- /footer -->
       <?php endif; ?>
-    </div> <!-- /page -->
     <?php print $closure; ?>
   </body>
 </html>
