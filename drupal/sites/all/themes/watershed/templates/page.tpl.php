@@ -130,8 +130,6 @@
         
       <!-- ______________________ FOOTER _______________________ -->
       
-    <div id="push"></div> <!-- this div is to achieve a working sticky footer -->
-    
     </div> <!-- /page -->
     
       <?php if(!empty($footer_message) || !empty($footer) || !empty($footer_second)): ?>

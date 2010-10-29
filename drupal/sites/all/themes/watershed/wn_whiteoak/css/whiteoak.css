@@ -41,6 +41,7 @@ a {
 
 #nav {
   background: url(../images/nav_bg.png) repeat-x 0 0 transparent;
+  height: 38px;
 }
 
 #nav li {
@@ -80,6 +81,27 @@ a {
   background: #eff0f0;
 }
 
+#sidebar-second .block.block-menu_block {
+  background: none;
+}
+
+#sidebar-second .block-title, #sidebar-second .content {
+  padding-left: 15px;
+}
+
+#sidebar-second .block-menu_block .block-title {
+  padding: 0;
+}
+
+#sidebar-second .block-menu_block .block-title a {
+  background: #ece9b2;
+  padding: 0 15px;
+  color: #151515;
+  font-size: 1.3em;
+  font-style: italic;
+  text-transform: uppercase;
+}
+
 /*
  *  Header styles
  */
@@ -108,6 +130,7 @@ a {
  
 #footer, #push {
   clear: both;
+  width: 100%;
   height: 225px;
   position: relative;
 }
@@ -117,7 +140,7 @@ a {
 }
 
 #footer-inner {
-
+  padding: 25px 25px 0;
 }
 
 #footer .block {

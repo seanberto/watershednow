@@ -11,13 +11,9 @@
 *
 */
 
-#page {
+#page, #footer {
   width: 960px; /* edit to change the width of the page */
   margin: 0 auto; /* remove 'auto' and the width to switch to a fluid width */
-}
-
-#footer {
-  /* width: 100%;  uncomment this line to make footer full browser width */
 }
 
 #footer-inner {
