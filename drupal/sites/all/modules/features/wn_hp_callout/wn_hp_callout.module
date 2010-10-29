@@ -1,16 +1,6 @@
 <?php
 include_once('wn_hp_callout.features.inc');
 
-/**
- * Implmentation of hook_init().
- */
-function wn_hp_callout_init() {
-  // Load Module's css and javascript.
-  drupal_add_css((drupal_get_path('module', 'wn_hp_callout')) . '/css/wn_hp_callout.css');
-  drupal_add_js((drupal_get_path('module', 'wn_hp_callout')) . '/js/jquery.cycle.min.js');
-  drupal_add_js((drupal_get_path('module', 'wn_hp_callout')) . '/js/wn_hp_callout.js');
-}
-
 /* hide wn_hp_callout content type from search */
 function wn_hp_callout_db_rewrite_sql($query, $primary_table, $primary_field, $args) {
   if ($query == '' && $primary_table == 'n' && $primary_field = 'nid' && empty($args)) {
@@ -42,8 +32,14 @@ function wn_hp_callout_form_system_site_information_settings_alter(&$form, $form
  * Used to add CSS and javascript when viewing a callout node.
  */
 function wn_hp_callout_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
+  
   if( $node->type == 'wn_hp_callout' && $op == 'view') {
 
+    // Load Module's css and javascript.
+    drupal_add_css((drupal_get_path('module', 'wn_hp_callout')) . '/css/wn_hp_callout.css');
+    drupal_add_js((drupal_get_path('module', 'wn_hp_callout')) . '/js/jquery.cycle.min.js');
+    drupal_add_js((drupal_get_path('module', 'wn_hp_callout')) . '/js/wn_hp_callout.js');
+    
     $imgs = array();
     foreach( $node->field_wn_hp_callout_image as $img_data ) {
       $title = '<div class="wn-hp-callout-title">' . check_plain($img_data['data']['title']) .'</div>';

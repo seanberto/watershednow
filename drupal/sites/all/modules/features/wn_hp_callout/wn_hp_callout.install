@@ -5,13 +5,14 @@
  * Used here to extend the image field with Imagefield Extended module.
  */
 function wn_hp_callout_install() {
+  // Setup Imagefield Extended's fields.
   $imagefield_extended_textfields = variable_get('imagefield_extended_textfields', '');
   $imagefield_extended_textfields = "wn_hp_callout_desc|Description\n" . $imagefield_extended_textfields;
   variable_set('imagefield_extended_textfields', trim($imagefield_extended_textfields));
 }
 
 /**
- * Implementation fo hook_install().
+ * Implementation of hook_install().
  * Used here to extend the image field with Imagefield Extended module.
  */
 function wn_hp_callout_uninstall() {
