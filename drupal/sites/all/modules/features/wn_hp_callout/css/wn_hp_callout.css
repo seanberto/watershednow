@@ -2,6 +2,11 @@
   margin:0;
 }
 
+#block-views-wn_homepage_callout-block_1 .edit {
+  top:0;
+  right:0;
+} 
+
 .wn-hp-callout {
   position:relative;
 }
@@ -22,9 +27,10 @@
 }
 
 .wn-hp-callout-title {
-  font-size:200%;
+  font-size:230%;
+  line-height:1.2;
   font-weight:bold;
-  margin-bottom:.5em;
+  margin-bottom:0;
 }
 .wn-hp-callout ul {
   margin:0;

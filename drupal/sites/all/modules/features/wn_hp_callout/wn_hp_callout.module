@@ -34,26 +34,34 @@ function wn_hp_callout_form_system_site_information_settings_alter(&$form, $form
 function wn_hp_callout_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
 
   if( $node->type == 'wn_hp_callout' && $op == 'view') {
-
     // Load Module's css and javascript.
     drupal_add_css((drupal_get_path('module', 'wn_hp_callout')) . '/css/wn_hp_callout.css');
     drupal_add_js((drupal_get_path('module', 'wn_hp_callout')) . '/js/jquery.cycle.min.js');
     drupal_add_js((drupal_get_path('module', 'wn_hp_callout')) . '/js/wn_hp_callout.js');
 
-    $imgs = array();
+    $slides = array();
+    //build slides
     foreach( $node->field_wn_hp_callout_image as $img_data ) {
-      $title = '<div class="wn-hp-callout-title">' . check_plain($img_data['data']['title']) .'</div>';
+      $slide = theme('imagecache', 'wn_hp_callout', $img_data['filepath'], $img_data['data']['alt'], $img_data['data']['title']);
+      $title = $desc = '';
+      if( variable_get('hp_slideshow','half') == 'half' ) {
+        $title = '<div class="wn-hp-callout-title">' . check_plain($img_data['data']['title']) .'</div>';
+        $desc = $img_data['data']['wn_hp_callout_desc'];
+        $desc = '<div class="wn-hp-callout-content">' . check_markup($desc['body'], $desc['format'], FALSE).'</div>';
 
-      $desc = $img_data['data']['wn_hp_callout_desc'];
-      $desc = '<div class="wn-hp-callout-content">' . check_markup($desc['body'], $desc['format'], FALSE).'</div>';
+        $slide .= '<div class="wn-hp-callout-entry">' . $title . $desc . '</div>';
+      }
 
-      $img = theme('imagecache', 'wn_hp_callout', $img_data['filepath'], $img_data['data']['alt'], $img_data['data']['title']);
-
-      $imgs[] = $img . '<div class="wn-hp-callout-entry">' . $title . $desc . '</div>';
+      $slides[] = $slide;
     }
-    $list = theme('item_list',$imgs, NULL, $type = 'ul');
+    // create an unordered list of slides
+    $list = theme('item_list', $slides, NULL);
+
+    //remove item-list class to avoid default item-list styling
     $list = str_replace('class="item-list"','',$list);
-    $html = '<div class="wn-hp-callout">'.$list.'</div>';
+
+    //wrap with div and class for theming half or full slides
+    $html = '<div class="wn-hp-callout wn-hp-callout-' . variable_get('hp_slideshow','half') . '">' . $list . '</div>';
 
     $node->content = array(
       'body' => array(
