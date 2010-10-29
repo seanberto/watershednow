@@ -34,11 +34,6 @@ function wn_hp_callout_form_system_site_information_settings_alter(&$form, $form
 function wn_hp_callout_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
 
   if( $node->type == 'wn_hp_callout' && $op == 'view') {
-    // Load Module's css and javascript.
-    drupal_add_css((drupal_get_path('module', 'wn_hp_callout')) . '/css/wn_hp_callout.css');
-    drupal_add_js((drupal_get_path('module', 'wn_hp_callout')) . '/js/jquery.cycle.min.js');
-    drupal_add_js((drupal_get_path('module', 'wn_hp_callout')) . '/js/wn_hp_callout.js');
-
     $slides = array();
     //build slides
     foreach( $node->field_wn_hp_callout_image as $img_data ) {
@@ -68,5 +63,14 @@ function wn_hp_callout_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
         '#value' => $html
       )
     );
+
+    //load module's css and javascript.
+    $path = drupal_get_path('module', 'wn_hp_callout');
+    drupal_add_css($path . '/css/wn_hp_callout.css');
+    //only load js if we have more than one slide
+    if( count($slides) > 1 ) {
+      drupal_add_js($path . '/js/jquery.cycle.min.js');
+      drupal_add_js($path . '/js/wn_hp_callout.js');
+    }
   }
 }
