@@ -1,0 +1,85 @@
+body {
+  background: url('../images/bg.png') no-repeat 0 0 #1e1e1e;
+  color: #fff;
+}
+
+#logo-title {
+  float: left;
+}
+
+h1.title {
+  font-weight: bold;
+  font-size: 1.8em;
+  text-transform: uppercase;
+}
+
+#nav, #nav li {
+  background: none;
+}
+
+#nav {
+  float: right;
+  margin: 0;
+  width: auto;
+}
+
+#nav li {
+  padding: 0 .3em;
+}
+
+#nav li a {
+  color: #d1d3d4;
+  font-size: .8em;
+  font-family: georgia, "times new roman", serif;
+  font-weight: bold;
+}
+
+#nav li.active a {
+  color: #fff;
+}
+
+/*
+ *  Footer styles
+ */
+ 
+#footer-wrapper {
+  height: 225px;
+  margin-top: -225px;
+  position: relative;
+  width: 100%;
+  background: #000; 
+}
+
+#footer {
+  color: #fff;
+  width: 960px;
+  margin: 0 auto;
+  padding: 35px;
+}
+
+#footer .block {
+
+}
+
+#footer a {
+  color: #fff;
+}
+
+#footer .title {
+  font-weight: bold;
+  font-size: 1.3em;
+  margin-bottom: .5em;
+  color: #fff;
+}
+ 
+#footer-message {
+  border-top: 1px dotted #fff;
+  margin-top: 1em;
+}
+ 
+#block-watershed-mission {
+  width: 35%;
+}
+
+#block-menu-secondary_links {
+}

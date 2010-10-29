@@ -136,8 +136,8 @@
       <!-- ______________________ FOOTER _______________________ -->
 
       <?php if(!empty($footer_message) || !empty($footer) || !empty($footer_second)): ?>
-        <div id="footer-wrapper" class="clear-block">
-          <div id="footer">
+        <div id="footer" class="clear-block">
+          <div id="footer-inner">
             <?php print $footer; ?>
             <div id="footer-first"><?php print $footer_first; ?></div><!-- /#footer-first -->
             <div id="footer-second">
@@ -148,8 +148,8 @@
               <?php print $footer_second; ?>
             </div><!-- /#footer-second -->
             <div id="footer-message"><?php print $footer_message; ?></div><!-- /#footer-message -->
-          </div> <!-- /footer -->
-        </div> <!-- /footer-wrapper -->
+          </div> <!-- /footer-inner -->
+        </div> <!-- /footer -->
       <?php endif; ?>
     </div> <!-- /page -->
     <?php print $closure; ?>

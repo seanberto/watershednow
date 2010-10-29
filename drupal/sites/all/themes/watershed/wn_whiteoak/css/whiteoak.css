@@ -8,16 +8,14 @@ body {
 }
 
 #page {
-  height: 100%;
 }
 
 #page-inner {
-  min-height: 100%;
   margin-top: 25px;
 }
 
 #content-inner {
-  padding: 0 25px 25px;
+  padding: 0 25px 25px 25px;
 }
 
 h1.title {
@@ -105,18 +103,23 @@ a {
  *  Footer styles
  */
  
-#footer-wrapper {
+#footer {
   height: 225px;
-  margin-top: -225px;
   position: relative;
-  width: 100%;
+  float: left;
 }
 
 #footer {
   color: #fff;
   width: 960px;
+  width: 100%;
   margin: 0 auto;
-  padding: 35px;
+}
+
+#footer-inner {
+  width: 960px;
+  margin: 0 auto;
+  padding: 35px 35px 0;
 }
 
 #footer .block {
