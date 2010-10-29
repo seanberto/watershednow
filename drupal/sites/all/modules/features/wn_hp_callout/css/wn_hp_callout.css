@@ -1,3 +1,7 @@
+#block-views-wn_homepage_callout-block_1 {
+  margin:0;
+}
+
 .wn-hp-callout {
   position:relative;
 }
@@ -27,7 +31,7 @@
   padding:0;
 }
 
-.wn-hp-callout .item-list ul li {
+.wn-hp-callout li {
   display:none;
   list-style:none;
   background:none;
