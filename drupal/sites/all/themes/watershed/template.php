@@ -37,7 +37,7 @@ function watershed_preprocess_page(&$vars, $hook) {
   // Grab the active theme. Adjust theme variable calls. That way, we don't have to repeat these calls in
   // each child theme.
   $active_theme = variable_get('theme_default', 'watershed');
-  
+
   // Don't display empty help from node_help().
   if ($vars['help'] == '<div class="help"><p></p>\n</div>') {
     $vars['help'] = '';
@@ -66,6 +66,25 @@ function watershed_preprocess_page(&$vars, $hook) {
   }
 
   if( !empty($vars['newsletter']) ) {
+    $vars['newsletter'] = strip_tags($vars['newsletter'],'<form><button><input>');
+    $doc = new SimpleXMLElement($vars['newsletter']);
+    foreach($doc->xpath('//*') as $elm) {
+       unset($elm['style']);
+       unset($elm['size']);
+       if( !isset($elm['type']) ) {
+         $elm['type'] = 'text';
+       }
+
+       if( $elm['type'] == 'text' ) {
+         $elm['class'] = 'form-text';
+       }
+
+      if( $elm['type'] == 'submit' ) {
+         $elm['class'] = 'form-submit';
+       }
+
+    }
+    $vars['newsletter'] = $doc->asXml();
     $vars['newsletter'] = theme('block',(object)array(
       'subject' => 'newsletter signup',
       'delta' => 'newsletter',
@@ -200,11 +219,11 @@ function watershed_preprocess_node(&$vars, $hook) {
  */
 
 function watershed_preprocess_block(&$vars, $hook) {
-  
+
   // Grab the active theme. Adjust theme variable calls. That way, we don't have to repeat these calls in
   // each child theme.
   $active_theme = variable_get('theme_default', 'watershed');
-        
+
   $block = $vars['block'];
   // special block classes
   $classes = array('block');
@@ -245,7 +264,7 @@ function watershed_preprocess_block(&$vars, $hook) {
             'query' => drupal_get_destination(),
             'html' => TRUE,
           )
-        );  
+        );
       }
       // Display 'configure' for other blocks.
       else {
@@ -451,7 +470,7 @@ function watershed_breadcrumb($breadcrumb) {
   // Grab the active theme. Adjust theme variable calls. That way, we don't have to repeat these calls in
   // each child theme.
   $active_theme = variable_get('theme_default', 'watershed');
-  
+
   if (theme_get_setting($active_theme . '_breadcrumb') && !empty($breadcrumb)) {
     return '<div class="breadcrumb">'. implode(' » ', $breadcrumb) .'</div>';
   }
