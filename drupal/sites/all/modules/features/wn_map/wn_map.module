@@ -23,3 +23,18 @@ function wn_map_views_pre_render(&$view) {
     }
   }
 }
+
+/**
+ * Implementation of Hook_form_alter().
+ * Limiting taxonomy image form display to taxonomy terms of the Map point vocabulary.
+ * @TODO - Make this configurable. Pry not worth it until upgrading to D7 and reworking with fields.module
+ */
+function wn_map_form_alter(&$form, &$form_state, $form_id) {
+  switch ($form_id) {
+    case 'taxonomy_form_term':
+    if (!in_array('map_feature', $form['#vocabulary']['nodes'])) {
+      unset($form['taxonomy_image']);
+    }
+    break;
+  }
+}
