@@ -18,8 +18,8 @@ function wn_hp_callout_ctools_plugin_api() {
  */
 function wn_hp_callout_imagecache_default_presets() {
   $items = array(
-    'hp_callout_full' => array(
-      'presetname' => 'hp_callout_full',
+    'wn_hp_callout' => array(
+      'presetname' => 'wn_hp_callout',
       'actions' => array(
         '0' => array(
           'weight' => '0',
@@ -27,25 +27,9 @@ function wn_hp_callout_imagecache_default_presets() {
           'action' => 'imagecache_crop',
           'data' => array(
             'width' => '960',
-            'height' => '200',
-            'xoffset' => '',
-            'yoffset' => '',
-          ),
-        ),
-      ),
-    ),
-    'hp_callout_half' => array(
-      'presetname' => 'hp_callout_half',
-      'actions' => array(
-        '0' => array(
-          'weight' => '0',
-          'module' => 'imagecache',
-          'action' => 'imagecache_crop',
-          'data' => array(
-            'width' => '700',
-            'height' => '200',
-            'xoffset' => '',
-            'yoffset' => '',
+            'height' => '287',
+            'xoffset' => 'center',
+            'yoffset' => 'center',
           ),
         ),
       ),
