@@ -1,6 +1,21 @@
-body {
+html, body {
+  height: 100%;
+}
+
+body { 
   background: url('../images/bg.png') no-repeat 0 0 #1e1e1e;
   color: #fff;
+  font: 13px/1.4em "Helvetica Neue",helvetica,Arial,sans-serif;
+}
+
+#page {
+	min-height: 100%;
+	height: auto !important;
+	height: 100%;
+  margin: 0 auto -225px;
+}
+
+#main {
 }
 
 #logo-title {
@@ -42,19 +57,19 @@ h1.title {
  *  Footer styles
  */
  
-#footer-wrapper {
+#footer, #push {
+  clear: both;
   height: 225px;
-  margin-top: -225px;
   position: relative;
-  width: 100%;
-  background: #000; 
 }
 
 #footer {
   color: #fff;
-  width: 960px;
-  margin: 0 auto;
-  padding: 35px;
+  background: #000;
+}
+
+#footer-inner {
+
 }
 
 #footer .block {
