@@ -33,7 +33,7 @@ function _watershednow_configure( $config ) {
   _watershednow_create_menu_items();
   
   _watershednow_add_sample_update_feed( $config['feeds'] );
-
+  
   _watershednow_create_follow_links( $config['follow'] );
 
   // Do some additional clean up.
@@ -730,4 +730,37 @@ function _watershednow_add_sample_update_feed($feeds) {
     $form_state['values']['op'] = t('Save');
     drupal_execute('update_feed_node_form', $form_state, (object)$node);
   }
+}
+
+/**
+ * Helper function for adding homepage callout node. Note, needs to be called after flushing caches.
+ */
+function _watershednow_add_callouts() {
+  // Create a default callout node.
+  // @FIXME - This should really be part of the install profile, but for some reason isn't adding the imagefields
+  // correctly.
+  $node = new stdClass;
+  $node->title = 'Example Callout';
+  $node->type = 'wn_hp_callout';
+  // Search examples directory to attach some images.
+  $callouts_dir = drupal_get_path('module', 'wn_hp_callout').'/imgs/examples/';
+  $callout_imgs = glob($callouts_dir.'*.{jpg,jpeg,png,gif}',GLOB_BRACE);
+  // Now add the images and provide imagefield extended additional text.
+  foreach($callout_imgs as $img) {
+    $img_info = pathinfo($img);
+    $field = field_file_save_file($img, array(), file_directory_path() .'/example_callouts/');
+    if( !isset($field['data']) ) {
+      $field['data'] = array();
+    }
+    $field['data']['title'] = ucwords(str_replace('_',' ',$img_info['filename']));
+    $field['data']['alt'] = 'This is alt text.';
+    $field['data']['wn_hp_callout_desc'] = array(
+      'body' => 'This is text associated with this homepage callout image.',
+      'format' => '1',
+      'style' => 'formatted'
+    );
+    $node->field_wn_hp_callout_image[] = $field;
+   }
+   $node = node_submit($node);
+   node_save($node);
 }

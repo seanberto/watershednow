@@ -30,7 +30,7 @@ function wn_helper_theme_registry_alter(&$theme_registry) {
  * Borrowing heavily from Development Seed.
  */
 function wn_helper_form_alter(&$form, $form_state, $form_id) {
-  
+
   switch ($form_id) {
 
     case 'system_site_information_settings':

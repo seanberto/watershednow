@@ -63,7 +63,7 @@ function wn_hp_callout_node_info() {
       'name' => t('Homepage Callout'),
       'module' => 'features',
       'description' => t('A <em>Homepage callout</em> is an image with text used in an image carousel on the homepage.'),
-      'has_title' => '0',
+      'has_title' => '1',
       'title_label' => t('Title'),
       'has_body' => '0',
       'body_label' => '',
