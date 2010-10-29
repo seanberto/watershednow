@@ -66,25 +66,7 @@ function watershed_preprocess_page(&$vars, $hook) {
   }
 
   if( !empty($vars['newsletter']) ) {
-    $vars['newsletter'] = strip_tags($vars['newsletter'],'<form><button><input>');
-    $doc = new SimpleXMLElement($vars['newsletter']);
-    foreach($doc->xpath('//*') as $elm) {
-       unset($elm['style']);
-       unset($elm['size']);
-       if( !isset($elm['type']) ) {
-         $elm['type'] = 'text';
-       }
-
-       if( $elm['type'] == 'text' ) {
-         $elm['class'] = 'form-text';
-       }
-
-      if( $elm['type'] == 'submit' ) {
-         $elm['class'] = 'form-submit';
-       }
-
-    }
-    $vars['newsletter'] = $doc->asXml();
+    $vars['newsletter'] = watershed_newsletter_html_filter($vars['newsletter']);
     $vars['newsletter'] = theme('block',(object)array(
       'subject' => 'newsletter signup',
       'delta' => 'newsletter',
@@ -474,5 +456,35 @@ function watershed_breadcrumb($breadcrumb) {
   if (theme_get_setting($active_theme . '_breadcrumb') && !empty($breadcrumb)) {
     return '<div class="breadcrumb">'. implode(' » ', $breadcrumb) .'</div>';
   }
+}
+
+function watershed_newsletter_html_filter( $html ) {
+    $html = strip_tags($html,'<form><button><input><script><label>');
+    try {
+      $doc = new DomDocument();
+      $doc->loadHTML($html);
+      $xpath = new DomXPath($doc);
+      $result = $xpath->query("//*");
+      foreach($result as $elm) {
+        if( $elm->tagName == 'label' ) {
+          $elm->parentNode->removeChild($elm);
+        }
+
+        $elm->removeAttribute('style');
+        $elm->removeAttribute('size');
+        if( $elm->tagName == 'input' && !$elm->hasAttribute('type') ) {
+          $elm->setAttribute('type','text');
+        }
+
+        $type = $elm->getAttribute('type');
+        if( $type == 'text' ) {
+          $elm->setAttribute('class','form-text');
+        } else if( $type == 'submit' ) {
+          $elm->setAttribute('class','form-submit');
+        }
+      }
+      $html = $doc->saveHTML();
+    } catch( Exception $e ) {}
+    return $html;
 }
 
