@@ -7,7 +7,8 @@ function wn_neuse_settings($saved_settings, $subtheme_defaults = array()) {
 
   // Merge the saved variables and their default values.
   $settings = array_merge($defaults, $saved_settings);
-  
+
+
   // Get color palette options by scanning optional css stylesheets.
   $colors_dir = drupal_get_path('theme', 'wn_neuse') . '/css/colors';
   $options = file_scan_directory($colors_dir, '\.css$', $nomask = array('.', '..', 'CVS'), $callback = 0, $recurse = TRUE, $key = 'name');
@@ -81,7 +82,7 @@ function wn_neuse_settings($saved_settings, $subtheme_defaults = array()) {
     '#prefix'        => '<div id="div-wn_neuse-registry"><strong>' . t('Theme registry:') . '</strong>',
     '#suffix'        => '</div>',
   );
-  
+
   // Return the form
   return $form;
 }
