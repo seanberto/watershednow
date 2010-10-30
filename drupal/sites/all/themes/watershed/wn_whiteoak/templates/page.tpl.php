@@ -38,15 +38,11 @@
             <?php print $header; ?>
           </div>
         <?php endif; ?>
-        
 
-        <?php //print $search_box; Turned off in parent theme. ?>
-
-
-        <?php if (!empty($primary_links) || !empty($secondary_links)): ?>
-          <div id="nav" class="menu <?php if (!empty($primary_links)) { print "with-main-menu"; } if (!empty($secondary_links)) { print " with-sub-menu"; } ?>">
-            <?php /* if (!empty($secondary_links)){ print theme('links', $secondary_links, array('id' => 'secondary', 'class' => 'links sub-menu')); } Turned off in the parent theme. */ ?>
+        <?php if (!empty($primary_links) || !($search_block)): ?>
+          <div id="nav" class="menu <?php if (!empty($primary_links)) { print "with-main-menu"; } ?>">
             <?php if (!empty($primary_links)){ print theme('links', $primary_links, array('id' => 'primary', 'class' => 'links main-menu')); } ?>
+            <?php if (!($search_block)) { print $search_box; } /* Note that $search_box is replaced by $search_block in some WN themes. */ ?>
           </div> <!-- /nav -->
         <?php endif; ?>
 
@@ -145,7 +141,7 @@
               <?php print $mission ?>
               <?php print $secondary_links ?>
               <?php print $follow_links ?>
-              <?php print $search_block; ?>
+              <?php if($search_block) { print $search_block; } /* Not set in some WN themes. */ ?>
               <?php print $footer_second; ?>
             </div><!-- /#footer-second -->
             <div id="footer-message"><?php print $footer_message; ?></div><!-- /#footer-message -->
