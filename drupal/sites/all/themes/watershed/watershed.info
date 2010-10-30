@@ -37,8 +37,6 @@ stylesheets[print][] = css/print.css
 
 scripts[] = js/scripts.js
 
-settings[watershed_search_help]          = 'Explore our watershed'
-settings[watershed_search_button]        = 'Go'
 settings[watershed_zen_tabs]             = 1
 settings[watershed_wireframe]            = 0
 settings[watershed_breadcrumb]           = 0

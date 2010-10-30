@@ -30,9 +30,10 @@ features[] = secondary_links
 stylesheets[all][] = css/whiteoak.css
 stylesheets[all][] = css/hp_callout.css
 
+; Note: We need to keep some of the settings from the parent theme here even though we don't provide UI
+; in our theme-settings.php for overriding them. This is b/c we inherit Watershed's template.php.
+
 settings[wn_whiteoak_color_palette]        = 'blue'
-settings[wn_whiteoak_search_help]          = 'Explore our watershed'
-settings[wn_whiteoak_search_button]        = 'Go'
 settings[wn_whiteoak_zen_tabs]             = 1
 settings[wn_whiteoak_wireframe]            = 0
 settings[wn_whiteoak_breadcrumb]           = 0
