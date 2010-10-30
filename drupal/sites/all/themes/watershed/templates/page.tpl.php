@@ -40,7 +40,9 @@
         <?php if (!empty($primary_links) || !($search_block)): ?>
           <div id="nav" class="menu <?php if (!empty($primary_links)) { print "with-main-menu"; } ?>">
             <?php if (!empty($primary_links)){ print theme('links', $primary_links, array('id' => 'primary', 'class' => 'links main-menu')); } ?>
-            <?php if (!($search_block)) { print $search_box; } /* Note that $search_box is replaced by $search_block in some WN themes. */ ?>
+            <?php if (!($search_block)): /* $search_box is replaced by $search_block in some WN themes. */ ?>
+              <div id="search-box"><?php print $search_box; ?></div> 
+            <?php endif; ?>
           </div> <!-- /nav -->
         <?php endif; ?>
 
