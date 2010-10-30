@@ -261,22 +261,27 @@ div#search-box {
 
 /* =Search Block
 ------------- */
-#search-theme-form, #search-block-form {
-  height: 35px;
+.search-form {
   width: 160px;
+  height: 35px;
   position: relative;
 }
 
-#search-input input {
-  width: 100%;
-  height: 24px;
-  padding-left: 10px;
+.search-form .blur {
+  color:#999;
 }
 
-#search-button {
+.search-query {
+  width: 100%;
+  height: 24px;
+  padding-left:3px;
+  padding-right:25px;
+}
+
+.search-submit {
   position: absolute;
   top: 6px;
-  right: -10px; /* negative padding left of search input */
+  right: -25px; /* .search-query -1 * padding right */
 }
 
 /*= Footer
