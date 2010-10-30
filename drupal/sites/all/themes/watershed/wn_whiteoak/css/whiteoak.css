@@ -1,4 +1,4 @@
-html, body, #page {
+html, body {
   height: 100%;
 }
 
@@ -8,17 +8,17 @@ body {
 }
 
 #page {
-  margin-top: 25px;
-}
-
-#page-inner {
+	min-height: 100%;
+	height: auto !important;
+	height: 100%;
+  margin: 0 auto -225px;
 }
 
 #main {
 }
 
 #content-inner {
-  padding: 0 25px 25px;
+  padding: 0 25px 25px 25px;
 }
 
 h1.title {
@@ -41,6 +41,7 @@ a {
 
 #nav {
   background: url(../images/nav_bg.png) repeat-x 0 0 transparent;
+  height: 38px;
 }
 
 #nav li {
@@ -52,7 +53,7 @@ a {
 }
 
 #nav li.active {
-  height: 3em;
+  height: 38px;
 }
 
 #nav li a {
@@ -78,6 +79,27 @@ a {
 
 #sidebar-second .block.odd {
   background: #eff0f0;
+}
+
+#sidebar-second .block.block-menu_block {
+  background: none;
+}
+
+#sidebar-second .block-title, #sidebar-second .content {
+  padding-left: 15px;
+}
+
+#sidebar-second .block-menu_block .block-title {
+  padding: 0;
+}
+
+#sidebar-second .block-menu_block .block-title a {
+  background: #ece9b2;
+  padding: 0 15px;
+  color: #151515;
+  font-size: 1.3em;
+  font-style: italic;
+  text-transform: uppercase;
 }
 
 /*
@@ -106,16 +128,23 @@ a {
  *  Footer styles
  */
  
-#footer-wrapper {
-  height: 225px;
+#footer, #push {
+  clear: both;
   width: 100%;
+  height: 225px;
+  position: relative;
 }
 
 #footer {
   color: #fff;
-  width: 960px;
-  margin: 0 auto;
-  padding: 35px;
+}
+
+#footer-inner {
+  padding: 25px 25px 0;
+}
+
+#footer .block {
+
 }
 
 #footer a {

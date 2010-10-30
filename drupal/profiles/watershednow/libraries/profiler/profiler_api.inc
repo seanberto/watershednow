@@ -371,22 +371,22 @@ function profiler_install_terms($terms, $config, &$identifiers) {
  * Component install callback for 'users'.
  */
 function profiler_install_users($users) {
-  // First we need to create roles that don't already exist.
-  $new_roles = '';
-  foreach (array_filter($users) as $array) {
-    if (isset($array['roles'])) {
-      $new_roles .= $array['roles'] .','; // Add all assigned roles to a single string.
-    }
+  array_filter($users);
+
+  $roles = array();
+  foreach( $users as $user ) {
+    $users_roles = explode(',', $user['roles']); //split roles
+    $users_roles = array_map('trim', $users_roles); // remove trailing whitespace
+    $roles = array_merge($roles, $users_roles);
   }
-  $new_roles = explode(',', $new_roles); // Explode that string into an array.
-  $new_roles = array_unique($new_roles); // Dedup the new roles array.
-  foreach($new_roles as $role) {
-    trim($role); // Get rid of any whitespace in the role value.
-    if ($role != '') { // If role isn't blank (happens b/c of trailing comma), add role.
+  $roles = array_unique($roles); // remove duplicates
+  foreach( $roles as $role ) {
+    if( !empty($role) ) {
       db_query("INSERT INTO {role} (name) VALUES ('%s')", $role);
     }
   }
-  foreach (array_filter($users) as $array) {
+
+  foreach ($users as $array) {
     // For some reason db_last_insert_id() doesn't get the uid of the newly created
     // user, so we need to separate out roles first, create the account, then save
     // again to properly assign roles to this user.
@@ -407,6 +407,7 @@ function profiler_install_users($users) {
     // Set the roles.
     $formatted = array();
     $roles = explode(',', $roles);
+    $roles = array_map('trim', $roles);
     foreach ($roles as $name) {
       if ($rid = db_result(db_query("SELECT rid FROM {role} WHERE name = '%s'", trim($name)))) {
         $formatted[$rid] = TRUE;

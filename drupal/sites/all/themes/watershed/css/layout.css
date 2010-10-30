@@ -11,14 +11,14 @@
 *
 */
 
-#page-inner, #footer-wrapper {
+#page, #footer {
   width: 960px; /* edit to change the width of the page */
   margin: 0 auto; /* remove 'auto' and the width to switch to a fluid width */
 }
 
-#footer-wrapper {
-  clear: both;
-  /* width: 100%;  uncomment this line to make footer full browser width */
+#footer-inner {
+  width: 960px;
+  margin: 0 auto;
 }
 
 /** LAYOUT RULES
@@ -43,11 +43,9 @@
   clear: both;
 }
 
-#
-
 #callout {
-  height: 360px;
   overflow: hidden;
+  float: left;
 }
 
 /* Layout Helpers */

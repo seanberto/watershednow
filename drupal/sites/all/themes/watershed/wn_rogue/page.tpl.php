@@ -18,8 +18,6 @@
 
       <div id="header">
       
-        <?php print $newsletter; ?>
-
         <div id="logo-title">
           <div id="name-and-slogan">
             <?php if (!empty($site_name)): ?>
@@ -145,6 +143,7 @@
               <?php print $mission ?>
               <?php print $secondary_links ?>
               <?php print $follow_links ?>
+              <?php print $newsletter; ?>
               <?php print $search_box; ?>
               <?php print $footer_second; ?>
             </div><!-- /#footer-second -->

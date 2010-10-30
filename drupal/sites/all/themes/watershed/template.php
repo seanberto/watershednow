@@ -37,7 +37,7 @@ function watershed_preprocess_page(&$vars, $hook) {
   // Grab the active theme. Adjust theme variable calls. That way, we don't have to repeat these calls in
   // each child theme.
   $active_theme = variable_get('theme_default', 'watershed');
-  
+
   // Don't display empty help from node_help().
   if ($vars['help'] == '<div class="help"><p></p>\n</div>') {
     $vars['help'] = '';
@@ -66,6 +66,7 @@ function watershed_preprocess_page(&$vars, $hook) {
   }
 
   if( !empty($vars['newsletter']) ) {
+    $vars['newsletter'] = watershed_newsletter_html_filter($vars['newsletter']);
     $vars['newsletter'] = theme('block',(object)array(
       'subject' => 'newsletter signup',
       'delta' => 'newsletter',
@@ -200,11 +201,11 @@ function watershed_preprocess_node(&$vars, $hook) {
  */
 
 function watershed_preprocess_block(&$vars, $hook) {
-  
+
   // Grab the active theme. Adjust theme variable calls. That way, we don't have to repeat these calls in
   // each child theme.
   $active_theme = variable_get('theme_default', 'watershed');
-        
+
   $block = $vars['block'];
   // special block classes
   $classes = array('block');
@@ -245,7 +246,7 @@ function watershed_preprocess_block(&$vars, $hook) {
             'query' => drupal_get_destination(),
             'html' => TRUE,
           )
-        );  
+        );
       }
       // Display 'configure' for other blocks.
       else {
@@ -451,9 +452,39 @@ function watershed_breadcrumb($breadcrumb) {
   // Grab the active theme. Adjust theme variable calls. That way, we don't have to repeat these calls in
   // each child theme.
   $active_theme = variable_get('theme_default', 'watershed');
-  
+
   if (theme_get_setting($active_theme . '_breadcrumb') && !empty($breadcrumb)) {
     return '<div class="breadcrumb">'. implode(' » ', $breadcrumb) .'</div>';
   }
+}
+
+function watershed_newsletter_html_filter( $html ) {
+    $html = strip_tags($html,'<form><button><input><script><label>');
+    try {
+      $doc = new DomDocument();
+      $doc->loadHTML($html);
+      $xpath = new DomXPath($doc);
+      $result = $xpath->query("//*");
+      foreach($result as $elm) {
+        if( $elm->tagName == 'label' ) {
+          $elm->parentNode->removeChild($elm);
+        }
+
+        $elm->removeAttribute('style');
+        $elm->removeAttribute('size');
+        if( $elm->tagName == 'input' && !$elm->hasAttribute('type') ) {
+          $elm->setAttribute('type','text');
+        }
+
+        $type = $elm->getAttribute('type');
+        if( $type == 'text' ) {
+          $elm->setAttribute('class','form-text');
+        } else if( $type == 'submit' ) {
+          $elm->setAttribute('class','form-submit');
+        }
+      }
+      $html = $doc->saveHTML();
+    } catch( Exception $e ) {}
+    return $html;
 }
 

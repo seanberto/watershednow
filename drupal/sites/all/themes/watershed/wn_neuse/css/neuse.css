@@ -1,6 +1,21 @@
-body { background:#5c5c5c url(../images/bg2.jpg) 0 -300px no-repeat; }
-#main { background:#fff; }
-#page { margin-top:40px; }
+body { 
+  background:#5c5c5c url(../images/bg2.jpg) 0 -300px no-repeat; 
+  letter-spacing: 0;
+}
+
+#main { 
+  background:#fff; 
+}
+
+#page { 
+  margin-top:40px; 
+}
+
+h1.title {
+  font-weight: bold;
+  font-size: 1.8em;
+  text-transform: uppercase;
+}
 
 /*= Header
 -----------------*/
@@ -16,12 +31,27 @@ body { background:#5c5c5c url(../images/bg2.jpg) 0 -300px no-repeat; }
 #footer {
   background:#000;
   color:#fff;
-  padding:40px 20px 20px 20px;
   margin-bottom:40px;
+}
+
+#footer-inner {
+  padding:40px 20px 20px 20px;
 }
 
 #footer a {
   color:#fff;
+}
+
+#block-watershed-mission {
+  width: 32%;
+}
+
+#block-secondary-links {
+  width: 21%;
+}
+
+#block-follow-site {
+  width: 16%;
 }
 
 /*= Navigation
@@ -37,9 +67,15 @@ body { background:#5c5c5c url(../images/bg2.jpg) 0 -300px no-repeat; }
 /*= Sidebar 
 -----------------*/
 .sidebar .block-title {
-  background:#000;
-  color:#00B8E0;
-  text-transform:lowercase;
+  background: #000;
+  font-style: italic;
+  color: #00B8E0;
+  text-transform: lowercase;
+  font-size: 1.3em;
+}
+
+.sidebar .block-title, .sidebar .content {
+  padding-left: 5px;
 }
 
 .sidebar-right #content-inner {
