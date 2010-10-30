@@ -76,6 +76,8 @@ function watershed_preprocess_page(&$vars, $hook) {
       'module' => 'watershed',
       'content' => $vars['newsletter']
     ));
+    // Adding a small variable for changing positioning of newsletter block btw header/footer.
+    $vars['newsletter_position'] = 'footer';
   }
 
   if( function_exists('_follow_block_content') ) {

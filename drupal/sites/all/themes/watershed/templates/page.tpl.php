@@ -18,6 +18,8 @@
 
       <div id="header">
       
+        <?php if ($newsletter && ($newsletter_position == 'header')) { print $newsletter; } ?>
+      
         <div id="logo-title">
           <div id="name-and-slogan">
             <?php if (!empty($site_name)): ?>
@@ -140,7 +142,7 @@
           <?php print $mission ?>
           <?php print $secondary_links ?>
           <?php print $follow_links ?>
-          <?php print $newsletter; ?>
+          <?php if ($newsletter && ($newsletter_position != 'header')) { print $newsletter; } ?>
           <?php if($search_block) { print $search_block; } /* Not set in some WN themes. */ ?>
           <?php print $footer_second; ?>
         </div><!-- /#footer-second -->
