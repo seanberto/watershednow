@@ -1,9 +1,10 @@
-#footer-wrapper {
+#footer {
   background: #a2ad00;
 }
 
 #footer, #footer a {
   color: #333132;
+  font-weight: bold;
 }
 
 .title {

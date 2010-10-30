@@ -23,7 +23,7 @@
             <?php if (!empty($site_name)): ?>
               <h1 id="site-name">
                 <a href="<?php print $front_page; ?>" title="<?php print t('Home'); ?>" rel="home" id="logo">
-                 <img src="<?php print $logo; ?>" alt="<?php print $site_name ?>"/>
+                 <?php print ($logo) ? "<img src='$logo' alt='$site_name'/>" : $site_name; ?> <!-- if no logo is present simply print site-name -->
                 </a>
               </h1>
               <span id="slogan"><?php print $site_slogan ?></span>

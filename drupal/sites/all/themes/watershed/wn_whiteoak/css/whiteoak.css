@@ -5,6 +5,7 @@ html, body {
 body { 
   font: 13px/1.4em "Helvetica Neue",helvetica,Arial,sans-serif;
   color: #414042;
+  letter-spacing: 0;
 }
 
 #page {
@@ -12,6 +13,10 @@ body {
 	height: auto !important;
 	height: 100%;
   margin: 0 auto -225px;
+}
+
+#header {
+  margin-top: 25px;
 }
 
 #main {
@@ -109,7 +114,7 @@ a {
 #slogan {
   color: #58595b;
   font-style: italic;
-  font-size: 1.1em;
+  font-size: 1em;
   margin-left: 100px;
 }
  
