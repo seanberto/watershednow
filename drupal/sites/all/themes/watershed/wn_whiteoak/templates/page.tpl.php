@@ -128,7 +128,7 @@
 
         </div> <!-- /main -->
               
-    <div id="push"></div> <!-- this div is to achieve a working sticky footer -->
+      <div id="push"></div> <!-- this div is to achieve a working sticky footer -->
     
     </div> <!-- /page -->
 

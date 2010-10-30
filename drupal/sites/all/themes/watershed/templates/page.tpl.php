@@ -125,11 +125,13 @@
           <?php endif; ?> <!-- /sidebar-second -->
 
         </div> <!-- /main -->
-        
-      <!-- ______________________ FOOTER _______________________ -->
+    
+      <div id="push"></div> <!-- this div is to achieve a working sticky footer in certain child themes -->
       
     </div> <!-- /page -->
-    
+
+    <!-- ______________________ FOOTER _______________________ -->    
+  
     <div id="footer" class="clear-block">
       <div id="footer-inner">
         <?php print $footer; ?>
