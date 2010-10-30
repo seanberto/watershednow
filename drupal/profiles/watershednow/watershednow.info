@@ -184,7 +184,6 @@ users[staff][roles] = staff
 users[staff][status] = 1
 
 ; ----------------------------------------------
-
 ; Set up general site config.
 
 ; First set the default theme.
@@ -204,8 +203,12 @@ variables[site_newsletter] = '<form name="newsletter"><input type="text" name="u
 
 variables[date_default_timezone_name] = America/New_York
 
-; ----------------------------------------------
 
+; ----------------------------------------------
+; Theme Config
+theme_config[wn_rogue][color_palette] = green
+
+; ----------------------------------------------
 ; Follow Links
 ; follow[uid][network] = url
 ; 0 for uid is sitewide

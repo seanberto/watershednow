@@ -458,31 +458,43 @@ function watershed_breadcrumb($breadcrumb) {
   }
 }
 
+
+/**
+ * Attempts to cleanup the HTML embed code newsletter providers use.
+ * @param $html newsletter embed html string
+ * @return unknown_type
+ */
 function watershed_newsletter_html_filter( $html ) {
+    //remove all tags that do not match the given string
     $html = strip_tags($html,'<form><button><input><script><label>');
-    try {
+    try { // prevent PHP from dying if an error is encountered
       $doc = new DomDocument();
       $doc->loadHTML($html);
       $xpath = new DomXPath($doc);
-      $result = $xpath->query("//*");
-      foreach($result as $elm) {
-        if( $elm->tagName == 'label' ) {
+      $result = $xpath->query("//*"); // return all elements
+      foreach($result as $elm) { // iterate elements
+        if( $elm->tagName == 'label' ) { // remove labels
           $elm->parentNode->removeChild($elm);
         }
 
         $elm->removeAttribute('style');
         $elm->removeAttribute('size');
+
+        // make sure inputs have a type associated, default is text
         if( $elm->tagName == 'input' && !$elm->hasAttribute('type') ) {
           $elm->setAttribute('type','text');
         }
 
         $type = $elm->getAttribute('type');
+
+        // add drupal form classes
         if( $type == 'text' ) {
           $elm->setAttribute('class','form-text');
         } else if( $type == 'submit' ) {
           $elm->setAttribute('class','form-submit');
         }
       }
+      // get resulting html
       $html = $doc->saveHTML();
     } catch( Exception $e ) {}
     return $html;
