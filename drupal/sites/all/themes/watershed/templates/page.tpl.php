@@ -128,23 +128,22 @@
       
     </div> <!-- /page -->
     
-      <?php if(!empty($footer_message) || !empty($footer) || !empty($footer_second)): ?>
-        <div id="footer" class="clear-block">
-          <div id="footer-inner">
-            <?php print $footer; ?>
-            <div id="footer-first"><?php print $footer_first; ?></div><!-- /#footer-first -->
-            <div id="footer-second">
-              <?php print $mission ?>
-              <?php print $secondary_links ?>
-              <?php print $follow_links ?>
-              <?php print $newsletter; ?>
-              <?php if($search_block) { print $search_block; } /* Not set in some WN themes. */ ?>
-              <?php print $footer_second; ?>
-            </div><!-- /#footer-second -->
-            <div id="footer-message"><?php print $footer_message; ?></div><!-- /#footer-message -->
-          </div> <!-- /footer-inner -->
-        </div> <!-- /footer -->
-      <?php endif; ?>
+    <div id="footer" class="clear-block">
+      <div id="footer-inner">
+        <?php print $footer; ?>
+        <div id="footer-first"><?php print $footer_first; ?></div><!-- /#footer-first -->
+        <div id="footer-second">
+          <?php print $mission ?>
+          <?php print $secondary_links ?>
+          <?php print $follow_links ?>
+          <?php print $newsletter; ?>
+          <?php if($search_block) { print $search_block; } /* Not set in some WN themes. */ ?>
+          <?php print $footer_second; ?>
+        </div><!-- /#footer-second -->
+        <div id="footer-message"><?php print $footer_message; ?></div><!-- /#footer-message -->
+      </div> <!-- /footer-inner -->
+    </div> <!-- /footer -->
+    
     <?php print $closure; ?>
   </body>
 </html>
