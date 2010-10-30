@@ -71,7 +71,7 @@ div.view div.views-admin-links {
 div.block {
   position: relative;
 }
-div.block .edit {
+div.block .edit, div#logo-title .edit {
   display: none;
   position: absolute;
   right: -20px;
@@ -88,12 +88,12 @@ div.block .edit {
   -moz-box-shadow: 0 1px 3px #888;
   -webkit-box-shadow: -1px 1px 2px #666;
 }
-div.block .edit a {
+div.block .edit a, div#logo-title .edit a {
   display:block;
   border:0;
   padding:0;
   margin:0;
 }
-div.block:hover .edit {
+div.block:hover .edit, div#logo-title:hover .edit {
   display: block;
 }

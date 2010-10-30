@@ -119,6 +119,21 @@ function watershed_preprocess_page(&$vars, $hook) {
       'content' => theme('links',$vars['secondary_links'])
     ));
   }
+  
+  // Adding link to theme variable for quickly getting to logo and theme settings.
+  if (theme_get_setting($theme_key . '_block_editing') && user_access('select different theme')) {
+    $header_edit_link[] = l('<span>' . t('edit theme') . '</span>', 'admin/build/themes/settings/' . $theme_key,
+      array(
+        'attributes' => array(
+          'title' => t('Manage the theme, including swapping logos.'),
+          'class' => 'block-edit',
+        ),
+        'query' => drupal_get_destination(),
+        'html' => TRUE,
+      )
+    );
+  }
+  $vars['header_edit_link'] = '<div class="edit">' . implode(' ', $header_edit_link) . '</div>';
 
   // Classes for body element. Allows advanced theming based on context
   // (home page, node of certain type, etc.)
@@ -521,4 +536,3 @@ function watershed_newsletter_html_filter( $html ) {
     } catch( Exception $e ) {}
     return $html;
 }
-

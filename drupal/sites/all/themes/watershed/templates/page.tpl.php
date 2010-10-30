@@ -31,6 +31,9 @@
               <span id="slogan"><?php print $site_slogan ?></span>
             <?php endif; ?>
           </div> <!-- /name-and-slogan -->
+          
+          <?php print $header_edit_link; ?>
+          
         </div> <!-- /logo-title -->
 
         <?php if ($header): ?>
