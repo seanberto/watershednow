@@ -31,9 +31,9 @@ function _watershednow_configure( $config ) {
   _watershednow_create_nodes(); // Call after setting up filters.
 
   _watershednow_create_menu_items();
-  
+
   _watershednow_add_sample_update_feed( $config['feeds'] );
-  
+
   _watershednow_create_follow_links( $config['follow'] );
 
   // Do some additional clean up.
@@ -109,7 +109,7 @@ function _watershednow_create_nodes() {
   // Set pathauto default for nodes. Do so before creating nodes below.
   variable_set('pathauto_node_pattern', '[title-raw]');
   // While at it, set pathauto default for taxonomy terms.
-  variable_set('pathauto_taxonomy_pattern', '[vocab-raw]/[catpath-raw]');  
+  variable_set('pathauto_taxonomy_pattern', '[vocab-raw]/[catpath-raw]');
 
   // Create a few placeholder nodes and add them to the menu structure.
   // @TODO: Find the correct input filter. Right now, we rely on _watershednow_filters_wysiwyg() being called first..
@@ -184,7 +184,7 @@ function _watershednow_define_perms() {
     'access taxonomy images',
     'change own username'
     );
-    
+
   $default_perms['support'] = array(
     'access wn dashboard',
     'access administration menu',
@@ -552,7 +552,7 @@ function _watershednow_filters_wysiwyg() {
     'editor' => '',
     'settings' => NULL
     );
-    
+
   $wysiwyg_profiles['2'] = array(
     'format' => 2,
     'editor' => 'ckeditor',
@@ -608,7 +608,7 @@ function _watershednow_filters_wysiwyg() {
       'css_classes' => '',
       )
     );
-    
+
   $wysiwyg_profiles['3'] = array(
     'format' => 3,
     'editor' => 'ckeditor',
@@ -660,17 +660,19 @@ function _watershednow_filters_wysiwyg() {
 
 function _watershednow_configure_roles() {
   // Leverage Install Profile API to create perms and ad to roles.
-  $default_roles = user_roles(); // Adding roles and perms.
+  $default_roles = user_roles(); // getting roles and perms.
   $default_perms = _watershednow_define_perms(); // Grabbing array of permissions.
   foreach ($default_roles as $rid => $role) {
-    if ($role == 'support') {
-      install_add_permissions($rid, $default_perms['support']);
-    }
-    if ($role == 'staff') {
-      install_add_permissions($rid, $default_perms['staff']);
-    }
-    if ($role == 'web admin') {
-      install_add_permissions($rid, $default_perms['web_admin']);
+    switch( $role ) {
+      case 'support':
+        install_add_permissions($rid, $default_perms['support']);
+        break;
+      case 'staff':
+        install_add_permissions($rid, $default_perms['staff']);
+        break;
+      case 'web admin':
+        install_add_permissions($rid, $default_perms['web_admin']);
+        break;
     }
   }
   install_add_permissions('1', $default_perms['anonymous']);
@@ -705,7 +707,7 @@ function _watershednow_install_themes() {
     $settings = array_merge($defaults, $settings);
     variable_set('theme_' . $current_theme . '_settings', $settings);
     db_query("UPDATE {system} SET status = 1 WHERE type = 'theme' and name ='%s'", $current_theme);
-  } 
+  }
 }
 
 /**
