@@ -687,7 +687,9 @@ function _watershednow_configure_roles() {
  * Installing themes is a PITA. It's easy to enable themes, but setting their variables is not straight forward.
  * @TODO - There's gotta be a better way to set these variables.
  */
-function _watershednow_install_themes() {
+function _watershednow_install_themes( $config ) {
+  $config = $config['theme_config'];
+
   $all_themes = system_theme_data();
   $wn_themes = array(
     'watershed' => $all_themes['watershed'],
@@ -697,9 +699,12 @@ function _watershednow_install_themes() {
     );
   $defaults = theme_get_settings(); // Get site's default settings as an array.
   foreach($wn_themes as $current_theme => $theme) {
-    $settings = array();
-    foreach($theme->info['settings'] as $key => $setting) {
-      $settings[$key] = $setting;
+    $settings = $theme->info['settings'];
+
+    if( is_array($config[$current_theme]) ) {
+      foreach( $config[$current_theme] as $setting => $value ) {
+        $settings[$current_theme . '_' . $setting] = $value;
+      }
     }
     foreach($theme->info['features'] as $feature) {
       $settings['toggle_' . $feature] = 1;
