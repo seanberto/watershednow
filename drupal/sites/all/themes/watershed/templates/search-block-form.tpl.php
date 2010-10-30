@@ -1,1 +1,0 @@
-<?php include('search-theme-form.tpl.php'); ?>
