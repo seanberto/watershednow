@@ -27,9 +27,6 @@ h1.title {
 
 /* =Footer
 -----------------*/
-#footer .block-title {
-  color: #00B8E0;
-}
 #footer {
   background: #000;
   color: #fff;
@@ -79,7 +76,6 @@ h1.title {
 .sidebar .block-title {
   background: #000;
   font-style: italic;
-  color: #00B8E0;
   text-transform: lowercase;
   font-size: 1.3em;
 }
