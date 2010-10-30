@@ -68,12 +68,6 @@ h1.title {
   border-right: 0;
 }
 
-/* =Search box
------------------*/
-div#search {
-  display: inline;
-}
-
 /* =Sidebar
 -----------------*/
 .sidebar .block-title {

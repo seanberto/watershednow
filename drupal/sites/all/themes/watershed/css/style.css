@@ -252,7 +252,14 @@ h3.block-title {
   cursor: hand;
 }
 
-/*= Search
+/* =Search Box
+-----------------*/
+div#search-box {
+  float: right;
+  margin: 3px 30px 0 0;
+}
+
+/* =Search Block
 ------------- */
 #search-theme-form, #search-block-form {
   height: 35px;
