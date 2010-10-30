@@ -57,6 +57,9 @@ function watershed_preprocess_page(&$vars, $hook) {
     ));
   }
 
+  // Default behavior is to convert the $search_box variable into a block-themed variable.
+  // We then look for this new variable and display it instead of $search_box in most cases.
+  // We have conditionals in page.tpl.php checking for this. This lets us cut out a few child page.tpl.php files.
   if( !empty($vars['search_box']) ) {
     $vars['search_block'] = theme('block',(object)array(
       'subject' => 'search',
