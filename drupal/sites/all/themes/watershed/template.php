@@ -2,41 +2,60 @@
 
 // Grab the active theme. Adjust theme variable calls. That way, we don't have to repeat these calls in
 // each child theme.
-$active_theme = variable_get('theme_default', 'watershed');
+$theme_key = variable_get('theme_default', 'watershed');
 
 // Auto-rebuild the theme registry during theme development.
-if (theme_get_setting($active_theme . '_rebuild_registry')) {
+if (theme_get_setting($theme_key . '_rebuild_registry')) {
   drupal_rebuild_theme_registry();
 }
 
 // If applicable, add a color palette stylesheet based upon theme settings.
-if ($color = theme_get_setting($active_theme . '_color_palette')) {
-  drupal_add_css( drupal_get_path('theme', $active_theme) .'/css/colors/' . $color . '.css', 'theme');
+if ($color = theme_get_setting($theme_key . '_color_palette')) {
+  drupal_add_css( drupal_get_path('theme', $theme_key) .'/css/colors/' . $color . '.css', 'theme');
 }
 
 // Add Zen Tabs styles
-if (theme_get_setting($active_theme . '_zen_tabs')) {
+if (theme_get_setting($theme_key . '_zen_tabs')) {
   drupal_add_css( drupal_get_path('theme', 'watershed') .'/css/tabs.css', 'theme', 'screen');
 }
 
 // Add "wireframing CSS" to sketch out layout
-if (theme_get_setting($active_theme . '_wireframe')) {
+if (theme_get_setting($theme_key . '_wireframe')) {
   drupal_add_css(drupal_get_path('theme', 'watershed') .'/css/wireframing.css', 'theme');
 }
 
 /*
- *	 This function creates the body classes that are relative to each page
+ *   This function creates the body classes that are relative to each page
  *
- *	@param $vars
- *	  A sequential array of variables to pass to the theme template.
- *	@param $hook
- *	  The name of the theme function being called ("page" in this case.)
+ *  @param $vars
+ *    A sequential array of variables to pass to the theme template.
+ *  @param $hook
+ *    The name of the theme function being called ("page" in this case.)
  */
 function watershed_preprocess_page(&$vars, $hook) {
-
   // Grab the active theme. Adjust theme variable calls. That way, we don't have to repeat these calls in
   // each child theme.
-  $active_theme = variable_get('theme_default', 'watershed');
+  global $theme_key, $theme_path;
+
+  /**
+   * this is used to substitute the logo with a color scheme specific logo
+   */
+  if( $theme_key != 'watershednow' ) {
+    $subtheme_relative_path = base_path() . $theme_path . '/' . $theme_key . '/';
+    $subtheme_system_path = dirname(__FILE__) . '/' . $theme_key . '/';
+
+    // using a logo that doesn't even exist, substitute color logo
+    if( $subtheme_relative_path .'logo.png' == $vars['logo'] && !is_file($subtheme_system_path . 'logo.png') ) {
+      $color = theme_get_setting($theme_key . '_color_palette'); // get color palette
+      if( !empty($color) ) { // if color found
+        // get first image filename that matches named logo-$color.(jpg|jpeg|png|gif)
+        $color_logo = basename(current(glob($subtheme_system_path.'logo-' . $color .'.{jpg,jpeg,png,gif}',GLOB_BRACE)));
+        if( $color_logo ) {
+          $vars['logo'] = $subtheme_relative_path . $color_logo; //swap colors
+        }
+      }
+    }
+  }
 
   // Don't display empty help from node_help().
   if ($vars['help'] == '<div class="help"><p></p>\n</div>') {
@@ -105,9 +124,9 @@ function watershed_preprocess_page(&$vars, $hook) {
   // (home page, node of certain type, etc.)
   $body_classes = array($vars['body_classes']);
   if (user_access('administer blocks')) {
-	  $body_classes[] = 'admin';
-	}
-	if (theme_get_setting($active_theme . '_wireframe')) {
+    $body_classes[] = 'admin';
+  }
+  if (theme_get_setting($theme_key . '_wireframe')) {
     $body_classes[] = 'with-wireframes'; // Optionally add the wireframes style.
   }
   if (!empty($vars['primary_links']) or !empty($vars['secondary_links'])) {
@@ -154,13 +173,13 @@ function watershed_preprocess_page(&$vars, $hook) {
 }
 
 /*
- *	 This function creates the NODES classes, like 'node-unpublished' for nodes
- *	 that are not published, or 'node-mine' for node posted by the connected user...
+ *   This function creates the NODES classes, like 'node-unpublished' for nodes
+ *   that are not published, or 'node-mine' for node posted by the connected user...
  *
- *	@param $vars
- *	  A sequential array of variables to pass to the theme template.
- *	@param $hook
- *	  The name of the theme function being called ("node" in this case.)
+ *  @param $vars
+ *    A sequential array of variables to pass to the theme template.
+ *  @param $hook
+ *    The name of the theme function being called ("node" in this case.)
  */
 
 function watershed_preprocess_node(&$vars, $hook) {
@@ -194,10 +213,10 @@ function watershed_preprocess_node(&$vars, $hook) {
 }
 
 /*
- *	This function create the EDIT LINKS for blocks and menus blocks.
- *	When overing a block (except in IE6), some links appear to edit
- *	or configure the block. You can then edit the block, and once you are
- *	done, brought back to the first page.
+ *  This function create the EDIT LINKS for blocks and menus blocks.
+ *  When overing a block (except in IE6), some links appear to edit
+ *  or configure the block. You can then edit the block, and once you are
+ *  done, brought back to the first page.
  *
  * @param $vars
  *   A sequential array of variables to pass to the theme template.
@@ -206,10 +225,9 @@ function watershed_preprocess_node(&$vars, $hook) {
  */
 
 function watershed_preprocess_block(&$vars, $hook) {
-
   // Grab the active theme. Adjust theme variable calls. That way, we don't have to repeat these calls in
   // each child theme.
-  $active_theme = variable_get('theme_default', 'watershed');
+  global $theme_key;
 
   $block = $vars['block'];
   // special block classes
@@ -226,7 +244,7 @@ function watershed_preprocess_block(&$vars, $hook) {
 
   $vars['block_classes'] = implode(' ', $classes); // Concatenate with spaces
 
-  if (theme_get_setting($active_theme . '_block_editing') && user_access('administer blocks') && ($block->module != 'boxes')) {
+  if (theme_get_setting($theme_key . '_block_editing') && user_access('administer blocks') && ($block->module != 'boxes')) {
       // Display 'edit block' for custom blocks.
       if ($block->module == 'block') {
         $edit_links[] = l('<span>' . t('edit block') . '</span>', 'admin/build/block/configure/' . $block->module . '/' . $block->delta,
@@ -361,13 +379,13 @@ function watershed_preprocess_comment(&$vars, $hook) {
 }
 
 /*
- * 	Customize the PRIMARY and SECONDARY LINKS, to allow the admin tabs to work on all browsers
- * 	An implementation of theme_menu_item_link()
+ *   Customize the PRIMARY and SECONDARY LINKS, to allow the admin tabs to work on all browsers
+ *   An implementation of theme_menu_item_link()
  *
- * 	@param $link
- * 	  array The menu item to render.
- * 	@return
- * 	  string The rendered menu item.
+ *   @param $link
+ *     array The menu item to render.
+ *   @return
+ *     string The rendered menu item.
  */
 
 function watershed_menu_item_link($link) {
@@ -406,7 +424,7 @@ function watershed_menu_local_tasks() {
 }
 
 /*
- * 	Add custom classes to menu item
+ *   Add custom classes to menu item
  */
 
 function watershed_menu_item($link, $has_children, $menu = '', $in_active_trail = FALSE, $extra_class = NULL) {
@@ -423,19 +441,19 @@ function watershed_menu_item($link, $has_children, $menu = '', $in_active_trail 
 }
 
 /*
- *	Converts a string to a suitable html ID attribute.
+ *  Converts a string to a suitable html ID attribute.
  *
- *	 http://www.w3.org/TR/html4/struct/global.html#h-7.5.2 specifies what makes a
- *	 valid ID attribute in HTML. This function:
+ *  http://www.w3.org/TR/html4/struct/global.html#h-7.5.2 specifies what makes a
+ *  valid ID attribute in HTML. This function:
  *
- *	- Ensure an ID starts with an alpha character by optionally adding an 'n'.
- *	- Replaces any character except A-Z, numbers, and underscores with dashes.
- *	- Converts entire string to lowercase.
+ *  - Ensure an ID starts with an alpha character by optionally adding an 'n'.
+ *  - Replaces any character except A-Z, numbers, and underscores with dashes.
+ *  - Converts entire string to lowercase.
  *
- *	@param $string
- *	  The string
- *	@return
- *	  The converted string
+ *  @param $string
+ *    The string
+ *  @return
+ *    The converted string
  */
 
 function watershed_id_safe($string) {
@@ -450,15 +468,14 @@ function watershed_id_safe($string) {
 
 /*
  *  Return a themed breadcrumb trail.
- *	Alow you to customize the breadcrumb markup
+ *  Alow you to customize the breadcrumb markup
  */
 
 function watershed_breadcrumb($breadcrumb) {
+  global $theme_key;
   // Grab the active theme. Adjust theme variable calls. That way, we don't have to repeat these calls in
   // each child theme.
-  $active_theme = variable_get('theme_default', 'watershed');
-
-  if (theme_get_setting($active_theme . '_breadcrumb') && !empty($breadcrumb)) {
+  if (theme_get_setting($theme_key . '_breadcrumb') && !empty($breadcrumb)) {
     return '<div class="breadcrumb">'. implode(' » ', $breadcrumb) .'</div>';
   }
 }
