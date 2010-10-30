@@ -58,7 +58,7 @@ function watershed_preprocess_page(&$vars, $hook) {
   }
 
   if( !empty($vars['search_box']) ) {
-    $vars['search_box'] = theme('block',(object)array(
+    $vars['search_block'] = theme('block',(object)array(
       'subject' => 'search',
       'delta' => 'search',
       'content' => $vars['search_box']

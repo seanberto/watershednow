@@ -142,7 +142,7 @@
               <?php print $secondary_links ?>
               <?php print $follow_links ?>
               <?php print $newsletter; ?>
-              <?php print $search_box; ?>
+              <?php print $search_block; ?>
               <?php print $footer_second; ?>
             </div><!-- /#footer-second -->
             <div id="footer-message"><?php print $footer_message; ?></div><!-- /#footer-message -->

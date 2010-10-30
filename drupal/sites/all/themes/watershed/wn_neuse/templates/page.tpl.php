@@ -36,15 +36,11 @@
             <?php print $header; ?>
           </div>
         <?php endif; ?>
-        
 
-        <?php //print $search_box; Turned off in parent theme. ?>
-
-
-        <?php if (!empty($primary_links) || !empty($secondary_links)): ?>
+        <?php if (!empty($primary_links) || ($search_box)): ?>
           <div id="nav" class="menu <?php if (!empty($primary_links)) { print "with-main-menu"; } if (!empty($secondary_links)) { print " with-sub-menu"; } ?>">
-            <?php /* if (!empty($secondary_links)){ print theme('links', $secondary_links, array('id' => 'secondary', 'class' => 'links sub-menu')); } Turned off in the parent theme. */ ?>
             <?php if (!empty($primary_links)){ print theme('links', $primary_links, array('id' => 'primary', 'class' => 'links main-menu')); } ?>
+            <?php print $search_box; ?>
           </div> <!-- /nav -->
         <?php endif; ?>
 
@@ -142,7 +138,6 @@
               <?php print $secondary_links ?>
               <?php print $follow_links ?>
               <?php print $newsletter; ?>
-              <?php print $search_box; ?>
               <?php print $footer_second; ?>
             </div><!-- /#footer-second -->
             <div id="footer-message"><?php print $footer_message; ?></div><!-- /#footer-message -->
