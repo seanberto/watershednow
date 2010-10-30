@@ -68,6 +68,12 @@ h1.title {
   border-right: 0;
 }
 
+/* =Search Box
+-----------------*/
+#search-box {
+  margin:5px 40px 0 0;
+}
+
 /* =Sidebar
 -----------------*/
 .sidebar .block-title {
