@@ -28,6 +28,7 @@ body {
 
 #slogan {
   margin-left: 50px;
+  font-style: italic;
 }
 
 h1.title {
@@ -35,6 +36,30 @@ h1.title {
   font-size: 1.8em;
   text-transform: uppercase;
 }
+
+
+/*
+ *  Updates Page styles
+ */ 
+
+.view-updates .view-content > div {
+  margin-bottom: 1em;
+  padding-bottom: .5em;
+  border-bottom: 1px dotted #fff;
+}
+
+.view-updates .views-field-created {
+  font-style: italic;
+  font-size: .9em;
+}
+
+#content-area .view-updates .views-field-created {
+  color: #ebebeb;
+}
+
+/*
+ * Navigation Styles
+ */
 
 #nav, #nav li {
   background: none;
@@ -48,7 +73,8 @@ h1.title {
 }
 
 #nav li {
-  padding: 0 .3em;
+  padding: 0 .5em;
+  text-align: center;
 }
 
 #nav li a {
@@ -56,6 +82,7 @@ h1.title {
   font-size: .7em;
   font-family: georgia, "times new roman", serif;
   font-weight: bold;
+  padding: 0.3em .1em;
 }
 
 #nav li.active a {

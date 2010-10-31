@@ -1,0 +1,39 @@
+#callout {
+  background: #333132;
+  overflow: hidden;
+  height: 287px;
+  clear: both;
+}
+
+#callout, .wn-hp-callout li {
+}
+
+#callout .wn-hp-callout-title {
+  color: #fff;
+  background: url(../images/callout_top.gif) 0 0 repeat-x;
+}
+
+#callout .wn-hp-callout-entry {
+  color:#bcbec0;
+  background: #000   url(../images/callout_bottom.gif) 0 100% repeat-x;
+}
+
+#callout .wn-hp-callout-pager a {
+  color: #fff;
+}
+
+#callout .wn-hp-callout-pager a {
+  background: url(../images/pager/pager-blue.gif) 100% 0 no-repeat;
+  width: 13px;
+  height: 13px;
+  padding: 0;
+  margin-left: 10px;
+  display: block;
+  float: left;
+  text-indent: -9999px;
+  outline: none;
+}
+
+#callout .wn-hp-callout-pager a.activeSlide {
+  background-position: 0 0;
+}

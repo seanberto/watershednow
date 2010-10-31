@@ -1,3 +1,12 @@
-.title, .block-title, #footer .block-title {
+.title, .block-title, #footer .block-title, h1 a:link, h1 a:visited, label, #slogan, #callout .wn-hp-callout-title {
   color: #d8a91a;
+}
+
+#main a:link, #main a:visited {
+  color: #d8a91a;
+}
+
+#nav li.active a {
+  border-top: 1px solid #d8a91a;
+  border-bottom: 3px solid #d8a91a;
 }

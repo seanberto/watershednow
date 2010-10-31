@@ -17,6 +17,7 @@ body {
 
 #header {
   margin-top: 25px;
+  
 }
 
 #main {
@@ -110,6 +111,10 @@ a {
 /*
  *  Header styles
  */
+ 
+#logo-title {
+  min-height: 75px; /* minimum height to keep header spacing correct if using short logo */
+}
  
 #slogan {
   color: #58595b;
