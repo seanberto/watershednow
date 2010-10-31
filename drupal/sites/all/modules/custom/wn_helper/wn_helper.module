@@ -70,6 +70,21 @@ function wn_helper_form_alter(&$form, $form_state, $form_id) {
         unset($form['theme_default']['#options'][$theme]);
       }
       break;
+      
+    case 'system_theme_settings':
+      $themes = array('wn_neuse', 'wn_rogue', 'wn_whiteoak');
+      $current_theme = $form['#parameters'][2];
+      if (in_array($current_theme, $themes)) {
+        // For Watershed's 3 child themes, disable the "toggle" options on theme settings form.
+        foreach($form['theme_settings'] as $key => $setting) {
+          if (strpos($key, 'toggle') !== FALSE) {
+            $form['theme_settings'][$key]['#disabled'] = TRUE;
+          }
+        }
+        // Also, disable the "reset to defaults" button. We are prescriptive in our theme choices...
+        unset($form['buttons']['reset']);
+      }
+        break;
 
     case 'contact_mail_page':
     // @FIXME - Hackery to add an edit link on the top of the contact form.
