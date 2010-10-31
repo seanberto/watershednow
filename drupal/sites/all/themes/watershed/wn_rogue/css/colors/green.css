@@ -1,3 +1,3 @@
-.title {
+.title, .block-title, #footer .block-title {
   color: #75b731;
 }

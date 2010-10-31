@@ -23,9 +23,9 @@
         <div id="logo-title">
           <div id="name-and-slogan">
             <?php if (!empty($site_name)): ?>
-              <h1 id="site-name">
+              <h1 id="site-name" <?php print ($logo) ? "style='background:url($logo) no-repeat 0 0;'" : "class='noindent'" ?>>
                 <a href="<?php print $front_page; ?>" title="<?php print t('Home'); ?>" rel="home" id="logo">
-                 <?php print ($logo) ? "<img src='$logo' alt='$site_name'/>" : $site_name; ?> <!-- if no logo is present simply print site-name -->
+                 <?php print ($logo) ? "<img src='' alt='$site_name'/>" : $site_name; ?> <!-- if no logo is present simply print site-name -->
                 </a>
               </h1>
               <span id="slogan"><?php print $site_slogan ?></span>

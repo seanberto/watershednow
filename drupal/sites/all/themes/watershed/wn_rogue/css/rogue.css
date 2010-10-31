@@ -15,11 +15,19 @@ body {
   margin: 0 auto -225px;
 }
 
+#header {
+  margin-top: 25px;
+}
+
 #main {
 }
 
 #logo-title {
   float: left;
+}
+
+#slogan {
+  margin-left: 50px;
 }
 
 h1.title {
@@ -36,6 +44,7 @@ h1.title {
   float: right;
   margin: 0;
   width: auto;
+  margin-top: 30px;
 }
 
 #nav li {
@@ -44,7 +53,7 @@ h1.title {
 
 #nav li a {
   color: #d1d3d4;
-  font-size: .8em;
+  font-size: .7em;
   font-family: georgia, "times new roman", serif;
   font-weight: bold;
 }
@@ -65,11 +74,12 @@ h1.title {
 
 #footer {
   color: #fff;
+  width: 100%;
   background: #000;
 }
 
 #footer-inner {
-
+  padding: 25px 25px 0;
 }
 
 #footer .block {
