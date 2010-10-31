@@ -33,20 +33,10 @@
  * @see template_preprocess_search_theme_form()
  */
 /* Set search form label values and functions */
-$search_label =  theme_get_setting('watershed_search_help',t('Search...'));
-$search_phrase = t('Enter the terms you wish to search for.');
-$on_blur = "if(this.value=='') this.value='" . $search_label . "';";
-$on_focus = "if(this.value=='" . $search_label . "') this.value='';";
+$search_placeholder = t('search');
 ?>
-
-<div id="search">
-  <div id="search-input">
-    <input type="text" maxlength="128" name="search_theme_form" id="edit-search-theme-form-header" size="15" title="<?php print $search_phrase; ?>" value="<?php print $search_label; ?>" onblur="<?php print $on_blur; ?>" onfocus="<?php print $on_focus; ?>" class="form-text" />
-  </div>
-
-  <div id="search-button">
-    <input type="image" name="op" value="search" id="edit-submit-2" src="<?php print base_path() . $directory; ?>/images/search_icon.gif" alt="Search" />
-  </div>
-
+<div class="search-form clear-block">
+  <input class="form-text search-query" type="text" name="search_theme_form" title="<?php print $search_placeholder; ?>" />
+  <input class="search-submit" type="image" name="op" value="search" src="<?php print base_path() . $directory; ?>/images/search_icon.gif" alt="Search" />
   <?php print $search['hidden'] ?>
 </div>

@@ -18,6 +18,8 @@
 
       <div id="header">
       
+        <?php if ($newsletter && ($newsletter_position == 'header')) { print $newsletter; } ?>
+      
         <div id="logo-title">
           <div id="name-and-slogan">
             <?php if (!empty($site_name)): ?>
@@ -29,6 +31,9 @@
               <span id="slogan"><?php print $site_slogan ?></span>
             <?php endif; ?>
           </div> <!-- /name-and-slogan -->
+          
+          <?php print $header_edit_link; ?>
+          
         </div> <!-- /logo-title -->
 
         <?php if ($header): ?>
@@ -36,15 +41,13 @@
             <?php print $header; ?>
           </div>
         <?php endif; ?>
-        
 
-        <?php //print $search_box; Turned off in parent theme. ?>
-
-
-        <?php if (!empty($primary_links) || !empty($secondary_links)): ?>
-          <div id="nav" class="menu <?php if (!empty($primary_links)) { print "with-main-menu"; } if (!empty($secondary_links)) { print " with-sub-menu"; } ?>">
-            <?php /* if (!empty($secondary_links)){ print theme('links', $secondary_links, array('id' => 'secondary', 'class' => 'links sub-menu')); } Turned off in the parent theme. */ ?>
+        <?php if (!empty($primary_links) || !($search_block)): ?>
+          <div id="nav" class="menu <?php if (!empty($primary_links)) { print "with-main-menu"; } ?>">
             <?php if (!empty($primary_links)){ print theme('links', $primary_links, array('id' => 'primary', 'class' => 'links main-menu')); } ?>
+            <?php if (!($search_block)): /* $search_box is replaced by $search_block in some WN themes. */ ?>
+              <div id="search-box"><?php print $search_box; ?></div> 
+            <?php endif; ?>
           </div> <!-- /nav -->
         <?php endif; ?>
 
@@ -127,28 +130,29 @@
           <?php endif; ?> <!-- /sidebar-second -->
 
         </div> <!-- /main -->
-        
-      <!-- ______________________ FOOTER _______________________ -->
+    
+      <div id="push"></div> <!-- this div is to achieve a working sticky footer in certain child themes -->
       
     </div> <!-- /page -->
+
+    <!-- ______________________ FOOTER _______________________ -->    
+  
+    <div id="footer" class="clear-block">
+      <div id="footer-inner">
+        <?php print $footer; ?>
+        <div id="footer-first"><?php print $footer_first; ?></div><!-- /#footer-first -->
+        <div id="footer-second">
+          <?php print $mission ?>
+          <?php print $secondary_links ?>
+          <?php print $follow_links ?>
+          <?php if ($newsletter && ($newsletter_position != 'header')) { print $newsletter; } ?>
+          <?php if($search_block) { print $search_block; } /* Not set in some WN themes. */ ?>
+          <?php print $footer_second; ?>
+        </div><!-- /#footer-second -->
+        <div id="footer-message"><?php print $footer_message; ?></div><!-- /#footer-message -->
+      </div> <!-- /footer-inner -->
+    </div> <!-- /footer -->
     
-      <?php if(!empty($footer_message) || !empty($footer) || !empty($footer_second)): ?>
-        <div id="footer" class="clear-block">
-          <div id="footer-inner">
-            <?php print $footer; ?>
-            <div id="footer-first"><?php print $footer_first; ?></div><!-- /#footer-first -->
-            <div id="footer-second">
-              <?php print $mission ?>
-              <?php print $secondary_links ?>
-              <?php print $follow_links ?>
-              <?php print $newsletter; ?>
-              <?php print $search_box; ?>
-              <?php print $footer_second; ?>
-            </div><!-- /#footer-second -->
-            <div id="footer-message"><?php print $footer_message; ?></div><!-- /#footer-message -->
-          </div> <!-- /footer-inner -->
-        </div> <!-- /footer -->
-      <?php endif; ?>
     <?php print $closure; ?>
   </body>
 </html>

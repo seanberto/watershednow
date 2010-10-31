@@ -31,9 +31,9 @@ function _watershednow_configure( $config ) {
   _watershednow_create_nodes(); // Call after setting up filters.
 
   _watershednow_create_menu_items();
-  
+
   _watershednow_add_sample_update_feed( $config['feeds'] );
-  
+
   _watershednow_create_follow_links( $config['follow'] );
 
   // Do some additional clean up.
@@ -109,7 +109,7 @@ function _watershednow_create_nodes() {
   // Set pathauto default for nodes. Do so before creating nodes below.
   variable_set('pathauto_node_pattern', '[title-raw]');
   // While at it, set pathauto default for taxonomy terms.
-  variable_set('pathauto_taxonomy_pattern', '[vocab-raw]/[catpath-raw]');  
+  variable_set('pathauto_taxonomy_pattern', '[vocab-raw]/[catpath-raw]');
 
   // Create a few placeholder nodes and add them to the menu structure.
   // @TODO: Find the correct input filter. Right now, we rely on _watershednow_filters_wysiwyg() being called first..
@@ -117,8 +117,8 @@ function _watershednow_create_nodes() {
 
   $page = new stdClass;
   $page->title = 'About Us';
-  $page->body = '<p>This is a placeholder <b>"about us" page</b>. Here readers can learn more about this website and the orgaization behind it.</p><p>When you are logged into the site as an administrator, you will see an "edit" link below the title of this page. Follow that link to edit/delete this page content. You can easily embed images, videos, forms and other rich HTML. Or, you can simply use our "WYSIWYG" (What you see is what you get) editor to edit this page like you would the body of an email with Google or Yahoo mail.</p><p>After you get to know the basics, there are many additional content management features that you are sure to enjoy - such as the ability to create menu links to specific pages and the ability to add sidebar content per page.</p>';
-  $page->format = 2;
+  $page->body = 'This is a placeholder "about us" page. Here readers can learn more about this website and the orgaization behind it. When you are logged into the site as an administrator, you will see an "edit" link below the title of this page. Follow that link to edit/delete this page content. You can easily embed images, videos, forms and other rich HTML. Or, you can simply use our "WYSIWYG" (What you see is what you get) editor to edit this page like you would the body of an email with Google or Yahoo mail. After you get to know the basics, there are many additional content management features that you are sure to enjoy - such as the ability to create menu links to specific pages and the ability to add sidebar content per page.';
+  $page->format = 1;
   $page->menu = 'primary_links';
   $page->menuitem_description = 'Learn more about us';
   $page->parent_title = NULL;
@@ -126,8 +126,8 @@ function _watershednow_create_nodes() {
 
   $page = new stdClass;
   $page->title = 'Staff';
-  $page->body = '<p>This is a placeholder page about <b>our staff</b>. It\'s provided here to show how subpages work.</p><p>When you are logged into the site as an administrator, you will see an "edit" link below the title of this page. Follow that link to edit/delete this page content. You can easily embed images, videos, forms and other rich HTML. Or, you can simply use our "WYSIWYG" (What you see is what you get) editor to edit this page like you would the body of an email with Google or Yahoo mail.</p><p>After you get to know the basics, there are many additional content management features that you are sure to enjoy - such as the ability to create menu links to specific pages and the ability to add sidebar content per page.</p>';
-  $page->format = 2;
+  $page->body = 'This is a placeholder page about "our staff." It\'s provided here to show how subpages work. When you are logged into the site as an administrator, you will see an "edit" link below the title of this page. Follow that link to edit/delete this page content. You can easily embed images, videos, forms and other rich HTML. Or, you can simply use our "WYSIWYG" (What you see is what you get) editor to edit this page like you would the body of an email with Google or Yahoo mail. After you get to know the basics, there are many additional content management features that you are sure to enjoy - such as the ability to create menu links to specific pages and the ability to add sidebar content per page.';
+  $page->format = 1;
   $page->menu = 'primary_links';
   $page->menuitem_description = 'Get to know our staff. Feel free to rename or even delete this page. It\'s provided here to show how subpages work.';
   $page->parent_title = 'About Us';
@@ -135,8 +135,8 @@ function _watershednow_create_nodes() {
 
   $page = new stdClass;
   $page->title = 'History';
-  $page->body = 'This is a placeholder page about <b>our organizational history</b>. It\'s provided here to show how subpages work.</p><p>When you are logged into the site as an administrator, you will see an "edit" link below the title of this page. Follow that link to edit/delete this page content. You can easily embed images, videos, forms and other rich HTML. Or, you can simply use our "WYSIWYG" (What you see is what you get) editor to edit this page like you would the body of an email with Google or Yahoo mail.</p><p>After you get to know the basics, there are many additional content management features that you are sure to enjoy - such as the ability to create menu links to specific pages and the ability to add sidebar content per page.</p>';
-  $page->format = 2;
+  $page->body = 'This is a placeholder page about our "organizational history." It\'s provided here to show how subpages work. When you are logged into the site as an administrator, you will see an "edit" link below the title of this page. Follow that link to edit/delete this page content. You can easily embed images, videos, forms and other rich HTML. Or, you can simply use our "WYSIWYG" (What you see is what you get) editor to edit this page like you would the body of an email with Google or Yahoo mail. After you get to know the basics, there are many additional content management features that you are sure to enjoy - such as the ability to create menu links to specific pages and the ability to add sidebar content per page.';
+  $page->format = 1;
   $page->menu = 'primary_links';
   $page->menuitem_description = 'Get to know our history.';
   $page->parent_title = 'About Us';
@@ -184,7 +184,7 @@ function _watershednow_define_perms() {
     'access taxonomy images',
     'change own username'
     );
-    
+
   $default_perms['support'] = array(
     'access wn dashboard',
     'access administration menu',
@@ -552,7 +552,7 @@ function _watershednow_filters_wysiwyg() {
     'editor' => '',
     'settings' => NULL
     );
-    
+
   $wysiwyg_profiles['2'] = array(
     'format' => 2,
     'editor' => 'ckeditor',
@@ -608,7 +608,7 @@ function _watershednow_filters_wysiwyg() {
       'css_classes' => '',
       )
     );
-    
+
   $wysiwyg_profiles['3'] = array(
     'format' => 3,
     'editor' => 'ckeditor',
@@ -660,17 +660,19 @@ function _watershednow_filters_wysiwyg() {
 
 function _watershednow_configure_roles() {
   // Leverage Install Profile API to create perms and ad to roles.
-  $default_roles = user_roles(); // Adding roles and perms.
+  $default_roles = user_roles(); // getting roles and perms.
   $default_perms = _watershednow_define_perms(); // Grabbing array of permissions.
   foreach ($default_roles as $rid => $role) {
-    if ($role == 'support') {
-      install_add_permissions($rid, $default_perms['support']);
-    }
-    if ($role == 'staff') {
-      install_add_permissions($rid, $default_perms['staff']);
-    }
-    if ($role == 'web admin') {
-      install_add_permissions($rid, $default_perms['web_admin']);
+    switch( $role ) {
+      case 'support':
+        install_add_permissions($rid, $default_perms['support']);
+        break;
+      case 'staff':
+        install_add_permissions($rid, $default_perms['staff']);
+        break;
+      case 'web admin':
+        install_add_permissions($rid, $default_perms['web_admin']);
+        break;
     }
   }
   install_add_permissions('1', $default_perms['anonymous']);
@@ -685,7 +687,9 @@ function _watershednow_configure_roles() {
  * Installing themes is a PITA. It's easy to enable themes, but setting their variables is not straight forward.
  * @TODO - There's gotta be a better way to set these variables.
  */
-function _watershednow_install_themes() {
+function _watershednow_install_themes( $config ) {
+  $config = $config['theme_config'];
+
   $all_themes = system_theme_data();
   $wn_themes = array(
     'watershed' => $all_themes['watershed'],
@@ -695,9 +699,12 @@ function _watershednow_install_themes() {
     );
   $defaults = theme_get_settings(); // Get site's default settings as an array.
   foreach($wn_themes as $current_theme => $theme) {
-    $settings = array();
-    foreach($theme->info['settings'] as $key => $setting) {
-      $settings[$key] = $setting;
+    $settings = $theme->info['settings'];
+
+    if( is_array($config[$current_theme]) ) {
+      foreach( $config[$current_theme] as $setting => $value ) {
+        $settings[$current_theme . '_' . $setting] = $value;
+      }
     }
     foreach($theme->info['features'] as $feature) {
       $settings['toggle_' . $feature] = 1;
@@ -705,7 +712,7 @@ function _watershednow_install_themes() {
     $settings = array_merge($defaults, $settings);
     variable_set('theme_' . $current_theme . '_settings', $settings);
     db_query("UPDATE {system} SET status = 1 WHERE type = 'theme' and name ='%s'", $current_theme);
-  } 
+  }
 }
 
 /**

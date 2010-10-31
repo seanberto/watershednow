@@ -54,7 +54,7 @@ function wn_helper_form_alter(&$form, $form_state, $form_id) {
       $form['site_newsletter'] = array(
         '#type' => 'textarea',
         '#title' => 'Newsletter HTML',
-        '#description' => 'Paste in newsletter form HTML embed code.',
+        '#description' => 'Paste in newsletter form HTML embed code. For help, see our <a href="http://github.com/thinkshout/watershednow/wiki/Newsletter-embed-code" target="_blank">wiki article</a> on embedding newsletter code.',
         '#default_value' => variable_get('site_newsletter',''),
       );
       $form['buttons']['#weight'] = 10; //make sure buttons are at the bottom

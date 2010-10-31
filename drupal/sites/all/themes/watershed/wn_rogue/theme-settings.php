@@ -27,28 +27,6 @@ function wn_rogue_settings($saved_settings, $subtheme_defaults = array()) {
     '#default_value' => $settings['wn_rogue_color_palette'],
   );
 
-  $form['wn_rogue_search_help'] = array(
-    '#type'          => 'textfield',
-    '#description'         => t('Help text displayed in search box'),
-    '#default_value' => $settings['wn_rogue_search_help'],
-    '#prefix'        => '<strong>' . t('Search box - help text:') . '</strong>',
-  );
-
-  $form['wn_rogue_search_button'] = array(
-    '#type'          => 'textfield',
-    '#description'         => t('Button text displayed with search box'),
-    '#default_value' => $settings['wn_rogue_search_button'],
-    '#prefix'        => '<strong>' . t('Search box - button text:') . '</strong>',
-  );
-
-  $form['wn_rogue_zen_tabs'] = array(
-    '#type'          => 'checkbox',
-    '#title'         => t('Use Zen Tabs'),
-    '#default_value' => $settings['wn_rogue_zen_tabs'],
-    '#description'   => t('Replace the default tabs by the Zen Tabs.'),
-    '#prefix'        => '<strong>' . t('Zen Tabs:') . '</strong>',
-  );
-
   $form['wn_rogue_breadcrumb'] = array(
     '#type'          => 'checkbox',
     '#title'         => t('Enable Breadcrumb trail'),
@@ -57,29 +35,12 @@ function wn_rogue_settings($saved_settings, $subtheme_defaults = array()) {
     '#prefix'        => '<strong>' . t('Enable Breadcrumb:') . '</strong>',
   );
 
-  $form['wn_rogue_wireframe'] = array(
-    '#type'          => 'checkbox',
-    '#title'         => t('Display borders around main layout elements'),
-    '#default_value' => $settings['wn_rogue_wireframe'],
-    '#description'   => t('<a href="!link">Wireframes</a> are useful when prototyping a website.', array('!link' => 'http://www.boxesandarrows.com/view/html_wireframes_and_prototypes_all_gain_and_no_pain')),
-    '#prefix'        => '<strong>' . t('Wireframes:') . '</strong>',
-  );
-
   $form['wn_rogue_block_editing'] = array(
     '#type'          => 'checkbox',
     '#title'         => t('Show block editing on hover'),
     '#description'   => t('When hovering over a block, privileged users will see block editing links.'),
     '#default_value' => $settings['wn_rogue_block_editing'],
     '#prefix'        => '<strong>' . t('Block Edit Links:') . '</strong>',
-  );
-
-  $form['themedev']['wn_rogue_rebuild_registry'] = array(
-    '#type'          => 'checkbox',
-    '#title'         => t('Rebuild theme registry on every page.'),
-    '#default_value' => $settings['wn_rogue_rebuild_registry'],
-    '#description'   => t('During theme development, it can be very useful to continuously <a href="!link">rebuild the theme registry</a>. WARNING: this is a huge performance penalty and must be turned off on production websites.', array('!link' => 'http://drupal.org/node/173880#theme-registry')),
-    '#prefix'        => '<div id="div-wn_rogue-registry"><strong>' . t('Theme registry:') . '</strong>',
-    '#suffix'        => '</div>',
   );
   
   // Return the form

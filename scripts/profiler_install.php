@@ -12,7 +12,7 @@
  */
 
 // URL options
-$site_url = 'http://watershednow.com/';  // Site URL with trailing slash.
+$site_url = 'http://wn.dev/';  // Site URL with trailing slash.
 $profile = 'watershednow'; // Name of selected install profile
 $locale = 'en'; // locale
 $tmpdir = '/tmp/'; // Temp directory on destination server with trailing slash.

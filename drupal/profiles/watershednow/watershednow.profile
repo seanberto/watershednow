@@ -44,8 +44,8 @@ function watershednow_profile_tasks(&$task, $url) {
      * this must happen after clearing caches due to static variable
      * that can not be reset. Extra steps included to add theme variables to variables table.
      */
-    _watershednow_install_themes();
-    
+    _watershednow_install_themes( $config );
+
     // Add homepage callout sample node. Note: needs to be called after clearing cache.
     _watershednow_add_callouts();
     $task = 'profile-finished'; //hand control back to the installer

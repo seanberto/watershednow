@@ -12,5 +12,5 @@
 }
 
 #nav li.active {
-    background: url(blue/nav_bg_active_blue.png) repeat-x 0 0 transparent;
+  background: url(../../images/nav/nav_bg_active_blue.png) repeat-x 0 0 transparent;
 }

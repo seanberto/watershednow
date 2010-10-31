@@ -2,41 +2,60 @@
 
 // Grab the active theme. Adjust theme variable calls. That way, we don't have to repeat these calls in
 // each child theme.
-$active_theme = variable_get('theme_default', 'watershed');
+$theme_key = variable_get('theme_default', 'watershed');
 
 // Auto-rebuild the theme registry during theme development.
-if (theme_get_setting($active_theme . '_rebuild_registry')) {
+if (theme_get_setting($theme_key . '_rebuild_registry')) {
   drupal_rebuild_theme_registry();
 }
 
 // If applicable, add a color palette stylesheet based upon theme settings.
-if ($color = theme_get_setting($active_theme . '_color_palette')) {
-  drupal_add_css( drupal_get_path('theme', $active_theme) .'/css/colors/' . $color . '.css', 'theme');
+if ($color = theme_get_setting($theme_key . '_color_palette')) {
+  drupal_add_css( drupal_get_path('theme', $theme_key) .'/css/colors/' . $color . '.css', 'theme');
 }
 
 // Add Zen Tabs styles
-if (theme_get_setting($active_theme . '_zen_tabs')) {
+if (theme_get_setting($theme_key . '_zen_tabs')) {
   drupal_add_css( drupal_get_path('theme', 'watershed') .'/css/tabs.css', 'theme', 'screen');
 }
 
 // Add "wireframing CSS" to sketch out layout
-if (theme_get_setting($active_theme . '_wireframe')) {
+if (theme_get_setting($theme_key . '_wireframe')) {
   drupal_add_css(drupal_get_path('theme', 'watershed') .'/css/wireframing.css', 'theme');
 }
 
 /*
- *	 This function creates the body classes that are relative to each page
+ *   This function creates the body classes that are relative to each page
  *
- *	@param $vars
- *	  A sequential array of variables to pass to the theme template.
- *	@param $hook
- *	  The name of the theme function being called ("page" in this case.)
+ *  @param $vars
+ *    A sequential array of variables to pass to the theme template.
+ *  @param $hook
+ *    The name of the theme function being called ("page" in this case.)
  */
 function watershed_preprocess_page(&$vars, $hook) {
-
   // Grab the active theme. Adjust theme variable calls. That way, we don't have to repeat these calls in
   // each child theme.
-  $active_theme = variable_get('theme_default', 'watershed');
+  global $theme_key, $theme_path;
+
+  /**
+   * this is used to substitute the logo with a color scheme specific logo
+   */
+  if( $theme_key != 'watershednow' ) {
+    $subtheme_relative_path = base_path() . $theme_path . '/' . $theme_key . '/';
+    $subtheme_system_path = dirname(__FILE__) . '/' . $theme_key . '/';
+
+    // using a logo that doesn't even exist, substitute color logo
+    if( $subtheme_relative_path .'logo.png' == $vars['logo'] && !is_file($subtheme_system_path . 'logo.png') ) {
+      $color = theme_get_setting($theme_key . '_color_palette'); // get color palette
+      if( !empty($color) ) { // if color found
+        // get first image filename that matches named logo-$color.(jpg|jpeg|png|gif)
+        $color_logo = basename(current(glob($subtheme_system_path.'logo-' . $color .'.{jpg,jpeg,png,gif}',GLOB_BRACE)));
+        if( $color_logo ) {
+          $vars['logo'] = $subtheme_relative_path . $color_logo; //swap colors
+        }
+      }
+    }
+  }
 
   // Don't display empty help from node_help().
   if ($vars['help'] == '<div class="help"><p></p>\n</div>') {
@@ -57,8 +76,11 @@ function watershed_preprocess_page(&$vars, $hook) {
     ));
   }
 
+  // Default behavior is to convert the $search_box variable into a block-themed variable.
+  // We then look for this new variable and display it instead of $search_box in most cases.
+  // We have conditionals in page.tpl.php checking for this. This lets us cut out a few child page.tpl.php files.
   if( !empty($vars['search_box']) ) {
-    $vars['search_box'] = theme('block',(object)array(
+    $vars['search_block'] = theme('block',(object)array(
       'subject' => 'search',
       'delta' => 'search',
       'content' => $vars['search_box']
@@ -73,6 +95,8 @@ function watershed_preprocess_page(&$vars, $hook) {
       'module' => 'watershed',
       'content' => $vars['newsletter']
     ));
+    // Adding a small variable for changing positioning of newsletter block btw header/footer.
+    $vars['newsletter_position'] = 'footer';
   }
 
   if( function_exists('_follow_block_content') ) {
@@ -95,14 +119,29 @@ function watershed_preprocess_page(&$vars, $hook) {
       'content' => theme('links',$vars['secondary_links'])
     ));
   }
+  
+  // Adding link to theme variable for quickly getting to logo and theme settings.
+  if (theme_get_setting($theme_key . '_block_editing') && user_access('select different theme')) {
+    $header_edit_link[] = l('<span>' . t('edit theme') . '</span>', 'admin/build/themes/settings/' . $theme_key,
+      array(
+        'attributes' => array(
+          'title' => t('Manage the theme, including swapping logos.'),
+          'class' => 'block-edit',
+        ),
+        'query' => drupal_get_destination(),
+        'html' => TRUE,
+      )
+    );
+  }
+  $vars['header_edit_link'] = '<div class="edit">' . implode(' ', $header_edit_link) . '</div>';
 
   // Classes for body element. Allows advanced theming based on context
   // (home page, node of certain type, etc.)
   $body_classes = array($vars['body_classes']);
   if (user_access('administer blocks')) {
-	  $body_classes[] = 'admin';
-	}
-	if (theme_get_setting($active_theme . '_wireframe')) {
+    $body_classes[] = 'admin';
+  }
+  if (theme_get_setting($theme_key . '_wireframe')) {
     $body_classes[] = 'with-wireframes'; // Optionally add the wireframes style.
   }
   if (!empty($vars['primary_links']) or !empty($vars['secondary_links'])) {
@@ -149,13 +188,13 @@ function watershed_preprocess_page(&$vars, $hook) {
 }
 
 /*
- *	 This function creates the NODES classes, like 'node-unpublished' for nodes
- *	 that are not published, or 'node-mine' for node posted by the connected user...
+ *   This function creates the NODES classes, like 'node-unpublished' for nodes
+ *   that are not published, or 'node-mine' for node posted by the connected user...
  *
- *	@param $vars
- *	  A sequential array of variables to pass to the theme template.
- *	@param $hook
- *	  The name of the theme function being called ("node" in this case.)
+ *  @param $vars
+ *    A sequential array of variables to pass to the theme template.
+ *  @param $hook
+ *    The name of the theme function being called ("node" in this case.)
  */
 
 function watershed_preprocess_node(&$vars, $hook) {
@@ -189,10 +228,10 @@ function watershed_preprocess_node(&$vars, $hook) {
 }
 
 /*
- *	This function create the EDIT LINKS for blocks and menus blocks.
- *	When overing a block (except in IE6), some links appear to edit
- *	or configure the block. You can then edit the block, and once you are
- *	done, brought back to the first page.
+ *  This function create the EDIT LINKS for blocks and menus blocks.
+ *  When overing a block (except in IE6), some links appear to edit
+ *  or configure the block. You can then edit the block, and once you are
+ *  done, brought back to the first page.
  *
  * @param $vars
  *   A sequential array of variables to pass to the theme template.
@@ -201,10 +240,9 @@ function watershed_preprocess_node(&$vars, $hook) {
  */
 
 function watershed_preprocess_block(&$vars, $hook) {
-
   // Grab the active theme. Adjust theme variable calls. That way, we don't have to repeat these calls in
   // each child theme.
-  $active_theme = variable_get('theme_default', 'watershed');
+  global $theme_key;
 
   $block = $vars['block'];
   // special block classes
@@ -221,7 +259,7 @@ function watershed_preprocess_block(&$vars, $hook) {
 
   $vars['block_classes'] = implode(' ', $classes); // Concatenate with spaces
 
-  if (theme_get_setting($active_theme . '_block_editing') && user_access('administer blocks') && ($block->module != 'boxes')) {
+  if (theme_get_setting($theme_key . '_block_editing') && user_access('administer blocks') && ($block->module != 'boxes')) {
       // Display 'edit block' for custom blocks.
       if ($block->module == 'block') {
         $edit_links[] = l('<span>' . t('edit block') . '</span>', 'admin/build/block/configure/' . $block->module . '/' . $block->delta,
@@ -356,13 +394,13 @@ function watershed_preprocess_comment(&$vars, $hook) {
 }
 
 /*
- * 	Customize the PRIMARY and SECONDARY LINKS, to allow the admin tabs to work on all browsers
- * 	An implementation of theme_menu_item_link()
+ *   Customize the PRIMARY and SECONDARY LINKS, to allow the admin tabs to work on all browsers
+ *   An implementation of theme_menu_item_link()
  *
- * 	@param $link
- * 	  array The menu item to render.
- * 	@return
- * 	  string The rendered menu item.
+ *   @param $link
+ *     array The menu item to render.
+ *   @return
+ *     string The rendered menu item.
  */
 
 function watershed_menu_item_link($link) {
@@ -401,7 +439,7 @@ function watershed_menu_local_tasks() {
 }
 
 /*
- * 	Add custom classes to menu item
+ *   Add custom classes to menu item
  */
 
 function watershed_menu_item($link, $has_children, $menu = '', $in_active_trail = FALSE, $extra_class = NULL) {
@@ -418,19 +456,19 @@ function watershed_menu_item($link, $has_children, $menu = '', $in_active_trail 
 }
 
 /*
- *	Converts a string to a suitable html ID attribute.
+ *  Converts a string to a suitable html ID attribute.
  *
- *	 http://www.w3.org/TR/html4/struct/global.html#h-7.5.2 specifies what makes a
- *	 valid ID attribute in HTML. This function:
+ *  http://www.w3.org/TR/html4/struct/global.html#h-7.5.2 specifies what makes a
+ *  valid ID attribute in HTML. This function:
  *
- *	- Ensure an ID starts with an alpha character by optionally adding an 'n'.
- *	- Replaces any character except A-Z, numbers, and underscores with dashes.
- *	- Converts entire string to lowercase.
+ *  - Ensure an ID starts with an alpha character by optionally adding an 'n'.
+ *  - Replaces any character except A-Z, numbers, and underscores with dashes.
+ *  - Converts entire string to lowercase.
  *
- *	@param $string
- *	  The string
- *	@return
- *	  The converted string
+ *  @param $string
+ *    The string
+ *  @return
+ *    The converted string
  */
 
 function watershed_id_safe($string) {
@@ -445,46 +483,56 @@ function watershed_id_safe($string) {
 
 /*
  *  Return a themed breadcrumb trail.
- *	Alow you to customize the breadcrumb markup
+ *  Alow you to customize the breadcrumb markup
  */
 
 function watershed_breadcrumb($breadcrumb) {
+  global $theme_key;
   // Grab the active theme. Adjust theme variable calls. That way, we don't have to repeat these calls in
   // each child theme.
-  $active_theme = variable_get('theme_default', 'watershed');
-
-  if (theme_get_setting($active_theme . '_breadcrumb') && !empty($breadcrumb)) {
+  if (theme_get_setting($theme_key . '_breadcrumb') && !empty($breadcrumb)) {
     return '<div class="breadcrumb">'. implode(' » ', $breadcrumb) .'</div>';
   }
 }
 
+
+/**
+ * Attempts to cleanup the HTML embed code newsletter providers use.
+ * @param $html newsletter embed html string
+ * @return unknown_type
+ */
 function watershed_newsletter_html_filter( $html ) {
+    //remove all tags that do not match the given string
     $html = strip_tags($html,'<form><button><input><script><label>');
-    try {
+    try { // prevent PHP from dying if an error is encountered
       $doc = new DomDocument();
       $doc->loadHTML($html);
       $xpath = new DomXPath($doc);
-      $result = $xpath->query("//*");
-      foreach($result as $elm) {
-        if( $elm->tagName == 'label' ) {
+      $result = $xpath->query("//*"); // return all elements
+      foreach($result as $elm) { // iterate elements
+        if( $elm->tagName == 'label' ) { // remove labels
           $elm->parentNode->removeChild($elm);
         }
 
         $elm->removeAttribute('style');
         $elm->removeAttribute('size');
+
+        // make sure inputs have a type associated, default is text
         if( $elm->tagName == 'input' && !$elm->hasAttribute('type') ) {
           $elm->setAttribute('type','text');
         }
 
         $type = $elm->getAttribute('type');
+
+        // add drupal form classes
         if( $type == 'text' ) {
           $elm->setAttribute('class','form-text');
         } else if( $type == 'submit' ) {
           $elm->setAttribute('class','form-submit');
         }
       }
+      // get resulting html
       $html = $doc->saveHTML();
     } catch( Exception $e ) {}
     return $html;
 }
-

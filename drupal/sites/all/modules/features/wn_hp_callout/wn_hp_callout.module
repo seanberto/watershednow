@@ -39,7 +39,7 @@ function wn_hp_callout_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
     foreach( $node->field_wn_hp_callout_image as $img_data ) {
       $slide = theme('imagecache', 'wn_hp_callout', $img_data['filepath'], $img_data['data']['alt'], $img_data['data']['title']);
       $title = $desc = '';
-      if( variable_get('hp_slideshow','half') == 'half' ) {
+      if( variable_get('hp_slideshow','full') == 'half' ) {
         $title = '<div class="wn-hp-callout-title">' . check_plain($img_data['data']['title']) .'</div>';
         $desc = $img_data['data']['wn_hp_callout_desc'];
         $desc = '<div class="wn-hp-callout-content">' . check_markup($desc['body'], $desc['format'], FALSE).'</div>';
@@ -56,7 +56,7 @@ function wn_hp_callout_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
     $list = str_replace('class="item-list"','',$list);
 
     //wrap with div and class for theming half or full slides
-    $html = '<div class="wn-hp-callout wn-hp-callout-' . variable_get('hp_slideshow','half') . '">' . $list . '</div>';
+    $html = '<div class="wn-hp-callout wn-hp-callout-' . variable_get('hp_slideshow','full') . '">' . $list . '</div>';
 
     $node->content = array(
       'body' => array(

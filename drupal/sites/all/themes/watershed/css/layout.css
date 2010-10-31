@@ -100,7 +100,7 @@
 * remember to adapt the margin top of the content and sidebars.
 */
 
-#nav, #nav * {
+#nav, #nav li {
   margin: 0;
   padding: 0;
   font-size: 100%;

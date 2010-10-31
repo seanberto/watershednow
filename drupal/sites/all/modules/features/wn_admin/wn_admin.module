@@ -27,7 +27,7 @@ function wn_admin_perm() {
 function wn_admin_help($path, $arg) {
   switch ($path) {
     case 'admin/dashboard':
-      return 'Welcome to the Watershed Now Dashboard. Here you will find quick links and other tools for managing your site. If you get stuck, consider reaching out to the maintainers of Watershed Now @ <a href="http://thinkshout.com/contact" target="_blank">ThinkShout.com</a>.';
+      return 'Welcome to the Watershed Now Dashboard. Here you will find quick links and other tools for managing your site. If you get stuck, consider reaching out to <a href="http://thinkshout.com/contact" target="_blank">ThinkShout.com</a>, the maintainers of the <a href="http://drupal.org/project/watershednow" target="_blank">Watershed Now</a> Drupal distribution.';
   }
 }
 

@@ -12,20 +12,6 @@ function watershed_settings($saved_settings, $subtheme_defaults = array()) {
    * Create the form using Forms API
    */
 
-  $form['watershed_search_help'] = array(
-    '#type'          => 'textfield',
-    '#description'         => t('Help text displayed in search box'),
-    '#default_value' => $settings['watershed_search_help'],
-    '#prefix'        => '<strong>' . t('Search box - help text:') . '</strong>',
-  );
-
-  $form['watershed_search_button'] = array(
-    '#type'          => 'textfield',
-    '#description'         => t('Button text displayed with search box'),
-    '#default_value' => $settings['watershed_search_button'],
-    '#prefix'        => '<strong>' . t('Search box - button text:') . '</strong>',
-  );
-
   $form['watershed_zen_tabs'] = array(
     '#type'          => 'checkbox',
     '#title'         => t('Use Zen Tabs'),

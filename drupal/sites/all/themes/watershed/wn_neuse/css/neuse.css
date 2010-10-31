@@ -1,14 +1,14 @@
-body { 
-  background:#5c5c5c url(../images/bg2.jpg) 0 -300px no-repeat; 
+body {
+  background: #5c5c5c url(../images/bg2.jpg) 0 -300px no-repeat;
   letter-spacing: 0;
 }
 
-#main { 
-  background:#fff; 
+#main {
+  background: #fff;
 }
 
-#page { 
-  margin-top:40px; 
+#page {
+  margin-top: 40px;
 }
 
 h1.title {
@@ -17,29 +17,28 @@ h1.title {
   text-transform: uppercase;
 }
 
-/*= Header
+/* =Header
 -----------------*/
 #slogan {
-  margin-left:70px;
-  font-style:italic;
+  margin-left: 70px;
+  font-style: italic;
 }
 
 
-/*= Footer
+/* =Footer
 -----------------*/
-#footer .block-title { color:#00B8E0; }
 #footer {
-  background:#000;
-  color:#fff;
-  margin-bottom:40px;
+  background: #000;
+  color: #fff;
+  margin-bottom: 40px;
 }
 
 #footer-inner {
-  padding:40px 20px 20px 20px;
+  padding: 40px 20px 20px 20px;
 }
 
 #footer a {
-  color:#fff;
+  color: #fff;
 }
 
 #block-watershed-mission {
@@ -54,22 +53,29 @@ h1.title {
   width: 16%;
 }
 
-/*= Navigation
+/* =Navigation
 -----------------*/
 #nav a {
-  border-right:1px solid #999;
-  padding-right:1em;
-  display:block;
-  float:left;
+  border-right: 1px solid #999;
+  padding-right: 1em;
+  display: block;
+  float: left;
 }
-#nav ul ul a { border-right:0; }
+#nav ul ul a {
+  border-right: 0;
+}
 
-/*= Sidebar 
+/* =Search Box
+-----------------*/
+#search-box {
+  margin:5px 40px 0 0;
+}
+
+/* =Sidebar
 -----------------*/
 .sidebar .block-title {
   background: #000;
   font-style: italic;
-  color: #00B8E0;
   text-transform: lowercase;
   font-size: 1.3em;
 }
@@ -79,12 +85,12 @@ h1.title {
 }
 
 .sidebar-right #content-inner {
-  background:url(../images/sidebar_border.gif) repeat-y 100% 0;
-  margin-top:20px;
-  margin-bottom:20px;
+  background: url(../images/sidebar_border.gif) repeat-y 100% 0;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 #sidebar-second #sidebar-second-inner {
-  margin:40px 40px 40px 20px;
+  margin: 40px 40px 40px 20px;
 }
 
