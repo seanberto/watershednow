@@ -132,8 +132,8 @@ function watershed_preprocess_page(&$vars, $hook) {
         'html' => TRUE,
       )
     );
+    $vars['header_edit_link'] = '<div class="edit">' . implode(' ', $header_edit_link) . '</div>';
   }
-  $vars['header_edit_link'] = '<div class="edit">' . implode(' ', $header_edit_link) . '</div>';
 
   // Classes for body element. Allows advanced theming based on context
   // (home page, node of certain type, etc.)
