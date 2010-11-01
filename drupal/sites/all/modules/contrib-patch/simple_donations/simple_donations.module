@@ -1,5 +1,5 @@
 <?php
-// ; $Id: simple_donations.module,v 1.1 2010/08/22 seanberto Exp $
+// ; $Id: simple_donations.module,v 1.2 2010/11/01 22:38:57 seanberto Exp $
 
 /**
  * Implementation of Hook_perm().
