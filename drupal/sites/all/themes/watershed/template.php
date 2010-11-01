@@ -120,6 +120,12 @@ function watershed_preprocess_page(&$vars, $hook) {
     ));
   }
   
+  // If enabled for the theme, show Watershed Now credit in footer.
+  if (theme_get_setting($theme_key . '_wn_credit')) {
+    $wn_logo = drupal_get_path('theme', 'watershed') . '/images/wn_logo.png';
+    $vars['wn_credit'] = '<div class="wn-credit"><a href="http://drupal.org/project/watershednow" target="_blank"><div>Built with </div><img src="' . $wn_logo . '" alt="Watershed Now" /></a></div>';
+  }
+  
   // Adding link to theme variable for quickly getting to logo and theme settings.
   if (theme_get_setting($theme_key . '_block_editing') && user_access('select different theme')) {
     $header_edit_link[] = l('<span>' . t('edit theme') . '</span>', 'admin/build/themes/settings/' . $theme_key,

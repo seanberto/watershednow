@@ -34,6 +34,7 @@ stylesheets[all][] = css/hp_callout.css
 ; in our theme-settings.php for overriding them. This is b/c we inherit Watershed's template.php.
 
 settings[wn_whiteoak_color_palette]        = 'blue'
+settings[wn_whiteoak_wn_credit]            = 1
 settings[wn_whiteoak_zen_tabs]             = 1
 settings[wn_whiteoak_wireframe]            = 0
 settings[wn_whiteoak_breadcrumb]           = 0

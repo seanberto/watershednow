@@ -27,12 +27,20 @@ function wn_neuse_settings($saved_settings, $subtheme_defaults = array()) {
     '#description' => t('Choose a color palette for this theme.'),
     '#default_value' => $settings['wn_neuse_color_palette'],
   );
+  
+  $form['wn_neuse_wn_credit'] = array(
+    '#type'          => 'checkbox',
+    '#title'         => t('Enable Watershed Now Distribution credit'),
+    '#default_value' => $settings['wn_neuse_wn_credit'],
+    '#description'   => t('Help spread the word about the Watershed Now Drupal Distribution.'),
+    '#prefix'        => '<strong>' . t('Enable WN Credit:') . '</strong>',
+  );
 
   $form['wn_neuse_breadcrumb'] = array(
     '#type'          => 'checkbox',
     '#title'         => t('Enable Breadcrumb trail'),
     '#default_value' => $settings['wn_neuse_breadcrumb'],
-    '#description'   => t('Enable breadcrumb trail..'),
+    '#description'   => t('Enable breadcrumb trail.'),
     '#prefix'        => '<strong>' . t('Enable Breadcrumb:') . '</strong>',
   );
 

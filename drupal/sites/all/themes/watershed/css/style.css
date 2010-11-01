@@ -341,3 +341,18 @@ body.page-map h1.title.block-title {
 div.block .edit a {
   color: #000 !important;
 }
+
+/* =Credits */
+div.wn-credit {
+  float: right;
+}
+
+.wn-credit div {
+  float: left;
+  font-size: 0.8em;
+  margin: 0.3em 0.3em 0 0;
+}
+
+.wn-credit a, .wn-credit a:hover {
+  text-decoration: none;
+}

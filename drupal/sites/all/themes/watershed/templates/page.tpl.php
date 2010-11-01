@@ -149,7 +149,7 @@
           <?php if($search_block) { print $search_block; } /* Not set in some WN themes. */ ?>
           <?php print $footer_second; ?>
         </div><!-- /#footer-second -->
-        <div id="footer-message"><?php print $footer_message; ?></div><!-- /#footer-message -->
+        <div id="footer-message"><?php print $footer_message . $wn_credit; ?></div><!-- /#footer-message -->
       </div> <!-- /footer-inner -->
     </div> <!-- /footer -->
     

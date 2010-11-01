@@ -12,6 +12,14 @@ function watershed_settings($saved_settings, $subtheme_defaults = array()) {
    * Create the form using Forms API
    */
 
+ $form['watershed_wn_credit'] = array(
+   '#type'          => 'checkbox',
+   '#title'         => t('Enable Watershed Now Distribution credit'),
+   '#default_value' => $settings['watershed_wn_credit'],
+   '#description'   => t('Help spread the word about the Watershed Now Drupal Distribution.'),
+   '#prefix'        => '<strong>' . t('Enable WN Credit:') . '</strong>',
+ );
+
   $form['watershed_zen_tabs'] = array(
     '#type'          => 'checkbox',
     '#title'         => t('Use Zen Tabs'),
@@ -24,7 +32,7 @@ function watershed_settings($saved_settings, $subtheme_defaults = array()) {
     '#type'          => 'checkbox',
     '#title'         => t('Enable Breadcrumb trail'),
     '#default_value' => $settings['watershed_breadcrumb'],
-    '#description'   => t('Enable breadcrumb trail..'),
+    '#description'   => t('Enable breadcrumb trail.'),
     '#prefix'        => '<strong>' . t('Enable Breadcrumb:') . '</strong>',
   );
 

@@ -197,7 +197,7 @@ variables[site_slogan] = Your tagline will go right here if you have one.
 
 variables[site_mission] = 'This is your site mission statement, which you can <a href="/admin/settings/site-information">customize</a> if you are a site administrator.'
 
-variables[site_footer] = '&copy; 2010 Watershed Now is a <a href="http://thinkshout.com">ThinkShout</a> open source product.'
+variables[site_footer] = '&copy; 2010 Your Environmental Organization.'
 
 variables[site_newsletter] = '<form name="newsletter"><input type="text" name="user" value="Newsletter placeholder"/><input type="submit" value="Submit" /></form>'
 

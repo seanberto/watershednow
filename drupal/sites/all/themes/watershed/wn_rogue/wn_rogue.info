@@ -36,6 +36,7 @@ stylesheets[all][] = css/hp_callout.css
 ; in our theme-settings.php for overriding them. This is b/c we inherit Watershed's template.php.
 
 settings[wn_rogue_color_palette]        = 'blue'
+settings[wn_rogue_wn_credit]            = 1
 settings[wn_rogue_zen_tabs]             = 1
 settings[wn_rogue_wireframe]            = 0
 settings[wn_rogue_breadcrumb]           = 0
