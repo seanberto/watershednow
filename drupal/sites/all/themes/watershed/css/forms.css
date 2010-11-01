@@ -5,6 +5,11 @@
   border-width:1px;
   padding:2px 0 2px 2px;
 }
+
+.form-text:focus, .form-textarea:focus {
+  background-color:#ffe;
+}
+
 #edit-title{
   font-size: 24px;
 }
