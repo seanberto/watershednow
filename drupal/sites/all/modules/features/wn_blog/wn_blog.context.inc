@@ -110,6 +110,7 @@ function wn_blog_context_default_contexts() {
         ),
       ),
     ),
+    'menu' => 'updates',
   );
   $context->condition_mode = 0;
 

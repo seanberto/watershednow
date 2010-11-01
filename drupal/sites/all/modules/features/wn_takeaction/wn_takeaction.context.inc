@@ -72,6 +72,7 @@ function wn_takeaction_context_default_contexts() {
         ),
       ),
     ),
+    'menu' => 'take-action',
   );
   $context->condition_mode = 0;
 
