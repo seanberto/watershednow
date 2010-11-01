@@ -1,8 +1,4 @@
-.title, .block-title, #footer .block-title, h1 a:link, h1 a:visited, label, #slogan, #callout .wn-hp-callout-title {
-  color: #00b8e0;
-}
-
-#main a {
+.title, .block-title, #footer .block-title, h1 a:link, h1 a:visited, label, #slogan, #callout .wn-hp-callout-title, #main a {
   color: #00b8e0;
 }
 
