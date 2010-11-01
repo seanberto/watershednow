@@ -4,7 +4,10 @@
   height: 287px;
 }
 
-#callout, .wn-hp-callout li {
+
+.wn-hp-callout-pager {
+  right:40px;
+  bottom:40px;
 }
 
 #callout .wn-hp-callout-title {
