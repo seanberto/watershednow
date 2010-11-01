@@ -5,3 +5,7 @@
 .title, .block-title, #footer .block-title, #sidebar-second .block-title a {
   color: #00b8e0;
 }
+
+a, a:link, a:visited {
+  color:#00b8e0;
+}

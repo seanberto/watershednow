@@ -1,3 +1,15 @@
+.form-text, .form-textarea {
+  font-family:"Lucida Grande",Tahoma,Arial,sans-serif;
+  background:#fff url(../images/forms/field-bg.gif) repeat-x 0 0;
+  border-color: #7C7C7C #C3C3C3 #DDDDDD;
+  border-width:1px;
+  padding:2px 0 2px 2px;
+}
+
+#content .form-text:focus, #content .form-textarea:focus {
+  background-color:#ffe;
+}
+
 #edit-title{
   font-size: 24px;
 }

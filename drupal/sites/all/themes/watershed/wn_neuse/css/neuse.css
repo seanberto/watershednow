@@ -13,8 +13,13 @@ body {
 
 h1.title {
   font-weight: bold;
-  font-size: 1.8em;
+  font-size: 1.6em;
   text-transform: uppercase;
+  padding-bottom:.6em;
+}
+
+.with-navigation #content, .with-navigation .sidebar {
+  margin-top:0;
 }
 
 /* =Header
@@ -73,11 +78,23 @@ h1.title {
 
 /* =Sidebar
 -----------------*/
+.two-sidebars .center, .sidebar-right .center {
+  margin-right:333px;
+}
+#callout .wn-hp-callout-entry, #sidebar-second {
+  width:333px;
+}
+
 .sidebar .block-title {
   background: #000;
   font-style: italic;
   text-transform: lowercase;
-  font-size: 1.3em;
+  font-size:100%;
+  padding:.25em .5em;
+}
+
+.sidebar .block .content {
+  font-size:86%;
 }
 
 .sidebar .block-title, .sidebar .content {
@@ -88,6 +105,7 @@ h1.title {
   background: url(../images/sidebar_border.gif) repeat-y 100% 0;
   margin-top: 20px;
   margin-bottom: 20px;
+  padding-top:20px;
 }
 
 #sidebar-second #sidebar-second-inner {
