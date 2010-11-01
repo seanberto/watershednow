@@ -1,0 +1,238 @@
+diff --git simple_payments.module simple_payments.module
+index 54a2c4c..e12bf90 100644
+--- simple_payments.module
++++ simple_payments.module
+@@ -27,6 +27,233 @@ function simple_payments_menu() {
+   return $items;
+ }
+ 
++/**
++ * Implementation of hook_views_data().
++ */
++function simple_payments_views_data() {
++  $data['simple_payment']['table']['group'] = t('Simple Payment');
++  $data['simple_payment']['table']['base'] = array(
++    'field' => 'payment_id',
++    'title' => t('Payment'),
++    'help' => t('Payments made through Simple Payment module'),
++  );
++  $data['simple_payment']['table']['join'] = array(
++    'node' => array(
++      'left_field' => 'nid',
++      'field' => 'nid',
++    ),
++  );
++
++  // Related node
++  $data['simple_payment']['nid'] = array(
++    'title' => t('Node'),
++    'help' => t('Node associated with the payment'),
++    'relationship' => array(
++      'base' => 'node',
++      'base field' => 'nid',
++      'handler' => 'views_handler_relationship',
++      'label' => t('Node'),
++    ),
++  );
++
++  // Related user
++  $data['simple_payment']['uid'] = array(
++    'title' => t('User'),
++    'help' => t("The User ID of the payer."),
++    'relationship' => array(
++      'base' => 'users',
++      'base field' => 'uid',
++      'handler' => 'views_handler_relationship',
++      'label' => t('User'),
++    ),
++  );
++
++  // Payment ID
++  $data['simple_payment']['payment_id'] = array(
++    'title' => t('ID'),
++    'help' => t('Payment ID of the payment.'),
++    'field' => array(
++      'handler' => 'views_handler_field_numeric',
++      'click sortable' => TRUE,
++    ),
++    'sort' => array(
++      'handler' => 'views_handler_sort',
++    ),
++    'filter' => array(
++      'handler' => 'views_handler_filter_numeric',
++    ),
++    'argument' => array(
++      'handler' => 'views_handler_argument',
++    ),
++  );
++
++  // Gateway
++  $data['simple_payment']['gateway'] = array(
++    'title' => t('Gateway'),
++    'help' => t('Payment gateway.'),
++    'field' => array(
++      'handler' => 'views_handler_field',
++      'click sortable' => TRUE,
++    ),
++    'sort' => array(
++      'handler' => 'views_handler_sort',
++    ),
++    'filter' => array(
++      'handler' => 'views_handler_filter_string',
++    ),
++    'argument' => array(
++      'handler' => 'views_handler_argument',
++    ),
++  );
++
++  // Type
++  $data['simple_payment']['type'] = array(
++    'title' => t('Type'),
++    'help' => t('Payment type.'),
++    'field' => array(
++      'handler' => 'views_handler_field',
++      'click sortable' => TRUE,
++    ),
++    'sort' => array(
++      'handler' => 'views_handler_sort',
++    ),
++    'filter' => array(
++      'handler' => 'views_handler_filter_string',
++    ),
++    'argument' => array(
++      'handler' => 'views_handler_argument',
++    ),
++  );
++
++  // Custom
++  $data['simple_payment']['custom'] = array(
++    'title' => t('Custom'),
++    'help' => t('Gateway-specific data.'),
++    'field' => array(
++      'handler' => 'views_handler_field',
++      'click sortable' => TRUE,
++    ),
++    'sort' => array(
++      'handler' => 'views_handler_sort',
++    ),
++    'filter' => array(
++      'handler' => 'views_handler_filter_string',
++    ),
++    'argument' => array(
++      'handler' => 'views_handler_argument',
++    ),
++  );
++
++  // Currency
++  $data['simple_payment']['currency'] = array(
++    'title' => t('Currency'),
++    'help' => t('Currency used for the payment.'),
++    'field' => array(
++      'handler' => 'views_handler_field',
++      'click sortable' => TRUE,
++     ),
++    'filter' => array(
++      'handler' => 'views_handler_filter_string',
++    ),
++    'sort' => array(
++      'handler' => 'views_handler_sort',
++    ),
++    'argument' => array(
++      'handler' => 'views_handler_argument_string',
++    ),
++  );
++
++  // Amount
++  $data['simple_payment']['amount'] = array(
++    'title' => t('Amount'),
++    'help' => t('Amount paid.'),
++    'field' => array(
++      'handler' => 'views_handler_field_numeric',
++      'click sortable' => TRUE,
++    ),
++    'sort' => array(
++      'handler' => 'views_handler_sort',
++    ),
++    'filter' => array(
++      'handler' => 'views_handler_filter_numeric',
++    ),
++    'argument' => array(
++      'handler' => 'views_handler_argument',
++    ),
++  );
++
++  // Timestamp (when payment was made)
++  $data['simple_payment']['timestamp'] = array(
++    'title' => t('Payment date'),
++    'help' => t('Date and time of when the payment was made.'),
++    'field' => array(
++      'handler' => 'views_handler_field_date',
++      'click sortable' => TRUE,
++    ),
++    'sort' => array(
++      'handler' => 'views_handler_sort_date',
++    ),
++    'filter' => array(
++      'handler' => 'views_handler_filter_date',
++    ),
++  );
++
++  // Details
++  $data['simple_payment']['details'] = array(
++    'title' => t('Details'),
++    'help' => t('Details.'),
++    'field' => array(
++      'handler' => 'views_handler_field',
++      'click sortable' => TRUE,
++     ),
++    'filter' => array(
++      'handler' => 'views_handler_filter_string',
++    ),
++    'sort' => array(
++      'handler' => 'views_handler_sort',
++    ),
++    'argument' => array(
++      'handler' => 'views_handler_argument_string',
++    ),
++  );
++
++  // Processed
++  $data['simple_payment']['processed'] = array(
++    'title' => t('Date processed'),
++    'help' => t('Date and time of when the payment was marked processed.'),
++    'field' => array(
++      'handler' => 'views_handler_field_date',
++      'click sortable' => TRUE,
++    ),
++    'sort' => array(
++      'handler' => 'views_handler_sort_date',
++    ),
++    'filter' => array(
++      'handler' => 'views_handler_filter_date',
++    ),
++  );
++
++  // Payer email
++  $data['simple_payment']['payer_email'] = array(
++    'title' => t('Payer email'),
++    'help' => t("Email of the payer."),
++    'field' => array(
++      'handler' => 'views_handler_field',
++    ),
++    'sort' => array(
++      'handler' => 'views_handler_sort',
++    ),
++    'filter' => array(
++      'handler' => 'views_handler_filter_string',
++    ),
++    'argument' => array(
++      'handler' => 'views_handler_argument',
++    ),
++  );
++
++
++  return $data;
++}
+ 
+ /**
+  * Builds fields for a payment form from supplied variables.

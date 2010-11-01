@@ -10,7 +10,7 @@ function wn_hp_main_context_default_contexts() {
   $context->api_version = 3;
   $context->name = 'homepage';
   $context->description = 'Homepage context specific to the WN Custom Homepage feature.';
-  $context->tag = 'wn_hp';
+  $context->tag = 'wn_hp_main';
   $context->conditions = array(
     'path' => array(
       'values' => array(

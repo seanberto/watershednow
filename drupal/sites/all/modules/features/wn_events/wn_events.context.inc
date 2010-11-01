@@ -44,6 +44,7 @@ function wn_events_context_default_contexts() {
         ),
       ),
     ),
+    'menu' => 'events',
   );
   $context->condition_mode = 0;
 

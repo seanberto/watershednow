@@ -38,6 +38,7 @@ function wn_donations_context_default_contexts() {
         ),
       ),
     ),
+    'menu' => 'donate',
   );
   $context->condition_mode = 0;
 
