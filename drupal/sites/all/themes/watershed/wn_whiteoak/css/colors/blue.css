@@ -1,3 +1,11 @@
+.title, .block-title, h1 a:link, h1 a:visited, label, #slogan, #callout .wn-hp-callout-title, #main a {
+  color: #2076c7;
+}
+
+#nav li.active {
+  background: url(../../images/nav/nav_bg_active_blue.png) repeat-x 0 0 transparent;
+}
+
 #footer {
   background: #2076c7;
 }
@@ -5,12 +13,4 @@
 #footer {
   color: #fff;
   font-weight: bold;
-}
-
-.title {
-  color: #2076c7;
-}
-
-#nav li.active {
-  background: url(../../images/nav/nav_bg_active_blue.png) repeat-x 0 0 transparent;
 }
