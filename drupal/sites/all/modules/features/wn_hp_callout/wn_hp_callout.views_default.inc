@@ -17,6 +17,16 @@ function wn_hp_callout_views_default_views() {
   $view->api_version = 2;
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
   $handler = $view->new_display('default', 'Defaults', 'default');
+  $handler->override_option('sorts', array(
+    'changed' => array(
+      'order' => 'DESC',
+      'granularity' => 'second',
+      'id' => 'changed',
+      'table' => 'node',
+      'field' => 'changed',
+      'relationship' => 'none',
+    ),
+  ));
   $handler->override_option('filters', array(
     'status' => array(
       'operator' => '=',
@@ -55,7 +65,7 @@ function wn_hp_callout_views_default_views() {
   $handler->override_option('cache', array(
     'type' => 'none',
   ));
-  $handler->override_option('items_per_page', 0);
+  $handler->override_option('items_per_page', 1);
   $handler->override_option('row_plugin', 'node');
   $handler = $view->new_display('block', 'Block', 'block_1');
   $handler->override_option('block_description', '');
