@@ -38,14 +38,14 @@ function wn_blog_feeds_importer_default() {
             'unique' => FALSE,
           ),
           1 => array(
-            'source' => 'description',
-            'target' => 'body',
-            'unique' => FALSE,
-          ),
-          2 => array(
             'source' => 'guid',
             'target' => 'guid',
             'unique' => 1,
+          ),
+          2 => array(
+            'source' => 'description',
+            'target' => 'field_body',
+            'unique' => FALSE,
           ),
         ),
         'author' => 0,
