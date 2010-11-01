@@ -275,7 +275,7 @@ function simple_donations_views_default_views() {
   ));
   $handler->override_option('access', array(
     'type' => 'perm',
-    'perm' => 'administer simple payments',
+    'perm' => 'access donation reports',
   ));
   $handler->override_option('cache', array(
     'type' => 'none',

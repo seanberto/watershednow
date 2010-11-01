@@ -2,9 +2,16 @@
 // ; $Id: simple_donations.module,v 1.1 2010/08/22 seanberto Exp $
 
 /**
+ * Implementation of Hook_perm().
+ * Provides permission for accessing donation reports.
+ */
+function simple_donations_perm() {
+  return array('access donation reports');
+}
+
+/**
  * Generating the PayPal donation form via Simple Payments API.
  */
-
 function simple_donations_paypal_form($form_state, $node, $uid, $donation_title, $donation_description, $donation_button) {
 
   $vars = array(
