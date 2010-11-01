@@ -6,7 +6,7 @@
   padding:2px 0 2px 2px;
 }
 
-.form-text:focus, .form-textarea:focus {
+#content .form-text:focus, #content .form-textarea:focus {
   background-color:#ffe;
 }
 
