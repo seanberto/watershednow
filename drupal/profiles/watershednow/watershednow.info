@@ -139,6 +139,7 @@ features[] = wn_map
 
 ; Development stuff to be turned off on production sites.
 modules[contrib][] = context_ui
+modules[contrib][] = imagecache_ui
 modules[contrib][] = features
 modules[contrib][] = diff
 modules[contrib][] = views_ui

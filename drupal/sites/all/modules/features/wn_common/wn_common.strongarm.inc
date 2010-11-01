@@ -183,6 +183,13 @@ Webmaster of !site
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'context_reaction_block_disable_core';
+  $strongarm->value = '1';
+
+  $export['context_reaction_block_disable_core'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'date_api_version';
   $strongarm->value = '5.2';
 
