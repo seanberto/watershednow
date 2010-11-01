@@ -6,6 +6,10 @@ Based upon the Simple Payments module, Simple Donations creates a simple PayPal 
 
 Requires Simple Payments and its associated Simple Payments PayPal module.
 
+== IMPORTANT ==
+
+The 2.x branch of Simple Donations requires two patches against the Simple Payments module. These patches are included with this module.
+
 == Usage ==
 
 * Enable the module.
@@ -16,6 +20,4 @@ Requires Simple Payments and its associated Simple Payments PayPal module.
 
 == ToDos ==
 
-* The next release provides views integration to displaying donation reports. This update is waiting on http://drupal.org/node/869142.
-* Leveraging Views Calc and Views Bonus Pack Export, provide donation summary reports and data export respectively.
-* Add warning that the module is in sandbox mode.
+* Get the patches to Simple Payments module accepted by its maintainer.

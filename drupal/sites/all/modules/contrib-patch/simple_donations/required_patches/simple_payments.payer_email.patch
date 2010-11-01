@@ -1,0 +1,47 @@
+diff --git gateways/simple_payments_paypal/simple_payments_paypal.module gateways/simple_payments_paypal/simple_payments_paypal.module
+index 016dcba..ade53bb 100644
+--- gateways/simple_payments_paypal/simple_payments_paypal.module
++++ gateways/simple_payments_paypal/simple_payments_paypal.module
+@@ -161,6 +161,7 @@ function simple_payments_paypal_ipn() {
+ 	$payment['amount'] = $ipn['mc_gross'] * 100;
+   $payment['timestamp'] = strtotime($ipn['payment_date']);
+ 	$payment['details'] = $ipn;
++  $payment['payer_email'] = $ipn['payer_email'];
+ 
+   watchdog('simple_payments_paypal', 'Payment received: @payment', array('@payment' => print_r($payment, TRUE)));
+ 	simple_payments_payment_received($payment);
+diff --git simple_payments.install simple_payments.install
+index 4360601..c821aeb 100644
+--- simple_payments.install
++++ simple_payments.install
+@@ -21,6 +21,10 @@ function simple_payments_schema() {
+       'timestamp' => array('type' => 'int', 'unsigned' => TRUE, 'not null' => TRUE),
+       'details' => array('type' => 'text', 'not null' => TRUE, 'serialized' => TRUE),
+       'processed' => array('type' => 'int', 'unsigned' => TRUE),
++      'payer_email' => array(
++        'type' => 'varchar',
++        'length' => 255,
++      ),
+     ),
+     'primary key' => array('payment_id'),
+     'indexes' => array(
+@@ -50,3 +54,18 @@ function simple_payments_uninstall() {
+   drupal_uninstall_schema('simple_payments');
+ }
+ 
++/**
++ * Add payer_email field to simple_payments table.
++ */
++function simple_payments_update_6001() {
++  $ret = array();
++
++  $spec = array(
++    'type' => 'varchar',
++    'length' => 255,
++  );
++
++  db_add_field($ret, 'simple_payment', 'payer_email', $spec);
++
++  return $ret;
++}
+\ No newline at end of file

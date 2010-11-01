@@ -1,4 +1,4 @@
-; $Id: simple_donations.info,v 1.1 2010/08/22 seanberto Exp $
+; $Id: simple_donations.info,v 1.2 2010/11/01 22:38:57 seanberto Exp $
 
 core = "6.x"
 description = "PayPal implementation of the Simple Payments framework to create simple donation pages as nodes."
@@ -11,3 +11,9 @@ dependencies[] = views_bonus_export
 dependencies[] = views_calc
 core = "6.x"
 version = "6.x-1.0"
+; Information added by drupal.org packaging script on 2010-11-01
+version = "6.x-2.0"
+core = "6.x"
+project = "simple_donations"
+datestamp = "1288651846"
+
