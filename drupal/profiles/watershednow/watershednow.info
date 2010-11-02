@@ -243,10 +243,14 @@ variables[simple_payments_paypal_sandbox] = 1
 ; Paypal email address for processing payments. (defaults to a sandbox account.)
 variables[simple_payments_paypal_account] = waters_1288290444_biz@thinkshout.com
 
-; placeholder for google analytics key
+; Set the Google analytics key
+variables[googleanalytics_account] = ''
 
 ; Set the Google API key for OpenLayer's maping
 variables[openlayers_layers_google_api] = ABQIAAAAXcM0kIV0KYcm1CAyqIc4qRTBRbjBNDIac9IBLAsNWawmb_4ssxQf6kE73jz8wpJw5kIFRn2w7rXMJA
+
+; Set VoteSmart API key
+variables[vs_webform_key] = ''
 
 ; ==============================================
 
