@@ -1,0 +1,37 @@
+<?php
+include_once('wn_showcase.features.inc');
+
+function wn_showcase_context_registry() {
+  return array(
+    'conditions' => array(
+      'wn_showcase_context_condition' => array(
+        'title' => t('Active Theme'),
+        'description' => 'List themes you wish for this condition to be true.',
+        'plugin' => 'wn_showcase_context_condition',
+      ),
+    )
+  );
+}
+function wn_showcase_context_plugins() {
+
+  $plugins = array();
+  $plugins['wn_showcase_context_condition'] = array(
+    'handler' => array(
+      'path' => drupal_get_path('module', 'wn_showcase'),
+      'file' => 'wn_showcase_context_condition.inc',
+      'class' => 'wn_showcase_context_condition',
+      'parent' => 'context_condition_path',
+    ),
+  );
+  return $plugins;
+}
+
+function wn_showcase_init() {
+  if ($plugin = context_get_plugin('condition', 'wn_showcase_context_condition')) {
+    $plugin->execute();
+
+    //TODO: only include CSS if condition was met
+    $path = drupal_get_path('module', 'wn_showcase');
+    drupal_add_css($path . '/css/wn_showcase.css');
+  }
+}

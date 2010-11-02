@@ -17,9 +17,9 @@
       <!-- ______________________ HEADER _______________________ -->
 
       <div id="header">
-      
+
         <?php if ($newsletter && ($newsletter_position == 'header')) { print $newsletter; } ?>
-      
+
         <div id="logo-title">
           <div id="name-and-slogan">
             <?php if (!empty($site_name)): ?>
@@ -31,9 +31,9 @@
               <span id="slogan"><?php print $site_slogan ?></span>
             <?php endif; ?>
           </div> <!-- /name-and-slogan -->
-          
+
           <?php print $header_edit_link; ?>
-          
+
         </div> <!-- /logo-title -->
 
         <?php if ($header): ?>
@@ -46,7 +46,7 @@
           <div id="nav" class="menu <?php if (!empty($primary_links)) { print "with-main-menu"; } ?>">
             <?php if (!empty($primary_links)){ print theme('links', $primary_links, array('id' => 'primary', 'class' => 'links main-menu')); } ?>
             <?php if (!($search_block)): /* $search_box is replaced by $search_block in some WN themes. */ ?>
-              <div id="search-box"><?php print $search_box; ?></div> 
+              <div id="search-box"><?php print $search_box; ?></div>
             <?php endif; ?>
           </div> <!-- /nav -->
         <?php endif; ?>
@@ -130,18 +130,18 @@
           <?php endif; ?> <!-- /sidebar-second -->
 
         </div> <!-- /main -->
-    
+
       <div id="push"></div> <!-- this div is to achieve a working sticky footer in certain child themes -->
-      
+
     </div> <!-- /page -->
 
-    <!-- ______________________ FOOTER _______________________ -->    
-  
+    <!-- ______________________ FOOTER _______________________ -->
+
     <div id="footer" class="clear-block">
       <div id="footer-inner">
         <?php print $footer; ?>
-        <div id="footer-first"><?php print $footer_first; ?></div><!-- /#footer-first -->
-        <div id="footer-second">
+        <div id="footer-first" class="clear-block"><?php print $footer_first; ?></div><!-- /#footer-first -->
+        <div id="footer-second" class="clear-block">
           <?php print $mission ?>
           <?php print $secondary_links ?>
           <?php print $follow_links ?>
@@ -152,7 +152,7 @@
         <div id="footer-message"><?php print $footer_message . $wn_credit; ?></div><!-- /#footer-message -->
       </div> <!-- /footer-inner -->
     </div> <!-- /footer -->
-    
+
     <?php print $closure; ?>
   </body>
 </html>

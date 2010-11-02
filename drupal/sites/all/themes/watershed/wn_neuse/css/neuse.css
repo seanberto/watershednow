@@ -32,15 +32,28 @@ h1.title {
 
 /* =Footer
 -----------------*/
+#footer-first, #footer-second, #footer-message {
+  padding:0 20px;
+  width: 920px;
+}
+
+#footer-first {
+  background:#00b8e0;
+  padding-top:30px;
+}
+
+#footer-second {
+  padding-top:30px;
+}
+
+#footer #footer-first .block-title {
+  color:#fff;
+}
+
 #footer {
   background: #000;
   color: #fff;
   margin-bottom: 40px;
-}
-
-#footer-inner {
-  padding: 40px 20px 20px 20px;
-  width: 920px;
 }
 
 #footer a {
@@ -57,6 +70,14 @@ h1.title {
 
 #block-follow-site {
   width: 16%;
+}
+
+#block-boxes-showcase_1, #block-boxes-showcase_2, #block-boxes-showcase_3 {
+  width:32%;
+}
+
+#block-boxes-showcase_3 {
+  width:34%; /* try to match #sidebar-second */
 }
 
 /* =Navigation
