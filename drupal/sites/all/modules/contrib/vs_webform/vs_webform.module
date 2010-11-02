@@ -1,5 +1,5 @@
 <?php
-// $Id: vs_webform.module,v 1.3.2.4 2010/05/19 00:40:24 troynt Exp $
+// $Id: vs_webform.module,v 1.3.2.5 2010/11/02 18:36:34 seanberto Exp $
 
 /**
  * Implementation of hook_requirements().
@@ -21,6 +21,16 @@ function vs_webform_requirements($phrase) {
 }
 
 /**
+ * Implementation of hook_perm().
+ * Add a permission for administering VS API key
+ */
+function vs_webform_perm() {
+  return array('administer votesmart settings');
+}
+
+
+
+/**
  * Implementation of hook_menu().
  */
 function vs_webform_menu() {
@@ -31,7 +41,7 @@ function vs_webform_menu() {
     'title' => 'Vote smart webform',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('vs_webform_admin_settings'),
-    'access arguments' => array('administer site configuration'),
+    'access arguments' => array('administer votesmart settings'),
     'description' => 'Configuration for Vote Smart webform.',
     'type' => MENU_NORMAL_ITEM,
   );
