@@ -64,6 +64,8 @@ a {
 
 #nav li a {
   padding: 0 1em;
+  height: 38px;
+  display: block;
 }
 
 /*
