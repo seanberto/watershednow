@@ -17,10 +17,10 @@ body {
 
 #header {
   margin-top: 25px;
-  
 }
 
-#main {
+.node-inner {
+  overflow: hidden;
 }
 
 #content-inner {
@@ -64,6 +64,8 @@ a {
 
 #nav li a {
   padding: 0 1em;
+  height: 38px;
+  display: block;
 }
 
 /*
@@ -81,6 +83,7 @@ a {
 
 #sidebar-second .block .block-inner {
   padding: 1em;
+  overflow: hidden;
 }
 
 #sidebar-second .block.odd {
