@@ -15,7 +15,7 @@ function wn_events_block($op = 'list', $delta = 0, $edit = array()) {
       return $blocks;
 
     case 'configure':
-      if ($delta == 0 && user_access('administer site configuration')) {
+      if ($delta == 0) {
         $form['wn_events_number'] = array(
           '#type' => 'select',
           '#title' => t('Number of event posts shown on the homepage'),
