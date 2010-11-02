@@ -46,7 +46,8 @@ function watershednow_profile_tasks(&$task, $url) {
      */
     _watershednow_install_themes( $config );
 
-    // Add homepage callout sample node. Note: needs to be called after clearing cache.
+    // Add homepage callout sample node and feed node. Note: needs to be called after clearing cache.
+    _watershednow_add_sample_update_feed( $config['feeds'] );
     _watershednow_add_callouts();
     $task = 'profile-finished'; //hand control back to the installer
   }

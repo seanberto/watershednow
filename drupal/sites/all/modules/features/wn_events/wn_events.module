@@ -56,5 +56,4 @@ function _wn_events_homepage_list() {
   if (!empty($view->result)) { // If view returns results, output the view. We call after render so that view runs.
     return $output;
   }
-  return $output;
 }

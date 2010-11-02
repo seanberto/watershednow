@@ -1,5 +1,5 @@
 <?php
-// $Id: FeedsDataProcessor.inc,v 1.24.2.1 2010/09/21 13:28:53 alexb Exp $
+// $Id: FeedsDataProcessor.inc,v 1.24.2.2 2010/10/28 19:58:22 alexb Exp $
 
 /**
  * @file
@@ -235,6 +235,7 @@ class FeedsDataProcessor extends FeedsProcessor {
       'update_existing' => FEEDS_SKIP_EXISTING,
       'expire' => FEEDS_EXPIRE_NEVER, // Don't expire items by default.
       'mappings' => array(),
+      'delete_with_source' => FALSE,
     );
   }
 
@@ -255,6 +256,13 @@ class FeedsDataProcessor extends FeedsProcessor {
       '#title' => t('Replace existing records'),
       '#description' => t('If an existing record is found for an imported record, replace it. Existing records will be determined using mappings that are a "unique target".'),
       '#default_value' => $this->config['update_existing'],
+    );
+    $form['delete_with_source'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Delete items with source'),
+      '#description' => t('If enabled, any feed items associated with a source node will removed along with the node. Not available for standalone importers.'),
+      '#default_value' => $this->config['delete_with_source'],
+      '#disabled' => empty(feeds_importer($this->id)->config['content_type']) ? TRUE : FALSE,
     );
     return $form;
   }

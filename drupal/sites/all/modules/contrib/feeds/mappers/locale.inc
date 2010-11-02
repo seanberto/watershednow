@@ -1,5 +1,5 @@
 <?php
-// $Id: locale.inc,v 1.2 2010/09/07 18:42:09 alexb Exp $
+// $Id: locale.inc,v 1.2.2.1 2010/10/25 22:43:03 alexb Exp $
 
 /**
  * @file
@@ -27,7 +27,7 @@ function locale_feeds_parser_sources_alter(&$sources, $content_type) {
  * Callback, returns specific locale settings of the parent feed node.
  */
 function locale_feeds_get_source(FeedsImportBatch $batch, $key) {
-  if ($node = $batch->feedNode()) {
+  if ($node = node_load($batch->feed_nid)) {
     return $node->language;
   }
 }

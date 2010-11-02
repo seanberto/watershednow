@@ -1,6 +1,5 @@
 core = "6.x"
 dependencies[] = "context"
-dependencies[] = "features"
 dependencies[] = "imagefield"
 dependencies[] = "imagefield_extended"
 dependencies[] = "strongarm"

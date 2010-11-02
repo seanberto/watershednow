@@ -48,7 +48,7 @@ function wn_blog_feeds_importer_default() {
             'unique' => FALSE,
           ),
         ),
-        'author' => 0,
+        'author' => 2,
       ),
     ),
     'content_type' => 'update_feed',

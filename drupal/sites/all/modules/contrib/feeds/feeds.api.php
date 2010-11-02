@@ -1,5 +1,5 @@
 <?php
-// $Id: feeds.api.php,v 1.16 2010/09/15 18:28:33 alexb Exp $
+// $Id: feeds.api.php,v 1.16.2.1 2010/10/25 22:43:03 alexb Exp $
 
 /**
  * @mainpage
@@ -96,7 +96,7 @@ function hook_feeds_plugins() {
  */
 function hook_feeds_after_parse(FeedsImporter $importer, FeedsSource $source) {
   // For example, set title of imported content:
-  $source->batch->setTitle('Import number '. my_module_import_id());
+  $source->batch->title = 'Import number '. my_module_import_id();
 }
 
 /**

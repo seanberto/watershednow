@@ -1,5 +1,5 @@
 <?php
-// $Id: feeds.pages.inc,v 1.22 2010/09/16 19:01:04 alexb Exp $
+// $Id: feeds.pages.inc,v 1.22.2.1 2010/10/25 22:14:58 alexb Exp $
 
 /**
  * @file
@@ -145,7 +145,10 @@ function feeds_delete_tab_form_submit($form, &$form_state) {
  */
 function feeds_fetcher_callback($importer, $feed_nid = 0) {
   if ($importer instanceof FeedsImporter) {
-    return $importer->fetcher->request($feed_nid);
+    try {
+      return $importer->fetcher->request($feed_nid);
+    }
+    catch(Exception $e) {}
   }
   drupal_access_denied();
 }

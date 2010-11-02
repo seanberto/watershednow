@@ -1,5 +1,5 @@
 <?php
-// $Id: date.inc,v 1.3 2010/07/08 17:19:16 alexb Exp $
+// $Id: date.inc,v 1.3.2.1 2010/10/28 20:18:59 alexb Exp $
 
 /**
  * @file
@@ -55,6 +55,12 @@ function date_feeds_set_target($node, $target, $feed_element) {
     if (is_array($feed_element)) {
       $feed_element = $feed_element[0];
     }
+
+    // Empty string means no time - so do not set any!
+    if (!is_numeric($feed_element) && !strtotime($feed_element)) {
+      return ;
+    }
+
     if ($sub_field == 'end') {
       $feed_element = new FeedsDateTimeElement(NULL, $feed_element);
     }

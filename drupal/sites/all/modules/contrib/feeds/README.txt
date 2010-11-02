@@ -1,4 +1,4 @@
-$Id: README.txt,v 1.34 2010/09/15 19:27:42 alexb Exp $
+$Id: README.txt,v 1.34.2.2 2010/10/28 20:44:12 alexb Exp $
 
 
 "It feeds"
@@ -35,6 +35,8 @@ Requirements
 
 - CTools 1.x
   http://drupal.org/project/ctools
+- Job Scheduler 1.x
+  http://drupal.org/project/job_scheduler
 - Drupal 6.x
   http://drupal.org/project/drupal
 - PHP safe mode is not supported, depending on your Feeds Importer configuration
@@ -195,6 +197,11 @@ Default:     50
 Name:        http_request_timeout
 Default:     15
 Description: Timeout in seconds to wait for an HTTP get request to finish.
+
+Name:        feeds_never_use_curl
+Default:     FALSE
+Description: Flag to stop feeds from using its cURL for http requests. See
+             http_request_use_curl().
 
 Glossary
 ========

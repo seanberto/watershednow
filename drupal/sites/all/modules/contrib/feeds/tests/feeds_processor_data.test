@@ -1,5 +1,5 @@
 <?php
-// $Id: feeds_processor_data.test,v 1.2 2010/09/15 19:27:42 alexb Exp $
+// $Id: feeds_processor_data.test,v 1.2.2.1 2010/10/28 19:58:22 alexb Exp $
 
 /**
  * @file
@@ -108,6 +108,7 @@ class FeedsRSStoDataTest extends FeedsWebTestCase {
         array(
           'administer data tables',
           'administer feeds',
+          'administer nodes',
         )
       )
     );
@@ -162,6 +163,15 @@ class FeedsRSStoDataTest extends FeedsWebTestCase {
     // Assert DB status, there should be 10 again.
     $count = db_result(db_query("SELECT COUNT(*) FROM {feeds_data_rss}"));
     $this->assertEqual($count, 10, 'Accurate number of items in database.');
+
+    // Test 'Delete items with source' setting.
+    $this->setSettings('rss', 'FeedsDataProcessor', array('delete_with_source' => 1));
+    $this->drupalPost('node/'. $nid .'/delete', array(), 'Delete');
+    $this->assertText('Page Development Seed - Technological Solutions for Progressive Organizations has been deleted.');
+
+    // Assert DB status.
+    $count = db_result(db_query("SELECT COUNT(*) FROM {feeds_data_rss}"));
+    $this->assertEqual($count, 0, 'Accurate number of items in database.');
 
     // @todo Standalone import form testing.
     // @todo Create a second feed and test.

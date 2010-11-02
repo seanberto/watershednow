@@ -8,9 +8,9 @@ name = "Feeds Import"
 package = "Feeds"
 project = "Feeds"
 
-; Information added by drupal.org packaging script on 2010-09-26
-version = "6.x-1.0-beta9"
+; Information added by drupal.org packaging script on 2010-10-29
+version = "6.x-1.0-beta10"
 core = "6.x"
 project = "feeds"
-datestamp = "1285523761"
+datestamp = "1288369547"
 

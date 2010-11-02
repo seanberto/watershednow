@@ -32,8 +32,6 @@ function _watershednow_configure( $config ) {
 
   _watershednow_create_menu_items();
 
-  _watershednow_add_sample_update_feed( $config['feeds'] );
-
   _watershednow_create_follow_links( $config['follow'] );
 
   // Do some additional clean up.

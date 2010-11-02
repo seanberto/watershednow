@@ -1,6 +1,27 @@
-// $Id: CHANGELOG.txt,v 1.173.2.11 2010/09/26 17:39:45 alexb Exp $
+// $Id: CHANGELOG.txt,v 1.173.2.27 2010/10/29 16:21:33 alexb Exp $
 
-Feeds 6.x 1.0 XXXXXXXXXXXXXXXXXX
+Feeds 6.x 1.0 Beta 10, 2010-10-29
+---------------------------------
+
+- #925264 alex_b: Don't allow commas in tag names.
+- #935908 njbooher: FeedsTermProcessor: Synonyms array not joined.
+- #883342 Steven Jones: Don't force usage of cURL.
+- #776854 imclean et. al.: Support parsing CSV files without column headers.
+- #857216 derhasi: Set Date to empty if no date is present.
+  Note: previously date mapper would set date to the current date if no date
+  was present.
+- #637334 mongolito404, elliotttf et. al.: Mapper for Content Taxonomy.
+- #953638 joshuajabbour: FeedsTermProcessor looks for feed_nid in wrong object.
+- #954080 mlsamuelson: mimedetect_mime() expects a file object.
+- #608844 Will White: Optionally delete data items with feed nodes.
+- #926616 Mark Trapp: FeedsEnclosure::getFile() should allow files to exist in
+  the temp directory.
+- #912630 twistor: FeedsImportBatch: make items accessible for modification.
+- #946822 twistor: FeedsSitemapParser broken: Serialization of
+  'SimpleXMLElement' is not allowed.
+- #933306 alex_b: Fix Feeds creates subscriptions for not existing importers.
+
+Feeds 6.x 1.0 Beta 9, 2010-09-26
 --------------------------------
 
 - #923318 alex_b: Fix "Fatal error: Call to a member function import() on a
