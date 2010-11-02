@@ -57,6 +57,7 @@ modules[contrib][] = views_calc
 modules[contrib][] = draggableviews
 
 ; Features Related Tools
+modules[contrib][] = features
 modules[contrib][] = ctools
 modules[contrib][] = context
 modules[contrib][] = strongarm
@@ -138,12 +139,11 @@ features[] = wn_donations
 features[] = wn_map
 
 ; Development stuff to be turned off on production sites.
-modules[contrib][] = context_ui
-modules[contrib][] = imagecache_ui
-modules[contrib][] = features
-modules[contrib][] = diff
-modules[contrib][] = views_ui
-modules[contrib][] = feeds_ui
+;modules[contrib][] = context_ui
+;modules[contrib][] = imagecache_ui
+;modules[contrib][] = diff
+;modules[contrib][] = views_ui
+;modules[contrib][] = feeds_ui
 
 
 ; ==============================================
@@ -188,7 +188,7 @@ users[staff][status] = 1
 ; Set up general site config.
 
 ; First set the default theme.
-theme = watershed
+theme = wn_whiteoak
 
 variables[site_name] = Watershed Now Example
 variables[site_mail] = noreply@thinkshout.com
@@ -198,7 +198,7 @@ variables[site_slogan] = Your tagline will go right here if you have one.
 
 variables[site_mission] = 'This is your site mission statement, which you can <a href="/admin/settings/site-information">customize</a> if you are a site administrator.'
 
-variables[site_footer] = '&copy; 2010 Your Environmental Organization.'
+variables[site_footer] = '&copy; 2010 - Put your organization\'s name here.'
 
 variables[site_newsletter] = '<form name="newsletter"><input type="text" name="user" value="Newsletter placeholder"/><input type="submit" value="Submit" /></form>'
 
@@ -207,6 +207,10 @@ variables[date_default_timezone_name] = America/New_York
 
 ; ----------------------------------------------
 ; Theme Config
+; Special theme configuration options that we want to set up in advance.
+
+theme_config[wn_neuse][color_palette] = orange
+theme_config[wn_whiteoak][color_palette] = blue
 theme_config[wn_rogue][color_palette] = green
 
 ; ----------------------------------------------
