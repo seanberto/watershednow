@@ -15,6 +15,10 @@ body {
   margin: 0 auto -225px;
 }
 
+#content-inner {
+  padding: 0 40px 40px 0
+}
+
 #header {
   margin-top: 25px;
 }
