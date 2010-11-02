@@ -39,15 +39,19 @@ h1.title {
 
 #footer-first {
   background:#00b8e0;
-  padding-top:30px;
+  padding-top:20px;
 }
 
 #footer-second {
-  padding-top:30px;
+  padding-top:20px;
 }
 
-#footer #footer-first .block-title {
+#footer #footer-first .block-title, #footer-first .content a {
   color:#fff;
+}
+
+#footer-first  {
+  color:#000;
 }
 
 #footer {
