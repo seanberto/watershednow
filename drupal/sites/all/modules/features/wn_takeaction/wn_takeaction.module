@@ -11,3 +11,20 @@ function wn_takeaction_views_pre_render(&$view) {
     $view->attachment_before .= '<div class="draggable"><a href="/take_action/draggable">[Sort campaigns]</a></div>';
   }
 }
+
+/**
+ * Implementation of hook_nodeapi().
+ * Used to add a warning if someone's adding a take action webform w/o VS api key set.
+ */
+function wn_takeaction_nodeapi(&$node, $op, $teaser = NULL, $page = NULL) {
+  switch ($op) {
+    case 'insert':
+    case 'update':
+      // The node is being updated.
+      if (($node->type == 'take_action') && (variable_get('vs_webform_key', '') == '')) {
+        drupal_set_message('You do not have a <a href="http://www.votesmart.org/user_register.php"target="_blank">VoteSmart API</a> set for this site. If you want to use the legislative lookup tool, please contact your site administrator.', 'warning');
+      }
+      break;
+  }
+}
+
