@@ -51,11 +51,11 @@ function wn_blog_block($op = 'list', $delta = 0, $edit = array()) {
 function _wn_blog_homepage_list() {
   $view = views_get_view('updates'); // Great the blog view.
   $view->set_display('block_1'); // Set the display.
-  $view->set_items_per_page(variable_get('wn_blog_number', '3')); // Look up the number of blog posts to display. 
-  if (!empty($view->result)) {
-    $output = $view->render($view_display); // If view returns results, output the view.
+  $view->set_items_per_page(variable_get('wn_blog_number', '3')); // Look up the number of blog posts to display.   
+  $output = $view->render($view_display);
+  if (!empty($view->result)) { // If view returns results, output the view. We call after render so that view runs.
+    return $output;
   }
-  return $output;
 }
 
 /**
