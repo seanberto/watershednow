@@ -237,3 +237,9 @@ ini_set('url_rewriter.tags',        '');
 #   'forum'      => 'Discussion board',
 #   '@count min' => '@count minutes',
 # );
+
+/**
+ * This line adds a custom maintenance page
+ *
+ */
+$conf['maintenance_theme'] = 'watershed';
