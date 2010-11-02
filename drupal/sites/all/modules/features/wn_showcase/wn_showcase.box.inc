@@ -14,7 +14,7 @@ function wn_showcase_default_box() {
   $box->description = 'Showcase 1';
   $box->options = array(
     'body' => 'This is a callout block that appears on the homepage page. You can use this callout to emphasize where folks can take action to support your mission. You can also simply delete the title and body of this block to remove this, it is up to you.',
-    'format' => '1',
+    'format' => '3',
   );
 
   $export['showcase_1'] = $box;
@@ -27,7 +27,7 @@ function wn_showcase_default_box() {
   $box->description = 'Showcase 2';
   $box->options = array(
     'body' => 'This is a callout block that appears on the homepage page. You can use this callout to emphasize where folks can take action to support your mission. You can also simply delete the title and body of this block to remove this, it is up to you.',
-    'format' => '1',
+    'format' => '3',
   );
 
   $export['showcase_2'] = $box;
@@ -40,7 +40,7 @@ function wn_showcase_default_box() {
   $box->description = 'Showcase 3';
   $box->options = array(
     'body' => 'This is a callout block that appears on the homepage page. You can use this callout to emphasize where folks can take action to support your mission. You can also simply delete the title and body of this block to remove this, it is up to you.',
-    'format' => '1',
+    'format' => '3',
   );
 
   $export['showcase_3'] = $box;
