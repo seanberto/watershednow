@@ -140,7 +140,9 @@
     <div id="footer" class="clear-block">
       <div id="footer-inner">
         <?php print $footer; ?>
+        <?php if( !empty($footer_first)): ?>
         <div id="footer-first" class="clear-block"><?php print $footer_first; ?></div><!-- /#footer-first -->
+        <?php endif; ?>
         <div id="footer-second" class="clear-block">
           <?php print $mission ?>
           <?php print $secondary_links ?>
