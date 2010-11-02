@@ -28,8 +28,6 @@ function vs_webform_perm() {
   return array('administer votesmart settings');
 }
 
-
-
 /**
  * Implementation of hook_menu().
  */
