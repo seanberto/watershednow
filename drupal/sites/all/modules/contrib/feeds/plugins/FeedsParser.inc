@@ -1,5 +1,5 @@
 <?php
-// $Id: FeedsParser.inc,v 1.22.2.2 2010/09/25 16:47:01 alexb Exp $
+// $Id: FeedsParser.inc,v 1.22.2.4 2010/10/25 22:53:53 alexb Exp $
 
 /**
  * Abstract class, defines interface for parsers.
@@ -82,7 +82,7 @@ abstract class FeedsParser extends FeedsPlugin {
    * @see FeedsCSVParser::getSourceElement().
    */
   public function getSourceElement(FeedsImportBatch $batch, $element_key) {
-    if (($node = $batch->feedNode()) && $element_key == 'parent:uid') {
+    if (($node = node_load($batch->feed_nid)) && $element_key == 'parent:uid') {
       return $node->uid;
     }
     $item = $batch->currentItem();
@@ -258,7 +258,7 @@ class FeedsEnclosure extends FeedsElement {
     if(empty($this->file) && $this->getValue()) {
       // Check if this enclosure contains a local file.
       if (!parse_url($this->getValue(), PHP_URL_SCHEME)) {
-        if (file_check_location($this->getValue(), file_directory_path())) {
+        if (file_check_location($this->getValue(), file_directory_path()) || file_check_location($this->getValue(), file_directory_temp())) {
           if (file_exists($this->getValue())) {
             $this->file = $this->getValue();
             return $this->file;

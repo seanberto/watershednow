@@ -1,5 +1,5 @@
 <?php
-// $Id: draggableviews_book.module,v 1.1.2.4 2009/09/18 11:47:43 sevi Exp $
+// $Id: draggableviews_book.module,v 1.1.2.6 2010/08/27 11:19:21 sevi Exp $
 
 /**
  * @file
@@ -42,7 +42,7 @@ function draggableviews_book_draggableviews_handlers() {
  */
 function draggableviews_book_draggableviews_style_plugin_form_alter(&$form, $form_state, $style_plugin) {
   // Check for input.
-  if (count($form_state['input']) > 0) {
+  if (!empty($form_state['input']['style_options'])) {
     // Define the input data as the current data.
     $current = $form_state['input']['style_options'];
   }
@@ -75,6 +75,7 @@ function draggableviews_book_draggableviews_style_plugin_form_alter(&$form, $for
   $radio_id_none = form_clean_id('edit-default-use-book-none');
   $radio_id_argument = form_clean_id('edit-default-use-book-argument');
   $radio_id_filter = form_clean_id('edit-default-use-book-filter');
+
   $form['draggableviews_book_radios'] = array(
     '#type' => 'radios',
     '#default_value' => isset($current['draggableviews_book_radios']) ? $current['draggableviews_book_radios'] : 0,
@@ -363,7 +364,8 @@ function draggableviews_book_views_default_views() {
     ),
   ));
   $handler->override_option('access', array(
-    'type' => 'none',
+    'type' => 'perm',
+    'perm' => 'Allow Reordering',
   ));
   $handler->override_option('cache', array(
     'type' => 'none',
@@ -444,6 +446,7 @@ function draggableviews_book_views_default_views() {
       'lock' => 0,
     ),
     'draggableviews_default_on_top' => '1',
+    'draggableviews_button_text' => 'Save order',
     'draggableviews_arguments' => array(
       'use_args' => 0,
     ),

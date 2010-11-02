@@ -1,5 +1,5 @@
 <?php
-// $Id: FeedsNodeProcessor.inc,v 1.51.2.1 2010/09/17 13:46:30 alexb Exp $
+// $Id: FeedsNodeProcessor.inc,v 1.51.2.2 2010/10/25 22:43:03 alexb Exp $
 
 /**
  * @file
@@ -28,7 +28,7 @@ class FeedsNodeProcessor extends FeedsProcessor {
     // Keep track of processed items in this pass, set total number of items.
     $processed = 0;
     if (!$batch->getTotal(FEEDS_PROCESSING)) {
-      $batch->setTotal(FEEDS_PROCESSING, $batch->getItemCount());
+      $batch->setTotal(FEEDS_PROCESSING, count($batch->items));
     }
 
     while ($item = $batch->shiftItem()) {

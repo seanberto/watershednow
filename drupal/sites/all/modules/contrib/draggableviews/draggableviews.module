@@ -1,5 +1,5 @@
 <?php
-// $Id: draggableviews.module,v 1.6.2.36 2010/01/29 18:49:28 sevi Exp $
+// $Id: draggableviews.module,v 1.6.2.40 2010/10/19 21:10:03 dixon Exp $
 
 /**
  * @file
@@ -89,7 +89,7 @@ function draggableviews_forms() {
 /**
  * Build the form
  */
-function draggableviews_view_draggabletable_form($form_state, &$style_plugin) {
+function draggableviews_view_draggabletable_form($form_state, $style_plugin) {
   $view = $style_plugin->view;
   $options = $view->style_plugin->options;
 
@@ -511,7 +511,7 @@ function draggableviews_perm() {
  */
 function draggableviews_draggableviews_style_plugin_form_alter(&$form, $form_state, $style_plugin) {
   // Check for input.
-  if (!empty($input['style_options'])) {
+  if (!empty($form_state['input']['style_options'])) {
     // Define the input data as the current data.
     $current = $form_state['input']['style_options'];
   }
@@ -531,7 +531,7 @@ function draggableviews_draggableviews_style_plugin_form_alter(&$form, $form_sta
     '#name' => 'draggableviews_arguments',
     '#options' => array('use_args' => t('Use arguments as well as view ID to order nodes.')),
     '#description' => t('If checked, nodes can be reordered for any set of views arguments.  Use with care: If you have many combinations of arguments, your database could become very large.'),
-    '#default_value' => isset($current['draggableviews_arguments']) ? $current['draggableviews_arguments'] : array(),
+    '#default_value' => $current['draggableviews_arguments'],
   );
 }
 
@@ -555,4 +555,14 @@ function draggableviews_views_api() {
     'api' => 2.0,
     'path' => drupal_get_path('module', 'draggableviews') .'/views',
   );
+}
+
+/**
+ * Implementing hook_nodeapi
+ */
+function draggableviews_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
+  // Remove nodes from the structure if they are deleted.
+  if ($op == 'delete') {
+    db_query('DELETE FROM {draggableviews_structure} WHERE nid = %d', $node->nid);
+  }
 }

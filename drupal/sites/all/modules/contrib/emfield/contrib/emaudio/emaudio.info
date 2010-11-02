@@ -7,9 +7,9 @@ dependencies[] = emfield
 package = Media
 
 
-; Information added by drupal.org packaging script on 2010-10-20
-version = "6.x-2.2"
+; Information added by drupal.org packaging script on 2010-10-28
+version = "6.x-2.3"
 core = "6.x"
 project = "emfield"
-datestamp = "1287608170"
+datestamp = "1288277132"
 

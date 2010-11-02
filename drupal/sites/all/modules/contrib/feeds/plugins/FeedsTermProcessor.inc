@@ -1,5 +1,5 @@
 <?php
-// $Id: FeedsTermProcessor.inc,v 1.20 2010/09/14 15:03:07 alexb Exp $
+// $Id: FeedsTermProcessor.inc,v 1.20.2.2 2010/10/28 20:48:10 alexb Exp $
 
 /**
  * @file
@@ -48,7 +48,7 @@ class FeedsTermProcessor extends FeedsProcessor {
 
         // Save the term.
         $term['importer_id'] = $this->id;
-        $term['feed_nid'] = $this->feed_nid;
+        $term['feed_nid'] = $source->feed_nid;
         taxonomy_save_term($term);
         if ($tid) {
           $updated++;
@@ -124,7 +124,7 @@ class FeedsTermProcessor extends FeedsProcessor {
     $target_term['vid'] = $vocabulary->vid;
     $target_term = parent::map($batch, $target_term);
     // Taxonomy module expects synonyms to be supplied as a single string.
-    if (isset($target_term['synonyms']) && is_array(isset($target_term['synonyms']))) {
+    if (isset($target_term['synonyms']) && is_array($target_term['synonyms'])) {
       $target_term['synonyms'] = implode("\n", $target_term['synonyms']);
     }
     return $target_term;

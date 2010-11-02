@@ -1,5 +1,5 @@
 <?php
-// $Id: draggableviews_plugin_style_draggabletable.inc,v 1.1.2.35 2010/01/29 18:49:28 sevi Exp $
+// $Id: draggableviews_plugin_style_draggabletable.inc,v 1.1.2.36 2010/10/19 21:10:03 dixon Exp $
 
 /**
  * @file
@@ -20,6 +20,19 @@ class draggableviews_plugin_style_draggabletable extends views_plugin_style_tabl
     $options['override'] = array('default' => TRUE);
     $options['sticky'] = array('default' => FALSE);
     $options['order'] = array('default' => 'asc');
+    $options['tabledrag_order'] = array('default' => array('field' => 'none', 'handler' => ''));
+    $options['tabledrag_order_visible'] = array('default' => array());
+    $options['tabledrag_hierarchy'] = array('default' => array('field' => 'none', 'handler' => ''));
+    $options['tabledrag_hierarchy_visible'] = array('default' => array());
+    $options['draggableviews_depth_limit'] = array('default' => 0);
+    $options['draggableviews_repair'] = array('default' => array('repair'));
+    $options['tabledrag_types'] = array('default' => array());
+    $options['tabledrag_expand'] = array('default' => array());
+    $options['draggableviews_extensions'] = array('default' => array('extension_top' => 3, 'extension_bottom' => 3));
+    $options['tabledrag_lock'] = array('default' => array());
+    $options['draggableviews_default_on_top'] = array('default' => TRUE);
+    $options['draggableviews_button_text'] = array('default' => t('Save order'));
+    $options['draggableviews_arguments'] = array('default' => array());
 
     return $options;
   }
@@ -137,11 +150,6 @@ class draggableviews_plugin_style_draggabletable extends views_plugin_style_tabl
       $node_types[$node_type->type] = t($node_type->name);
     }
 
-    $form['tabledrag_hierarchy']       = array();
-    $form['tabledrag_order']           = array();
-    $form['tabledrag_types']           = array();
-    $form['draggableviews_extensions'] = array();
-
     // Check for input.
     if (!empty($input['style_options'])) {
       // Define the input data as the current data.
@@ -151,8 +159,6 @@ class draggableviews_plugin_style_draggabletable extends views_plugin_style_tabl
       // Define the already stored data as the current data.
       $current = $this->options;
     }
-
-    if (!isset($current['tabledrag_types'])) $current['tabledrag_types'] = array();
 
     $form['tabledrag_header'] = array(
       '#prefix' => '<div style="background: #F6F6F6; border-top: 1px solid #D6DBDE; font-weight: bold; padding: 1em 1em 0;">',
@@ -198,12 +204,12 @@ class draggableviews_plugin_style_draggabletable extends views_plugin_style_tabl
       'field' => array(
         '#type' => 'select',
         '#options' => array('none' => '- '. t('none') .' -') + _draggableviews_filter_fields(array('order'), $handlers),
-        '#default_value' => isset($current['tabledrag_order']['field']) ? $current['tabledrag_order']['field'] : 'none',
+        '#default_value' => $current['tabledrag_order']['field'],
       ),
       'handler' => array(
         '#type' => 'select',
         '#options' => $draggableviews_handlers,
-        '#default_value' => isset($current['tabledrag_order']['handler']) ? $current['tabledrag_order']['handler'] : key($draggableviews_handlers),
+        '#default_value' => $current['tabledrag_order']['handler'],
       ),
     );
 
@@ -213,7 +219,7 @@ class draggableviews_plugin_style_draggabletable extends views_plugin_style_tabl
       '#name' => 'tabledrag_order_visible',
       '#options' => array('visible' => t('Show input fields?')),
       '#title' => t('Decide whether order input fields should be visible or not'),
-      '#default_value' => isset($current['tabledrag_order_visible']) ? $current['tabledrag_order_visible'] : array(),
+      '#default_value' => $current['tabledrag_order_visible'],
     );
 
     $form['tabledrag_hierarchy'] = array(
@@ -221,12 +227,12 @@ class draggableviews_plugin_style_draggabletable extends views_plugin_style_tabl
       'field' => array(
         '#type' => 'select',
         '#options' => array('none' => '- '. t('none') .' -') + _draggableviews_filter_fields(array('nodereference'), $handlers),
-        '#default_value' => isset($current['tabledrag_hierarchy']['field']) ? $current['tabledrag_hierarchy']['field'] : 'none',
+        '#default_value' => $current['tabledrag_hierarchy']['field'],
       ),
       'handler' => array(
         '#type' => 'select',
         '#options' => $draggableviews_handlers,
-        '#default_value' => isset($current['tabledrag_hierarchy']['handler']) ? $current['tabledrag_hierarchy']['handler'] : key($draggableviews_handlers),
+        '#default_value' => $current['tabledrag_hierarchy']['handler'],
       ),
     );
 
@@ -236,7 +242,7 @@ class draggableviews_plugin_style_draggabletable extends views_plugin_style_tabl
         '#name' => 'tabledrag_hierarchy_visible',
         '#options' => array('visible' => t('Show input fields?')),
         '#title' => t('Decide whether parent input fields should be visible or not'),
-        '#default_value' => isset($current['tabledrag_hierarchy_visible']) ? $current['tabledrag_hierarchy_visible'] : array(),
+        '#default_value' => $current['tabledrag_hierarchy_visible'],
     );
 
     $form['draggableviews_depth_limit'] = array(
@@ -244,7 +250,7 @@ class draggableviews_plugin_style_draggabletable extends views_plugin_style_tabl
       '#size' => 2,
       '#description' => t('Only use this option in combination with hierarchies. Type -1 for no limit.'),
       '#title' => t('Define the depth limit'),
-      '#default_value' => (isset($current['draggableviews_depth_limit']) && is_numeric($current['draggableviews_depth_limit'])) ? $current['draggableviews_depth_limit'] : -1,
+      '#default_value' => $current['draggableviews_depth_limit'],
     );
 
     // Lock option.
@@ -253,7 +259,7 @@ class draggableviews_plugin_style_draggabletable extends views_plugin_style_tabl
       '#options' => array('repair' => t('Repair broken structures.')),
       '#description' => t('Uncheck this option if you don\'t want DraggableViews to repair broken structures.'),
       '#title' => t('Structure'),
-      '#default_value' => isset($current['draggableviews_repair']) ? $current['draggableviews_repair'] : array('repair'),
+      '#default_value' => $current['draggableviews_repair'],
     );
 
     if (strcmp($this->view->base_table, 'node') == 0) {
@@ -298,7 +304,7 @@ class draggableviews_plugin_style_draggabletable extends views_plugin_style_tabl
       '#name' => 'tabledrag_expand',
       '#options' => array('expand_links' => 'Show expand Links', 'collapsed' => 'Default is collapsed', 'by_uid' => 'Unique for each user'),
       '#title' => t('Decide whether expand/collapse links should be shown or not'),
-      '#default_value' => isset($current['tabledrag_expand']) ? $current['tabledrag_expand'] : array('expand_links'),
+      '#default_value' => $current['tabledrag_expand'],
     );
 
     // Extensions when using paging.
@@ -307,13 +313,13 @@ class draggableviews_plugin_style_draggabletable extends views_plugin_style_tabl
         '#type' => 'textfield',
         '#size' => 2,
         '#title' => t('How many rows should be displayed of the previous page'),
-        '#default_value' => (isset($current['draggableviews_extensions']['extension_top']) && is_numeric($current['draggableviews_extensions']['extension_top'])) ? $current['draggableviews_extensions']['extension_top'] : 3,
+        '#default_value' => $current['draggableviews_extensions']['extension_top'],
       ),
       'extension_bottom' => array(
         '#type' => 'textfield',
         '#size' => 2,
         '#title' => t('How many rows should be displayed of the next page'),
-        '#default_value' => (isset($current['draggableviews_extensions']['extension_bottom']) && is_numeric($current['draggableviews_extensions']['extension_bottom'])) ? $current['draggableviews_extensions']['extension_bottom'] : 3,
+        '#default_value' => $current['draggableviews_extensions']['extension_bottom'],
       ),
     );
 
@@ -323,14 +329,14 @@ class draggableviews_plugin_style_draggabletable extends views_plugin_style_tabl
       '#name' => 'tabledrag_lock',
       '#options' => array('lock' => t('The user cannot rearrange nodes (locked)')),
       '#title' => t('Lock'),
-      '#default_value' => isset($current['tabledrag_lock']) ? $current['tabledrag_lock'] : array(),
+      '#default_value' => $current['tabledrag_lock'],
     );
 
     $form['draggableviews_default_on_top'] = array(
       '#type' => 'radios',
       '#name' => 'draggableviews_default_on_top',
       '#title' => t('Behaviour of new nodes'),
-      '#default_value' => isset($current['draggableviews_default_on_top']) ? $current['draggableviews_default_on_top'] : 1,
+      '#default_value' => $current['draggableviews_default_on_top'],
       '#description' => t('Nodes without a numerical order value assigned will be treated as new nodes. Decide where they should appear by default.'),
       '#options' => array(t('On Bottom'), t('On Top')),
     );
@@ -340,7 +346,7 @@ class draggableviews_plugin_style_draggabletable extends views_plugin_style_tabl
       '#size' => 20,
       '#title' => t('The label of the save button'),
       '#description' => t('Make the workflow more intuitive for the user.'),
-      '#default_value' => isset($current['draggableviews_button_text']) ? $current['draggableviews_button_text'] : t('Save order'),
+      '#default_value' => $current['draggableviews_button_text'],
     );
 
     // Let extension modules alter the output

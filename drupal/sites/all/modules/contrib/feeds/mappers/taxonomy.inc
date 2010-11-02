@@ -1,5 +1,5 @@
 <?php
-// $Id: taxonomy.inc,v 1.11 2010/09/16 18:28:24 alexb Exp $
+// $Id: taxonomy.inc,v 1.11.2.2 2010/10/28 20:49:38 alexb Exp $
 
 /**
  * @file
@@ -25,7 +25,7 @@ function taxonomy_feeds_parser_sources_alter(&$sources, $content_type) {
  * Callback, returns taxonomy from feed node.
  */
 function taxonomy_feeds_get_source(FeedsImportBatch $batch, $key) {
-  if ($node = $batch->feedNode()) {
+  if ($node = node_load($batch->feed_nid)) {
     $terms = taxonomy_node_get_terms($node);
     $vocabulary = taxonomy_get_vocabulary(str_replace('parent:taxonomy:', '', $key));
     $result = array();
@@ -88,6 +88,10 @@ function taxonomy_feeds_set_target(&$node, $key, $terms) {
   }
 
   if ($vocabulary->tags) {
+    foreach ($terms as $k => $v) {
+      // Make sure there aren't any terms with a comma (=tag delimiter) in it.
+      $terms[$k] = preg_replace('/\s*,\s*/', ' ', $v);
+    }
     // Simply add a comma separated list to the node for a "tags" vocabulary.
     $terms = array_merge($terms, drupal_explode_tags($node->taxonomy['tags'][$vocabulary->vid]));
     $node->taxonomy['tags'][$vocabulary->vid] = implode(',', $terms);

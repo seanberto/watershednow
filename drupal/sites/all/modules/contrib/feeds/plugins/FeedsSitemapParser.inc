@@ -1,5 +1,5 @@
 <?php
-// $Id: FeedsSitemapParser.inc,v 1.3 2010/09/07 17:29:36 alexb Exp $
+// $Id: FeedsSitemapParser.inc,v 1.3.2.2 2010/10/25 22:43:03 alexb Exp $
 
 /**
  * A parser for the Sitemap specification http://www.sitemaps.org/protocol.php
@@ -20,12 +20,12 @@ class FeedsSitemapParser extends FeedsParser {
         $item['lastmod'] = strtotime($url->lastmod);
       }
       if ($url->changefreq) {
-        $item['changefreq'] = $url->changefreq;
+        $item['changefreq'] = (string) $url->changefreq;
       }
       if ($url->priority) {
-        $item['priority'] = $url->priority;
+        $item['priority'] = (string) $url->priority;
       }
-      $batch->addItem($item);
+      $batch->items[] = $item;
     }
     date_default_timezone_set($tz);
   }

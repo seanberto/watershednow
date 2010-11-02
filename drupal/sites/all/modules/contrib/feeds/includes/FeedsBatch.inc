@@ -1,5 +1,5 @@
 <?php
-// $Id: FeedsBatch.inc,v 1.15 2010/09/07 17:29:36 alexb Exp $
+// $Id: FeedsBatch.inc,v 1.15.2.1 2010/10/25 22:43:03 alexb Exp $
 
 // Batch stages.
 define('FEEDS_FETCHING', 'fetching');
@@ -93,12 +93,11 @@ class FeedsBatch {
  * FeedsFileBatch or FeedsHTTPBatch) or provide its own as a direct or indirect
  * extension of FeedsImportBatch.
  *
- * A Parser must populate a FeedsImportBatch object through the set methods upon
- * parse(). For instance:
+ * A Parser must populate a FeedsImportBatch object upon parse(). For instance:
  *
  * @code
- * $batch->setItems($parsed_rows);
- * $batch->setTitle('My imported document');
+ * $batch->items = $parsed_rows;
+ * $batch->title = 'My imported document';
  * @endcode
  *
  * Finally, a processor can work off the information produced on the parsing
@@ -142,13 +141,13 @@ class FeedsBatch {
  * @see FeedsHTTPBatch
  */
 class FeedsImportBatch extends FeedsBatch {
-  protected $title;
-  protected $description;
-  protected $link;
-  protected $items;
-  protected $raw;
-  protected $feed_nid;
   protected $current_item;
+  protected $raw;
+  public $title;
+  public $description;
+  public $link;
+  public $items;
+  public $feed_nid;
   public $created;
   public $updated;
 
@@ -203,6 +202,10 @@ class FeedsImportBatch extends FeedsBatch {
   }
 
   /**
+   * @deprecated
+   *   This method is deprecated. Access directly instead. For example:
+   *   $node = node_load($batch->feed_nid);
+   *
    * Return the feed node related to this batch object.
    */
   public function feedNode() {
@@ -212,6 +215,10 @@ class FeedsImportBatch extends FeedsBatch {
   }
 
   /**
+   * @deprecated
+   *   This method is deprecated. Access directly instead. For example:
+   *   $title = $batch->title;
+   *
    * @return
    *   A string that is the feed's title.
    */
@@ -220,6 +227,10 @@ class FeedsImportBatch extends FeedsBatch {
   }
 
   /**
+   * @deprecated
+   *   This method is deprecated. Access directly instead. For example:
+   *   $description = $batch->description;
+   *
    * @return
    *   A string that is the feed's description.
    */
@@ -228,6 +239,10 @@ class FeedsImportBatch extends FeedsBatch {
   }
 
   /**
+   * @deprecated
+   *   This method is deprecated. Access directly instead. For example:
+   *   $link = $batch->link;
+   *
    * @return
    *   A string that is the link to the feed's site (not the actual URL of the
    *   feed). Falls back to URL if not available.
@@ -260,6 +275,10 @@ class FeedsImportBatch extends FeedsBatch {
 
   /**
    * Set title.
+   *
+   * @deprecated
+   *   This method is deprecated. Access directly instead. For example:
+   *   $batch->title = $title;
    */
   public function setTitle($title) {
     $this->title = $title;
@@ -267,6 +286,10 @@ class FeedsImportBatch extends FeedsBatch {
 
   /**
    * Set description.
+   *
+   * @deprecated
+   *   This method is deprecated. Access directly instead. For example:
+   *   $batch->description = $description;
    */
   public function setDescription($description) {
     $this->description = $description;
@@ -274,6 +297,10 @@ class FeedsImportBatch extends FeedsBatch {
 
   /**
    * Set link.
+   *
+   * @deprecated
+   *   This method is deprecated. Access directly instead. For example:
+   *   $batch->link = $link;
    */
   public function setLink($link) {
     $this->link = $link;
@@ -281,6 +308,10 @@ class FeedsImportBatch extends FeedsBatch {
 
   /**
    * Set items.
+   *
+   * @deprecated
+   *   This method is deprecated. Access directly instead. For example:
+   *   $batch->items = $items;
    *
    * @param $items
    *   An array of the items in the feed. Cannot be NULL.
@@ -291,6 +322,10 @@ class FeedsImportBatch extends FeedsBatch {
 
   /**
    * Add an item.
+   *
+   * @deprecated
+   *   This method is deprecated. Access directly instead. For example:
+   *   $batch->items[] = $item;
    */
   public function addItem($item) {
     $this->items[] = $item;
@@ -298,6 +333,10 @@ class FeedsImportBatch extends FeedsBatch {
 
   /**
    * Get number of items.
+   *
+   * @deprecated
+   *   This method is deprecated. Access directly instead. For example:
+   *   $count = count($batch->items);
    */
   public function getItemCount() {
     return count($this->items);
