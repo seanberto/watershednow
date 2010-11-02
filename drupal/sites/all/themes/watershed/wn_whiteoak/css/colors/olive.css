@@ -2,6 +2,10 @@
   color: #a2ad00;
 }
 
+#callout .wn-hp-callout-pager a {
+  background: url(../../images/pager/pager-olive.gif) 100% 0 no-repeat;
+}
+
 #nav li.active, #nav li a:hover {
   background: url(../../images/nav/nav_bg_active_olive.png) repeat-x 0 0 transparent;
   height: 38px;

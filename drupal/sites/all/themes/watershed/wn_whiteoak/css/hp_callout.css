@@ -13,6 +13,7 @@
 
 #callout .wn-hp-callout-entry {
   color:#bcbec0;
+  overflow: hidden;
 }
 
 #callout .wn-hp-callout-pager a {

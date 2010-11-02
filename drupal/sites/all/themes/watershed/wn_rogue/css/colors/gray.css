@@ -2,6 +2,10 @@
   color: #939598;
 }
 
+#callout .wn-hp-callout-pager a {
+  background: url(../../images/pager/pager-gray.gif) 100% 0 no-repeat;
+}
+
 #main a {
   color: #939598;
 }

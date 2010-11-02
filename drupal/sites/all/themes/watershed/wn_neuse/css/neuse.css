@@ -11,6 +11,14 @@ body {
   margin-top: 40px;
 }
 
+.page-map #content-inner {
+  padding-top: 40px;
+}
+
+#sidebar-second .block .block-inner, .node-inner {
+  overflow: hidden;
+}
+
 h1.title {
   font-weight: bold;
   font-size: 1.6em;
