@@ -88,6 +88,15 @@ function _wn_admin_quicklinks() {
   }
   
   $link = new stdClass;
+  $link->title = 'VoteSmart API Key';
+  $link->topic = 'Surveys';
+  $link->path = 'admin/settings/vs_webform';
+  $link->description = 'Set your <a href="http://www.votesmart.org/user_register.php" target="_blank">VoteSmart API key</a> for the legislative lookup tool.';
+  if (user_access('administer votesmart settings')) {
+    $links[$link->title] = $link;    
+  }
+  
+  $link = new stdClass;
   $link->title = 'Donation campaign results';
   $link->topic = 'Donations';
   $link->path = 'admin/content/donations';
