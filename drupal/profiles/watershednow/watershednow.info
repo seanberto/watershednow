@@ -132,6 +132,7 @@ features[] = wn_common
 features[] = wn_admin
 features[] = wn_hp_main
 features[] = wn_hp_callout
+features[] = wn_showcase
 features[] = wn_blog
 features[] = wn_takeaction
 features[] = wn_events
