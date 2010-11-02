@@ -85,7 +85,7 @@ function wn_blog_views_default_views() {
       ),
       'relationship' => 'none',
     ),
-    'field_body_value' => array(
+    'body' => array(
       'label' => '',
       'alter' => array(
         'alter_text' => 0,
@@ -108,19 +108,10 @@ function wn_blog_views_default_views() {
       'empty' => '',
       'hide_empty' => 0,
       'empty_zero' => 0,
-      'link_to_node' => 0,
-      'label_type' => 'none',
-      'format' => 'default',
-      'multiple' => array(
-        'group' => TRUE,
-        'multiple_number' => '',
-        'multiple_from' => '',
-        'multiple_reversed' => FALSE,
-      ),
       'exclude' => 0,
-      'id' => 'field_body_value',
-      'table' => 'node_data_field_body',
-      'field' => 'field_body_value',
+      'id' => 'body',
+      'table' => 'node_revisions',
+      'field' => 'body',
       'override' => array(
         'button' => 'Override',
       ),

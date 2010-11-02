@@ -44,7 +44,7 @@ function wn_blog_feeds_importer_default() {
           ),
           2 => array(
             'source' => 'description',
-            'target' => 'field_body',
+            'target' => 'body',
             'unique' => FALSE,
           ),
         ),
