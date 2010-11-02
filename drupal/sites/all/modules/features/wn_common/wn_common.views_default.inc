@@ -50,7 +50,7 @@ function wn_common_views_default_views() {
         'strip_tags' => 0,
       ),
       'empty' => '',
-      'hide_empty' => 0,
+      'hide_empty' => 1,
       'empty_zero' => 0,
       'link_to_node' => 0,
       'label_type' => 'none',
@@ -143,6 +143,21 @@ function wn_common_views_default_views() {
       'table' => 'node',
       'field' => 'status_extra',
       'relationship' => 'field_get_involved_nid',
+    ),
+    'field_get_involved_nid' => array(
+      'operator' => 'not empty',
+      'value' => array(),
+      'group' => '0',
+      'exposed' => FALSE,
+      'expose' => array(
+        'operator' => FALSE,
+        'label' => '',
+      ),
+      'id' => 'field_get_involved_nid',
+      'table' => 'node_data_field_get_involved',
+      'field' => 'field_get_involved_nid',
+      'relationship' => 'none',
+      'reduce_duplicates' => 0,
     ),
   ));
   $handler->override_option('access', array(
