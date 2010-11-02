@@ -2,8 +2,9 @@
   color: #2076c7;
 }
 
-#nav li.active {
+#nav li.active, #nav li:hover {
   background: url(../../images/nav/nav_bg_active_blue.png) repeat-x 0 0 transparent;
+  height: 38px;
 }
 
 #footer {

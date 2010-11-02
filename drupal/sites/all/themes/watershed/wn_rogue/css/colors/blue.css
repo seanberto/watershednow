@@ -2,7 +2,8 @@
   color: #00b8e0;
 }
 
-#nav li.active a {
+#nav li.active a, #nav li a:hover {
   border-top: 1px solid #00b8e0;
   border-bottom: 3px solid #00b8e0;
+  text-decoration: none;
 }
