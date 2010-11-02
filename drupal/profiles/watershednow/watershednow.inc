@@ -497,36 +497,17 @@ function _watershednow_define_perms() {
  * but they aren't production ready. There's probably 50 more eligant ways to handle this.
  * Also, for expediancy, not properly using db_query() below.
  *
- * @FIXME: Also, should use install_get_rid() to make sure that RIDs are consistent with those
- * created for "web admin" and "staff" roles. Fragile as is.
+ * @FIXME: This is all really fragile. Roles are hardcoded...
  */
 function _watershednow_filters_wysiwyg() {
-
-  // Setting up Better Formats
-  db_query("DELETE FROM {better_formats_defaults}");
-  db_query("INSERT INTO {better_formats_defaults} (`rid`,`type`,`format`,`type_weight`,`weight`)
-  VALUES
-    (1,'node',1,1,-22),
-    (1,'comment',1,1,-22),
-    (1,'block',1,1,-22),
-    (2,'node',1,1,-23),
-    (2,'comment',1,1,-23),
-    (2,'block',1,1,-23),
-    (3,'node',2,1,-25),
-    (3,'comment',2,1,-25),
-    (3,'block',3,1,-25),
-    (4,'node',2,1,-24),
-    (4,'comment',2,1,-24),
-    (4,'block',3,1,-24)"
-    );
 
   // Setting up Filter Formats
   db_query("DELETE FROM {filter_formats}");
   db_query("INSERT INTO {filter_formats} (`format`,`name`,`roles`,`cache`)
   VALUES
     (1,'Filtered HTML',',1,2,',1),
-    (2,'Full HTML - Used for editing node content',',4,3,',1),
-    (3,'Block HTML - Special formatter for Blocks. Same as Full HTML. (Needed b/c using a different WYSIWYG editor)',',4,3,',1)"
+    (2,'Full HTML - Used for editing node content',',3,4,5,',1),
+    (3,'Block HTML - Special formatter for Blocks. Same as Full HTML. (Needed b/c using a different WYSIWYG editor)',',3,4,5,',1)"
   );
 
   // Setting up Filters
@@ -544,6 +525,27 @@ function _watershednow_filters_wysiwyg() {
     (22,3,'filter',1,2),
     (23,3,'filter',2,0)"
   );
+
+  // Setting up Better Formats
+  db_query("DELETE FROM {better_formats_defaults}");
+  db_query("INSERT INTO {better_formats_defaults} (`rid`,`type`,`format`,`type_weight`,`weight`)
+  VALUES
+    (1,'node',1,1,-22),
+    (1,'comment',1,1,-22),
+    (1,'block',1,1,-22),
+    (2,'node',1,1,-23),
+    (2,'comment',1,1,-23),
+    (2,'block',1,1,-23),
+    (3,'node',2,1,-25),
+    (3,'comment',2,1,-25),
+    (3,'block',3,1,-25),
+    (4,'node',2,1,-24),
+    (4,'comment',2,1,-24),
+    (4,'block',3,1,-24),
+    (5,'node',2,1,-26),
+    (5,'comment',2,1,-26),
+    (5,'block',3,1,-26)"
+    );
 
   // Setting up WYSIWYG profiles
   $wysiwyg_profiles = array();

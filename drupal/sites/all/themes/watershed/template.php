@@ -266,6 +266,7 @@ function watershed_preprocess_block(&$vars, $hook) {
   $vars['block_classes'] = implode(' ', $classes); // Concatenate with spaces
 
   if (theme_get_setting($theme_key . '_block_editing') && user_access('administer blocks') && ($block->module != 'boxes')) {
+        
       // Display 'edit block' for custom blocks.
       if ($block->module == 'block') {
         $edit_links[] = l('<span>' . t('edit block') . '</span>', 'admin/build/block/configure/' . $block->module . '/' . $block->delta,
@@ -293,7 +294,7 @@ function watershed_preprocess_block(&$vars, $hook) {
         );
       }
       // Display 'configure' for other blocks.
-      else {
+      elseif ($block->module != 'watershed') {
         $edit_links[] = l('<span>' . t('configure') . '</span>', 'admin/build/block/configure/' . $block->module . '/' . $block->delta,
           array(
             'attributes' => array(
@@ -347,7 +348,9 @@ function watershed_preprocess_block(&$vars, $hook) {
         );
       }
       $vars['edit_links_array'] = $edit_links;
-      $vars['edit_links'] = '<div class="edit">' . implode(' ', $edit_links) . '</div>';
+      if (!empty($edit_links)) {
+        $vars['edit_links'] = '<div class="edit">' . implode(' ', $edit_links) . '</div>';
+      }
     }
 }
 
