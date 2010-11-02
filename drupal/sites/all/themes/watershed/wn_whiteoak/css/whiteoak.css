@@ -90,25 +90,12 @@ a {
   background: #eff0f0;
 }
 
-#sidebar-second .block.block-menu_block {
-  background: none;
-}
-
 #sidebar-second .block-title, #sidebar-second .content {
   padding-left: 15px;
 }
 
 #sidebar-second .block-menu_block .block-title {
   padding: 0;
-}
-
-#sidebar-second .block-menu_block .block-title a {
-  background: #ece9b2;
-  padding: 0 15px;
-  color: #151515;
-  font-size: 1.3em;
-  font-style: italic;
-  text-transform: uppercase;
 }
 
 /*
