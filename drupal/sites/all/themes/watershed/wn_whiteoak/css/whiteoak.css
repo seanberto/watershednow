@@ -17,10 +17,10 @@ body {
 
 #header {
   margin-top: 25px;
-  
 }
 
-#main {
+.node-inner {
+  overflow: hidden;
 }
 
 #content-inner {
@@ -83,6 +83,7 @@ a {
 
 #sidebar-second .block .block-inner {
   padding: 1em;
+  overflow: hidden;
 }
 
 #sidebar-second .block.odd {

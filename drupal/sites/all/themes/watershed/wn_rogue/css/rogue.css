@@ -41,6 +41,10 @@ h1.title {
   text-transform: uppercase;
 }
 
+#sidebar-second .block .block-inner, .node-inner {
+  overflow: hidden;
+}
+
 
 /*
  *  Updates Page styles
