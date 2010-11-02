@@ -15,6 +15,25 @@ function wn_helper_theme() {
   return $items;
 }
 
+/**
+ * Implementation of Hook_menu_alter().
+ * Kill the block admin screen for non-super users.
+ */
+function wn_helper_menu_alter(&$items) {
+  $items['admin/build/block']['access callback'] = '_wn_helper_block_access';
+}
+
+/**
+ * Helper function for hiding Block admin screen for non-super users.
+ */
+function _wn_helper_block_access() {
+  global $user;
+  if ($user->uid == '1') {
+    return TRUE;
+  } else {
+    return FALSE;
+  }
+}
 
 /**
  * Implementation of hook_theme_registry_alter().
