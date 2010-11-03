@@ -82,7 +82,7 @@ function wn_helper_form_alter(&$form, $form_state, $form_id) {
         '#description' => 'Paste in newsletter form HTML embed code. For help, see our <a href="http://github.com/thinkshout/watershednow/wiki/Newsletter-embed-code" target="_blank">wiki article</a> on embedding newsletter code.',
         '#default_value' => variable_get('site_newsletter',''),
       );
-      
+
       $form['buttons']['#weight'] = 10; //make sure buttons are at the bottom
 
       break;
@@ -96,7 +96,7 @@ function wn_helper_form_alter(&$form, $form_state, $form_id) {
         unset($form['theme_default']['#options'][$theme]);
       }
       break;
-      
+
     case 'system_theme_settings':
       $themes = array('wn_neuse', 'wn_rogue', 'wn_whiteoak');
       $current_theme = $form['#parameters'][2];
@@ -132,6 +132,13 @@ function wn_helper_follow_link_tooltip_rss($title, $variables) {
   return t('Subscribe to @title', array('@title' => $title));
 }
 
+
+/**
+ * Regular Expression callback for follow links to accept anything.
+ */
+function wn_helper_follow_link_accept_any_regex() {
+  return '@.*@';
+}
 /**
  * This function is used to filter out extra networks, not supported
  * by the themes in watershednow.
@@ -143,7 +150,7 @@ function wn_helper_follow_networks_alter(&$networks) {
   $sites['feed'] = array(
     'title' => t('RSS Feed'),
     'domain' => '',
-    'regex callback' => 'follow_network_regex_external',
+    'regex callback' => 'wn_helper_follow_link_accept_any_regex',
     'tooltip callback' => 'wn_helper_follow_link_tooltip_rss'
   );
 
