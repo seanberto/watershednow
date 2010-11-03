@@ -146,3 +146,19 @@ h1.title {
   margin: 40px 40px 40px 20px;
 }
 
+
+/*
+ *  Related content styles
+ */ 
+
+#sidebar-second .view-related-getinvolved-content .field-content > .field-item {
+  margin-bottom: 1em;
+  padding-bottom: .5em;
+  border-bottom: 1px dotted #000;
+}
+
+#sidebar-second .view-related-getinvolved-content .field-content > .field-item h2.title {
+  font-size: 1.1em;
+  margin-bottom: 0;
+  font-weight: bold;
+}
