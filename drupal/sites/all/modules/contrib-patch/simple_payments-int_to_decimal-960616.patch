@@ -1,0 +1,77 @@
+diff --git a/drupal/sites/all/modules/contrib-patch/simple_payments/gateways/simple_payments_moneybookers/simple_payments_moneybookers.module b/drupal/sites/all/modules/contrib-patch/simple_payments/gateways/simple_payments_moneybookers/simple_payments_moneybookers.module
+index bc1a83e..fb0915e 100644
+--- a/drupal/sites/all/modules/contrib-patch/simple_payments/gateways/simple_payments_moneybookers/simple_payments_moneybookers.module
++++ b/drupal/sites/all/modules/contrib-patch/simple_payments/gateways/simple_payments_moneybookers/simple_payments_moneybookers.module
+@@ -137,7 +137,7 @@ function simple_payments_moneybookers_status() {
+ 
+   $payment['gateway'] = 'moneybookers';
+ 	$payment['currency'] = $status['currency'];
+-	$payment['amount'] = bcmul($status['amount'], 100);
++	$payment['amount'] = $status['amount'];
+   $payment['timestamp'] = $_SERVER['REQUEST_TIME'];
+ 	$payment['details'] = $status;
+ 	
+diff --git a/drupal/sites/all/modules/contrib-patch/simple_payments/gateways/simple_payments_paypal/simple_payments_paypal.module b/drupal/sites/all/modules/contrib-patch/simple_payments/gateways/simple_payments_paypal/simple_payments_paypal.module
+index 48576b0..4040b73 100644
+--- a/drupal/sites/all/modules/contrib-patch/simple_payments/gateways/simple_payments_paypal/simple_payments_paypal.module
++++ b/drupal/sites/all/modules/contrib-patch/simple_payments/gateways/simple_payments_paypal/simple_payments_paypal.module
+@@ -156,7 +156,7 @@ function simple_payments_paypal_ipn() {
+ 
+   $payment['gateway'] = 'paypal';
+ 	$payment['currency'] = $ipn['mc_currency'];
+-	$payment['amount'] = bcmul($ipn['mc_gross'], 100);
++	$payment['amount'] = $ipn['mc_gross'];
+   $payment['timestamp'] = strtotime($ipn['payment_date']);
+ 	$payment['details'] = $ipn;
+ 	$payment['payer_email'] = $ipn['payer_email'];
+diff --git a/drupal/sites/all/modules/contrib-patch/simple_payments/simple_payments.install b/drupal/sites/all/modules/contrib-patch/simple_payments/simple_payments.install
+index ec69728..716db78 100644
+--- a/drupal/sites/all/modules/contrib-patch/simple_payments/simple_payments.install
++++ b/drupal/sites/all/modules/contrib-patch/simple_payments/simple_payments.install
+@@ -17,7 +17,7 @@ function simple_payments_schema() {
+       'type' => array('type' => 'varchar', 'length' => 255),
+       'custom' => array('type' => 'varchar', 'length' => 255),
+       'currency' => array('type' => 'char', 'length' => 3, 'not null' => TRUE),
+-      'amount' => array('type' => 'int', 'unsigned' => TRUE, 'not null' => TRUE),
++      'amount' => array('type' => 'numeric', 'size' => 'normal', 'not null' => TRUE, 'default' => 0, 'precision' => 10, 'scale' => 2),
+       'timestamp' => array('type' => 'int', 'unsigned' => TRUE, 'not null' => TRUE),
+       'details' => array('type' => 'text', 'not null' => TRUE, 'serialize' => TRUE),
+       'processed' => array('type' => 'int', 'unsigned' => TRUE),
+@@ -85,3 +85,22 @@ function simple_payments_update_6101() {
+   
+   return $ret;
+ }
++
++/**
++ * Change Amount from Int to Decimal type.
++ */
++function simple_payments_update_6102() {
++  $ret = array();
++  
++  $spec = array(
++    'type' => 'numeric',
++    'size' => 'normal',
++    'not null' => TRUE,
++    'default' => 0,
++    'precision' => 10,
++    'scale' => 2,
++  );
++  
++  db_change_field(&$ret, 'simple_payment', 'amount', 'amount', $spec);
++  db_query("UPDATE {simple_payment} SET amount = (amount / 100)");
++}
+\ No newline at end of file
+diff --git a/drupal/sites/all/modules/contrib-patch/simple_payments/simple_payments.module b/drupal/sites/all/modules/contrib-patch/simple_payments/simple_payments.module
+index 702d5d3..8c433ef 100644
+--- a/drupal/sites/all/modules/contrib-patch/simple_payments/simple_payments.module
++++ b/drupal/sites/all/modules/contrib-patch/simple_payments/simple_payments.module
+@@ -144,9 +144,6 @@ function simple_payments_payment_load($payment_id) {
+ 
+ 
+ function _simple_payments_payment_log($payment) {
+-
+-  // put the decimal point back in
+-	$payment['amount'] = bcdiv($payment['amount'], 100, 2);
+ 	
+ 	// remove some crap we don't want in the log
+ 	unset($payment['timestamp']);

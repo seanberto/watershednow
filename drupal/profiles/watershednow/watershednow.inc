@@ -168,7 +168,8 @@ function _watershednow_define_perms() {
     'access content',
     'search content',
     'access taxonomy images',
-    'change own username'
+    'change own username',
+    'sign up for content'
     );
 
   $default_perms['authenticated'] = array(
@@ -180,12 +181,16 @@ function _watershednow_define_perms() {
     'access content',
     'search content',
     'access taxonomy images',
-    'change own username'
+    'change own username',
+    'sign up for content',
+    'edit own signups',
+    'cancel own signups'
     );
 
   $default_perms['support'] = array(
     'access wn dashboard',
     'access administration menu',
+    'access donation reports',
     'view advanced help index',
     'view advanced help popup',
     'view advanced help topic',
@@ -300,6 +305,7 @@ function _watershednow_define_perms() {
   $default_perms['staff'] = array(
     'access wn dashboard',
     'access administration menu',
+    'access donation reports',
     'collapse format fieldset by default',
     'collapsible format selection',
     'show more format tips link',
@@ -382,6 +388,7 @@ function _watershednow_define_perms() {
   $default_perms['web_admin'] = array(
     'access wn dashboard',
     'access administration menu',
+    'access donation reports',
     'collapse format fieldset by default',
     'collapsible format selection',
     'show more format tips link',
@@ -436,6 +443,7 @@ function _watershednow_define_perms() {
     'edit own update_feed content',
     'edit own wn_hp_callout content',
     'import update_feed feeds',
+    'administer follow',
     'change follow link titles',
     'edit site follow links',
     'administer google analytics',

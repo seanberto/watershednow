@@ -17,7 +17,7 @@ function simple_payments_schema() {
       'type' => array('type' => 'varchar', 'length' => 255),
       'custom' => array('type' => 'varchar', 'length' => 255),
       'currency' => array('type' => 'char', 'length' => 3, 'not null' => TRUE),
-      'amount' => array('type' => 'int', 'unsigned' => TRUE, 'not null' => TRUE),
+      'amount' => array('type' => 'numeric', 'size' => 'normal', 'not null' => TRUE, 'default' => 0, 'precision' => 10, 'scale' => 2),
       'timestamp' => array('type' => 'int', 'unsigned' => TRUE, 'not null' => TRUE),
       'details' => array('type' => 'text', 'not null' => TRUE, 'serialize' => TRUE),
       'processed' => array('type' => 'int', 'unsigned' => TRUE),
@@ -84,4 +84,23 @@ function simple_payments_update_6101() {
   }
   
   return $ret;
+}
+
+/**
+ * Change Amount from Int to Decimal type.
+ */
+function simple_payments_update_6102() {
+  $ret = array();
+  
+  $spec = array(
+    'type' => 'numeric',
+    'size' => 'normal',
+    'not null' => TRUE,
+    'default' => 0,
+    'precision' => 10,
+    'scale' => 2,
+  );
+  
+  db_change_field(&$ret, 'simple_payment', 'amount', 'amount', $spec);
+  db_query("UPDATE {simple_payment} SET amount = (amount / 100)");
 }
