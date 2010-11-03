@@ -25,7 +25,7 @@
 <div class="views-exposed-form">
   <div class="views-exposed-widgets clear-block">
     <?php foreach($widgets as $id => $widget): ?>
-        <?php if (!empty($widget->label)): ?> //moved label outside of .views-exposed-widget for better button placement
+        <?php if (!empty($widget->label)): ?> <!-- moved label outside of .views-exposed-widget for better button placement -->
           <label for="<?php print $widget->id; ?>"> 
             <?php print $widget->label; ?>
           </label>
