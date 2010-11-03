@@ -168,7 +168,8 @@ function _watershednow_define_perms() {
     'access content',
     'search content',
     'access taxonomy images',
-    'change own username'
+    'change own username',
+    'sign up for content'
     );
 
   $default_perms['authenticated'] = array(
@@ -180,7 +181,10 @@ function _watershednow_define_perms() {
     'access content',
     'search content',
     'access taxonomy images',
-    'change own username'
+    'change own username',
+    'sign up for content',
+    'edit own signups',
+    'cancel own signups'
     );
 
   $default_perms['support'] = array(
@@ -439,6 +443,7 @@ function _watershednow_define_perms() {
     'edit own update_feed content',
     'edit own wn_hp_callout content',
     'import update_feed feeds',
+    'administer follow',
     'change follow link titles',
     'edit site follow links',
     'administer google analytics',
