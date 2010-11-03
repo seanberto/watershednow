@@ -49,19 +49,18 @@ h1.title {
 /*
  *  Updates Page styles
  */ 
-
-.view-updates .view-content > div {
+ 
+ .view-updates .view-content > div, .view-events .view-content > div {
   margin-bottom: 1em;
   padding-bottom: .5em;
   border-bottom: 1px dotted #fff;
 }
 
-.view-updates .views-field-created {
+.view-updates .views-field-created, .view-events .views-field-field-date-event-value {
   font-style: italic;
-  font-size: .9em;
 }
 
-#content-area .view-updates .views-field-created {
+#content-area .view-updates .views-field-created, #content-area .view-events .views-field-field-date-event-value {
   color: #ebebeb;
 }
 
