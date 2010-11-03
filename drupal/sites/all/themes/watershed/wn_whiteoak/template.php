@@ -14,3 +14,4 @@ function wn_whiteoak_preprocess_page(&$vars, $hook) {
   // Switch to display newsletter in header rather than the default position in the footer.
   $vars['newsletter_position'] = 'header';
 }
+

@@ -356,3 +356,43 @@ div.wn-credit {
 .wn-credit a, .wn-credit a:hover {
   text-decoration: none;
 }
+
+/*
+ *  Styles for customized Events form view
+ */
+
+#views-exposed-form-events-page-1 {
+  background: #EFF0F0;
+  margin-bottom: .5em;
+}
+
+#views-exposed-form-events-page-1 .views-exposed-form label {
+  float: left;
+  clear: both;
+}
+
+#views-exposed-form-events-page-1 .views-exposed-form .views-exposed-widget {
+  float: none;
+  clear: none;
+  padding: 0;
+}
+
+#views-exposed-form-events-page-1 .date-views-filter-wrapper {
+  float: left;
+  clear: both;
+  min-width: 160px;
+}
+
+#views-exposed-form-events-page-1 #edit-submit-events {
+  float: left;
+  margin-top: 3px;
+  padding: 1px;
+}
+
+#views-exposed-form-events-page-1 .views-exposed-form {
+  padding: 5px 20px;
+}
+
+#views-exposed-form-events-page-1 .views-exposed-widgets {
+  clear: both;
+}
