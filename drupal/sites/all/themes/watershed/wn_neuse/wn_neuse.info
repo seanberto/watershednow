@@ -27,8 +27,11 @@ features[] = favicon
 features[] = primary_links
 features[] = secondary_links
 
-stylesheets[all][] = css/neuse.css
+stylesheets[all][] = css/wn_neuse.css
 stylesheets[all][] = css/hp_callout.css
+stylesheets[all][] = css/wn_showcase.css
+
+scripts[] = js/wn_neuse.js
 
 ; Note: We need to keep some of the settings from the parent theme here even though we don't provide UI
 ; in our theme-settings.php for overriding them. This is b/c we inherit Watershed's template.php.
