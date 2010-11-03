@@ -15,7 +15,7 @@ Drupal.behaviors.openlayers_behavior_layerswitcher = function(context) {
     var control = new OpenLayers.Control.LayerSwitcher({
       'ascending': !!data.map.behaviors['openlayers_behavior_layerswitcher'].ascending,
       'roundedCorner' : !!data.map.behaviors['openlayers_behavior_layerswitcher'].roundedCorner,
-      'roundedCornerColor' : data.map.behaviors['openlayers_behavior_layerswitcher'].roundedCornerColor,
+      'roundedCornerColor' : data.map.behaviors['openlayers_behavior_layerswitcher'].roundedCornerColor
     });
     data.openlayers.addControl(control);
     control.activate();
