@@ -156,7 +156,7 @@ function simple_payments_paypal_ipn() {
 
   $payment['gateway'] = 'paypal';
 	$payment['currency'] = $ipn['mc_currency'];
-	$payment['amount'] = bcmul($ipn['mc_gross'], 100);
+	$payment['amount'] = $ipn['mc_gross'];
   $payment['timestamp'] = strtotime($ipn['payment_date']);
 	$payment['details'] = $ipn;
 	$payment['payer_email'] = $ipn['payer_email'];

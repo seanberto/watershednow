@@ -137,7 +137,7 @@ function simple_payments_moneybookers_status() {
 
   $payment['gateway'] = 'moneybookers';
 	$payment['currency'] = $status['currency'];
-	$payment['amount'] = bcmul($status['amount'], 100);
+	$payment['amount'] = $status['amount'];
   $payment['timestamp'] = $_SERVER['REQUEST_TIME'];
 	$payment['details'] = $status;
 	
