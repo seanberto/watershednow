@@ -163,7 +163,7 @@ function _simple_donations_list_received($node) {
  * Access callback function. Only display donations tab on nodes of those types that are donations enabled.
  */
 function _simple_donations_menu_access($node) {
-  if (variable_get('simple_donations_allowed_'. $node->type, 0)){
+  if (variable_get('simple_donations_allowed_'. $node->type, 0) && user_access('access donation reports')){
     return TRUE;
   }
 }

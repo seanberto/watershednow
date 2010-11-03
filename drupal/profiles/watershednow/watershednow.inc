@@ -186,6 +186,7 @@ function _watershednow_define_perms() {
   $default_perms['support'] = array(
     'access wn dashboard',
     'access administration menu',
+    'access donation reports',
     'view advanced help index',
     'view advanced help popup',
     'view advanced help topic',
@@ -300,6 +301,7 @@ function _watershednow_define_perms() {
   $default_perms['staff'] = array(
     'access wn dashboard',
     'access administration menu',
+    'access donation reports',
     'collapse format fieldset by default',
     'collapsible format selection',
     'show more format tips link',
@@ -382,6 +384,7 @@ function _watershednow_define_perms() {
   $default_perms['web_admin'] = array(
     'access wn dashboard',
     'access administration menu',
+    'access donation reports',
     'collapse format fieldset by default',
     'collapsible format selection',
     'show more format tips link',
