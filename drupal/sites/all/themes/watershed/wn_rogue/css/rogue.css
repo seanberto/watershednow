@@ -47,7 +47,7 @@ h1.title {
 
 
 /*
- *  Updates Page styles
+ *  Updates and Events Page styles
  */ 
  
  .view-updates .view-content > div, .view-events .view-content > div {
@@ -62,6 +62,10 @@ h1.title {
 
 #content-area .view-updates .views-field-created, #content-area .view-events .views-field-field-date-event-value {
   color: #ebebeb;
+}
+
+#views-exposed-form-events-page-1 {
+  background: #1e1e1e; 
 }
 
 /*
