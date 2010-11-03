@@ -224,7 +224,7 @@ function _wn_admin_quicklinks() {
     $rows = array();
     foreach($blocks as $block) {
       if (in_array($block['module'], $module_whitelist) && !(in_array($block['info'], $info_blacklist))) {
-        $rows[] = array(l($block['info'], 'admin/build/block/configure/' . $block['module'] . '/' . $block['delta']));        
+        $rows[] = array(l($block['info'], 'admin/build/block/configure/' . $block['module'] . '/' . $block['delta'], array('query' => drupal_get_destination())));        
       }
     }
     // Grab the rows created above and build the table of block edit links. Add classes for javascript sorting.
