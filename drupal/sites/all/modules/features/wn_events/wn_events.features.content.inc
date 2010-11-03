@@ -61,11 +61,7 @@ function wn_events_content_default_fields() {
       'custom_wn_hp_callout_desc' => NULL,
       'custom_wn_hp_callout_desc_style' => NULL,
       'custom_wn_hp_callout_desc_required' => NULL,
-      'filefield_sources' => array(
-        'reference' => 'reference',
-        'attach' => 0,
-        'remote' => 0,
-      ),
+      'filefield_sources' => array(),
       'filefield_source_attach_path' => 'file_attach',
       'filefield_source_attach_absolute' => '0',
       'filefield_source_attach_mode' => 'copy',
