@@ -174,6 +174,7 @@ function wn_common_views_default_views() {
     'hide_empty' => 0,
   ));
   $handler = $view->new_display('block', 'Block', 'block_1');
+  $handler->override_option('title', 'Related Content');
   $handler->override_option('block_description', '');
   $handler->override_option('block_caching', -1);
 
