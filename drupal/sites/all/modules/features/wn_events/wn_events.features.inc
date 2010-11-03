@@ -30,7 +30,7 @@ function wn_events_node_info() {
       'has_body' => '0',
       'body_label' => '',
       'min_word_count' => '0',
-      'help' => t('"Events" have a start date/time and optionally an end date/time. They are listed on the events calendar. They can also be enabled to accept sign-ups with registration limits.'),
+      'help' => t('"Events" have a start date/time and optionally an end date/time. They are listed on the events calendar. They can also be enabled to accept sign-ups with registration limits. Enable signups at the bottom of this page by clicking on the tab that says Signups and checking the "Enable" radio button.'),
     ),
   );
   return $items;
