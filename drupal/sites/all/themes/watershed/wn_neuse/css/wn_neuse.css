@@ -4,6 +4,12 @@
   -webit-box-shadow:0 0 5px #666;
 }
 
+#footer-first .block-title {
+  text-shadow:1px 1px 1px #666;
+  -moz-text-shadow:1px 1px 1px #666; 
+  -webit-text-shadow:1px 1px 1px #666;
+}
+
 body {
   background: #5c5c5c url(../images/bg2.jpg) 0 -300px no-repeat;
   letter-spacing: 0;
