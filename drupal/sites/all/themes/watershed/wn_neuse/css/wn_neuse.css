@@ -135,6 +135,7 @@ h1.title {
   padding-right: 1em;
   display: block;
   float: left;
+  line-height: 2.5em;
 }
 #nav ul ul a {
   border-right: 0;
