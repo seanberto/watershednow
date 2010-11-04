@@ -412,3 +412,22 @@ div.wn-credit {
   margin-bottom: 0;
   font-weight: bold;
 }
+
+/*
+ * Taxonomy listing style
+ */
+ 
+.page-taxonomy #content-inner {
+  margin-top: 20px;
+}
+
+.page-taxonomy #content-area .node {
+  margin-bottom: 1em;
+  padding-bottom: .5em;
+  border-bottom: 1px dotted #414042;
+}
+
+.page-taxonomy #content-area h2.title {
+  font-size: 1.2em;
+  margin-bottom: 0;
+}
