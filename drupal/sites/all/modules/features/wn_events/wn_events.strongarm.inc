@@ -111,10 +111,10 @@ function wn_events_strongarm() {
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'signup_date_field_donation';
-  $strongarm->value = '0';
+  $strongarm->name = 'pathauto_node_event_pattern';
+  $strongarm->value = 'event/[title-raw]';
 
-  $export['signup_date_field_donation'] = $strongarm;
+  $export['pathauto_node_event_pattern'] = $strongarm;
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
@@ -122,13 +122,6 @@ function wn_events_strongarm() {
   $strongarm->value = 'field_date_event';
 
   $export['signup_date_field_event'] = $strongarm;
-  $strongarm = new stdClass;
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'signup_node_default_state_donation';
-  $strongarm->value = 'disabled';
-
-  $export['signup_node_default_state_donation'] = $strongarm;
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
