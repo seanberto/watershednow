@@ -162,3 +162,15 @@ h1.title {
 
 #block-menu-secondary_links {
 }
+
+/*
+ *  Fix table colors so viewable on dark background
+ */
+ 
+.view-donations table, .view-donations td.active, .view-donations tr.odd, .view-donations tr.even {
+  background: none;
+}
+
+.view-donations thead th {
+  border-bottom: 1px solid #CCC;
+}
