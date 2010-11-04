@@ -106,7 +106,7 @@ function wn_blog_context_default_contexts() {
           'module' => 'wn_common',
           'delta' => 0,
           'region' => 'right',
-          'weight' => 2,
+          'weight' => 9,
         ),
       ),
     ),

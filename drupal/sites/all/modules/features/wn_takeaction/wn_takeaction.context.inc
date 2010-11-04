@@ -62,7 +62,7 @@ function wn_takeaction_context_default_contexts() {
           'module' => 'wn_common',
           'delta' => 0,
           'region' => 'right',
-          'weight' => 0,
+          'weight' => 9,
         ),
         'views-ce3c6f72a6fff470fd9f1ade8c7b668c' => array(
           'module' => 'views',
