@@ -294,7 +294,7 @@ function watershed_preprocess_block(&$vars, $hook) {
         );
       }
       // Display 'configure' for other blocks.
-      elseif ($block->module != 'watershed') {
+      elseif (($block->module != 'watershed') && ($block->module != 'wn_common')) {
         $edit_links[] = l('<span>' . t('configure') . '</span>', 'admin/build/block/configure/' . $block->module . '/' . $block->delta,
           array(
             'attributes' => array(
