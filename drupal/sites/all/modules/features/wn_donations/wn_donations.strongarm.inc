@@ -103,7 +103,7 @@ function wn_donations_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'pathauto_node_donation_pattern';
-  $strongarm->value = 'donations/[title-raw]';
+  $strongarm->value = 'donate/[title-raw]';
 
   $export['pathauto_node_donation_pattern'] = $strongarm;
   $strongarm = new stdClass;
