@@ -15,7 +15,8 @@
 
 #callout .wn-hp-callout-entry {
   color:#bcbec0;
-  background: #000   url(../images/callout_bottom.gif) 0 100% repeat-x;
+  width:320px;
+  background: #000 url(../images/callout_bottom.gif) 0 100% repeat-x;
   overflow: hidden;
 }
 
