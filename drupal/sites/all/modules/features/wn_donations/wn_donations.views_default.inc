@@ -17,6 +17,115 @@ function wn_donations_views_default_views() {
   $view->api_version = 2;
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
   $handler = $view->new_display('default', 'Defaults', 'default');
+  $handler->override_option('fields', array(
+    'title' => array(
+      'label' => '',
+      'alter' => array(
+        'alter_text' => 1,
+        'text' => '<h2>[title]</h2>',
+        'make_link' => 0,
+        'path' => '',
+        'link_class' => '',
+        'alt' => '',
+        'prefix' => '',
+        'suffix' => '',
+        'target' => '',
+        'help' => '',
+        'trim' => 0,
+        'max_length' => '',
+        'word_boundary' => 1,
+        'ellipsis' => 1,
+        'html' => 0,
+        'strip_tags' => 0,
+      ),
+      'empty' => '',
+      'hide_empty' => 0,
+      'empty_zero' => 0,
+      'link_to_node' => 1,
+      'exclude' => 0,
+      'id' => 'title',
+      'table' => 'node',
+      'field' => 'title',
+      'override' => array(
+        'button' => 'Override',
+      ),
+      'relationship' => 'none',
+    ),
+    'field_teaser_value' => array(
+      'label' => '',
+      'alter' => array(
+        'alter_text' => 0,
+        'text' => '',
+        'make_link' => 0,
+        'path' => '',
+        'link_class' => '',
+        'alt' => '',
+        'prefix' => '',
+        'suffix' => '',
+        'target' => '',
+        'help' => '',
+        'trim' => 0,
+        'max_length' => '',
+        'word_boundary' => 1,
+        'ellipsis' => 1,
+        'html' => 0,
+        'strip_tags' => 0,
+      ),
+      'empty' => '',
+      'hide_empty' => 0,
+      'empty_zero' => 0,
+      'link_to_node' => 0,
+      'label_type' => 'none',
+      'format' => 'default',
+      'multiple' => array(
+        'group' => TRUE,
+        'multiple_number' => '',
+        'multiple_from' => '',
+        'multiple_reversed' => FALSE,
+      ),
+      'exclude' => 0,
+      'id' => 'field_teaser_value',
+      'table' => 'node_data_field_teaser',
+      'field' => 'field_teaser_value',
+      'override' => array(
+        'button' => 'Override',
+      ),
+      'relationship' => 'none',
+    ),
+    'view_node' => array(
+      'label' => '',
+      'alter' => array(
+        'alter_text' => 0,
+        'text' => '',
+        'make_link' => 0,
+        'path' => '',
+        'link_class' => '',
+        'alt' => '',
+        'prefix' => '',
+        'suffix' => '',
+        'target' => '',
+        'help' => '',
+        'trim' => 0,
+        'max_length' => '',
+        'word_boundary' => 1,
+        'ellipsis' => 1,
+        'html' => 0,
+        'strip_tags' => 0,
+      ),
+      'empty' => '',
+      'hide_empty' => 0,
+      'empty_zero' => 0,
+      'text' => 'Read more',
+      'exclude' => 0,
+      'id' => 'view_node',
+      'table' => 'node',
+      'field' => 'view_node',
+      'override' => array(
+        'button' => 'Override',
+      ),
+      'relationship' => 'none',
+    ),
+  ));
   $handler->override_option('sorts', array(
     'value0' => array(
       'order' => 'ASC',
@@ -71,12 +180,10 @@ function wn_donations_views_default_views() {
   $handler->override_option('empty', '<div class="messages">There are currently no donation opportunities listed.</div>');
   $handler->override_option('empty_format', '2');
   $handler->override_option('use_pager', '1');
-  $handler->override_option('row_plugin', 'node');
   $handler->override_option('row_options', array(
-    'relationship' => 'none',
-    'build_mode' => 'teaser',
-    'links' => 1,
-    'comments' => 0,
+    'inline' => array(),
+    'separator' => '',
+    'hide_empty' => 0,
   ));
   $handler = $view->new_display('page', 'Page', 'page_1');
   $handler->override_option('path', 'donate');
@@ -266,6 +373,13 @@ function wn_donations_views_default_views() {
     'draggableviews_arguments' => array(
       'use_args' => 0,
     ),
+  ));
+  $handler->override_option('row_plugin', 'node');
+  $handler->override_option('row_options', array(
+    'relationship' => 'none',
+    'build_mode' => 'teaser',
+    'links' => 1,
+    'comments' => 0,
   ));
   $handler->override_option('path', 'donate/draggable');
   $handler->override_option('menu', array(
