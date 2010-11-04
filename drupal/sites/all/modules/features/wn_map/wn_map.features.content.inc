@@ -48,7 +48,7 @@ function wn_map_content_default_fields() {
     'module' => 'filefield',
     'active' => '1',
     'list_field' => '1',
-    'list_default' => 0,
+    'list_default' => 1,
     'description_field' => '1',
     'widget' => array(
       'file_extensions' => 'txt pdf doc docx jpg jpeg png gif xls xlsx cvs',
