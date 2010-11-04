@@ -33,6 +33,20 @@ function wn_common_strongarm() {
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'cache';
+  $strongarm->value = '1';
+
+  $export['cache'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'cache_lifetime';
+  $strongarm->value = '0';
+
+  $export['cache_lifetime'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'clean_url';
   $strongarm->value = TRUE;
 
@@ -643,9 +657,37 @@ Webmaster of !site
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'wysiwyg_imagefield_donation';
+  $strongarm->value = 'field_image_assets';
+
+  $export['wysiwyg_imagefield_donation'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'wysiwyg_imagefield_event';
+  $strongarm->value = 'field_image_assets';
+
+  $export['wysiwyg_imagefield_event'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'wysiwyg_imagefield_page';
   $strongarm->value = 'field_image_assets';
 
   $export['wysiwyg_imagefield_page'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'wysiwyg_imagefield_take_action';
+  $strongarm->value = 'field_image_assets';
+
+  $export['wysiwyg_imagefield_take_action'] = $strongarm;
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'wysiwyg_imagefield_update';
+  $strongarm->value = 'field_image_assets';
+
+  $export['wysiwyg_imagefield_update'] = $strongarm;
   return $export;
 }
