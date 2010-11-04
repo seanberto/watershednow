@@ -102,7 +102,7 @@ a {
  *  Updates and Events Page styles
  */ 
 
-.view-updates .view-content > div, .view-events .view-content > div {
+.view-updates .view-content > div, .view-events .view-content > div, .view-take-action .view-content > div {
   margin-bottom: 1em;
   padding-bottom: .5em;
   border-bottom: 1px dotted #414042;
