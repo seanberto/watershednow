@@ -1,0 +1,17 @@
+/**
+ * overrides module wn_showcase css - keep this file the same name
+ */
+#block-boxes-showcase_1, #block-boxes-showcase_2, #block-boxes-showcase_3 {
+  border-right:1px dotted #fff;
+  float:left;
+  width:31%;
+  padding-right:1.2%;
+  margin-right:1.2%;
+}
+
+#block-boxes-showcase_3 {
+  width:32%;
+  margin-right:0;
+  padding-right:0;
+  border-right:0;
+}

@@ -1,3 +1,35 @@
+/* =Shadows
+-----------------*/
+#page-shadow { background:url(../images/page_shadow/page_shadow_bottom.png) 0 100% repeat-x;}
+#page-shadow-right {
+  position:absolute;
+  top:-8px;
+  right:-11px;
+  width:11px;
+  margin-bottom:8px;
+  height:100%;
+  background:url(../images/page_shadow/page_shadow_right.png) 100% 0 repeat-y;
+}
+
+#page-shadow-tr-corner {
+  width:13px;
+  height:14px;
+  position:absolute;
+  top:-22px;
+  right:-11px;
+  background:url(../images/page_shadow/page_shadow_tr_corner.png) 0 0 no-repeat;
+}
+
+#page-shadow-br-corner {
+  width:11px;
+  height:8px;
+  position:absolute;
+  bottom:0;
+  right:0;
+  margin-right:-11px;
+  background:url(../images/page_shadow/page_shadow_br_corner.png) 0 0 no-repeat;
+}
+
 #main, #callout {
   box-shadow:0 0 5px #666;
   -moz-box-shadow:0 0 5px #666; 
