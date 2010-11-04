@@ -1,3 +1,15 @@
+#main, #callout {
+  box-shadow:0 0 5px #666;
+  -moz-box-shadow:0 0 5px #666; 
+  -webit-box-shadow:0 0 5px #666;
+}
+
+#footer-first .block-title {
+  text-shadow:1px 1px 1px #666;
+  -moz-text-shadow:1px 1px 1px #666; 
+  -webit-text-shadow:1px 1px 1px #666;
+}
+
 body {
   background: #5c5c5c url(../images/bg2.jpg) 0 -300px no-repeat;
   letter-spacing: 0;
@@ -82,14 +94,6 @@ h1.title {
 
 #block-follow-site {
   width: 16%;
-}
-
-#block-boxes-showcase_1, #block-boxes-showcase_2, #block-boxes-showcase_3 {
-  width:32%;
-}
-
-#block-boxes-showcase_3 {
-  width:34%; /* try to match #sidebar-second */
 }
 
 /* =Navigation
