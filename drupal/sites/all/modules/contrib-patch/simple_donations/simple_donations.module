@@ -119,7 +119,7 @@ function simple_donations_nodeapi(&$node, $op, $teaser = NULL, $page = NULL) {
         $show_on_teaser = variable_get('simple_donations_teaser_' . $node->type, 0);
         if ((arg(1) == $node->nid) || ($show_on_teaser == 1)) {
           $node->content['donations_form'] = array(
-            '#value'  => '<div class="simple-donations">' . drupal_get_form('simple_donations_paypal_form', $node, $user->uid, $donation_title, $donation_description, $donation_button) . '</div',
+            '#value'  => '<div class="simple-donations">' . drupal_get_form('simple_donations_paypal_form', $node, $user->uid, $donation_title, $donation_description, $donation_button) . '</div>',
             '#weight' => 20,
           );
         }

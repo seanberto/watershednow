@@ -22,7 +22,7 @@ function wn_takeaction_nodeapi(&$node, $op, $teaser = NULL, $page = NULL) {
     case 'update':
       // The node is being updated.
       if (($node->type == 'take_action') && (variable_get('vs_webform_key', '') == '')) {
-        drupal_set_message('You do not have a <a href="http://www.votesmart.org/user_register.php"target="_blank">VoteSmart API</a> set for this site. If you want to use the legislative lookup tool, please contact your site administrator.', 'warning');
+        drupal_set_message('You do not have a <a href="http://www.votesmart.org/user_register.php" target="_blank">VoteSmart API</a> set for this site. If you want to use the legislative lookup tool, please contact your site administrator.', 'warning');
       }
       break;
   }
