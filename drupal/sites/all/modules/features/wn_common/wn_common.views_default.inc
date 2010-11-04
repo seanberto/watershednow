@@ -54,7 +54,7 @@ function wn_common_views_default_views() {
       'empty_zero' => 0,
       'link_to_node' => 0,
       'label_type' => 'none',
-      'format' => 'teaser',
+      'format' => 'default',
       'multiple' => array(
         'group' => 1,
         'multiple_number' => '',
@@ -66,6 +66,9 @@ function wn_common_views_default_views() {
       'table' => 'node_data_field_get_involved',
       'field' => 'field_get_involved_nid',
       'relationship' => 'none',
+      'override' => array(
+        'button' => 'Override',
+      ),
     ),
   ));
   $handler->override_option('sorts', array(
@@ -168,6 +171,11 @@ function wn_common_views_default_views() {
   ));
   $handler->override_option('items_per_page', 5);
   $handler->override_option('distinct', 1);
+  $handler->override_option('style_plugin', 'list');
+  $handler->override_option('style_options', array(
+    'grouping' => '',
+    'type' => 'ul',
+  ));
   $handler->override_option('row_options', array(
     'inline' => array(),
     'separator' => '',
