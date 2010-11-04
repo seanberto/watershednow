@@ -2,9 +2,14 @@
   background:url(../../images/pager/pager-green.gif) 100% 0 no-repeat;
 }
 
-.title, .block-title, #footer .block-title, #sidebar-second .block-title a {
+.title, .block-title, #footer .block-title {
   color: #75b731;
 }
+
+#sidebar-second .block-title, #sidebar-second .block-title a {
+  color:#95DF45;
+}
+
 
 a, a:link, a:visited {
   color:#75b731;
