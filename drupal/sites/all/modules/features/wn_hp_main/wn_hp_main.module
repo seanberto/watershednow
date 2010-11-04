@@ -45,10 +45,5 @@ function wn_hp_main_form_alter(&$form, $form_state, $form_id) {
         $form['site_frontpage']['#access'] = FALSE; // If not super-user, hide ability to set homepage.
       }
       break;
-    case 'boxes_box_form':
-      if ($user->uid != '1') {
-        $form['description']['#access'] = FALSE; // If not super-user, hide the boxes box description field.
-      }
-      break;
   }
 }
