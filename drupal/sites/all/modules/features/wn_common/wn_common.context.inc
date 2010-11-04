@@ -100,7 +100,7 @@ function wn_common_context_default_contexts() {
           'module' => 'menu_block',
           'delta' => 1,
           'region' => 'right',
-          'weight' => 0,
+          'weight' => -9,
         ),
       ),
     ),
