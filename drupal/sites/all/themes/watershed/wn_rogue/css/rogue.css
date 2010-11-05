@@ -15,7 +15,7 @@ body {
   margin: 0 auto -225px;
 }
 
-#content-inner {
+body.sidebar-right #content-inner {
   padding: 0 40px 20px 0;
   margin-bottom: 20px;
   background: url(../images/divider.png) repeat-y scroll right 0 transparent;
