@@ -9,7 +9,7 @@ include_once('wn_map.features.inc');
  * we change the icon path in the view.
  */
 function wn_map_views_pre_render(&$view) {
-  if (($view->name == 'watershed_feature_data') || ($view->name == 'watershed_feature_data_with_args')) {
+  if (($view->name == 'map_feature_data') || ($view->name == 'map_feature_data_with_args')) {
     
     foreach ($view->result as $row) { // Iterate through results.
       $tid = $row->term_data_tid; // Get term ID.
