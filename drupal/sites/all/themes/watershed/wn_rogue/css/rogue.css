@@ -25,9 +25,6 @@ body.sidebar-right #content-inner {
   margin-top: 25px;
 }
 
-#main {
-}
-
 #logo-title {
   float: left;
 }
@@ -56,10 +53,10 @@ h1.title {
  *  Updates and Events Page styles
  */ 
  
- .view-updates .view-content > div,
- .view-events .view-content > div,
- .view-take-action .view-content > div,
- .view-donation-opportunities .view-content > div {
+.view-updates .view-content > div,
+.view-events .view-content > div,
+.view-take-action .view-content > div,
+.view-donation-opportunities .view-content > div {
   margin-bottom: 1em;
   padding-bottom: .5em;
   border-bottom: 1px dotted #fff;
@@ -91,6 +88,11 @@ h1.title {
   font-size: 1.1em;
   margin-bottom: 0;
   font-weight: bold;
+}
+
+#sidebar-second #block-views-sidebar_multimedia-block_2 {
+  padding-left: 0;
+  padding-right: 0;
 }
 
 /*
@@ -167,9 +169,6 @@ h1.title {
  
 #block-watershed-mission {
   width: 35%;
-}
-
-#block-menu-secondary_links {
 }
 
 /*

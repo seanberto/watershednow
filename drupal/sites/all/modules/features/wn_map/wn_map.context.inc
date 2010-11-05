@@ -75,12 +75,6 @@ function wn_map_context_default_contexts() {
           'region' => 'right',
           'weight' => 2,
         ),
-        'views-sidebar_multimedia-block_3' => array(
-          'module' => 'views',
-          'delta' => 'sidebar_multimedia-block_3',
-          'region' => 'right',
-          'weight' => 3,
-        ),
       ),
     ),
   );
