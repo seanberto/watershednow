@@ -21,3 +21,15 @@ ul.secondary li a:hover{
 	color:#555;
 	text-decoration:none;
 }
+
+/*
+ *  Remove text from newsletter form submit button in IE7
+ */
+
+#block-watershed-newsletter .form-submit {
+  text-indent: -9999px;
+  font-size: 0;
+  color: #fff;
+  text-align: right;
+  line-height: 0;
+}
