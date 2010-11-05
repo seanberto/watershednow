@@ -38,6 +38,10 @@ $(function(){
   $page_shadow.css(shadow_css());
   $page_shadow.append('<div id="page-shadow-tr-corner"></div><div id="page-shadow-right"></div><div id="page-shadow-br-corner"></div>')
   
+  $(window).load(function(){
+    $page_shadow.css(shadow_css());
+  });
+  
   $(window).resize(function(){
     $page_shadow.css(shadow_css());
   });
