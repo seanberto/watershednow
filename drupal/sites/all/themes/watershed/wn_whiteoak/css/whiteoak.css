@@ -152,9 +152,14 @@ body.node-type-map-feature #sidebar-second .block.odd {
 }
  
 #block-watershed-newsletter {
-  float: right;
+  position: absolute;
+  bottom: 40px;
+  right: 0;
   width: 215px;
-  margin-top: 85px;
+}
+
+.front #block-watershed-newsletter {
+  bottom: 327px;
 }
 
 #block-watershed-newsletter h3.title {
