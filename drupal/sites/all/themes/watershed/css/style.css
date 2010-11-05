@@ -432,3 +432,10 @@ div.wn-credit {
   font-size: 1.2em;
   margin-bottom: 0;
 }
+
+/** Styling map slideshows. */
+
+.galleryformatter-greenarrows .gallery-thumbs {
+  padding-right: 0;
+  padding-left: 0;
+ } 

@@ -147,8 +147,8 @@ function wn_map_openlayers_presets() {
   $openlayers_presets->title = 'Sidebar map';
   $openlayers_presets->description = 'Sidbar map';
   $openlayers_presets->data = array(
-    'width' => '350px',
-    'height' => '300px',
+    'width' => '270px',
+    'height' => '270px',
     'image_path' => '/sites/all/modules/features/wn_map/openlayers_themes/wn/',
     'css_path' => '/sites/all/modules/features/wn_map/openlayers_themes/wn/style.css',
     'proxy_host' => '',

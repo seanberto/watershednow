@@ -33,10 +33,34 @@ function wn_map_ctools_plugin_api() {
  */
 function wn_map_imagecache_default_presets() {
   $items = array(
-    'homepage_thumb' => array(),
-    'main_map' => array(),
-    'map_gallery_slide' => array(),
-    'map_gallery_thumb' => array(),
+    'map_gallery_slide' => array(
+      'presetname' => 'map_gallery_slide',
+      'actions' => array(
+        '0' => array(
+          'weight' => '0',
+          'module' => 'imagecache',
+          'action' => 'imagecache_scale_and_crop',
+          'data' => array(
+            'width' => '270',
+            'height' => '270',
+          ),
+        ),
+      ),
+    ),
+    'map_gallery_thumb' => array(
+      'presetname' => 'map_gallery_thumb',
+      'actions' => array(
+        '0' => array(
+          'weight' => '0',
+          'module' => 'imagecache',
+          'action' => 'imagecache_scale_and_crop',
+          'data' => array(
+            'width' => '60',
+            'height' => '40',
+          ),
+        ),
+      ),
+    ),
   );
   return $items;
 }

@@ -14,7 +14,7 @@ function wn_map_views_pre_render(&$view) {
     foreach ($view->result as $row) { // Iterate through results.
       $tid = $row->term_data_tid; // Get term ID.
       $img_url = taxonomy_image_get_url($tid); // Look up term's image URL.
-      $default_img = drupal_get_path('module', 'wn_map') . '/openlayers_themes/wn/icons/poi.png';
+      $default_img = '/' . drupal_get_path('module', 'wn_map') . '/openlayers_themes/wn/icons/poi.png';
       if (!empty($img_url)) {
         $row->term_data_tid = $img_url; // If term image exists, use it.
       } else {

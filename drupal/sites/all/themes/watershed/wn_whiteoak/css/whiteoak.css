@@ -90,6 +90,10 @@ a {
   background: #eff0f0;
 }
 
+body.node-type-map-feature #sidebar-second .block.odd {
+  background: #FFFFFF;
+}
+
 #sidebar-second .block-title, #sidebar-second .content {
   padding-left: 15px;
 }
