@@ -144,6 +144,7 @@ function watershed_preprocess_page(&$vars, $hook) {
   // Classes for body element. Allows advanced theming based on context
   // (home page, node of certain type, etc.)
   $body_classes = array($vars['body_classes']);
+  $body_classes[] = watershed_id_safe(str_replace('_', '-', $theme_key)); // Add the active theme.
   if (user_access('administer blocks')) {
     $body_classes[] = 'admin';
   }

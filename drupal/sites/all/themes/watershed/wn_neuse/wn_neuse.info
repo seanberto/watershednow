@@ -30,6 +30,8 @@ features[] = secondary_links
 stylesheets[all][] = css/wn_neuse.css
 stylesheets[all][] = css/hp_callout.css
 stylesheets[all][] = css/wn_showcase.css
+; Note: We call an extra style sheet here that doesn't ship with the theme for distro overrides.
+stylesheets[all][] = css/wn_customizations.css
 
 scripts[] = js/wn_neuse.js
 

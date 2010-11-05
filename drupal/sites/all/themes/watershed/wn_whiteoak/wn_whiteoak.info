@@ -29,6 +29,8 @@ features[] = secondary_links
 
 stylesheets[all][] = css/whiteoak.css
 stylesheets[all][] = css/hp_callout.css
+; Note: We call an extra style sheet here that doesn't ship with the theme for distro overrides.
+stylesheets[all][] = css/wn_customizations.css
 
 ; Note: We need to keep some of the settings from the parent theme here even though we don't provide UI
 ; in our theme-settings.php for overriding them. This is b/c we inherit Watershed's template.php.
