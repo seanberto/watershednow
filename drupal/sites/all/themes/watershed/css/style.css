@@ -459,8 +459,12 @@ div.wn-credit {
   margin: 0;
 }
 
-#comments .indented > .comment {
+#comments > .indented > .comment {
   padding-left: 40px;
+}
+
+#comments .indented .indented .comment {
+  padding-left: 60px;
 }
 
 #comments h3.title {
