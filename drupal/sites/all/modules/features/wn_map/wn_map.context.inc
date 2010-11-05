@@ -77,6 +77,7 @@ function wn_map_context_default_contexts() {
         ),
       ),
     ),
+    'menu' => 'map',
   );
   $context->condition_mode = 0;
 
