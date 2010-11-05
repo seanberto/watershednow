@@ -33,3 +33,15 @@ ul.secondary li a:hover{
   text-align: right;
   line-height: 0;
 }
+
+/*
+ *  Adding some styles to get IE7 to display the filter correctly.
+ */
+
+#views-exposed-form-events-page-1 .date-views-filter-wrapper {
+  line-height: 0;
+}
+
+#views-exposed-form-events-page-1 #edit-submit-events {
+  margin-top: 5px;
+}

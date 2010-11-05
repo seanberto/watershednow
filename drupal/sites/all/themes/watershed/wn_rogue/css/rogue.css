@@ -16,7 +16,9 @@ body {
 }
 
 #content-inner {
-  padding: 0 40px 40px 0
+  padding: 0 40px 20px 0;
+  margin-bottom: 20px;
+  background: url(../images/divider.png) repeat-y scroll right 0 transparent;
 }
 
 #header {
@@ -43,6 +45,10 @@ h1.title {
 
 #sidebar-second .block .block-inner, .node-inner {
   overflow: hidden;
+}
+
+.sidebar-right .center {
+  margin-right: 320px;
 }
 
 
