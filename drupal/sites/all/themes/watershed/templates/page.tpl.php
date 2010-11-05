@@ -28,7 +28,9 @@
                  <?php print ($logo) ? "<img src='$logo' alt='$site_name'/>" : $site_name; ?> <!-- if no logo is present simply print site-name -->
                 </a>
               </h1>
-              <span id="slogan"><?php print $site_slogan ?></span>
+              <?php if (!empty($site_slogan)): ?>
+                <span id="slogan"><?php print $site_slogan ?></span>
+              <?php endif; ?>
             <?php endif; ?>
           </div> <!-- /name-and-slogan -->
 

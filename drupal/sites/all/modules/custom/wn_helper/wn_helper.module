@@ -110,7 +110,7 @@ function wn_helper_form_alter(&$form, $form_state, $form_id) {
       if (in_array($current_theme, $themes)) {
         // For Watershed's 3 child themes, disable the "toggle" options on theme settings form.
         foreach($form['theme_settings'] as $key => $setting) {
-          if (strpos($key, 'toggle') !== FALSE) {
+          if ((strpos($key, 'toggle') !== FALSE) && ($key != 'toggle_slogan')) {
             $form['theme_settings'][$key]['#disabled'] = TRUE;
           }
         }
