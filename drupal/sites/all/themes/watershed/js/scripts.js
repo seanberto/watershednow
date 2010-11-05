@@ -34,6 +34,15 @@ jQuery.fn.hint = function (blurClass) {
   });
 };
 
+/* makes all elements the same height */
+jQuery.fn.vjustify = function( min_h ) {
+  var h = min_h || 0;
+  return this.each(function(){
+    var nh = jQuery(this).height();
+    if( nh > h ) h = nh;
+  }).height(h);
+}
+
 $(document).ready(function() {
   // adjust the size of the layer switcher maximize control
   $('#OpenLayers_Control_MaximizeDiv, #OpenLayers_Control_MaximizeDiv_innerImage').height('84px').width('24px');

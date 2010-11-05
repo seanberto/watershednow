@@ -1,12 +1,3 @@
-/* makes all elements the same height */
-jQuery.fn.vjustify = function( min_h ) {
-  var h = min_h || 0;
-  return this.each(function(){
-    var nh = jQuery(this).height();
-    if( nh > h ) h = nh;
-  }).height(h);
-}
-
 function shadow_css() {
   var $main = $('#main');
   var nav_h = $('#nav').height() || 0;
@@ -20,6 +11,9 @@ function shadow_css() {
 }
 
 $(function(){
+  // make sidebar and content area same height so border spans all content
+  $('#content-inner, #sidebar-second').vjustify();
+  
   $('#block-boxes-showcase_1, #block-boxes-showcase_2, #block-boxes-showcase_3').vjustify();
   var $page = $('#page');
   var $main = $('#main');
