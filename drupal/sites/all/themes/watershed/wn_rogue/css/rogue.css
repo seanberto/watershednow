@@ -95,6 +95,12 @@ h1.title {
   padding-right: 0;
 }
 
+/* Map gallery fix */
+.galleryformatter {
+  width: 270px;
+  margin-left: 0;
+}
+
 /*
  * Navigation Styles
  */
