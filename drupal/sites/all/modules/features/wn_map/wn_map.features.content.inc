@@ -492,7 +492,7 @@ function wn_map_content_default_fields() {
     ),
     'widget_active' => '1',
     'type' => 'openlayers_wkt',
-    'required' => '0',
+    'required' => '1',
     'multiple' => '1',
     'module' => 'openlayers_cck',
     'active' => '1',

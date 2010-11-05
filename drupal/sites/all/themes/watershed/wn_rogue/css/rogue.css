@@ -196,3 +196,8 @@ h1.title {
 #comments .comment.odd {
   background: #2e2e2e;
 }
+
+/** Set the height of the multimedia block. This is necessary for sidebar/content area sizing to work.*/
+#block-views-sidebar_multimedia-block_1 {
+  height: 270px;
+}

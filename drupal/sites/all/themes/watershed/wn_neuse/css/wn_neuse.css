@@ -205,3 +205,8 @@ h1.title {
   margin-bottom: 0;
   font-weight: bold;
 }
+
+/** Set the height of the multimedia block. This is necessary for sidebar/content area sizing to work.*/
+#block-views-sidebar_multimedia-block_1 {
+  height: 270px;
+}
