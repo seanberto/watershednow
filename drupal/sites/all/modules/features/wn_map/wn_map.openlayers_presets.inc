@@ -51,7 +51,7 @@ function wn_map_openlayers_presets() {
       'openlayers_behavior_scaleline' => array(),
       'openlayers_behavior_zoomtolayer' => array(
         'zoomtolayer' => 'map_feature_data_openlayers_1',
-        'point_zoom_level' => '5',
+        'point_zoom_level' => '8',
       ),
     ),
     'default_layer' => 'google_physical',
@@ -170,7 +170,7 @@ function wn_map_openlayers_presets() {
       'openlayers_behavior_panzoom' => array(),
       'openlayers_behavior_zoomtolayer' => array(
         'zoomtolayer' => 'map_feature_data_with_args_openlayers_1',
-        'point_zoom_level' => '5',
+        'point_zoom_level' => '6',
       ),
     ),
     'default_layer' => 'google_physical',

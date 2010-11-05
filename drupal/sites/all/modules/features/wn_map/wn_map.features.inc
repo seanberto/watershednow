@@ -79,7 +79,7 @@ function wn_map_node_info() {
       'has_body' => '0',
       'body_label' => '',
       'min_word_count' => '0',
-      'help' => t('Create a feature to be displayed on a map. You can create points, lines and polygons. NOTE: To delete an element with the map picker, click the far-left of the right-hand picker icons, then click the point on the map and hit "d".'),
+      'help' => t('Create a feature to be displayed on a map. You can create points, lines and polygons. NOTE: To delete an element with the map picker, click the far-left of the right-hand picker icons, then click the point on the map and hit "d". To stop drawing a polygon or line, double click.'),
     ),
     'map_kml' => array(
       'name' => t('KML layer'),
