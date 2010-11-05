@@ -1,4 +1,7 @@
 $(function(){
   // make sidebar and content area same height so border spans all content
-  $('#content-inner, #sidebar-second').vjustify(); 
+  window.setInterval(function(){
+    $('#content-inner, #sidebar-second').height('auto').vjustify();
+  },1000);
+  
 })
