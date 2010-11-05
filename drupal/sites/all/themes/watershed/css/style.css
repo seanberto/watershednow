@@ -440,3 +440,39 @@ div.wn-credit {
   padding-right: 0;
   padding-left: 0;
  } 
+ 
+ /*
+  *  Comments styles
+  */
+  
+#comments {
+  margin-top: 20px;
+  border-top: 1px dotted #ccc;
+}
+
+#comments .comment {
+  margin: .5em 0;
+  padding: 10px 10px 10px 20px;
+}
+
+#comments .indented {
+  margin: 0;
+}
+
+#comments .indented > .comment {
+  padding-left: 40px;
+}
+
+#comments h3.title {
+  font-size: 1.1em;
+  margin-bottom: .4em;
+}
+
+#comments .comment.odd {
+  background: #efefef;
+}
+
+#comments .submitted {
+  font-size: .9em;
+  font-style: italic;
+}

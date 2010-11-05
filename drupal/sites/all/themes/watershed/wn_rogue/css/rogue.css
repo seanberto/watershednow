@@ -177,3 +177,11 @@ h1.title {
 .view-donations thead th {
   border-bottom: 1px solid #CCC;
 }
+
+/*
+ *  Comments styles
+ */
+ 
+#comments .comment.odd {
+  background: #2e2e2e;
+}
