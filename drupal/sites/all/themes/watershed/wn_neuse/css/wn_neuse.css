@@ -175,11 +175,14 @@ h1.title {
   padding-left: 5px;
 }
 
-.sidebar-right #content-inner {
-  background: url(../images/sidebar_border.gif) repeat-y 100% 0;
+#content-inner {
   margin-top: 20px;
   margin-bottom: 20px;
   padding-top:20px;
+}
+
+.sidebar-right #content-inner {
+  background: url(../images/sidebar_border.gif) repeat-y 100% 0;
 }
 
 #sidebar-second #sidebar-second-inner {

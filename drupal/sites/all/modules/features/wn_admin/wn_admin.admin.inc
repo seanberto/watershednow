@@ -20,7 +20,7 @@ function _wn_admin_quicklinks() {
   $link = new stdClass;
   $link->title = 'Manage users';
   $link->topic = 'Users';
-  $link->path = 'admin/users/user';
+  $link->path = 'admin/user/user';
   $link->description = 'Manage user accounts. (Note: Must have web admin role.)';
   if (user_access('administer users')) {
     $links[$link->title] = $link; 
