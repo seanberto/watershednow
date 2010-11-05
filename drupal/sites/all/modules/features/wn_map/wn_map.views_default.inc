@@ -391,6 +391,7 @@ function wn_map_views_default_views() {
   $handler->override_option('access', array(
     'type' => 'role',
     'role' => array(
+      '5' => 5,
       '4' => 4,
       '3' => 3,
     ),
