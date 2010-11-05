@@ -1,6 +1,9 @@
 /* =Shadows
 -----------------*/
-#page-shadow { background:url(../images/page_shadow/page_shadow_bottom.png) 0 100% repeat-x;}
+#page-shadow { 
+  background:url(../images/page_shadow/page_shadow_bottom.png) 0 100% repeat-x;
+}
+
 #page-shadow-right {
   position:absolute;
   top:-8px;
@@ -43,7 +46,7 @@
 }
 
 body {
-  background: #5c5c5c url(../images/bg2.jpg) 0 -300px no-repeat;
+  background: url("../images/bg2.png") no-repeat scroll center -225px #5C5C5C;
   letter-spacing: 0;
 }
 
