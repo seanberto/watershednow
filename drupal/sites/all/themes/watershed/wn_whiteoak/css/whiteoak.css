@@ -141,7 +141,7 @@ body.node-type-map-feature #sidebar-second .block.odd {
  */
  
 #logo-title {
-  min-height: 75px; /* minimum height to keep header spacing correct if using short logo */
+  min-height: 150px; /* minimum height to keep header spacing correct if using short logo */
 }
  
 #slogan {
@@ -154,7 +154,7 @@ body.node-type-map-feature #sidebar-second .block.odd {
 #block-watershed-newsletter {
   float: right;
   width: 215px;
-  margin-top: 25px;
+  margin-top: 85px;
 }
 
 #block-watershed-newsletter h3.title {
