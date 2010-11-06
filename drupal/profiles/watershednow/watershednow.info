@@ -232,7 +232,6 @@ follow[0][youtube]  = http://youtube.com
 ; feeds[] = url
 ; URLs should be absolute URL to the .xml feed of an RSS feed.
 feeds[] = http://watershednow.posterous.com/rss.xml
-feeds[] = http://twitter.com/statuses/user_timeline/59238969.rss
 
 ; ----------------------------------------------
 
@@ -248,7 +247,7 @@ variables[simple_payments_paypal_account] = waters_1288290444_biz@thinkshout.com
 variables[googleanalytics_account] = ''
 
 ; Set the Google API key for OpenLayer's maping
-variables[openlayers_layers_google_api] = ABQIAAAAXcM0kIV0KYcm1CAyqIc4qRTBRbjBNDIac9IBLAsNWawmb_4ssxQf6kE73jz8wpJw5kIFRn2w7rXMJA
+variables[openlayers_layers_google_api] = ''
 
 ; Set VoteSmart API key
 variables[vs_webform_key] = ''
