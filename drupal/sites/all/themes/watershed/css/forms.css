@@ -27,6 +27,26 @@
   color: #c00;
 }
 
+.boxes-box-editing {
+  border:2px solid #000;
+  padding:2em;
+  position:absolute;
+  z-index:9999;
+  background:#fff;
+}
+
+#sidebar-second .boxes-box-editing {
+  right:0;
+} 
+#sidebar-first .boxes-box-editing {
+  left:0;
+}
+
+.boxes-box-editing a {
+  color:#000 !important;
+  text-decoration:underline !important;
+}
+
 #box-editor .form-text {
   width: 96%;
 }

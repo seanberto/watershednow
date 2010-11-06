@@ -20,10 +20,11 @@ $(function(){
   
   var $page_shadow = $page.addClass('clear-block').clone().attr('id','page-shadow');
   $page_shadow.children().remove();
-  $('#page, #footer').css({
+  $('#page,#footer').css({
     'position':'relative',
     'zIndex':1
   });
+  $('#page').css('zIndex',2);
 
   $page_shadow.css({
     'position':'absolute',

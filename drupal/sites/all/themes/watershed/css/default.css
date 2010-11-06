@@ -67,16 +67,15 @@ div.view div.views-admin-links {
 }
 
 /** Rollover edit links for blocks */
-
 div.block {
   position: relative;
 }
 div.block .edit, div#logo-title .edit {
   display: none;
-  position: absolute;
-  right: -20px;
-  top: -5px;
-  z-index: 40;
+  position:absolute;
+  right:-20px;
+  top:-5px;
+  z-index:99;
   padding: 3px 8px 0;
   font-size: 10px;
   line-height:16px;

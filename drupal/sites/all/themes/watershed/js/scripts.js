@@ -48,5 +48,4 @@ $(document).ready(function() {
   $('#OpenLayers_Control_MaximizeDiv, #OpenLayers_Control_MaximizeDiv_innerImage').height('84px').width('24px');
   
   $('#search-box .search-query').hint();
-
 });
