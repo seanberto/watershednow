@@ -1,11 +1,11 @@
 function shadow_css() {
   var $main = $('#main');
-  var nav_h = $('#nav').height() || 0;
-  var callout_h = $('#callout').height() || 0;
+  var nav_h = $('#nav').outerHeight() || 0;
+  var callout_h = $('#callout').outerHeight() || 0;
   return {
     'top': $main.offset().top - callout_h - nav_h + 20,
     'left': $main.offset().left + 5,
-    'height': $main.height() + $('#footer').height() + callout_h + nav_h - 13,
+    'height': $main.outerHeight() + $('#footer').height() + callout_h + nav_h - 11,
     'width': $main.width() - 5
   }
 }
