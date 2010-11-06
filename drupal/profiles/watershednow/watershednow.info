@@ -232,6 +232,7 @@ follow[0][youtube]  = http://youtube.com
 ; feeds[] = url
 ; URLs should be absolute URL to the .xml feed of an RSS feed.
 feeds[] = http://watershednow.posterous.com/rss.xml
+feeds[] = http://twitter.com/statuses/user_timeline/59238969.rss
 
 ; ----------------------------------------------
 

@@ -16,6 +16,14 @@ function wn_events_block($op = 'list', $delta = 0, $edit = array()) {
 
     case 'configure':
       if ($delta == 0) {
+        // @FIXME - Note: B/c of a narly bug in core. Have to use our own block title field to work across
+        // all themes, when using an admin theme. See: http://drupal.org/node/374501.
+        $form['wn_events_title'] = array(
+          '#type' => 'textfield',
+          '#title' => t('Event block title'),
+          '#default_value' => variable_get('wn_events_title','Upcoming events'),
+          '#description' =>t('Enter a custom title for this events homepage block.'),
+          );
         $form['wn_events_number'] = array(
           '#type' => 'select',
           '#title' => t('Number of event posts shown on the homepage'),
@@ -28,6 +36,7 @@ function wn_events_block($op = 'list', $delta = 0, $edit = array()) {
 
     case 'save':
       if ($delta == 0) {
+        variable_set('wn_events_title', $edit['wn_events_title']);
         variable_set('wn_events_number', $edit['wn_events_number']);
       }
       break;
@@ -35,7 +44,7 @@ function wn_events_block($op = 'list', $delta = 0, $edit = array()) {
     case 'view':
       if ($delta == 0) {
         if (variable_get('wn_events_number', '3') != '0') { // If count set to zero, do no display block.
-          $block['subject'] = t('Upcoming events');
+          $block['subject'] = t(variable_get('wn_events_title', 'Upcoming events'));
           $block['content'] = _wn_events_homepage_list();
         } 
       }
@@ -55,5 +64,15 @@ function _wn_events_homepage_list() {
   $output = $view->render($view_display);
   if (!empty($view->result)) { // If view returns results, output the view. We call after render so that view runs.
     return $output;
+  }
+}
+
+/**
+ * Implementation of hook_form_alter().
+ */
+function wn_events_form_alter(&$form, $form_state, $form_id) {
+  // See explanation in wn_blog_block(). We have to use our own block title here.
+  if (($form_id == 'block_admin_configure') && ($form['module']['#value'] == 'wn_events')) {
+    unset($form['block_settings']['title']);
   }
 }

@@ -16,6 +16,14 @@ function wn_blog_block($op = 'list', $delta = 0, $edit = array()) {
 
     case 'configure':
       if ($delta == 0) {
+        // @FIXME - Note: B/c of a narly bug in core. Have to use our own block title field to work across
+        // all themes, when using an admin theme. See: http://drupal.org/node/374501.
+        $form['wn_blog_title'] = array(
+          '#type' => 'textfield',
+          '#title' => t('Update block title'),
+          '#default_value' => variable_get('wn_blog_title','Recent updates'),
+          '#description' =>t('Enter a custom title for this updates homepage block.'),
+          );
         $form['wn_blog_number'] = array(
           '#type' => 'select',
           '#title' => t('Number of event posts shown on the homepage'),
@@ -28,6 +36,7 @@ function wn_blog_block($op = 'list', $delta = 0, $edit = array()) {
 
     case 'save':
       if ($delta == 0) {
+        variable_set('wn_blog_title', $edit['wn_blog_title']);
         variable_set('wn_blog_number', $edit['wn_blog_number']);
       }
       break;
@@ -35,7 +44,7 @@ function wn_blog_block($op = 'list', $delta = 0, $edit = array()) {
     case 'view':
       if ($delta == 0) {
         if (variable_get('wn_blog_number', '3') != '0') { // If count set to zero, do no display block.
-          $block['subject'] = t('Recent updates');
+          $block['subject'] = t(variable_get('wn_blog_title', 'Recent updates'));
           $block['content'] = _wn_blog_homepage_list();
         } 
       }
@@ -89,6 +98,10 @@ function wn_blog_form_alter(&$form, $form_state, $form_id) {
       '#collapsed' => TRUE,
     );
     $form['title']['title'] = $title;
+  }
+  // See explanation in wn_blog_block(). We have to use our own block title here.
+  if (($form_id == 'block_admin_configure') && ($form['module']['#value'] == 'wn_blog')) {
+    unset($form['block_settings']['title']);
   }
 }
 
