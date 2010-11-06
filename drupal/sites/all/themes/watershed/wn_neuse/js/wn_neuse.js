@@ -5,7 +5,7 @@ function shadow_css() {
   return {
     'top': $main.offset().top - callout_h - nav_h + 20,
     'left': $main.offset().left + 5,
-    'height': $main.outerHeight() + $('#footer').height() + callout_h + nav_h - 11,
+    'height': $main.outerHeight() + $('#footer').height() + callout_h + nav_h - 12,
     'width': $main.width() - 5
   }
 }
