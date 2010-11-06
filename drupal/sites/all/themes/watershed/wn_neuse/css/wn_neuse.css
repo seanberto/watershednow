@@ -1,3 +1,15 @@
+/* =Layout
+-----------------*/
+#main {
+  padding:20px 0;
+}
+#content-inner, #sidebar-second-inner {
+  margin-top:0;
+  margin-bottom:0;
+  padding-top:20px;
+  padding-bottom:0;
+}
+
 /* =Shadows
 -----------------*/
 #page-shadow { 
@@ -75,6 +87,7 @@ h1.title {
 
 .with-navigation #content, .with-navigation .sidebar {
   margin-top:0;
+  margin-bottom:0;
 }
 
 /* =Header
@@ -175,18 +188,12 @@ h1.title {
   padding-left: 5px;
 }
 
-#content-inner {
-  margin-top: 20px;
-  margin-bottom: 20px;
-  padding-top:20px;
-}
-
 .sidebar-right #content-inner {
   background: url(../images/sidebar_border.gif) repeat-y 100% 0;
 }
 
 #sidebar-second #sidebar-second-inner {
-  margin: 40px 40px 40px 20px;
+  margin:0 40px 0 20px;
 }
 
 
