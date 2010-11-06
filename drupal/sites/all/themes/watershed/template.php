@@ -252,6 +252,7 @@ function watershed_preprocess_block(&$vars, $hook) {
   global $theme_key;
 
   $block = $vars['block'];
+
   // special block classes
   $classes = array('block');
   $classes[] = watershed_id_safe('block-' . $vars['block']->module);
@@ -266,7 +267,7 @@ function watershed_preprocess_block(&$vars, $hook) {
 
   $vars['block_classes'] = implode(' ', $classes); // Concatenate with spaces
 
-  if (theme_get_setting($theme_key . '_block_editing') && user_access('administer blocks') && ($block->module != 'views')) {
+  if (theme_get_setting($theme_key . '_block_editing') && user_access('administer blocks') && ($block->module != 'views') && ($block->delta !== 'search')) {
         
       // Display 'edit block' for custom blocks.
       if ($block->module == 'block') {
