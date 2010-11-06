@@ -266,7 +266,7 @@ function watershed_preprocess_block(&$vars, $hook) {
 
   $vars['block_classes'] = implode(' ', $classes); // Concatenate with spaces
 
-  if (theme_get_setting($theme_key . '_block_editing') && user_access('administer blocks') && ($block->module != 'boxes')) {
+  if (theme_get_setting($theme_key . '_block_editing') && user_access('administer blocks') && ($block->module != 'views')) {
         
       // Display 'edit block' for custom blocks.
       if ($block->module == 'block') {
@@ -545,4 +545,15 @@ function watershed_newsletter_html_filter( $html ) {
       $html = $doc->saveHTML();
     } catch( Exception $e ) {}
     return $html;
+}
+
+/**
+ * Remove the inline edit links for boxes module. Awkward in sidebar blocks. with WYSIWYG.
+ * Also, edits not saved with certain combinations of WYSIWYG editor.
+ */
+function watershed_boxes_box($block) {
+  $output = '<div id="boxes-box-"' . $block['delta'] . ' class="boxes-box">';
+  $output .= '<div class="boxes-box-content">' . $block['content'] . '</div>';
+  $output .= '</div>';
+  return $output;
 }

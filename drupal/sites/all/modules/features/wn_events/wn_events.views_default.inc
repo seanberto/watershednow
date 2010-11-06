@@ -195,7 +195,7 @@ function wn_events_views_default_views() {
         'use_operator' => 0,
         'operator' => 'date_filter_op',
         'identifier' => 'date_filter',
-        'label' => 'Events on or after (leave empty to see page events)',
+        'label' => 'Events on or after (leave empty to see all events)',
         'optional' => 1,
         'remember' => 1,
       ),

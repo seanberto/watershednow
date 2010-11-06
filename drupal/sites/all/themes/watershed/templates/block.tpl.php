@@ -1,6 +1,5 @@
 <div id="block-<?php print $block->module .'-'. $block->delta ?>" class="<?php print $block_classes . ' ' . $block_zebra; ?>">
   <div class="block-inner">
-
     <?php if (!empty($block->subject)): ?>
       <?php if(($block->region == 'content_top') || ($block->region == 'content_bottom')): ?>
         <h1 class="title block-title"><?php print $block->subject; ?></h1>

@@ -51,13 +51,6 @@ function wn_helper_theme_registry_alter(&$theme_registry) {
 function wn_helper_form_alter(&$form, $form_state, $form_id) {
   switch ($form_id) {
 
-    case 'boxes_box_form':
-      global $user;
-      if ($user->uid != '1') {
-        $form['description']['#access'] = FALSE; // If not super-user, hide the boxes box description field.
-      }
-      break;
-
     case 'block_admin_configure':
       // Getting rid of crufty block visibility settings since we're using context for visibility and placement.
       $form['user_vis_settings']['#access'] = FALSE;
