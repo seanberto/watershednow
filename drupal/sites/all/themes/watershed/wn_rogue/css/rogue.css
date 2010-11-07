@@ -201,3 +201,8 @@ h1.title {
 #block-views-sidebar_multimedia-block_1 {
   height: 270px;
 }
+
+/** =Map stylings */
+.openlayers-popup .type {
+  color: #666666;
+}
