@@ -1,0 +1,20 @@
+.title, .block-title, h1 a:link, h1 a:visited, label, #slogan, #callout .wn-hp-callout-title, #main a {
+  color: #ec6c0a;
+}
+
+#callout .wn-hp-callout-pager a {
+  background: url(../../images/pager/pager-orange.gif) 100% 0 no-repeat;
+}
+
+#nav li.active, #nav li a:hover {
+  background: url(../../images/nav/nav_bg_active_orange.png) repeat-x 0 0 transparent;
+  height: 38px;
+}
+
+#footer {
+  background: #ec6c0a;
+}
+
+#footer, #footer a {
+  font-weight: bold;
+}
