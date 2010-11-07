@@ -269,6 +269,7 @@ function taxonomy_image_get_object($tid, $recursive = NULL) {
     if (!$img) {
       return NULL;
     }
+    
     $exts = array(1 => 'gif', 'jpeg', 'png', 'swf', 'psd', 'bmp',
       'tiff', 'tiff', 'jpc', 'jp2', 'jpf', 'jb2', 'swc',
       'aiff', 'wbmp', 'xbm');
@@ -289,6 +290,7 @@ function taxonomy_image_get_object($tid, $recursive = NULL) {
   }
 
   cache_set("taxonomy_image:$tid", $image[$tid], 'cache_tax_image');
+  
   return $image[$tid];
 }
 // Standard Drupal functions.
