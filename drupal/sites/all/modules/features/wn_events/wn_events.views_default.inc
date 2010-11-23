@@ -141,12 +141,15 @@ function wn_events_views_default_views() {
   ));
   $handler->override_option('sorts', array(
     'field_date_event_value' => array(
-      'order' => 'DESC',
+      'order' => 'ASC',
       'delta' => -1,
       'id' => 'field_date_event_value',
       'table' => 'node_data_field_date_event',
       'field' => 'field_date_event_value',
       'relationship' => 'none',
+      'override' => array(
+        'button' => 'Override',
+      ),
     ),
   ));
   $handler->override_option('filters', array(

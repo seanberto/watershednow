@@ -47,6 +47,11 @@ function wn_blog_feeds_importer_default() {
             'target' => 'body',
             'unique' => FALSE,
           ),
+          3 => array(
+            'source' => 'timestamp',
+            'target' => 'created',
+            'unique' => FALSE,
+          ),
         ),
         'author' => 1,
       ),

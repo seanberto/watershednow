@@ -96,3 +96,8 @@ div.block .edit a, div#logo-title .edit a {
 div.block:hover .edit, div#logo-title:hover .edit {
   display: block;
 }
+
+/* Fixing Table styling inherited from System */
+tbody {
+  border: none;
+}

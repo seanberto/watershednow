@@ -213,3 +213,11 @@ h1.title {
 #block-views-sidebar_multimedia-block_1 {
   height: 270px;
 }
+
+/** Event Sign-up form */
+body.node-type-event .node-inner .content {
+  background-color: #FFFFFF;
+}
+body.node-type-event .node-inner table.sticky-enabled {
+  margin-left: 5px;
+}
