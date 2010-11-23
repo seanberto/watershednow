@@ -221,3 +221,10 @@ body.node-type-event .node-inner .content {
 body.node-type-event .node-inner table.sticky-enabled {
   margin-left: 5px;
 }
+
+/** Optional Waterkeeper Alliance Logo styles for footer. */
+#wka {
+  position: absolute;
+  right: 50px;
+  bottom: 45px;
+}

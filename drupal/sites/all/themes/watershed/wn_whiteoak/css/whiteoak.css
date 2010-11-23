@@ -213,3 +213,10 @@ body.node-type-map-feature #sidebar-second .block.odd {
 #block-watershed-mission {
   width: 35%;
 }
+
+/** Optional Waterkeeper Alliance Logo styles for footer. */
+#wka {
+  position: absolute;
+  right: 145px;
+  bottom: 100px;
+}
