@@ -1,0 +1,88 @@
+/**
+ * $id$
+ *
+ * Nixer layout.css
+ *
+ */
+
+#logo-title {
+  float: left;
+  width: 60%;
+}
+
+#logo {
+  float: left;
+  position: relative;
+  z-index: 20;
+}
+
+#logo img {
+  display: block;
+}
+
+#name-and-slogan {
+  position: relative;
+  top: .15em;
+  left: .3em;
+  z-index: 10;
+}
+
+#search-box {
+  position: relative;
+  top: 1em;
+  left: 1.95em;
+}
+
+#container {
+  clear: both;
+}
+
+#navigation {
+  margin-bottom: 6px;
+}
+
+#navigation #primary {
+  padding-top: 2px;
+  padding-bottom: 2px;
+  border-top: 1px solid #BDBDBD;
+  border-bottom: 1px solid #BDBDBD;
+}
+
+#navigation #secondary {
+  padding-top: 1px;
+  text-align: right;
+  font-size: .9em;
+}
+
+#sidebar-left,
+#main,
+#sidebar-right {
+  float: left;
+  display: inline;
+}
+
+#sidebar-left,
+#sidebar-right {
+  width: 20%;
+}
+
+body.one-sidebar #main {
+  width: 79.5%;
+}
+
+body.two-sidebars #main {
+  width: 59.5%;
+}
+
+body.sidebar-left #main-squeeze {
+  margin-left: 15px;
+  margin-right: 10px;
+}
+
+body.sidebar-right #main-squeeze {
+  margin-right: 15px;
+}
+
+body.two-sidebars #main-squeeze {
+  margin: 0 15px;
+}

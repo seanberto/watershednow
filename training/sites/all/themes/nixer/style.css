@@ -1,0 +1,125 @@
+/**
+ * $id$
+ *
+ * Nixer style.css
+ *
+ */
+
+body {
+  background: #9A9A9A;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: .9em;
+}
+
+a:link {
+  color: #0048B4;
+  text-decoration: none;
+}
+
+a:visited {
+  color: #505050;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #8C0000;
+  text-decoration: underline;
+}
+
+a:active {
+  color: #8C0000;
+}
+
+div#page {
+  margin: 0 auto;
+  padding: 20px 20px;
+  width: 900px;
+  background: #FFFFFF;
+}
+
+h1 {
+  font-size: 1.6em;
+}
+
+h1#site-name {
+  font-size: 1.8em;
+  margin-top: .3em;
+  margin-bottom: 0;
+}
+
+h1#site-name a,
+h1#site-name a:link,
+h1#site-name a:visited,
+h1#site-name a:focus,
+h1#site-name a:hover,
+h1#site-name a:active {
+  color: #0048B4;
+  text-decoration: none;
+}
+
+h2 {
+  font-size: 1.3em;
+  margin-top: .9em;
+  margin-bottom: .7em;
+}
+
+#site-slogan {
+  font-style: italic;
+  font-size: .9em;
+}
+
+.sidebar {
+  font-size: .95em;
+}
+
+#user-login-form {
+  text-align: left;
+}
+
+#mission {
+  font-style: italic;
+  font-size: .9em;
+  text-align: right;
+  margin-bottom: .25em;
+}
+
+#breadcrumb,
+div.meta,
+div.feed-item-meta {
+  font-size: .85em;
+}
+
+#content p,
+#aggregator,
+#tracker {
+  line-height: 1.4;
+}
+
+cite {
+  font-size: .9em;
+}
+
+#footer {
+  text-align: right;
+  font-size: .9em;
+  margin-top: .5em;
+}
+
+#footer p {
+  margin-bottom: 0;
+}
+
+#footer img {
+  vertical-align: bottom;
+}
+
+#footertheme {
+  font-size: .9em;
+  font-style: italic;
+}
+
+#footertheme a:link,
+#footertheme a:visited {
+  color: #C2C2C2;
+  text-decoration: none;
+}

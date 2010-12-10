@@ -1,0 +1,1 @@
+// The "Training" Drupal site is a simple documentation site build to support Watershed Now. A database dump is available upon request if you are curious about running your own internal WN documentation site.

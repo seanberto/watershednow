@@ -1,0 +1,20 @@
+; $id$
+name = Nixer
+description = Clean, lightweight CSS theme for Drupal
+core = 6.x
+engine = phptemplate
+stylesheets[all][] = layout.css
+stylesheets[all][] = style.css
+stylesheets[all][] = customizations.css
+regions[left] = Left sidebar
+regions[right] = Right sidebar
+regions[content] = Content
+regions[header] = Header
+regions[footer] = Footer
+
+; Information added by drupal.org packaging script on 2009-03-30
+version = "6.x-1.0"
+core = "6.x"
+project = "nixer"
+datestamp = "1238382102"
+
