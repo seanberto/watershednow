@@ -12,7 +12,12 @@ function shadow_css() {
 
 $(function(){
   // make sidebar and content area same height so border spans all content
-  $('#content-inner, #sidebar-second').vjustify();
+  if( $('#sidebar-second').height() > $('#content-inner').height() ) {
+    $('#content-inner').css({
+      'minHeight': $('#sidebar-second').height()
+      
+    })
+  }
   
   $('#block-boxes-showcase_1, #block-boxes-showcase_2, #block-boxes-showcase_3').vjustify();
   var $page = $('#page');
