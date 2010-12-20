@@ -1,5 +1,5 @@
 <?php
-// $Id: emimage.theme.inc,v 1.1.2.6.2.3 2010/07/19 17:15:51 aaron Exp $
+// $Id: emimage.theme.inc,v 1.1.2.6.2.5 2010/11/17 17:01:12 aaron Exp $
 
 /**
  *  @file
@@ -10,7 +10,8 @@
  *  Helper theme for various emimage themes.
  */
 function theme_emimage_image($field, $item, $formatter, $node, $code, $width = NULL, $height = NULL, $title = '', $link = NULL, $options = array()) {
-  $url = module_invoke('emfield', 'include_invoke', 'emimage', $item['provider'], 'image_url', $code, $width, $height, $formatter, $field, $item, $node);
+  $url = emimage_image_url($field, $item, $formatter, $node, $code, $width, $height, $options);
+
   $attributes = array();
   if ($width) {
     $attributes['width'] = $width;
@@ -37,7 +38,7 @@ function theme_emimage_image($field, $item, $formatter, $node, $code, $width = N
       $attributes['width'] = $width ? $width : NULL;
       $attributes['height'] = $height ? $height : NULL;
     }
-	}
+  }
   if ($item['class']) {
       $attributes['class'] = $item['class'];
   }
