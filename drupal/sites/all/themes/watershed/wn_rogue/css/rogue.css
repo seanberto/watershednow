@@ -8,6 +8,10 @@ body {
   font: 13px/1.4em "Helvetica Neue",helvetica,Arial,sans-serif;
 }
 
+#header, #main {
+  float:left;
+}
+
 #page {
 	min-height: 100%;
 	height: auto !important;

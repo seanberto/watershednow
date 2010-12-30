@@ -175,8 +175,11 @@ div.status {
 }
 
 #header, #main {
-  float: left;
   width: 100%;
+}
+
+.one-sidebar #main {
+  float:left;
 }
 
 #name-and-slogan {
