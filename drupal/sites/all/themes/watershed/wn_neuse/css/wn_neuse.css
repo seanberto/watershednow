@@ -1,5 +1,8 @@
 /* =Layout
 -----------------*/
+#header, #main { float:none; }
+.one-sidebar #main { float:left; }
+
 #main {
   padding:20px 0;
 }
