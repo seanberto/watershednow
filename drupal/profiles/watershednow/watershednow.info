@@ -160,7 +160,7 @@ features[] = wn_map
 
 ; 'User 1' account - the Drupal super user, not used for day-to-day tasks.
 users[watershednow][uid] = 1
-users[watershednow][name] = watershednow
+users[watershednow][name] = admin
 users[watershednow][mail] = noreply@watershednow.com
 users[watershednow][status] = 1
 
@@ -173,7 +173,7 @@ users[support][status] = 1
 
 ; A web admin account - for user management and more advanced site managment tasks.
 users[admin][uid] = 3
-users[admin][name] = admin
+users[admin][name] = web-admin
 users[admin][mail] = noreply+2@watershednow.com
 users[admin][roles] = web admin
 users[admin][status] = 1
