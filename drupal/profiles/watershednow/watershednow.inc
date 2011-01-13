@@ -398,6 +398,7 @@ function _watershednow_define_perms() {
     'collapse format fieldset by default',
     'collapsible format selection',
     'show more format tips link',
+    'administer nodes',
     'administer blocks',
     'administer comments',
     'administer votesmart settings',

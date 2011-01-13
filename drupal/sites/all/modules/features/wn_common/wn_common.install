@@ -22,13 +22,18 @@ function wn_common_update_6000( &$sandbox ) {
   include($_SERVER['DOCUMENT_ROOT'] . '/profiles/watershednow/libraries/install_profile_api/core/user.inc');
 
   //add feed permissions to staff and web admin
-  foreach( array('web admin','staff') as $role) {
+  $new_permissions = array('staff' => array(
+    'administer feeds',
+    'clear update_feed feeds',
+    'import update_feed feeds',
+  ));
+  $new_permissions['web admin'] = array_merge($new_permissions['staff'], array('administer nodes'));
+
+  foreach( $new_permissions as $role => $perms ) {
     $role_rid = install_get_rid($role);
-    install_add_permissions($role_rid,array(
-      'administer feeds',
-      'clear update_feed feeds',
-      'import update_feed feeds',
-    ));
+    if( $role_rid ) {
+      install_add_permissions($role_rid,$perms);
+    }
   }
 
   // Install Mollom for spam protection
