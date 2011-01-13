@@ -51,27 +51,38 @@ function wn_common_update_6001( &$sandbox ) {
 }
 
 function wn_common_configure_mollom() {
+  variable_set('mollom_fallback','1'); // '1' Accept all form submissions if Mollom server is down
+
   //add mollom captcha to comment forms
-  $mollom_form = array(
-    'form_id' => 'comment_form',
+  $mollom_forms['comment_form'] = array(
     'mode' => MOLLOM_MODE_CAPTCHA,
     'checks' => array('spam'),
     'discard' => TRUE,
     'enabled_fields' => array('subject','comment'),
     'module' => 'comment'
   );
-  $exists = db_result(db_query_range("SELECT 1 FROM {mollom_form} WHERE form_id = '%s'", $mollom_form['form_id'], 0, 1));
-  $status = drupal_write_record('mollom_form', $mollom_form, ($exists ? 'form_id' : array()));
 
   //add mollom captcha to user registration forms
-  $mollom_form = array(
-    'form_id' => 'user_register',
+  $mollom_forms['user_register'] = array(
     'mode' => MOLLOM_MODE_CAPTCHA,
     'checks' => array(),
     'discard' => TRUE,
     'enabled_fields' => array(),
     'module' => 'user'
   );
-  $exists = db_result(db_query_range("SELECT 1 FROM {mollom_form} WHERE form_id = '%s'", $mollom_form['form_id'], 0, 1));
-  $status = drupal_write_record('mollom_form', $mollom_form, ($exists ? 'form_id' : array()));
+
+  //add mollom captcha to site wide contact form
+  $mollom_forms['contact_mail_page'] = array(
+    'mode' => MOLLOM_MODE_CAPTCHA,
+    'checks' => array('spam'),
+    'discard' => TRUE,
+    'enabled_fields' => array('subject','message'),
+    'module' => 'contact'
+  );
+
+  foreach( $mollom_forms as $form_id => $mollom_form ) {
+    $mollom_form['form_id'] = $form_id;
+    $exists = db_result(db_query_range("SELECT 1 FROM {mollom_form} WHERE form_id = '%s'", $mollom_form['form_id'], 0, 1));
+    $status = drupal_write_record('mollom_form', $mollom_form, ($exists ? 'form_id' : array()));
+  }
 }
