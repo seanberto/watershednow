@@ -9,3 +9,51 @@ function wn_common_install() {
   $delta = '1';
   db_query("INSERT INTO {blocks} (module, delta, theme, status) VALUES ('%s', %d, '%s', 1)", $module, $delta, 'watershed');
 }
+
+function wn_common_update_6000( &$sandbox ) {
+  //use relative URLs when inserting images
+  variable_set('insert_absolute_paths', FALSE);
+
+  //Refresh module list
+  module_list(TRUE);
+  module_rebuild_cache();
+
+  //install mollom
+  drupal_install_modules(array('mollom'));
+
+  // return empty array so Drupal does not complain about array_merge
+  return array();
+}
+
+function wn_common_update_6001( &$sandbox ) {
+  wn_common_configure_mollom(); // needs to be in a separate step from enabling mollom
+
+  // return empty array so Drupal does not complain about array_merge
+  return array();
+}
+
+function wn_common_configure_mollom() {
+  //add mollom captcha to comment forms
+  $mollom_form = array(
+    'form_id' => 'comment_form',
+    'mode' => MOLLOM_MODE_CAPTCHA,
+    'checks' => array('spam'),
+    'discard' => TRUE,
+    'enabled_fields' => array('subject','comment'),
+    'module' => 'comment'
+  );
+  $exists = db_result(db_query_range("SELECT 1 FROM {mollom_form} WHERE form_id = '%s'", $mollom_form['form_id'], 0, 1));
+  $status = drupal_write_record('mollom_form', $mollom_form, ($exists ? 'form_id' : array()));
+
+  //add mollom captcha to user registration forms
+  $mollom_form = array(
+    'form_id' => 'user_register',
+    'mode' => MOLLOM_MODE_CAPTCHA,
+    'checks' => array(),
+    'discard' => TRUE,
+    'enabled_fields' => array(),
+    'module' => 'user'
+  );
+  $exists = db_result(db_query_range("SELECT 1 FROM {mollom_form} WHERE form_id = '%s'", $mollom_form['form_id'], 0, 1));
+  $status = drupal_write_record('mollom_form', $mollom_form, ($exists ? 'form_id' : array()));
+}

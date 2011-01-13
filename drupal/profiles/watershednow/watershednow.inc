@@ -34,6 +34,10 @@ function _watershednow_configure( $config ) {
 
   _watershednow_create_follow_links( $config['follow'] );
 
+  //configure mollom to prevent spam in comments and user registration
+  module_load_include('install','wn_common');
+  wn_common_configure_mollom();
+
   // Do some additional clean up.
   db_query("UPDATE {blocks} SET status = 0, region = ''"); // disable all DB blocks
   db_query("UPDATE {system} SET status = 0 WHERE type = 'theme' and name ='%s'", 'garland');
