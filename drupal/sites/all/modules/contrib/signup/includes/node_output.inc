@@ -1,5 +1,5 @@
 <?php
-// $Id: node_output.inc,v 1.1.2.11 2009/08/23 15:44:54 dww Exp $
+// $Id: node_output.inc,v 1.1.2.13 2010/12/28 17:48:12 ezrag Exp $
 
 
 /**
@@ -40,7 +40,7 @@ function _signup_node_output($node, $type = 'node') {
 function _signup_current_user_signup($node, $type = 'node') {
   global $user;
   $output = '';
-  $fieldset = $type == 'node' ? TRUE : FALSE;
+  $fieldset = $type == 'node' && !variable_get('signup_ignore_default_fields', 0) ? TRUE : FALSE;
   // The node has been closed for signups, and the user has
   // signup permissions.  Let them know it's closed.
   if (!$node->signup_status) {
@@ -115,41 +115,23 @@ function signup_user_list_output($node) {
   $output = '';
 
   // How should the list of signed-up users be displayed, if at all?
-  $display_list = variable_get('signup_display_signup_user_list', 'signup');
+  $display_list = variable_get('signup_display_signup_user_list', 'embed-view');
 
   // Ensure the user has permission to view the signup list for this node.
-  if (_signup_menu_access($node, 'list')) {
-    if ($display_list == 'signup' || $display_list == 'signup-tab') {
-      // Admin wants the hard-coded signup listing.
-      $registered_query = db_query("SELECT u.uid, u.name, s.signup_time, s.form_data FROM {signup_log} s INNER JOIN {users} u ON u.uid = s.uid WHERE s.nid = %d AND u.uid <> 0", $node->nid);
-      $registered_signups = array();
-      while ($signed_up_user = db_fetch_object($registered_query)) {
-        $registered_signups[] = $signed_up_user;
-      }
-      $anon_query = db_query("SELECT * FROM {signup_log} WHERE nid = %d AND uid = 0", $node->nid);
-      $anon_signups = array();
-      while ($signed_up_user = db_fetch_object($anon_query)) {
-        $anon_signups[] = $signed_up_user;
-      }
-      $output .= theme('signup_user_list', $node, $registered_signups, $anon_signups);
+  if (_signup_menu_access($node, 'list') && ($display_list == 'embed-view' || $display_list == 'embed-view-tab')) {
+    $signup_view = variable_get('signup_user_list_view', 'signup_user_list:default');
+    $signup_view_parts = explode(':', $signup_view);
+    $view_name = $signup_view_parts[0];
+    $view_display = $signup_view_parts[1];
+    $view = views_get_view($view_name);
+    if ($display_list == 'embed-view-tab') {
+      $view->override_path = 'node/%/signups/list';
     }
-    elseif (($display_list == 'embed-view' || $display_list == 'embed-view-tab') && module_exists('views')) {
-      $signup_view = variable_get('signup_user_list_view', 'signup_user_list:default');
-      $signup_view_parts = explode(':', $signup_view);
-      $view_name = $signup_view_parts[0];
-      $view_display = $signup_view_parts[1];
-      $view = views_get_view($view_name);
-      if ($display_list == 'embed-view-tab') {
-        $view->override_path = 'node/%/signups/list';
-      }
-      else {
-        $view->override_path = 'node/%';
-      }
-      $view_args = array($node->nid);
-      $output .=  $view->preview($view_display, $view_args);
+    else {
+      $view->override_path = 'node/%';
     }
-    // Otherwise, they're on their own, and either don't want it displayed at
-    // all, or they want to handle where/how it's displayed via views.
+    $view_args = array($node->nid);
+    $output .=  $view->preview($view_display, $view_args);
   }
   return $output;
 }

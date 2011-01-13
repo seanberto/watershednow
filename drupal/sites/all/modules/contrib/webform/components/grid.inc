@@ -1,5 +1,5 @@
 <?php
-// $Id: grid.inc,v 1.14.2.14 2010/10/18 07:20:54 quicksketch Exp $
+// $Id: grid.inc,v 1.14.2.16 2010/12/30 02:25:37 quicksketch Exp $
 
 /**
  * @file
@@ -97,7 +97,7 @@ function _webform_edit_grid($component) {
       '#type' => 'textarea',
       '#title' => t('Options'),
       '#default_value' => $component['extra']['options'],
-      '#description' => t('Options to select across the top. One option per line. Key-value pairs must be entered separated by pipes. i.e. safe_key|Some readable option') . theme('webform_token_help'),
+      '#description' => t('Options to select across the top. One option per line. <strong>Key-value pairs MUST be specified as "safe_key|Some readable option"</strong>. Only alphanumeric characters and underscores are allowed as a key.') . theme('webform_token_help'),
       '#cols' => 60,
       '#rows' => 5,
       '#weight' => -3,
@@ -109,7 +109,7 @@ function _webform_edit_grid($component) {
       '#type' => 'textarea',
       '#title' => t('Questions'),
       '#default_value' => $component['extra']['questions'],
-      '#description' => t('Questions list down the side of the grid. One question per line. Key-value pairs must be entered separated by pipes. i.e safe_key|Some readable option') . theme('webform_token_help'),
+      '#description' => t('Questions list down the side of the grid. One question per line. <strong>Key-value pairs MUST be specified as "safe_key|Some readable option"</strong>. Only alphanumeric characters and underscores are allowed as a key.') . theme('webform_token_help'),
       '#cols' => 60,
       '#rows' => 5,
       '#weight' => -2,
@@ -359,6 +359,9 @@ function _webform_csv_data_grid($component, $export_options, $value) {
   foreach ($questions as $key => $question) {
     if (isset($value[$key]) && isset($options[$value[$key]])) {
       $return[] = $export_options['select_keys'] ? $value[$key] : $options[$value[$key]];
+    }
+    else {
+      $return[] = '';
     }
   }
   return $return;

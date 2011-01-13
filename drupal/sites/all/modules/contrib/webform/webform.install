@@ -1,5 +1,5 @@
 <?php
-// $Id: webform.install,v 1.40.2.22 2010/10/18 08:08:59 quicksketch Exp $
+// $Id: webform.install,v 1.40.2.23 2011/01/06 18:34:59 quicksketch Exp $
 
 /**
  * @file
@@ -38,6 +38,13 @@ function webform_schema() {
         'type' => 'varchar',
         'length' => 255,
         'default' => '<confirmation>',
+      ),
+      'status' => array(
+        'description' => 'Boolean value of a webform for open (1) or closed (0).',
+        'type' => 'int',
+        'size' => 'tiny',
+        'not null' => TRUE,
+        'default' => 1,
       ),
       'block' => array(
          'description' => 'Boolean value for whether this form be available as a block.',
@@ -1254,6 +1261,17 @@ function webform_update_6322() {
   if (db_column_exists('webform', 'additional_validate')) {
     db_change_field($ret, 'webform', 'additional_validate', 'additional_validate', array('type' => 'text', 'not null' => FALSE));
     db_change_field($ret, 'webform', 'additional_submit', 'additional_submit', array('type' => 'text', 'not null' => FALSE));
+  }
+  return $ret;
+}
+
+/**
+ * Add column for webform status (open or closed).
+ */
+function webform_update_6323() {
+  $ret = array();
+  if (!db_column_exists('webform', 'status')) {
+    db_add_field($ret, 'webform', 'status', array('type' => 'int', 'size' => 'tiny', 'not null' => TRUE, 'default' => 1));
   }
   return $ret;
 }

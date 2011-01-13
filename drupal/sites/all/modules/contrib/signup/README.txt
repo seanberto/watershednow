@@ -1,4 +1,4 @@
-$Id: README.txt,v 1.14.2.1 2009/07/24 17:52:08 dww Exp $
+$Id: README.txt,v 1.14.2.2 2010/12/28 17:48:12 ezrag Exp $
 
 The signup module allows users to sign up for nodes of any type.  For
 each signup-enabled node, this module provides options for sending a
@@ -17,9 +17,13 @@ Both can receive confirmation and reminder emails, and registered
 users are optionally able to cancel or edit their own signups and view
 listings of their current signups.
 
-There is extensive integration with the Views module
-(http://druapl.org/project/views), and also support to embed the
-signup form as a pane using panels (http://druapl.org/project/panels).
+The Views module (http://druapl.org/project/views) is a dependency
+which is used to create various listings, and there is extensive views
+support for your own customizations.  Installing the View Bulk
+Operations (VBO) module (http://druapl.org/project/views_bulk_operations)
+is strongly encouraged to facilitate various administrative tasks.
+There is also support to embed the signup form as a pane using panels
+(http://druapl.org/project/panels).
 
 Some add-on modules that enhance the basic functionality are available
 in the "modules" subdirectory, and there is a listing of other add-on
@@ -38,3 +42,4 @@ For a list of future work, also see http://groups.drupal.org/node/5044.
 This module was originally co-developed by Chad Phillips and Jeff
 Robbins, and sponsored by Jeff Robbins.  It is now being maintained
 by: Derek Wright (http://drupal.org/user/46549) a.k.a. "dww".
+

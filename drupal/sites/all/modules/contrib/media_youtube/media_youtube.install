@@ -1,5 +1,5 @@
 <?php
-// $Id: media_youtube.install,v 1.1.2.3 2010/04/08 20:35:49 aaron Exp $
+// $Id: media_youtube.install,v 1.1.2.18 2010/11/12 14:37:18 aaron Exp $
 
 /**
  * @file
@@ -7,9 +7,230 @@
  */
 
 /**
- * Convert variables to the Media: YouTube variable namespace.
+ * Implementation of hook_install().
+ */
+function media_youtube_install() {
+  // Ensure we have the required variable namespace.
+  drupal_load('module', 'media_youtube');
+
+  _media_youtube_convert_old_variables();
+
+  $success = drupal_install_schema('media_youtube');
+
+  if ($success) {
+    drupal_set_message(st('The Media: YouTube module installed tables successfully.'));
+  }
+  else {
+    drupal_set_message(st('The installation of the Media: YouTube module failed.'), 'error');
+  }
+}
+
+/**
+ * Implementation of hook_uninstall().
+ */
+function media_youtube_uninstall() {
+  drupal_uninstall_schema('media_youtube');
+  foreach (media_youtube_variable_default() as $variable => $value) {
+    media_youtube_variable_del($variable);
+  }
+  return array(array('success' => TRUE, 'query' => "Deleted all variables in the Media: YouTube namespace."));
+}
+
+/**
+ * Implementation of hook_disable().
+ */
+function media_youtube_disable() {
+  cache_clear_all('*', 'cache_media_youtube_status', TRUE);
+}
+
+/**
+ * Oops; we did this here rather than on install.
+ * Redo in 6002 to catch anyone missed...
  */
 function media_youtube_update_6001() {
+  return array();
+}
+
+/**
+ * Catch anyone who missed this on a fresh installation.
+ */
+function media_youtube_update_6002() {
+  return _media_youtube_convert_old_variables();
+}
+
+/**
+ * Build a table to cache video status.
+ */
+function media_youtube_update_6003() {
+  $schema = array();
+
+  $schema['cache_media_youtube_status'] = drupal_get_schema_unprocessed('system', 'cache');
+  $schema['cache_media_youtube_status']['description'] = 'Cache table used to store video status for Media: YouTube.';
+
+  $ret = array();
+  db_create_table($ret, 'cache_media_youtube_status', $schema['cache_media_youtube_status']);
+
+  // Catch our new theme function for unavailable videos.
+  drupal_rebuild_theme_registry();
+  return $ret;
+}
+
+
+/**
+ * Add a new theme.
+ */
+function media_youtube_update_6004() {
+  $ret = array();
+
+  // Catch our new theme function for duplicate videos.
+  drupal_rebuild_theme_registry();
+  return $ret;
+}
+
+/**
+ * Had incorrect access callback for admin page.
+ */
+function media_youtube_update_6006() {
+  $ret = array();
+
+  menu_rebuild();
+  return $ret;
+}
+
+/**
+ * Add metadata tables.
+ */
+function media_youtube_update_6009() {
+  $ret = array();
+  $schema = array();
+
+  $schema['media_youtube_metadata'] = array(
+    'description' => 'Media: YouTube table for video metadata.',
+    'fields' => array(
+      'value' => array(
+        'description' => 'The identifier for a YouTube video.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'not null' => FALSE,
+      ),
+      'status' => array(
+        'description' => "The availability status of this media.",
+        'type' => 'int',
+        'unsigned' => 'TRUE',
+        'not null' => TRUE,
+        'default' => EMFIELD_STATUS_AVAILABLE,
+      ),
+      'last_touched' => array(
+        'description' => "Timestamp when the data was last retrieved from YouTube.",
+        'type' => 'int',
+        'unsigned' => 'TRUE',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+    ),
+    'indexes' => array(
+      'status'     => array('status'),
+      'last_touched'     => array('last_touched'),
+    ),
+    'primary key' => array('value'),
+  );
+
+  $schema['media_youtube_node_data'] = array(
+    'description' => 'Media: YouTube table for video node reference.',
+    'fields' => array(
+      'value' => array(
+        'description' => 'The identifier for a YouTube video.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'not null' => FALSE,
+      ),
+      'nid' => array(
+        'description' => 'The {node} nid.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'field_name' => array(
+        'description' => 'The node field storing this data.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'delta' => array(
+        'description' => "The field delta.",
+        'type' => 'int',
+        'unsigned' => 'TRUE',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+    ),
+    'indexes' => array(
+      'value'       => array('value'),
+      'nid'         => array('nid'),
+      'field_name'  => array('field_name'),
+      'delta'       => array('delta'),
+    ),
+  );
+
+  if (!db_table_exists('media_youtube_metadata')) {
+    db_create_table($ret, 'media_youtube_metadata', $schema['media_youtube_metadata']);
+  }
+  if (!db_table_exists('media_youtube_node_data')) {
+    db_create_table($ret, 'media_youtube_node_data', $schema['media_youtube_node_data']);
+  }
+
+  // Build a list of fields that need metadata updating.
+  $fields = array();
+  foreach (content_types_install() as $type_name => $type_fields) {
+    foreach ($type_fields as $field) {
+      if ($field['module'] == 'emvideo') {
+        // We only process a given field once.
+        $fields[$field['field_name']] = $field;
+      }
+    }
+  }
+
+  // Build a batch that grabs the YouTube metadata for each video.
+  $batch = array(
+    'title' => t('Importing YouTube metadata.'),
+    'operations' => array(),
+    'file' => drupal_get_path('module', 'media_youtube') .'/media_youtube.install',
+  );
+
+  $old_data_keys = array(
+    'youtube' => 'emvideo_youtube_version',
+  );
+
+  foreach ($fields as $field_name => $field) {
+    $batch['operations'][] = array('_media_youtube_update_fetch_metadata', array($field));
+    $ret[] = array(
+      'query' => t('Retrieved current YouTube metadata for the %field field.', array('%field' => $field['field_name'])),
+      'success' => TRUE,
+    );
+  }
+  batch_set($batch);
+
+  return $ret;
+}
+
+/**
+ * Add a new themes.
+ */
+function media_youtube_update_6010() {
+  $ret = array();
+
+  // Catch our new theme functions.
+  drupal_rebuild_theme_registry();
+  return $ret;
+}
+
+/**
+ * Convert pre-existing variables to the Media: YouTube variable namespace.
+ */
+function _media_youtube_convert_old_variables() {
   $ret = array();
 
   $variables = array(
@@ -28,17 +249,186 @@ function media_youtube_update_6001() {
   );
 
   foreach ($variables as $old_variable => $new_variable) {
-    $value = variable_get($old_variable, '');
-    if (media_youtube_variable_get($new_variable) != $value) {
-      media_youtube_variable_set($new_variable, $value);
+    $new_value = media_youtube_variable_get($new_variable);
+    $old_value = variable_get($old_variable, $new_value);
+
+    // Set the variable to the value of the old version of emfield,
+    // assuming it hasn't already been overridden, and the old version is not
+    // the current default.
+    if (($new_value == media_youtube_variable_default($new_variable)) && ($new_value != $old_value)) {
+      media_youtube_variable_set($new_variable, $old_value);
     }
     variable_del($old_variable);
   }
-  $ret[] = array('success' => TRUE, 'query' => "Converted variables to the Media: YouTube variable namespace.");
+  $ret[] = array('success' => TRUE, 'query' => "Converted pre-existing variables to the Media: YouTube variable namespace.");
 
   // Add the new settings page to the menu.
   menu_rebuild();
   $ret[] = array('success' => TRUE, 'query' => "Rebuilt the menu for the new administrative settings page.");
 
   return $ret;
+}
+
+/**
+ * Implementation of hook_schema().
+ */
+function media_youtube_schema() {
+  $schema = array();
+
+  $schema['cache_media_youtube_status'] = drupal_get_schema_unprocessed('system', 'cache');
+  $schema['cache_media_youtube_status']['description'] = 'Cache table used to store video status for Media: YouTube.';
+
+  $schema['media_youtube_metadata'] = array(
+    'description' => 'Media: YouTube table for video metadata.',
+    'fields' => array(
+      'value' => array(
+        'description' => 'The identifier for a YouTube video.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'not null' => FALSE,
+      ),
+      'status' => array(
+        'description' => "The availability status of this media.",
+        'type' => 'int',
+        'unsigned' => 'TRUE',
+        'not null' => TRUE,
+        'default' => MEDIA_YOUTUBE_STATUS_AVAILABLE,
+      ),
+      'last_touched' => array(
+        'description' => "Timestamp when the data was last retrieved from YouTube.",
+        'type' => 'int',
+        'unsigned' => 'TRUE',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+    ),
+    'indexes' => array(
+      'status'     => array('status'),
+      'last_touched'     => array('last_touched'),
+    ),
+    'primary key' => array('value'),
+  );
+
+  $schema['media_youtube_node_data'] = array(
+    'description' => 'Media: YouTube table for video node reference.',
+    'fields' => array(
+      'value' => array(
+        'description' => 'The identifier for a YouTube video.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'not null' => FALSE,
+      ),
+      'nid' => array(
+        'description' => 'The {node} nid.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'field_name' => array(
+        'description' => 'The node field storing this data.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'delta' => array(
+        'description' => "The field delta.",
+        'type' => 'int',
+        'unsigned' => 'TRUE',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+    ),
+    'indexes' => array(
+      'value'       => array('value'),
+      'nid'         => array('nid'),
+      'field_name'  => array('field_name'),
+      'delta'       => array('delta'),
+    ),
+  );
+
+  return $schema;
+}
+
+/**
+ * Batch function to retrieve the most recent data from providers.
+ *
+ * @param $field
+ *   The field definition.
+ * @param $providers
+ *   An optional array of providers to check.
+ * @param $old_data_keys
+ *   An optional array of the original version key in the data,
+ *   keyed by provider.
+ * @param &$context
+ *   The context for the batch operations.
+ */
+function _media_youtube_update_fetch_metadata($field, &$context) {
+  // Autoload the Zend_Loader class.
+  spl_autoload_register('media_youtube_autoload');
+
+  // Setup the sandbox the first time through.
+  if (!isset($context['sandbox']['progress'])) {
+    $context['sandbox']['field'] = $field;
+    $db_info = content_database_info($field);
+    $context['sandbox']['db_info'] = $db_info;
+    $context['sandbox']['table'] = $db_info['table'];
+    $context['sandbox']['col_embed'] = $db_info['columns']['embed']['column'];
+    $context['sandbox']['col_value'] = $db_info['columns']['value']['column'];
+    $context['sandbox']['col_provider'] = $db_info['columns']['provider']['column'];
+    $context['sandbox']['col_data'] = $db_info['columns']['data']['column'];
+    $context['sandbox']['col_version'] = $db_info['columns']['version']['column'];
+    $context['sandbox']['module'] = $field['module'];
+    $context['sandbox']['max'] = db_result(db_query("SELECT COUNT(*) FROM {". $db_info['table'] ."}"));
+    $context['sandbox']['progress'] = 0;
+    $context['sandbox']['current_node'] = 0;
+  }
+
+  // Work our way through the field values 50 rows at a time.
+  // Note that if PHP times out here, you can set the
+  // emfield_install_fix_data_rows variable in settings.php to a lower number.
+  // If you get this error, please report it so we can find a better limit
+  // to work with; I'm not sure if this value will work in the majority of
+  // cases. Thanks, Aaron.
+  $limit = variable_get('emfield_install_fix_data_rows', 50);
+  $result = db_query_range("SELECT * FROM {{$context['sandbox']['table']}} WHERE vid > %d ORDER BY vid ASC", $context['sandbox']['current_node'], 0, $limit);
+
+  while ($row = db_fetch_array($result)) {
+    // Fetch the duration from the provider.
+    $item = array(
+      'embed' => $row[$context['sandbox']['col_embed']],
+      'value' => $row[$context['sandbox']['col_value']],
+      'provider' => $row[$context['sandbox']['col_provider']],
+      'data' => unserialize($row[$context['sandbox']['col_data']]),
+      'version' => $row[$context['sandbox']['col_version']],
+    );
+    if ($item['provider'] == 'youtube') {
+      if (!db_result(db_query("SELECT value FROM {media_youtube_metadata} WHERE value = '%s'", $item['value']))) {
+        $item['status'] = media_youtube_check_status($item['value']);
+        $item['last_touched'] = time();
+        drupal_write_record('media_youtube_metadata', $item);
+      }
+      if (!db_result(db_query("SELECT value FROM {media_youtube_node_data} WHERE value = '%s' AND nid = %d AND field_name = '%s' AND delta = %d", $item['value'], $row['nid'], $context['sandbox']['field']['field_name'], $row['delta']))) {
+        $item['nid'] = $row['nid'];
+        $item['field_name'] = $context['sandbox']['field']['field_name'];
+        $item['delta'] = $row['delta'];
+        drupal_write_record('media_youtube_node_data', $item);
+      }
+    }
+
+    // Update our progress information.
+    $context['sandbox']['progress']++;
+    $context['sandbox']['current_node'] = $row['vid'];
+  }
+
+  // Inform the batch engine that we are not finished,
+  // and provide an estimation of the completion level we reached.
+  if ($context['sandbox']['progress'] < $context['sandbox']['max']) {
+    $context['finished'] = $context['sandbox']['progress'] / $context['sandbox']['max'];
+  }
+  else {
+    $context['finished'] = 1;
+  }
 }

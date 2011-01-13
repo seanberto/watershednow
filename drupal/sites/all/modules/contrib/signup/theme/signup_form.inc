@@ -1,5 +1,5 @@
 <?php
-// $Id: signup_form.inc,v 1.3.2.2 2009/01/22 19:00:55 dww Exp $
+// $Id: signup_form.inc,v 1.3.2.3 2010/12/28 17:28:47 ezrag Exp $
 
 
 /**
@@ -47,7 +47,9 @@
 function theme_signup_user_form($node) {
   global $user;
   $form = array();
-
+  if (variable_get('signup_ignore_default_fields', 0)) {
+    return $form;
+  }
   // If this function is providing any extra fields at all, the following
   // line is required for form form to work -- DO NOT EDIT OR REMOVE.
   $form['signup_form_data']['#tree'] = TRUE;

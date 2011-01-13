@@ -1,5 +1,5 @@
 <?php
-// $Id: webform.emails.inc,v 1.9.2.10 2010/08/30 20:22:15 quicksketch Exp $
+// $Id: webform.emails.inc,v 1.9.2.12 2010/12/30 01:17:21 quicksketch Exp $
 
 /**
  * @file
@@ -262,6 +262,7 @@ function webform_email_edit_form($form_state, $node, $email = array()) {
       'default' => t('Default template'),
       'custom' => t('Custom template'),
     ),
+    '#default_value' => $email['template'] == 'default' ? 'default' : 'custom',
   );
 
   $default_template = theme(array('webform_mail_' . $node->nid, 'webform_mail', 'webform_mail_message'), $node, NULL, $email);
@@ -441,7 +442,7 @@ function webform_email_edit_form_submit($form, &$form_state) {
 
   if (empty($form_state['values']['eid'])) {
     drupal_set_message(t('Email settings added.'));
-    $cid = webform_email_insert($email);
+    $form_state['values']['eid'] = webform_email_insert($email);
   }
   else {
     drupal_set_message(t('Email settings updated.'));

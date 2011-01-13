@@ -1,4 +1,4 @@
-# $Id: webform.pot,v 1.3 2009/11/06 00:45:29 quicksketch Exp $
+# $Id: webform.pot,v 1.3.2.1 2011/01/05 04:39:18 quicksketch Exp $
 #
 # LANGUAGE translation of Drupal (general)
 # Copyright YEAR NAME <EMAIL@ADDRESS>
@@ -1427,7 +1427,7 @@ msgid "Options within the select list must be unique. The following keys have be
 msgstr ""
 
 #: components/select.inc:155
-msgid "select..."
+msgid "- Select -"
 msgstr ""
 
 #: components/select.inc:325

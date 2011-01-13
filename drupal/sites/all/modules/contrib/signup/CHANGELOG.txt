@@ -1,4 +1,42 @@
-$Id: CHANGELOG.txt,v 1.115.2.64 2009/09/24 06:45:26 dww Exp $
+$Id: CHANGELOG.txt,v 1.115.2.70 2011/01/09 17:26:39 dww Exp $
+
+------------------------
+6.x-1.0 (2011-01-09)
+------------------------
+Bugs fixed since 6.x-1.0-rc6:
+= #597808 by dww: Fixed bug that was causing signup limits to be ignored
+  unless the signup_status module is enabled (broken in rc6 by #581652).
+= #370397 by wesley_2mpact and ezra-g: All anonymous signups cancelled
+  when any user is deleted.
+= #676276 by keystr0k and ezra-g: Signup not closed when limit reached
+= #605594 by markus_petrux and ezra-g: node_load() during signup's
+  node_save() breaks node data cached by CCK
+= #719188 by ezra-g: Admins should be able to sign up users regardless
+  of their permissions
+= #633636 by Magnus: Untranslatable strings in date.inc
+= #550036 by iva2k: PHP warnings for node without date value
+= #865108 by dooug: Minor typo - Views integration signup.theme ->
+  views/signup_form.inc
+= #858592 by maker, greggles: Signup Administration Page Error with Postgres
+
+Other changes since 6.x-1.0-rc6:
+= #582986 by dww and ezra-g: Made views a required dependency and
+  ditched non-views code
+= #658214 by Dave Reid: Added vertical tabs support.
+= #856604 by ezra-g, jenlampton, jm.federico, coltrane: Made event
+  signups visible on user registration form
+= #226204 by dww: Exposed the numeric signup ID (unique site-wide) as a token.
+= #656250 by Peter Bex, maverick14: Add SID field Views and Views
+  token integration
+= #594686 by dww: Split all default views into their own separate files.
+= #592202 by dww: Added a pager and increased items per page on default views.
+= #696010 by ezra-g: Alterable signup confirmation drupal_set_message()
+= #856810 by ezra-g: Option to return array from theme_signup_user_form()
+= #670944</a> by mlsamuelson: Provided a means to reset node_load()'s
+  static node caching when calling signup_sign_up_user()
+= #341920 by dww, Eirik_R and ezra-g: Removed work-arounds for DateAPI
+  limitations now taht new official releases of DateAPI are out
+
 
 ------------------------
 6.x-1.0-rc6 (2009-09-23)

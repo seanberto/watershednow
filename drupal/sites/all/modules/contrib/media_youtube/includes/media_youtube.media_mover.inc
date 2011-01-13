@@ -1,5 +1,5 @@
 <?php
-// $Id: media_youtube.media_mover.inc,v 1.1.2.1 2010/04/08 20:35:49 aaron Exp $
+// $Id: media_youtube.media_mover.inc,v 1.1.2.4 2010/05/12 20:56:21 aaron Exp $
 
 /**
  * @file
@@ -18,17 +18,26 @@ function media_youtube_upload_video($file, $configuration) {
   Zend_Loader::loadClass('Zend_Gdata_App_Exception', $path);
   Zend_Loader::loadClass('Zend_Gdata_App_HttpException', $path);
 
-  $title = $configuration['media_youtube_default_title'];
-  $description = $configuration['media_youtube_default_description'];
+  $title = check_plain($configuration['media_youtube_default_title']);
+  $description = check_plain($configuration['media_youtube_default_description']);
   $tags = '';
   $node = NULL;
 
   if ($file['nid']) {
     $node = node_load($file['nid']);
     if ($node) {
-      $title = $node->title;
-      if (strip_tags($node->body)) {
-        $description = strip_tags($node->body);
+      $title = check_plain($node->title);
+
+      $description_field = $configuration['media_youtube_description_field'];
+
+      if ($configuration['media_youtube_description_field'] == 'body') {
+        $clean_description = check_plain($node->body);
+      }
+      else if ($node->{$configuration['media_youtube_description_field']}) {
+        $clean_description = check_plain($node->{$configuration['media_youtube_description_field']}[0]['value']);
+      }
+      if ($clean_description) {
+        $description = $clean_description;
       }
 
       $tags = array();
@@ -41,20 +50,21 @@ function media_youtube_upload_video($file, $configuration) {
         }
       }
       $tags = array_filter($tags, '_media_youtube_filter_tags');
-      $tags = implode(', ', $tags);
+      $tags = check_plain(implode(', ', $tags));
     }
     else {
       watchdog('media_youtube', 'File !file belongs to node !nid which does not exist anymore.', array('!file' => $filepath, '!nid' => $file['nid']), WATCHDOG_ERROR);
     }
   }
   if ($tags == '') {
-    $tags = $configuration['media_youtube_default_tags'];
+    $tags = check_plain($configuration['media_youtube_default_tags']);
   }
 
-  $username = $configuration['media_youtube_username'];
-  $password = $configuration['media_youtube_password'];
-  $devkey   = $configuration['media_youtube_key'];
-  $category = $configuration['media_youtube_category'];
+  $username = media_youtube_variable_get('youtube_username');
+  $password = media_youtube_variable_get('youtube_password');
+  $devkey = media_youtube_variable_get('api_key');
+
+  $category = check_plain($configuration['media_youtube_category']);
 
   $filepath = media_mover_api_config_current_file($file);
   $fileinfo = pathinfo($filepath);
@@ -103,32 +113,35 @@ function media_youtube_upload_video($file, $configuration) {
  * @see media_youtube_validate_configuration().
  */
 function media_youtube_config($configuration) {
+  $youtube_username = isset($configuration['media_youtube_username']) ? $configuration['media_youtube_username'] : media_youtube_variable_get('youtube_username');
+  $youtube_password = isset($configuration['media_youtube_password']) ? $configuration['media_youtube_password'] : media_youtube_variable_get('youtube_password');
+
   $form['media_youtube_conf'] = array(
     '#type' => 'fieldset',
     '#title' => t('Upload to Youtube configuration'),
-    '#element_validate' => array('media_youtube_validate_configuration', array('media_youtube_conf'))
+    '#element_validate' => array('media_youtube_validate_configuration', array('media_youtube_conf')),
   );
 
-  $form['media_youtube_conf']['media_youtube_username'] = array(
-    '#title' => t('Username'),
-    '#type' => 'textfield',
-    '#default_value' => $configuration['media_youtube_username'] ? $configuration['media_youtube_username'] : '',
-    '#description' => t('Your Youtube username.'),
-  );
-
-  $form['media_youtube_conf']['media_youtube_password'] = array(
-    '#title' => t('Password'),
-    '#type' => 'password',
-    '#default_value' => $configuration['media_youtube_password'] ? $configuration['media_youtube_password'] : '',
-    '#description' => t('Your Youtube password.'),
-  );
-
-  $form['media_youtube_conf']['media_youtube_key'] = array(
-    '#title' => t('Developer Key'),
-    '#type' => 'textfield',
-    '#default_value' => $configuration['media_youtube_key'] ? $configuration['media_youtube_key'] : '',
-    '#description' => t('Your Youtube developer key.'),
-  );
+//   $form['media_youtube_conf']['media_youtube_username'] = array(
+//     '#title' => t('Username'),
+//     '#type' => 'textfield',
+//     '#default_value' => $youtube_username,
+//     '#description' => t('Your Youtube username.'),
+//   );
+//
+//   $form['media_youtube_conf']['media_youtube_password'] = array(
+//     '#title' => t('Password'),
+//     '#type' => 'password',
+//     '#default_value' => $youtube_password,
+//     '#description' => t('Your Youtube password.'),
+//   );
+//
+//   $form['media_youtube_conf']['media_youtube_key'] = array(
+//     '#title' => t('Developer Key'),
+//     '#type' => 'textfield',
+//     '#default_value' => $configuration['media_youtube_key'] ? $configuration['media_youtube_key'] : media_youtube_variable_get('api_key'),
+//     '#description' => t('Your Youtube developer key.'),
+//   );
 
   $form['media_youtube_conf']['media_youtube_category'] = array(
     '#title' => t('Category'),
@@ -144,11 +157,25 @@ function media_youtube_config($configuration) {
     '#description' => t('Videos which do not belong to a node will be given this title.'),
   );
 
+  $options = array(
+    'body' => t('<Body>'),
+  );
+  foreach (content_fields() as $field) {
+    $options[$field['field_name']] = $field['widget']['label'];
+  }
+  $form['media_youtube_conf']['media_youtube_description_field'] = array(
+    '#title' => t('Description field'),
+    '#type' => 'select',
+    '#options' => $options,
+    '#default_value' => $configuration['media_youtube_description_field'] ? $configuration['media_youtube_description_field'] : 'body',
+    '#description' => t('The video description will be pulled from this field.'),
+  );
+
   $form['media_youtube_conf']['media_youtube_default_description'] = array(
     '#title' => t('Default description'),
     '#type' => 'textfield',
     '#default_value' => $configuration['media_youtube_default_description'] ? $configuration['media_youtube_default_description'] : 'Default description',
-    '#description' => t('Videos which do not belong to a node will be given this description.'),
+    '#description' => t('Videos which do not have a node, or text in the body or description field above will be given this description.'),
   );
 
   $form['media_youtube_conf']['media_youtube_default_tags'] = array(
@@ -180,12 +207,4 @@ function _media_youtube_filter_tags($val) {
     return FALSE;
   }
   return TRUE;
-}
-
-function _media_youtube_set_include_path() {
-  static $path_set;
-
-  if (!isset($path_set)) {
-    $path_set = set_include_path(get_include_path() . PATH_SEPARATOR . media_youtube_zend_path());
-  }
 }

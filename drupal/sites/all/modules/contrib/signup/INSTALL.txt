@@ -1,4 +1,4 @@
-$Id: INSTALL.txt,v 1.13.2.2 2009/01/22 19:00:54 dww Exp $
+$Id: INSTALL.txt,v 1.13.2.3 2010/12/28 17:48:12 ezrag Exp $
 
 It is assumed that you have Drupal up and running.  Be sure to check
 the http://drupal.org web site if you need assistance.  If you run
@@ -101,23 +101,17 @@ the Drupal package and read the online documentation.
    privilege.
 
 
-7. (Optional) If you have enabled the Views module on your site
-   (http://drupal.org/project/views), be sure you are running Views
-   version 5.x-1.6 or later.  Once you have everything installed and
-   working, you should consider customizing any of the signup-related
-   views to better suit the needs of your site.  For example, if you
-   are using the event module, you might want to add a filter to the
-   'current signups' view to restrict it to events that have not
-   started yet.
+7. (Optional) Consider customizing any of the signup-related views to
+   better suit the needs of your site.  For example, if you are using
+   the event module, you might want to add a filter to the 'current
+   signups' view to restrict it to events that have not started yet.
 
 8. (Optional) Configure if and how you want a list of users signed up
    for each node to appear.  Under the 'Advanced settings' at
    admin/settings/signup, if the signup form and related information
    is being displayed on the node itself or on a separate tab, you
    will find a setting to control how you want the list of signed up
-   users to appear.  You can either use the built-in listing, no
-   listing at all, or if you have enabled the Views module on your
-   site (see step #7 above), you can also embed a view for this.
+   users to appear.  You can embed a view for this or leave it blank.
 
    There is a default view included called 'signup_user_list' which is
    disabled by default.  If you enable this view to customize it at
@@ -141,3 +135,4 @@ the Drupal package and read the online documentation.
 
 
 9. Start signing up!
+

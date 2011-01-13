@@ -1,5 +1,5 @@
 <?php
-// $Id: signup.views.inc,v 1.4.2.7 2009/07/22 21:47:47 dww Exp $
+// $Id: signup.views.inc,v 1.4.2.9 2011/01/03 20:27:24 ezrag Exp $
 
 
 /**
@@ -172,6 +172,26 @@ function signup_views_data() {
     ),
   );
 
+  $data['signup_log']['sid'] = array(
+    'title' => t('Signup ID'),
+    'help' => t('The signup entry ID'),
+    // Information for displaying the field
+    'field' => array(
+      'handler' => 'views_handler_field',
+      'click sortable' => TRUE,
+    ),
+    // Information for accepting sid as a filter
+    'filter' => array(
+      'label' => t('Signup entry id'),
+      'handler' => 'views_handler_filter_numeric',
+    ),
+    // Information for sorting on sid
+    'sort' => array(
+      'handler' => 'views_handler_sort',
+      'help' => t('Sort by signup ID.'),
+    )
+  );
+  
   $data['signup_log']['nid'] = array(
     'title' => t('Node'),
     'help' => t('The node a user signed up to.'),
@@ -248,7 +268,7 @@ function signup_views_data() {
 
   $data['signup_log']['form_data'] = array(
     'title' => t('User: Additional Signup Info'),
-    'help' => t('Enter the additional field name (from signup.theme) in the Option column.'),
+    'help' => t('Enter the additional field name (from theme/signup_form.inc) in the Option column.'),
     'field' => array(
       'handler' => 'signup_handler_field_signup_user_form_data',
       'option' => 'string',

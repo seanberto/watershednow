@@ -1906,8 +1906,8 @@ msgstr ""
 "pouzivatel@priklad.sk|Nejaký používateľ."
 
 #: components/select.inc:115
-msgid "select..."
-msgstr "výber..."
+msgid "- Select -"
+msgstr "- Výber -"
 
 #: components/select.inc:285
 msgid "Allows creation of checkboxes, radio buttons, or select menus."

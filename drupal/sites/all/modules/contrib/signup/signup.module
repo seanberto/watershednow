@@ -1,5 +1,5 @@
 <?php
-// $Id: signup.module,v 1.205.2.34 2009/09/19 01:42:58 dww Exp $
+// $Id: signup.module,v 1.205.2.45 2011/01/03 20:45:19 ezrag Exp $
 
 
 /**
@@ -75,22 +75,6 @@ function signup_theme() {
         'cooked_message' => NULL,
       ),
     ),
-    'signup_user_list' => array(
-      'file' => 'no_views.inc',
-      'path' => $path,
-      'arguments' => array(
-        'node' => NULL,
-        'registered_signups' => NULL,
-        'anon_signups' => NULL,
-      ),
-    ),
-    'signup_user_schedule' => array(
-      'file' => 'no_views.inc',
-      'path' => $path,
-      'arguments' => array(
-        'node' => NULL,
-      ),
-    ),
     'signup_node_admin_page' => array(
       'file' => 'node.admin.inc',
       'path' => $path,
@@ -102,13 +86,6 @@ function signup_theme() {
       ),
     ),
     'signup_node_admin_summary_form' => array(
-      'file' => 'node.admin.inc',
-      'path' => $path,
-      'arguments' => array(
-        'form' => NULL,
-      ),
-    ),
-    'signup_node_admin_details_form' => array(
       'file' => 'node.admin.inc',
       'path' => $path,
       'arguments' => array(
@@ -145,6 +122,20 @@ function signup_theme() {
       ),
     ),
     'signup_node_output_header' => array(
+      'file' => 'node.inc',
+      'path' => $path,
+      'arguments' => array(
+        'node' => NULL,
+      ),
+    ),
+    'signup_node_title' => array(
+      'file' => 'node.inc',
+      'path' => $path,
+      'arguments' => array(
+        'node' => NULL,
+      ),
+    ),
+    'signup_node_title' => array(
       'file' => 'node.inc',
       'path' => $path,
       'arguments' => array(
@@ -424,12 +415,6 @@ function signup_menu() {
     'file path' => $path,
   );
 
-  // Add extra menu items if we're not using views.
-  if (!module_exists('views')) {
-    module_load_include('inc', 'signup', 'includes/no_views');
-    signup_no_views_menu($items);
-  }
-
   return $items;
 }
 
@@ -493,8 +478,8 @@ function _signup_menu_access($node, $menu_type = 'node') {
     case 'list-tab':
       // See if this user can view signups, and if the site is configured to
       // display the signup user list as a tab.
-      $user_list = variable_get('signup_display_signup_user_list', 'signup');
-      if ($user_list == 'signup-tab' || $user_list == 'embed-view-tab') {
+      $user_list = variable_get('signup_display_signup_user_list', 'embed-view');
+      if ($user_list == 'embed-view-tab') {
         $user_list_tab = TRUE;
       }
       else {
@@ -651,8 +636,36 @@ function signup_perm() {
  *
  * @ingroup signup_core
  */
-function signup_user($type, &$edit, &$user, $category = NULL) {
+function signup_user($type, &$edit, &$account, $category = NULL) {
   switch ($type) {
+    case 'register':
+      // Get a list of nodes that should appear on the user registration form.
+      $query = db_query(db_rewrite_sql("SELECT n.nid FROM {node} n INNER JOIN signup s on n.nid=s.nid WHERE s.user_reg_form = 1 AND s.status = 1 AND n.status = 1"));
+      while ($result = db_fetch_object($query)) {
+        $nids[] = $result->nid;
+      }
+      // Allow other modules to alter the list of nids.
+      drupal_alter('signup_user_reg_nids', $nids);
+      // If there is at least one node, add the Signup fieldset.
+      if (!empty($nids)) {
+        $form['signup'] = array(
+          '#type' => 'fieldset',
+          '#title' => t('Event signup'),
+          '#tree' => TRUE,
+          '#description' => t('You will be automatically signed up once your account is created.'),
+        );
+        // Each node gets a checkbox.
+        foreach ($nids as $nid) {
+          $node = node_load($nid);
+          $form['signup'][$nid] = array(
+            '#type' => 'checkbox',
+            '#title' => theme('signup_node_title', $node),
+            '#default_value' => 0,
+          );
+        }
+      return $form;
+      }
+      break;
     case 'delete':
       $uids = array();
       if (is_array($edit['accounts'])) {
@@ -661,23 +674,32 @@ function signup_user($type, &$edit, &$user, $category = NULL) {
       }
       else {
         // A single-user delete from the edit tab on the user's profile.
-        $uids[] = $edit['_account']->uid;
+        if (!empty($account->uid)) {
+          $uids[] = $account->uid;
+        }
       }
-      foreach ($uids as $uid) {
-        $query = db_query("SELECT * FROM {signup_log} WHERE uid = %d", $uid);
-        while ($signup = db_fetch_object($query)) {
-          signup_cancel_signup($signup);
+      if (!empty($uids) && is_array($uids)) {
+        foreach ($uids as $uid) {
+          $query = db_query("SELECT * FROM {signup_log} WHERE uid = %d", $uid);
+          while ($signup = db_fetch_object($query)) {
+            signup_cancel_signup($signup);
+          }
         }
       }
       break;
-  }
-
-  // If we're not using views, we need to support additional user
-  // operations, for example, to add the user's current signup
-  // schedule to their user profile page.
-  if (!module_exists('views')) {
-    module_load_include('inc', 'signup', 'includes/no_views');
-    return _signup_user_no_views($type, $edit, $user, $category);
+    case 'insert':
+      // Create signups for new users who signed up via
+      // the user registration form.
+      if (!empty($edit['signup'])) {
+        foreach($edit['signup'] as $nid => $value) {
+          if ($value) {
+            $signup_form = array();
+            $signup_form['nid'] = $nid;
+            $signup_form['uid'] = $account->uid;
+            signup_sign_up_user($signup_form, TRUE);
+          }
+        }
+      }
   }
 }
 
@@ -706,7 +728,9 @@ function signup_form_node_type_form_alter(&$form, &$form_state) {
     '#title' => t('Signup settings'),
     '#collapsible' => TRUE,
     '#collapsed' => TRUE,
+    '#group' => 'additional_settings',
   );
+
   $form['signup']['signup_node_default_state'] = array(
     '#type' => 'radios',
     '#title' => t('Signup options'),
@@ -764,6 +788,7 @@ function signup_nodeapi(&$node, $op, $teaser = NULL, $page = NULL) {
         $node->signup_reminder_email = $signup->reminder_email;
         $node->signup_close_signup_limit = $signup->close_signup_limit;
         $node->signup_status = $signup->status;
+        $node->signup_user_reg_form = $signup->user_reg_form;
         if ($node->nid) {
           $node->signup_total = db_result(db_query("SELECT COUNT(*) FROM {signup_log} WHERE nid = %d", $node->nid));
           $node->signup_effective_total = db_result(db_query("SELECT SUM(count_towards_limit) FROM {signup_log} WHERE nid = %d", $node->nid));
@@ -780,15 +805,15 @@ function signup_nodeapi(&$node, $op, $teaser = NULL, $page = NULL) {
       // a page, not during the view from comment validation, etc.
       if ($page && _signup_needs_output($node)) {
         $info_location = variable_get('signup_form_location', 'node');
-        $list_location = variable_get('signup_display_signup_user_list', 'signup');
-        if ($info_location == 'node' || $list_location == 'signup' || $list_location == 'embed-view') {
+        $list_location = variable_get('signup_display_signup_user_list', 'embed-view');
+        if ($info_location == 'node' || $list_location == 'embed-view') {
           module_load_include('inc', 'signup', 'includes/node_output');
         }
         if ($info_location == 'node') {
           $signup_info = _signup_node_output($node);
           if (!empty($signup_info)) {
             if (module_exists('content')) {
-              // Due to a bug in CCK (http://drupal.org/node/363456), we need 
+              // Due to a bug in CCK (http://drupal.org/node/363456), we need
               // to call this function twice to ensure we get the real value.
               // The bug is present when you first enable the setting to
               // display in the node instead of a separate tab, or when you
@@ -805,7 +830,7 @@ function signup_nodeapi(&$node, $op, $teaser = NULL, $page = NULL) {
             );
           }
         }
-        if ($list_location == 'signup' || $list_location == 'embed-view') {
+        if ($list_location == 'embed-view') {
           $signup_list = signup_user_list_output($node);
           if (!empty($signup_list)) {
             if (module_exists('content')) {
@@ -879,7 +904,7 @@ function signup_action_info() {
  *
  * @param $signup
  *   Reference to a fully-loaded signup object to cancel.
- * 
+ *
  * @see signup_load_signup()
  * @see signup_cancel_signup()
  */
@@ -961,7 +986,7 @@ function signup_object_info() {
  *
  * @return
  *   Fully loaded $signup object corresponding to the given ID.
- */ 
+ */
 function signup_load_signup($sid) {
   $signup = db_fetch_object(db_query("SELECT sl.*, n.title, u.name, u.mail FROM {signup_log} sl INNER JOIN {node} n ON sl.nid = n.nid INNER JOIN {users} u ON sl.uid = u.uid WHERE sl.sid = %d", $sid));
   if (!empty($signup)) {
@@ -1045,8 +1070,7 @@ function signup_content_extra_fields($type_name) {
         'weight' => 10,
       );
     }
-    $user_list = variable_get('signup_display_signup_user_list', 'signup');
-    if ($user_list == 'signup' || $user_list == 'embed-view') {
+    if (variable_get('signup_display_signup_user_list', 'embed-view') == 'embed-view') {
       $extra['signup_node_list'] = array(
         'label' => t('Signup user list'),
         'description' => t('List of users currently signed up.'),
@@ -1185,12 +1209,24 @@ function signup_content_types() {
  *   drupal_set_message() and confirmation/forwarding emails are sent if
  *   enabled for the current node.
  *
+ * @param $reset_node_load
+ *   When set to TRUE, node_load() is called with the optional reset
+ *   argument as TRUE. This can sometimes be helpful when signups
+ *   have been opened with signup_open_signup() since that function
+ *   can cause static caching of the node object, thus leading to the 
+ *   $node->signup_status check here failing when it should not.
+ *
  * @return
  *   The signup id (SID) if the user was successfully signed up, FALSE if the
  *   user is already signed up or signups are not allowed on the given node.
  */
-function signup_sign_up_user($signup_form, $notify_user = TRUE) {
-  $node = node_load($signup_form['nid']);
+function signup_sign_up_user($signup_form, $notify_user = TRUE, $reset_node_load = FALSE) {
+  if ($reset_node_load) { 
+    $node = node_load($signup_form['nid'], NULL, TRUE);
+  }
+  else {
+    $node = node_load($signup_form['nid']);
+  }
 
   // Since this is an API call, we need to validate that there are no
   // duplicate signups being generated, even though through the usual
@@ -1252,6 +1288,8 @@ function signup_sign_up_user($signup_form, $notify_user = TRUE) {
     // Other special signup values.
     $signup->form_data = $signup_info;
     $signup->signup_time = $current_time;
+    // By default, signups should count towards the limit.
+    $signup->count_towards_limit = 1;
     if (!empty($signup_anon_mail)) {
       $signup->anon_mail = $signup_anon_mail;
     }
@@ -1273,12 +1311,18 @@ function signup_sign_up_user($signup_form, $notify_user = TRUE) {
       signup_send_forwarding_mail($signup, $node);
 
       // Message to the screen for the user who signed up.
-      drupal_set_message(t('Signup to !title confirmed.', array('!title' => l($node->title, "node/$node->nid"))) . $confirmation_email . $reminder_email);
+      // First, allow other modules to alter the messages.
+      $messages = array();
+      $messages['initial'] = 'Signup to !title confirmed.';
+      $messages['confirmation_email'] = $confirmation_email;
+      $messages['reminder_email'] = $reminder_email;
+      drupal_alter('signup_confirm_messages', $messages, $signup, $node);
+      drupal_set_message(t($messages['initial'], array('!title' => l($node->title, "node/$node->nid"))) . $messages['confirmation_email'] . $messages['reminder_email']);
     }
 
     $node->signup_total++;
-    if (!empty($signup->count_towards_total)) {
-      $node->signup_effective_total += $signup->count_towards_total;
+    if (!empty($signup->count_towards_limit)) {
+      $node->signup_effective_total += $signup->count_towards_limit;
       if ($node->signup_close_signup_limit) {
         _signup_check_limit($node, 'total');
       }
@@ -1292,7 +1336,7 @@ function signup_sign_up_user($signup_form, $notify_user = TRUE) {
 
 /**
  * Send the signup comfirmation e-mail to a user who signs up for something.
- * 
+ *
  * Note: Each signup-enabled node can be configured to send confirmation
  * e-mails or not, along with the body of the confirmation message to use.
  * If callers wish to honor this configuration, they must test
@@ -1302,12 +1346,12 @@ function signup_sign_up_user($signup_form, $notify_user = TRUE) {
  *   The fully-loaded signup object representing the user's signup.
  * @param $node
  *   The fully-loaded node object which the user signed up to.
- *   
+ *
  * @return
  *   The return value from drupal_mail() if the mail is sent, or FALSE if the
  *   confirmation was aborted for some reason (node not configured to send it,
  *   user doesn't have a valid e-mail address, etc).
- *  
+ *
  * @see signup_sign_up_user()
  * @see drupal_mail()
  */
@@ -1559,6 +1603,7 @@ function _signup_get_email_tokens($node, $signup) {
     $tokens['%user_signup_info'] = '';
   }
 
+  $tokens['%sid'] = $signup->sid;
   $tokens['%user_name'] = _signup_get_username($signup);
   $tokens['%user_mail'] = _signup_get_email($signup);
   $tokens['%cancel_signup_url'] = _signup_get_cancel_link($signup->sid);
@@ -1695,6 +1740,7 @@ function signup_token_list($type) {
   }
   elseif ($type == 'signup') {
     $tokens['signup'] = array(
+      'signup-sid' => t("The signup's unique ID number"),
       'signup-user-data' => t('Any custom fields the user filled out when signing up, rendered as HTML.'),
       'signup-user-data-raw' => t('Any custom fields the user filled out when signing up, rendered as unfiltered plain text (e.g. for ASCII e-mail).'),
       'signup-date-short' => t('The date/time when the user signed up, short date format.'),
@@ -1704,6 +1750,7 @@ function signup_token_list($type) {
       'signup-email' => t('The e-mail address for the signup (either anonymous or authenticated).'),
       'signup-anonymous-email' => t('The e-mail addressed entered for an anonymous signup, or an empty string if an authenticated user signed up.'),
       'signup-attendence' => t('If the user attended the thing they signed up for.'),
+      'signup-id' => t('Site-wide numeric identifier for the signup.'),
     );
   }
   return $tokens;
@@ -1736,6 +1783,7 @@ function signup_token_values($type = 'all', $object = NULL) {
         $signup_data = unserialize($object->form_data);
       }
     }
+    $values['signup-sid'] = $object->sid;
     $values['signup-user-data'] = theme('signup_custom_data', $signup_data);
     $values['signup-user-data-raw'] = theme('signup_email_token_custom_data', $signup_data);
     $values['signup-date-short'] = format_date($object->signup_time, 'small');
@@ -1755,7 +1803,7 @@ function signup_token_values($type = 'all', $object = NULL) {
     $values['signup-anonymous-email'] = !empty($object->anon_mail) ? $object->anon_mail : '';
     $attended = isset($signup->attended) ? $signup->attended : NULL;
     $values['signup-attendence'] = check_plain(theme('signup_attended_text', $attended));
-
+    $values['signup-id'] = $object->sid;
   }
   return $values;
 }

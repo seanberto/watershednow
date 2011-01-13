@@ -1,12 +1,14 @@
-; $Id: signup.info,v 1.5.2.1 2009/09/19 09:18:32 dww Exp $
+; $Id: signup.info,v 1.5.2.2 2010/12/28 17:48:12 ezrag Exp $
 name = Signup
 description = "Allow users to sign up for content (especially events)."
 package = Signup
+dependencies[] = views
 core = 6.x
 
-; Information added by drupal.org packaging script on 2009-09-24
-version = "6.x-1.0-rc6"
+
+; Information added by drupal.org packaging script on 2011-01-09
+version = "6.x-1.0"
 core = "6.x"
 project = "signup"
-datestamp = "1253775361"
+datestamp = "1294594325"
 

@@ -1,5 +1,5 @@
 <?php
-// $Id: signup.install,v 1.24.2.4 2009/09/19 01:42:58 dww Exp $
+// $Id: signup.install,v 1.24.2.6 2011/01/03 20:41:59 ezrag Exp $
 
 
 /**
@@ -73,6 +73,12 @@ function signup_schema() {
         'type' => 'int',
         'not null' => TRUE,
         'default' => 1,
+      ),
+     'user_reg_form' => array(
+        'description' => t('Boolean indicating if users can sign up for this event from the user registration form.'),
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
       ),
     ),
     'primary key' => array('nid'),
@@ -182,10 +188,10 @@ function signup_insert_default_signup_info() {
   return db_query("INSERT INTO {signup} (nid, forwarding_email,
     send_confirmation, confirmation_email,
     send_reminder, reminder_days_before, reminder_email,
-    close_in_advance_time, close_signup_limit, status) VALUES (0, '',
+    close_in_advance_time, close_signup_limit, status, user_reg_form) VALUES (0, '',
     1, 'Enter your default confirmation email message here',
     1, 1, 'Enter your default reminder email message here',
-    0, 0, 1)");
+    0, 0, 1, 0)");
 }
 
 function signup_update_3() {
@@ -482,3 +488,44 @@ function signup_update_6003() {
   return $ret;
 }
 
+/**
+ * Make views a required dependency.
+ */
+function signup_update_6004() {
+  $ret = array();
+
+  $user_list = variable_get('signup_display_signup_user_list', '');
+  if (!empty($user_list)) {
+    switch ($user_list) {
+      case 'signup':
+        variable_set('signup_display_signup_user_list', 'embed-view');
+        break;
+
+      case 'signup-tab':
+        variable_set('signup_display_signup_user_list', 'embed-view-tab');
+        break;
+    }
+  }
+
+  $admin_list = variable_get('signup_display_signup_admin_list', '');
+  if (!empty($admin_list) && $admin_list == 'signup') {
+    variable_set('signup_display_signup_admin_list', 'embed-view');
+  }
+
+  return $ret;
+}
+
+/*
+ * Add the 'user_reg_form' field to the {signup} table.
+ * See http://drupal.org/node/856604 for more information.
+ */
+function signup_update_6005() {
+  $ret = array();
+  $field = array(
+    'type' => 'int',
+    'not null' => TRUE,
+    'default' => 0,
+  );
+  db_add_field($ret, 'signup', 'user_reg_form', $field);
+  return $ret;
+}

@@ -1,5 +1,5 @@
 <?php
-// $Id: signup_form.inc,v 1.1.2.1 2008/12/20 06:31:27 dww Exp $
+// $Id: signup_form.inc,v 1.1.2.2 2010/12/28 17:08:03 ezrag Exp $
 
 
 /**
@@ -182,9 +182,6 @@ function signup_form_validate_username($form, $form_state) {
   $account = user_load(array('name' => $username));
   if (empty($account)) {
     form_set_error('signup_username', t('User %user_name does not exist.', array('%user_name' => $username)));
-  }
-  elseif (!user_access('sign up for content', $account)) {
-    form_set_error('signup_username', t('User !user does not have permission to sign up.', array('!user' => theme('username', $account))));
   }
   elseif (db_result(db_query("SELECT COUNT(*) FROM {signup_log} WHERE uid = %d AND nid = %d", $account->uid, $nid)) > 0) {
     $node = node_load($nid);

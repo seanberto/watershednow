@@ -1,5 +1,5 @@
 <?php
-// $Id: admin.signup_administration.inc,v 1.1.2.2 2009/09/21 05:23:09 dww Exp $
+// $Id: admin.signup_administration.inc,v 1.1.2.3 2010/12/28 19:59:57 ezrag Exp $
 
 
 /**
@@ -154,6 +154,7 @@ function signup_admin_form_sql() {
     'group_by' => array(
       'n.nid',
       'n.title',
+      'n.type',
       'signup_status',
       'signup_close_signup_limit',
     ),

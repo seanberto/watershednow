@@ -1,65 +1,40 @@
-# Hungarian translation of search404 (6.x-1.1)
-# Copyright (c) 2008 by the Hungarian translation team
-# Generated from files:
-#  search404.module,v 1.15.2.1 2008/07/28 08:17:46 zyxware
-#  search404.info,v 1.3.2.1 2008/07/28 08:17:46 zyxware
+# Hungarian translation of Search 404 (6.x-1.9)
+# Copyright (c) 2010 by the Hungarian translation team
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: search404 (6.x-1.1)\n"
-"POT-Creation-Date: 2008-11-19 10:16-0600\n"
-"PO-Revision-Date: 2008-11-14 12:57-0600\n"
+"Project-Id-Version: Search 404 (6.x-1.9)\n"
+"POT-Creation-Date: 2010-07-17 23:08+0000\n"
+"PO-Revision-Date: 2010-07-17 23:07+0000\n"
 "Language-Team: Hungarian\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
 
-#: search404.module:9
-msgid "Page not found"
-msgstr "Az oldal nem található"
-
-#: search404.module:143
-msgid "Search results"
-msgstr "Találatok"
-
-#: search404.info:0
-msgid "Other"
-msgstr "Egyéb"
-
-#: search404.module:169
 msgid "Advanced settings"
 msgstr "Haladó beállítások"
-
-#: search404.module:15
+msgid "Search results"
+msgstr "Találatok"
+msgid "Page not found"
+msgstr "Az oldal nem található"
 msgid "Search 404 settings"
 msgstr "Keresés 404 beállítások"
-
-#: search404.module:16
 msgid "Administer search 404."
 msgstr "Keresés 404 adminisztrációja."
-
-#: search404.module:101
-msgid "The page you requested was not found."
-msgstr "A kért oldal nem található."
-
-#: search404.module:115
+msgid ""
+"The page you requested does not exist. For your convenience, a google "
+"search was performed using the query %keys."
+msgstr ""
+"A kért oldal nem található. %keys kulcsszó használatával a "
+"rendszer végrehajtott egy Google keresést a kényelmetlenség "
+"elkerülésére."
 msgid ""
 "The page you requested does not exist. A search for %keys resulted in "
 "this page."
 msgstr ""
 "A kért oldal nem létezik, vagy átnevezték. <em>%keys</em> "
 "kifejezés keresési eredménye látható az oldalon."
-
-#: search404.module:121,121
-msgid ""
-"The page you requested does not exist. A search for %keys resulted in "
-"this page."
-msgstr ""
-"A kért oldal nem létezik, vagy átnevezték. <em>%keys</em> "
-"kifejezés keresési eredménye látható az oldalon."
-
-#: search404.module:127
 msgid ""
 "The page you requested does not exist. For your convenience, a search "
 "was performed using the query %keys."
@@ -67,104 +42,118 @@ msgstr ""
 "A kért oldal nem létezik, vagy átnevezték. <em>%keys</em> "
 "kulcsszó használatával a rendszer végrehajtott egy keresést a "
 "kényelmetlenség elkerülésére."
-
-#: search404.module:159
 msgid "Jump directly to the search result when there is only one result."
 msgstr "Ugrás a keresési eredmény találatára, ha csak egy találat van."
-
-#: search404.module:164
 msgid ""
-"Jump directly to the first search result when there are multiple "
+"Jump directly to the first search result even when there are multiple "
 "results."
 msgstr ""
-"Ugrás a keresési eredmény első találatára, ha több találat is "
-"van."
-
-#: search404.module:170
-msgid ""
-"WARNING. Some of these settings can mess up stuff, don't touch unless "
-"you know what you are\n"
-"\t\tdoing."
+"Azonnali ugrás az első találathoz, függetlenül attól, hogy több "
+"eredmény van-e."
+msgid "Show left and right sidebars in page when a 404 search occurs"
 msgstr ""
-"FIGYELEM! Ezek a beállítások összezavarhatják a modul "
-"működését, ezért átállítani csak a következmények pontos "
-"ismeretében ajánlott!"
-
-#: search404.module:177
+"404-es keresés előfordulása esetén a jobb és a bal oldalsáv "
+"megjelenítése az oldalon."
+msgid "Do a Google CSE Search instead of a Drupal Search when a 404 Occurs"
+msgstr ""
+"404 esetén a Drupal keresés helyett egy <em>Google CSE</em> keresés "
+"lépjen érvénybe"
+msgid "Requires Google CSE and Google CSE Search Modules to be Enabled"
+msgstr ""
+"A <em>Google CSE</em> és a <em>Google CSE Search</em> modulok "
+"engedélyezése szükséges ehhez."
 msgid "Use OR between keywords when searching."
 msgstr "Kereséshez a kulcsszavak között az OR (vagy) használható."
-
-#: search404.module:182
-msgid ""
-"Use auto-detection of keywords from search engine referer. BETA! Not "
-"for production sites, use at your own risk."
+msgid "Use auto-detection of keywords from search engine referer."
 msgstr ""
-"Ha a hivatkozó egy keresőmotor, akkor automatikusan ismerje fel a "
-"kulcsszavakat. BÉTA! Nem ajánlott hivatalos webhelyekre, használata "
-"csak saját felelősségre!"
-
-#: search404.module:187
+"Automatikusan keresse ki a kulcsszavakat a keresőmotor "
+"hivatkozásából."
+msgid ""
+"This feature will conduct a search based on the query string got from "
+"a search engine if the URL of the search result points to a 404 page "
+"in the current website. Currently supported search engines: Google, "
+"Yahoo, Altavista, Lycos, Bing and AOL"
+msgstr ""
+"Ez a lehetőség el fog végezni egy keresést a keresőmotortól "
+"kapott lekérdezési karaktersorozat alapján, ha a keresési "
+"eredmény webcíme 404-es hibát okoz az aktuális webhelyen. Jelenleg "
+"támogatott keresőmotorok: Google, Yahoo, Altavista, Lycos, Bing és "
+"AOL."
 msgid "Words to ignore"
 msgstr "Mellőzött szavak"
-
-#: search404.module:188
 msgid ""
-"These words will be ignored from query. Separate words with a space, "
-"e.g.: \"and or the\"."
+"These words will be ignored from the search query. Separate words with "
+"a space, e.g.: \"and or the\"."
 msgstr ""
-"Az alábbi szavakat mellőzi a kérésből. A szavakat szóközzel "
-"elválasztva kell megadni, pl.: „és vagy a”."
-
-#: search404.module:193
+"Ezek a szavak mellőzve lesznek a keresési lekérdezésben. "
+"Szóközzel kell elválasztani a szavakat, például „és vagy a”."
 msgid "Extensions to ignore"
 msgstr "Mellőzött kiterjesztések"
-
-#: search404.module:194
 msgid ""
-"These extensions will be ignored from query. Separate extensions with "
-"a space, e.g.: \"htm html php\". Do not include leading dot."
+"These extensions will be ignored from the search query, e.g.: "
+"http://www.example.com/invalid/page.php will only search for \"invalid "
+"page\". Separate extensions with a space, e.g.: \"htm html php\". Do "
+"not include leading dot."
 msgstr ""
-"Az alábbi kiterjesztéseket mellőzi a kérésből. A szavakat "
-"szóközzel elválasztva kell megadni, pl.: „htm html php”. A pont "
-"nem szükséges."
-
-#: search404.module:199
+"Ezek a kiterjesztések mellőzve lesznek a keresési lekérdezésben. "
+"Például a „http://www.example.com/ervenytelen/oldal.php” esetén "
+"a keresőkifejezés csak „ervenytelen oldal”. Szóközzel kell "
+"elválasztani a szavakat, például „htm html php”. Pont nem "
+"szükséges eléjük."
 msgid "Extensions to abort search"
 msgstr "Kiterjesztések, melyek megszakítják a keresést"
-
-#: search404.module:200
 msgid ""
-"A search will not be performed for a query ending in the following "
-"extensions. Separate extensions with a space, e.g.: \"gif jpg jpeg bmp "
-"png\". Do not include leading dot."
+"A search will not be performed for a query ending in these extensions. "
+"Separate extensions with a space, e.g.: \"gif jpg jpeg bmp png\". Do "
+"not include leading dot."
 msgstr ""
-"A keresés nem lesz végrehajtva, ha a kérés végén a következő "
-"kiterjesztések szerepelnek. A szavakat szóközzel elválasztva kell "
-"megadni, pl.: „gif jpg jpeg bmp png”. A pont nem szükséges."
-
-#: search404.module:205
-msgid "PCRE REGEX"
-msgstr "PCRE REGEX"
-
-#: search404.module:206
+"A keresés nem lesz végrehajtva, ha a lekérdezés ezekre a "
+"kiterjesztésekre végződik. Szóközzel kell elválasztani a "
+"kiterjesztéseket, például „gif jpg jpeg bmp png”. Pont nem "
+"szükséges eléjük."
+msgid "PCRE filter"
+msgstr "PCRE szűrő"
 msgid ""
-"This regex will applied to all queries. It uses the "
-"code:<p>%code</p>Look directly at the source code to understand "
-"underlying syntax. See also <a href=\"http://php.net/pcre\">PCRE pages "
-"in the PHP Manual</a>."
+"This regular expression will be applied to filter all queries. The "
+"parts of the path that match the expression will be EXCLUDED from the "
+"search. You do NOT have to enclose the regex in forward slashes when "
+"defining the PCRE. e.g.: use \"[foo]bar\" instead of \"/[foo]bar/\". "
+"On how to use a PCRE Regex please refer <a "
+"href=\"http://php.net/pcre\">PCRE pages in the PHP Manual</a>."
 msgstr ""
-"Ezt a regulásris kifejezést alkalmazza minden kéréshez. A "
-"következő kódot használja:<p>%code</p>Az alapul szolgáló "
-"szintaxis megértéséhez a forráskód közvetlen megtekintése ad "
-"támpontot. További információkat a <a "
-"href=\"http://php.net/pcre\">PHP kézikönyv PCRE oldalai</a> "
-"szolgáltatnak."
-
-#: search404.module:0
-msgid "search404"
-msgstr "search404"
-
-#: search404.info:0
+"Ez a reguláris kifejezés szűrőként lesz alkalmazva minden "
+"kérésre. Az útvonal azon részei, melyek illeszkednek a "
+"kifejezésre KI LESZNEK ZÁRVA a keresésből. NEM kell a kifejezést "
+"perjelek közé zárni a PCRE megadásakor. Például „[pél]da” "
+"használható „/[pél]da/” helyett. A PCRE reguláris kifejezések "
+"használatáról további információk a <a "
+"href=\"http://php.net/pcre\">PHP kézikönyv PCRE oldalain</a> "
+"találhatóak."
 msgid "Search 404"
 msgstr "Keresés 404"
-
+msgid ""
+"Do a \"Search by page\" Search instead of a Drupal Search when a 404 "
+"Occurs"
+msgstr ""
+"404 esetén a Drupal keresés helyett egy <em>Search by page</em> "
+"keresés lépjen érvénybe"
+msgid "Requires \"Search by page\" module to be Enabled"
+msgstr "A <em>Search by page</em> modul engedélyezése szükséges ehhez."
+msgid "Use a redirect 301 instead of redirect 302"
+msgstr "Használjon 301-es átirányítást a 302-es helyett"
+msgid "Custom Page Title"
+msgstr "Egyedi oldalcím"
+msgid ""
+"You can enter a value that will displayed at the title of the Webpage "
+"e.g. \"Page not found\""
+msgstr ""
+"Megadható egy érték, amely a weblap címeként jelenik meg, "
+"például „A lap nem található”."
+msgid "Custom Page Text"
+msgstr "Egyedi oldalszöveg"
+msgid ""
+"You can enter a custom text message that can be displayed at the top "
+"of the search results, HTML formatting can be used"
+msgstr ""
+"Megadható egy egyéni szöveges üzenet, mely megjelenik a keresési "
+"eredmények tetején. HTML formázás használható."

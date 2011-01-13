@@ -1,0 +1,97 @@
+<?php
+// $Id:
+/**
+ * @file
+ * The Signup roles module allows administrators to configure a site so that it
+ * grants one or more roles to users when they sign up to nodes.
+ */
+
+/**
+ * Implementation of hook_signup_sign_up().
+ */
+function signup_roles_signup_sign_up($node, $account) {
+  // We can't grant roles to anonymous users.
+  if (empty($account->uid)) {
+    return;
+  }
+  $grant_roles = variable_get('signup_roles_grant', array());
+  // Filter down to only those roles that are selected.
+  $grant_roles = array_filter($grant_roles);
+  // If no roles are selected, there's nothing to do here.
+  if (empty($grant_roles)) {
+    return;
+  }
+  // Confirm only current roles are being granted.
+  $site_roles = user_roles(TRUE);
+  $grant_roles = array_intersect_key($site_roles, $grant_roles);
+  $grant_roles_string = implode(', ', $grant_roles);
+  // Make sure not to remove other roles in the process of granting new ones.
+  $roles = $grant_roles;
+  $roles += $account->roles;
+  $success = user_save($account, array('roles' => $roles));
+  if ($success) {
+    watchdog('signup_roles', 'Granted roles %roles to %name.', array('%roles' => $grant_roles_string, '%name' => $account->name));
+  }
+  else {
+    watchdog('signup_roles', 'Error granting roles %roles to %name', array('%roles' => $grant_roles_string, '%name' => $account->name));
+  }
+}
+
+/**
+ * Implementation of hook_form_alter().
+ */
+function signup_roles_form_alter(&$form, $form_state, $form_id) {
+  if ($form_id == 'signup_settings_form') {
+    // Only show them roles beyond the Authenticated.
+    $roles = user_roles(TRUE);
+    unset($roles[DRUPAL_AUTHENTICATED_RID]);
+    $form['adv_settings']['signup_roles_grant'] = array(
+      '#type' => 'checkboxes',
+      '#title' => t('Grant these roles when a signup is created'),
+      '#default_value' => variable_get('signup_roles_grant', array()),
+      '#options' => $roles,
+      '#weight' => 6,
+    );
+    // If they don't have roles beyond authenticated, advise them on what to do.
+    if (empty($roles)) {
+      $form['adv_settings']['signup_roles_grant']['#description'] =  t('Your site has no roles beyond authenticated, <a href="!create_url">create a role</a> to use this feature',
+          array('!create_url' => url('admin/user/roles')));
+      $form['adv_settings']['signup_roles_grant']['#disabled'] = TRUE;
+    }
+  }
+}
+
+/**
+* Public function for removing roles if a user cancels.
+*
+* This function is not automatically invoked by Signup. You should call this
+* function from your own code if you wish to remove roles.
+*/
+function signup_roles_cancel($account) {
+  // We can't remove roles from anonymous users.
+  if (empty($account->uid)) {
+    return;
+  }
+  $remove_roles = variable_get('signup_roles_grant', array());
+  // Filter down to only those roles that are selected.
+  $remove_roles = array_filter($remove_roles);
+  // If no roles are selected, there's nothing to do here.
+  if (empty($remove_roles)) {
+    return;
+  }
+  // Confirm only current roles are being removed.
+  $site_roles = user_roles(TRUE);
+  $remove_roles = array_intersect_key($site_roles, $remove_roles);
+  $remove_roles_string = implode(', ', $remove_roles);
+  // Make sure not to remove other roles in the process of removing these.
+  $roles = array_diff_key($account->roles, $remove_roles);
+  $success = user_save($account, array('roles' => $roles));
+  if ($success) {
+    watchdog('signup_roles', 'Removed roles %roles from %name.', array('%roles' => $remove_roles_string, '%name' => $account->name));
+    return TRUE;
+  }
+  else {
+    watchdog('signup_roles', 'Error removing roles %roles from %name', array('%roles' => $remove_roles_string, '%name' => $account->name));
+    return FALSE;
+  }
+}

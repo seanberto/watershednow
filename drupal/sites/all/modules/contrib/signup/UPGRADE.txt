@@ -1,4 +1,4 @@
-$Id: UPGRADE.txt,v 1.2.4.1 2008/12/20 00:53:06 dww Exp $
+$Id: UPGRADE.txt,v 1.2.4.2 2010/12/28 17:48:12 ezrag Exp $
 
 ======================================================================
 This file contains specific instructions for upgrading your site's
@@ -6,6 +6,11 @@ version of signup.module to a new release.  You should always check
 this file when you download a new version to see if there are any
 specific things you need to know about a certain upgrade.
 ======================================================================
+
+* Upgrading to 6.x-1.0-rc6 (from any earlier version)
+  There is a new dependency on Views (http://drupal.org/project/views).
+Be sure to install at least version 6.x-2.6 for the best results.
+
 
 * Upgrading to 6.x-1.0-rc3 (from any earlier version)
   There is a new permission called "cancel signups" which is required

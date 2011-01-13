@@ -1,5 +1,5 @@
 <?php
-// $Id: webform_handler_field_submission_count.inc,v 1.3.2.1 2010/03/03 02:51:31 quicksketch Exp $
+// $Id: webform_handler_field_submission_count.inc,v 1.3.2.2 2010/11/18 14:08:49 quicksketch Exp $
 
 /**
 * @file
@@ -36,10 +36,11 @@ class webform_handler_field_submission_count extends views_handler_field {
   function render($values) {
     global $user;
 
-    if ($this->count_type == 'node') {
+    $output = NULL;
+    if ($this->count_type == 'node' && in_array($node->type, webform_variable_get('webform_node_types'))) {
       module_load_include('inc', 'webform', 'includes/webform.submissions');
       $node = node_load($values->{$this->aliases['nid']});
-      if (webform_results_access($node, 'access all webform results')) {
+      if (webform_results_access($node, $user)) {
         $count = webform_get_submission_count($node->nid);
         $output = l($count, "node/$node->nid/webform-results");
       }

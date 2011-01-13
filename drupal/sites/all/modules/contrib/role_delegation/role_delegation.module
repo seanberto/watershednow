@@ -1,5 +1,5 @@
 <?php
-// $Id: role_delegation.module,v 1.14.2.4 2010/01/12 20:37:27 davidlesieur Exp $
+// $Id: role_delegation.module,v 1.14.2.7 2010/12/09 18:25:31 andrewschulman Exp $
 
 /**
  * @file
@@ -160,6 +160,61 @@ function _role_delegation_make_perm($role) {
 
 
 /**
+ * Implementation of hook_form_FORM_ID_alter() for user_admin_role().
+ */
+function role_delegation_form_user_admin_role_alter(&$form, $form_state)
+{
+  // Put our submit function in line ahead of user_admin_role_submit(),
+  // so that it can make use of the old role name before it's changed to the new.
+  array_unshift($form['#submit'], 'role_delegation_form_user_admin_role_submit');
+}
+
+/**
+ * Submit function for the user_admin_role form:
+ * When a role is renamed or deleted, rename or delete the permission
+ * to assign that role.
+ */
+function role_delegation_form_user_admin_role_submit($form, &$form_state) {
+  $op = $form_state['values']['op'];
+  if ($op != t('Save role') && $op != t('Delete role')) {
+    return;
+  }
+  $rid = $form_state['values']['rid'];
+  $oldrole = db_result(db_query('SELECT name FROM {role} WHERE rid = %d', $rid));
+  $newrole = $form_state['values']['name'];
+  if ($op == t('Save role') && $oldrole == $newrole) {
+    return;
+  }
+  // Role is being renamed or deleted.
+  // Loop through permission lists for all roles, renaming or deleting the
+  // 'assign' permission for this role.
+  $oldperm = _role_delegation_make_perm($oldrole);
+  $result = db_query('SELECT * FROM {permission}');
+  while ($row = db_fetch_object($result)) {
+    $perms = explode(', ', $row->perm);
+    for ($i = 0; $i < count($perms); ++$i) {
+      if ($perms[$i] == $oldperm) {
+        switch ($op) {
+          case t('Save role'):
+            $perms[$i] = _role_delegation_make_perm($newrole);
+            break;
+          case t('Delete role'):
+            unset($perms[$i]);
+            break;
+        }
+        if (count($perms)) {
+          db_query("UPDATE {permission} SET perm = '%s' WHERE pid = %d",
+            implode(', ', $perms), $row->pid);
+        } else {
+          db_query("DELETE FROM {permission} WHERE pid = %d", $row->pid);
+        }
+        break;
+      }
+    }
+  }
+}
+
+/**
  * Implementation of hook_user().
  */
 function role_delegation_user($op, &$edit, &$account, $category = NULL) {
@@ -196,18 +251,39 @@ function role_delegation_user($op, &$edit, &$account, $category = NULL) {
         '#type' => 'value',
         '#value' => $rids_preserve,
       );
-      $form['roles_assign'] = array(
+      $roles_assign = array(
         '#type' => 'checkboxes',
         '#title' => t('Roles'),
         '#description' => t('The user receives the combined permissions of the %roles role(s), and all roles selected here. ', array('%roles' => implode(', ', $roles_preserve))),
         '#options' => $roles_options,
         '#default_value' => $rids_default,
+        '#weight' => 10,
       );
+      if ($op == 'register') {
+        // Since the user module does array_merge() instead of array_merge_recursive() (see bug http://drupal.org/node/227690),
+        // we must move this under 'account' later at role_delegation_form_user_register_alter()
+        $form['roles_assign'] = $roles_assign;
+      }
+      else {
+        $form['account']['roles_assign'] = $roles_assign;
+      }
       return $form;
     }
   }
   elseif (isset($edit['roles_assign']) && ($op == 'insert' || $op == 'submit')) {
     $edit['roles'] = $edit['roles_preserve'] + array_filter($edit['roles_assign']);
+  }
+}
+
+/**
+ * Implementation of hook_form_FORM_ID_alter() for user_register().
+ */
+function role_delegation_form_user_register_alter(&$form, $form_state) {
+  // Move our field where it belongs
+  if (isset($form['roles_assign'])) {
+    $form['account']['roles_assign'] = $form['roles_assign'];
+    unset($form['roles_assign']);
+    $form['account']['notify']['#weight'] = 11;
   }
 }
 

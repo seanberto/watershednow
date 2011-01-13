@@ -1,5 +1,5 @@
 <?php
-// $Id: wysiwyg.module,v 1.33.2.11 2010/02/14 01:59:47 sun Exp $
+// $Id: wysiwyg.module,v 1.33.2.12 2010/11/06 17:57:36 sun Exp $
 
 /**
  * @file
@@ -11,7 +11,7 @@
  */
 function wysiwyg_menu() {
   $items['admin/settings/wysiwyg'] = array(
-    'title' => 'Wysiwyg',
+    'title' => 'Wysiwyg profiles',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('wysiwyg_profile_overview'),
     'description' => 'Configure client-side editors.',
@@ -19,7 +19,7 @@ function wysiwyg_menu() {
     'file' => 'wysiwyg.admin.inc',
   );
   $items['admin/settings/wysiwyg/profile'] = array(
-    'title' => 'Profiles',
+    'title' => 'List',
     'type' => MENU_DEFAULT_LOCAL_TASK,
   );
   $items['admin/settings/wysiwyg/profile/%wysiwyg_profile/edit'] = array(
@@ -316,6 +316,7 @@ function wysiwyg_load_editor($profile) {
   if (!isset($settings_added) && $loaded[$name]) {
     drupal_add_js(array('wysiwyg' => array(
       'configs' => array(),
+      'plugins' => array(),
       'disable' => t('Disable rich-text'),
       'enable' => t('Enable rich-text'),
     )), 'setting');
@@ -353,7 +354,9 @@ function wysiwyg_add_editor_settings($profile, $theme) {
     $config = wysiwyg_get_editor_config($profile, $theme);
     // drupal_to_js() does not properly convert numeric array keys, so we need
     // to use a string instead of the format id.
-    drupal_add_js(array('wysiwyg' => array('configs' => array($profile->editor => array('format' . $profile->format => $config)))), 'setting');
+    if ($config) {
+      drupal_add_js(array('wysiwyg' => array('configs' => array($profile->editor => array('format' . $profile->format => $config)))), 'setting');
+    }
     $formats[$profile->format] = TRUE;
   }
 }
@@ -428,7 +431,9 @@ function wysiwyg_add_plugin_settings($profile) {
     // settings for native external plugins with required values.
     $settings_native = call_user_func($editor['plugin settings callback'], $editor, $profile, $profile_plugins_native);
 
-    drupal_add_js(array('wysiwyg' => array('plugins' => array('format' . $profile->format => array('native' => $settings_native)))), 'setting');
+    if ($settings_native) {
+      drupal_add_js(array('wysiwyg' => array('plugins' => array('format' . $profile->format => array('native' => $settings_native)))), 'setting');
+    }
   }
 
   // Process Drupal plugins.
@@ -457,7 +462,9 @@ function wysiwyg_add_plugin_settings($profile) {
     // the settings for Drupal plugins with custom, required values.
     $settings_drupal = call_user_func($editor['proxy plugin settings callback'], $editor, $profile, $profile_plugins_drupal);
 
-    drupal_add_js(array('wysiwyg' => array('plugins' => array('format' . $profile->format => array('drupal' => $settings_drupal)))), 'setting');
+    if ($settings_drupal) {
+      drupal_add_js(array('wysiwyg' => array('plugins' => array('format' . $profile->format => array('drupal' => $settings_drupal)))), 'setting');
+    }
   }
 }
 
@@ -564,7 +571,9 @@ function wysiwyg_get_css() {
     return $files;
   }
   // In node form previews, the theme has not been initialized yet.
-  init_theme();
+  if (!empty($_POST)) {
+    init_theme();
+  }
 
   $files = array();
   foreach (drupal_add_css() as $media => $css) {
@@ -797,7 +806,7 @@ function wysiwyg_get_all_plugins() {
 function wysiwyg_load_includes($type = 'editors', $hook = 'editor', $file = NULL) {
   // Determine implementations.
   $directories = wysiwyg_get_directories($type);
-  $directories['wysiwyg_'] = drupal_get_path('module', 'wysiwyg') . '/' . $type;
+  $directories['wysiwyg'] = drupal_get_path('module', 'wysiwyg') . '/' . $type;
   $file_list = array();
   foreach ($directories as $module => $path) {
     $file_list[$module] = drupal_system_listing("$file" . '.inc$', $path, 'name', 0);
@@ -808,7 +817,7 @@ function wysiwyg_load_includes($type = 'editors', $hook = 'editor', $file = NULL
   foreach (array_filter($file_list) as $module => $files) {
     foreach ($files as $file) {
       include_once './' . $file->filename;
-      $result = _wysiwyg_process_include('wysiwyg', $module . $file->name, dirname($file->filename), $hook);
+      $result = _wysiwyg_process_include($module, $module . '_' . $file->name, dirname($file->filename), $hook);
       if (is_array($result)) {
         $info = array_merge($info, $result);
       }
@@ -932,7 +941,7 @@ function wysiwyg_get_directories($plugintype) {
   foreach (module_implements('wysiwyg_include_directory') as $module) {
     $result = module_invoke($module, 'wysiwyg_include_directory', $plugintype);
     if (isset($result) && is_string($result)) {
-      $directories[$module . '_'] = drupal_get_path('module', $module) . '/' . $result;
+      $directories[$module] = drupal_get_path('module', $module) . '/' . $result;
     }
   }
   return $directories;

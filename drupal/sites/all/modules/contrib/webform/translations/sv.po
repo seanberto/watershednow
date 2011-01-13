@@ -1511,8 +1511,8 @@ msgid ""
 msgstr "Alternativen i en lista måste vara unika. Följande nycklar används flera gånger:"
 
 #: components/select.inc:155
-msgid "select..."
-msgstr "välj..."
+msgid "- Select -"
+msgstr "- Välj -"
 
 #: components/select.inc:325
 msgid "Allows creation of checkboxes, radio buttons, or select menus."

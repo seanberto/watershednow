@@ -1,5 +1,5 @@
 <?php
-// $Id: media_youtube.variables.inc,v 1.1.2.1 2010/04/08 20:35:49 aaron Exp $
+// $Id: media_youtube.variables.inc,v 1.1.2.8 2010/11/12 15:09:38 aaron Exp $
 
 /**
  * @file Contains the variables and defaults used by Media: YouTube.
@@ -28,7 +28,7 @@ define('MEDIA_YOUTUBE_REST_ENDPOINT', 'http://gdata.youtube.com/feeds/api/videos
  * we must increment this value, which will allow older content to be updated
  * to the new version automatically.
  */
-define('MEDIA_YOUTUBE_DATA_VERSION', 3);
+define('MEDIA_YOUTUBE_DATA_VERSION', 4);
 
 /**
  * These are player defaults. @TODO: Use variable namespace instead.
@@ -42,6 +42,14 @@ define('MEDIA_YOUTUBE_COLOR2_DEFAULT', '#CCCCCC');
 define('MEDIA_YOUTUBE_AUTH_URL', 'https://www.google.com/youtube/accounts/ClientLogin');
 define('MEDIA_YOUTUBE_UPLOAD_URL', 'http://uploads.gdata.youtube.com/feeds/users/default/uploads');
 define('MEDIA_YOUTUBE_APP_ID', 'Media: Youtube Uploader');
+
+define('MEDIA_YOUTUBE_STATUS_UPDATE_NONE', 0);
+define('MEDIA_YOUTUBE_STATUS_UPDATE_FROM_UNAVAILABLE', 1);
+define('MEDIA_YOUTUBE_STATUS_UPDATE_ALWAYS', 2);
+
+define('MEDIA_YOUTUBE_STATUS_UNAVAILABLE', 0x0000);
+define('MEDIA_YOUTUBE_STATUS_AVAILABLE', 0x0001);
+define('MEDIA_YOUTUBE_STATUS_PRIVATE', 0x0002);
 
 /**
  * Wrapper for variable_get() that uses the Media: YouTube variable registry.
@@ -132,6 +140,10 @@ function media_youtube_variable_default($name = NULL) {
       // The YouTube API developer key.
       'api_key' => '',
 
+      // Default YouTube user & password.
+      'youtube_username' => '',
+      'youtube_password' => '',
+
       // Player display options.
       'show_related_videos' => 0,
       'show_colors' => FALSE,
@@ -148,6 +160,27 @@ function media_youtube_variable_default($name = NULL) {
 
       // Zend path.
       'zend_path' => '',
+
+      // Status message to display when a video is unavailable.
+      'status_display_'. EMFIELD_STATUS_UNAVAILABLE => '',
+
+      // Whether to update the status on the fly.
+      'status_update_frequency' => MEDIA_YOUTUBE_STATUS_UPDATE_NONE,
+
+      // Status message to display for unavailable duplicate videos.
+      'status_display_duplicates' => '',
+      'check_for_duplicates' => FALSE,
+
+      // Status message to display for rejected videos.
+      'status_display_rejected' => '',
+      'check_for_rejected' => FALSE,
+
+      // Status message to display for failed video uploads.
+      'status_display_upload_failed' => '',
+      'check_for_failed' => FALSE,
+
+      'cron_time' => 10,
+      'cron_limit' => 50,
     );
   }
 

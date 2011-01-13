@@ -728,8 +728,8 @@ msgid "Check this option if you want the select component to be of listbox type 
 msgstr ""
 
 #: components/select.inc:69
-msgid "select..."
-msgstr "בחר..."
+msgid "- Select -"
+msgstr "- בחר -"
 
 #: components/select.inc:219
 msgid "Allows creation of checkboxes, radio buttons, or select menus."

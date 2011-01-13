@@ -1,5 +1,5 @@
 <?php
-/* $Id: search404.module,v 1.15.2.20 2010/03/23 08:20:35 zyxware Exp $ */
+// $Id: search404.module,v 1.15.2.40 2010/12/19 18:39:35 zyxware Exp $
 
 /* @file
  * The search404 module files, does all the searching
@@ -34,40 +34,41 @@ function search404_menu() {
 
 /**
  * Replacement for search_get_keys
- * WARNING: This function can potentially return dangerous
- *              potential SQL inject/XSS
- * data. Return must be sanatized before use.
+ * This function can potentially return dangerous
+ * potential SQL inject/XSS data. 
+ * Return must be sanatized before use.
  */
 function search404_get_keys() {
   global $language;
 
+  $keys = $_REQUEST['destination'] ? $_REQUEST['destination'] : $_REQUEST['q'];
+
   // Abort query on certain extensions, e.g: gif jpg jpeg png
-  $extensions = preg_split('/\s+/', variable_get('search404_ignore_query', 'gif jpg jpeg bmp png'));
+  $extensions = explode(' ', variable_get('search404_ignore_query', 'gif jpg jpeg bmp png'));
   $extensions = trim(implode('|', $extensions));
-  if (!empty($extensions) && preg_match("/\.($extensions)$/", $_REQUEST['destination'])) {
+  if (!empty($extensions) && preg_match("/\.($extensions)$/i", $keys)) {
     return FALSE;
   }
-  $keys = $_REQUEST['destination'] ? $_REQUEST['destination'] : $_REQUEST['q'];
   //Remove the Language Prefix Appended to Search String (http://drupal.org/node/560426)
   if (LANGUAGE_NEGOTIATION_PATH_DEFAULT && $language->language) {
-    $keys = preg_replace("/^".$language->language."\//", '', $keys);
+    $keys = preg_replace("/^". $language->language ."\//i", '', $keys);
   }
   $regex_filter = variable_get('search404_regex', '');
   $keys_array[] = $keys;
   if (!empty($regex_filter)) {
-    $keys = preg_replace("/". $regex_filter ."/", '', $keys);
+    $keys = preg_replace("/". $regex_filter ."/i", '', $keys);
   }
-  // Ingore certain extensions from query
-  $extensions = preg_split('/\s+/', variable_get('search404_ignore_extensions', 'htm html php'));
+  // Ignore certain extensions from query.
+  $extensions = explode(' ', variable_get('search404_ignore_extensions', 'htm html php'));
   $extensions = trim(implode('|', $extensions));
   if (!empty($extensions)) {
-    $keys = preg_replace("/\.($extensions)$/", '', $keys);
+    $keys = preg_replace("/\.($extensions)$/i", '', $keys);
   }
 
   $keys = preg_split('/['. PREG_CLASS_SEARCH_EXCLUDE .']+/u', $keys);
 
-  // Ignore certain words
-  $keys = array_diff($keys, explode(' ', variable_get('search404_ignore', 'and or the')));
+  // Ignore certain words (use case insensitive search).
+  $keys = array_udiff($keys, explode(' ', variable_get('search404_ignore', 'and or the')), 'strcasecmp');
   //Sanitize the keys
   foreach ($keys as $a => $b) {
     $keys[$a] = check_plain($b);
@@ -78,7 +79,7 @@ function search404_get_keys() {
 }
 
 /**
- * Detect search from search engine
+ * Detect search from search engine.
  */
 function search404_search_engine_query() {
   $engines = array(
@@ -109,13 +110,14 @@ function search404_search_engine_query() {
  * Main search function.
  * Started with: http://drupal.org/node/12668
  * Updated to be more similar to search_view
- * Beware of messy code
  */
 function search404_page() {
-  drupal_set_title(t(variable_get('search404_page_title', '')));
+  $output = '';
+  drupal_set_title(t(variable_get('search404_page_title', 'Page not found')));
   if (module_exists('search') && (user_access('search content') || user_access('search by page'))) {
     $keys = "";
-    // if apachesolr_search or luceneapi is installed use them instead default node search
+    $results = "";
+    // If apachesolr_search or luceneapi is installed use them instead default node search.
     $type_search = (module_exists('apachesolr_search')) ? 'apachesolr_search' : ((module_exists('luceneapi_node')) ? 'luceneapi_node' : 'node');
     if (variable_get('search404_use_search_engine', FALSE)) {
       $keys = search404_search_engine_query();
@@ -123,60 +125,28 @@ function search404_page() {
     if (!$keys) {
       $keys = search404_get_keys();
     }
-    if ($keys) {
-      // TODO: watchdog?
+    // Get throttle status
+    $throttle = module_invoke('throttle', 'status');
+    // If search keys are present and site is not throttled and automatic searching is not disabled.
+    if ($keys && !$throttle && !variable_get('search404_skip_auto_search', FALSE)) {
       if (module_exists('search_by_page') && variable_get('search404_do_search_by_page', FALSE)) {
         drupal_set_message(t('The page you requested does not exist. For your convenience, a search was performed using the query %keys.', array('%keys' => check_plain($keys))), 'error');
-        if (variable_get('search404_redirect_301', false)) {
-          drupal_goto ('search_pages/'. $keys , NULL ,NULL , 301);
-        }
-        else {
-          drupal_goto('search_pages/'. $keys);
-        }
-        // EVIL HAXX!
-        $oldgetq = $_GET['q'];
-        $olddestination = $_REQUEST['destination'];
-        unset($_REQUEST['destination']);
-        $_GET['q'] = "search/$type_search/$keys";
-        $results = theme('search_results', $results, 'node');
-        $_GET['q'] = $oldgetq;
-        $_REQUEST['destination'] = $olddestination;
-        // END OF EVIL HAXX!
+        search404_goto('search_pages/'. $keys);
       }
       elseif (module_exists('google') && user_access('search Google CSE') && variable_get('search404_do_google_cse', FALSE)) {
         drupal_set_message(t('The page you requested does not exist. For your convenience, a google search was performed using the query %keys.', array('%keys' => check_plain($keys))), 'error');
-        $_REQUEST['destination'] = 'search/google/'. $keys;
-        if (variable_get('search404_redirect_301', false)) {
-          drupal_goto ("" , NULL ,NULL , 301);
-        }
-        else {
-          drupal_goto();
-        }
+        search404_goto('search/google/'. $keys);
       }
       else {
         $results = module_invoke($type_search, 'search', 'search', $keys);
         if (isset($results) && is_array($results) && count($results) == 1 && variable_get('search404_jump', FALSE)) {
-          // First, check to see if there is exactly 1 result
+          // First, check to see if there is exactly 1 result.
           drupal_set_message(t('The page you requested does not exist. A search for %keys resulted in this page.', array('%keys' => check_plain($keys))), 'status');
-          // overwrite $_REQUEST['destination'] because it is set by drupal_not_found()
-          $_REQUEST['destination'] = 'node/'. $results[0]['node']->nid;
-          if (variable_get('search404_redirect_301', false)) {
-            drupal_goto ("" , NULL ,NULL , 301);
-          }
-          else {
-            drupal_goto();
-          }
+          search404_goto('node/'. $results[0]['node']->nid);
         }
         elseif (isset($results) && is_array($results) && count($results) > 1 && variable_get('search404_first', FALSE)) {
           drupal_set_message(t('The page you requested does not exist. A search for %keys resulted in this page.', array('%keys' => check_plain($keys))), 'status');
-          // overwrite $_REQUEST['destination'] because it is set by drupal_not_found()
-          $_REQUEST['destination'] = 'node/'. $results[0]['node']->nid;
-          if (variable_get('search404_redirect_301', false)) {
-            drupal_goto ("" , NULL ,NULL , 301);
-          }
-          else {
-            drupal_goto();
-          }
+          search404_goto('node/'. $results[0]['node']->nid);
         }
         else {
           drupal_set_message(t('The page you requested does not exist. For your convenience, a search was performed using the query %keys.', array('%keys' => check_plain($keys))), 'error');
@@ -222,7 +192,22 @@ function search404_page() {
 }
 
 /**
- * Search404 administration settings
+ * Search404 drupal_goto helper function.
+ */
+function search404_goto($path = '') {
+  // Overwrite $_REQUEST['destination'] because it is set by drupal_not_found().
+  $_REQUEST['destination'] = $path;
+  // Set 301 redirect if so specified in settings else do default 302 redirect.
+  if (variable_get('search404_redirect_301', FALSE)) {
+    drupal_goto($path, NULL, NULL, 301);
+  }
+  else {
+    drupal_goto($path);
+  }
+}
+
+/**
+ * Search404 administration settings.
  */
 function search404_settings() {
   $form['search404_jump'] = array(
@@ -235,7 +220,7 @@ function search404_settings() {
     '#title' => t('Jump directly to the first search result even when there are multiple results.'),
     '#default_value' => variable_get('search404_first', FALSE),
   );
-  //Added for displaying blocks for 404 searches
+  // Added for displaying blocks for 404 searches.
   $form['search404_block_show'] = array(
     '#type' => 'checkbox',
     '#title' => t('Show left and right sidebars in page when a 404 search occurs'),
@@ -258,17 +243,24 @@ function search404_settings() {
     '#default_value' => variable_get('search404_do_search_by_page', FALSE),
   );
 
-  //Added for having a 301 redirect instead of the standard 302 (offered by the drupal_goto)
+  // Added for having a 301 redirect instead of the standard 302 (offered by the drupal_goto).
   $form['search404_redirect_301'] = array(
     '#type' => 'checkbox',
     '#title' => t('Use a redirect 301 instead of redirect 302'),
-    '#default_value' => variable_get('search404_redirect_301', false),
+    '#default_value' => variable_get('search404_redirect_301', FALSE),
+  );
+
+  // Added for preventing automatic search for large sites.
+  $form['search404_skip_auto_search'] = array(
+    '#title' => t('Disable auto search'),
+    '#description' => t('Disable automatically searching for the keywords when a page is not found and instead show the populated search form with the keywords. Useful for large sites to reduce server loads.'),
+    '#type' => 'checkbox',
+    '#default_value' => variable_get('search404_skip_auto_search', FALSE),
   );
 
   $form['advanced'] = array(
     '#type' => 'fieldset',
     '#title' => t('Advanced settings'),
-    //'#description' => t("WARNING. Some of these settings can mess up stuff, don't touch unless you know what you are doing."),
     '#collapsible' => TRUE,
     '#collapsed' => TRUE,
   );
@@ -284,7 +276,7 @@ function search404_settings() {
     '#default_value' => variable_get('search404_use_search_engine', FALSE),
   );
   $form['advanced']['search404_ignore'] = array(
-    '#type' => 'textfield',
+    '#type' => 'textarea',
     '#title' => t('Words to ignore'),
     '#description' => t('These words will be ignored from the search query. Separate words with a space, e.g.: "and or the".'),
     '#default_value' => variable_get('search404_ignore', 'and or the'),
@@ -322,10 +314,17 @@ function search404_settings() {
     '#description' => t('You can enter a custom text message that can be displayed at the top of the search results, HTML formatting can be used'),
   );
 
-  //Helps reset the site404 variable to search404 in case the user changes it manually
-  $form['advanced']['search404_variable'] = array(
+  // Helps reset the site_404 variable to search404 in case the user changes it manually.
+  $form['site_404'] = array(
     '#type' => 'hidden',
-    '#value' => variable_set('site_404', 'search404'),
+    '#value' => 'search404',
+  );
+  // Tell the user about the site_404 issue.
+  $form['search404_variable_message'] = array(
+    '#type' => 'markup',
+    '#prefix' => '<p>',
+    '#suffix' => '</p>',
+    '#value' => t('Saving this form will revert the 404 handling on the site to this module.'),
   );
 
   return system_settings_form($form);

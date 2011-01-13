@@ -7,9 +7,9 @@ core = 6.x
 
 
 
-; Information added by drupal.org packaging script on 2010-03-25
-version = "6.x-1.9"
+; Information added by drupal.org packaging script on 2010-12-19
+version = "6.x-1.10"
 core = "6.x"
 project = "search404"
-datestamp = "1269503417"
+datestamp = "1292785873"
 

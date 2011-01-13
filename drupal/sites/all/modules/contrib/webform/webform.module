@@ -1,5 +1,5 @@
 <?php
-// $Id: webform.module,v 1.196.2.68 2010/10/18 07:38:44 quicksketch Exp $
+// $Id: webform.module,v 1.196.2.74 2011/01/06 18:34:59 quicksketch Exp $
 
 /**
  * This module provides a simple way to create forms and questionnaires.
@@ -18,6 +18,7 @@ function webform_help($section = 'admin/help#webform', $arg = NULL) {
   $output = '';
   switch ($section) {
     case 'admin/settings/webform':
+      module_load_include('inc', 'webform', 'includes/webform.admin');
       $type_list = webform_admin_type_list();
       $output = t('Webform enables nodes to have attached forms and questionnaires.');
       if ($type_list) {
@@ -494,7 +495,7 @@ function webform_theme() {
       'arguments' => array('node' => NULL, 'teaser' => NULL, 'page' => NULL, 'form' => NULL, 'enabled' => NULL),
     ),
     'webform_view_messages' => array(
-      'arguments' => array('node' => NULL, 'teaser' => NULL, 'page' => NULL, 'submission_count' => NULL, 'limit_exceeded' => NULL, 'allowed_roles' => NULL),
+      'arguments' => array('node' => NULL, 'teaser' => NULL, 'page' => NULL, 'submission_count' => NULL, 'limit_exceeded' => NULL, 'allowed_roles' => NULL, 'closed' => NULL),
     ),
     'webform_form' => array(
       'arguments' => array('form' => NULL),
@@ -1013,6 +1014,7 @@ function webform_node_defaults() {
     'submit_text' => '',
     'submit_limit' => -1,
     'submit_interval' => -1,
+    'status' => 1,
     'roles' => array(1, 2),
     'emails' => array(),
     'components' => array(),
@@ -1172,6 +1174,8 @@ function webform_node_view(&$node, $teaser, $page) {
   $enabled = TRUE;
   $logging_in = FALSE;
   $limit_exceeded = FALSE;
+  $closed = FALSE;
+  $allowed_roles = array();
 
   // When logging in using a form on the same page as a webform node, surpress
   // output messages so that they don't show up after the user has logged in.
@@ -1180,19 +1184,24 @@ function webform_node_view(&$node, $teaser, $page) {
     $logging_in = TRUE;
   }
 
-  // Check if the user's role can submit this webform.
-  if (variable_get('webform_submission_access_control', 1)) {
-    $allowed_roles = array();
-    foreach ($node->webform['roles'] as $rid) {
-      $allowed_roles[$rid] = isset($user->roles[$rid]) ? TRUE : FALSE;
-    }
-    if (array_search(TRUE, $allowed_roles) === FALSE && $user->uid != 1) {
-      $enabled = FALSE;
-    }
+  if ($node->webform['status'] == 0) {
+    $closed = TRUE;
+    $enabled = FALSE;
   }
   else {
-    // If not using Webform submission access control, allow for all roles.
-    $allowed_roles = array_keys(user_roles());
+    // Check if the user's role can submit this webform.
+    if (variable_get('webform_submission_access_control', 1)) {
+      foreach ($node->webform['roles'] as $rid) {
+        $allowed_roles[$rid] = isset($user->roles[$rid]) ? TRUE : FALSE;
+      }
+      if (array_search(TRUE, $allowed_roles) === FALSE && $user->uid != 1) {
+        $enabled = FALSE;
+      }
+    }
+    else {
+      // If not using Webform submission access control, allow for all roles.
+      $allowed_roles = array_keys(user_roles());
+    }
   }
 
   // Check if the user can add another submission.
@@ -1234,7 +1243,7 @@ function webform_node_view(&$node, $teaser, $page) {
 
   // Print out messages for the webform.
   if ($node->build_mode != NODE_BUILD_PREVIEW && !isset($node->webform_block) && !$logging_in) {
-    theme('webform_view_messages', $node, $teaser, $page, $submission_count, $limit_exceeded, $allowed_roles);
+    theme('webform_view_messages', $node, $teaser, $page, $submission_count, $limit_exceeded, $allowed_roles, $closed);
   }
 
   if (isset($output)) {
@@ -1282,15 +1291,20 @@ function theme_webform_view($node, $teaser, $page, $form, $enabled) {
  *   Boolean value if the submission limit for this user has been exceeded.
  * @param $allowed_roles
  *   A list of user roles that are allowed to submit this webform.
+ * @param $closed
+ *   Boolean value if submissions are closed.
  */
-function theme_webform_view_messages($node, $teaser, $page, $submission_count, $limit_exceeded, $allowed_roles) {
+function theme_webform_view_messages($node, $teaser, $page, $submission_count, $limit_exceeded, $allowed_roles, $closed) {
   global $user;
 
   $type = 'notice';
   $cached = $user->uid == 0 && variable_get('cache', 0);
 
-  // If not allowed to submit the form, give an explanation.
-  if (array_search(TRUE, $allowed_roles) === FALSE && $user->uid != 1) {
+  if ($closed) {
+    $message = t('Submissions for this form are closed.');
+  }
+  // If open and not allowed to submit the form, give an explanation.
+  elseif (array_search(TRUE, $allowed_roles) === FALSE && $user->uid != 1) {
     if (empty($allowed_roles)) {
       // No roles are allowed to submit the form.
       $message = t('Submissions for this form are closed.');
@@ -1381,7 +1395,7 @@ function webform_block_info() {
   $blocks = array();
   $webform_node_types = webform_variable_get('webform_node_types');
   if (!empty($webform_node_types)) {
-    $placeholders = db_placeholders($webform_node_types);
+    $placeholders = db_placeholders($webform_node_types, 'varchar');
     $result = db_query("SELECT n.title, n.nid FROM {webform} w LEFT JOIN {node} n ON w.nid = n.nid WHERE w.block = 1 AND n.type IN ($placeholders)", $webform_node_types);
     while ($data = db_fetch_object($result)) {
       $blocks['client-block-'. $data->nid] = array(
@@ -1826,7 +1840,7 @@ function webform_client_form_validate($form, &$form_state) {
     module_load_include('inc', 'webform', 'includes/webform.submissions');
 
     if (!$finished && $limit_exceeded = _webform_submission_limit_check($node)) {
-      $error = theme('webform_view_messages', $node, 0, 1, 0, $limit_exceeded, array_keys(user_roles()));
+      $error = theme('webform_view_messages', $node, 0, 1, 0, $limit_exceeded, array_keys(user_roles()), FALSE);
       form_set_error('', $error);
       return;
     }
@@ -2106,7 +2120,7 @@ function webform_client_form_submit($form, &$form_state) {
 
       // Update the subject if set in the themed headers.
       if (isset($email['headers']['Subject'])) {
-        $email['headers']['subject'] = $email['headers']['Subject'];
+        $email['subject'] = $email['headers']['Subject'];
         unset($email['headers']['Subject']);
       }
       else {
@@ -2566,6 +2580,12 @@ function _webform_filter_values($string, $node = NULL, $submission = NULL, $emai
       $parents = webform_component_parent_keys($node, $component);
       $form_key = implode('][', $parents);
       $display_element = webform_component_invoke($component['type'], 'display', $component, $value['value'], $format);
+      if (empty($display_element['#parents'])) {
+        $display_element['#parents'] = array_merge(array('submitted'), $parents);
+      }
+      if (empty($display_element['#id'])) {
+        $display_element['#id'] = form_clean_id('edit-' . implode('-', $display_element['#parents']));
+      }
       $replacements['email'][$format]['%email[' . $form_key . ']'] = drupal_render($display_element);
       $replacements['email'][$format]['%value[' . $form_key . ']'] = isset($display_element['#children']) ? $display_element['#children'] : '';
     }
@@ -2575,7 +2595,7 @@ function _webform_filter_values($string, $node = NULL, $submission = NULL, $emai
   }
 
   // Token for the entire form tree for e-mails.
-  if (isset($submission) && isset($email) && !isset($replacements['email'][$format]['%email_values'])) {
+  if (isset($submission) && isset($email)) {
     $replacements['email'][$format]['%email_values'] = webform_submission_render($node, $submission, $email, $format);
   }
 
@@ -3095,6 +3115,148 @@ function webform_set_breadcrumb($node, $submission = NULL) {
   }
 
   drupal_set_breadcrumb($breadcrumb);
+}
+
+/**
+ * Convert an ISO 8601 date or time into an array.
+ *
+ * This converst full format dates or times. Either a date or time may be
+ * provided, in which case only those portions will be returned. Dashes and
+ * colons must be used, never implied.
+ *
+ * Formats:
+ * Dates: YYYY-MM-DD
+ * Times: HH:MM:SS
+ * Datetimes: YYYY-MM-DDTHH:MM:SS
+ *
+ * @param $string
+ *   An ISO 8601 date, time, or datetime.
+ * @param $type
+ *   If wanting only specific fields back, specify either "date" or "time".
+ *   Leaving empty will return an array with both date and time keys, even if
+ *   some are empty. Returns an array with the following keys:
+ *   - year
+ *   - month
+ *   - day
+ *   - hour (in 24hr notation)
+ *   - minute
+ *   - second
+ */
+function webform_date_array($string, $type = NULL) {
+  $pattern = '/((\d{4}?)-(\d{2}?)-(\d{2}?))?(T?(\d{2}?):(\d{2}?):(\d{2}?))?/';
+  $matches = array();
+  preg_match($pattern, $string, $matches);
+  $matches += array_fill(0, 9, '');
+
+  $return = array();
+
+  // Check for a date string.
+  if ($type == 'date' || !isset($type)) {
+    $return['year'] = $matches[2] !== '' ? (int) $matches[2] : '';
+    $return['month'] = $matches[3] !== '' ? (int) $matches[3] : '';
+    $return['day'] = $matches[4] !== '' ? (int) $matches[4] : '';
+  }
+
+  // Check for a time string.
+  if ($type == 'time' || !isset($type)) {
+    $return['hour'] = $matches[6] !== '' ? (int) $matches[6] : '';
+    $return['minute'] = $matches[7] !== '' ? (int) $matches[7] : '';
+    $return['second'] = $matches[8] !== '' ? (int) $matches[8] : '';
+  }
+
+  return $return;
+}
+
+/**
+ * Convert an array of a date or time into an ISO 8601 compatible string.
+ *
+ * @param $array
+ *   The array to convert to a date or time string.
+ * @param $type
+ *   If wanting a specific string format back specify either "date" or "time".
+ *   Otherwise a full ISO 8601 date and time string will be returned.
+ */
+function webform_date_string($array, $type = NULL) {
+  $string = '';
+
+  if ($type == 'date' || !isset($type)) {
+    $string .= empty($array['year']) ? '0000' : sprintf('%04d', $array['year']);
+    $string .= '-';
+    $string .= empty($array['month']) ? '00' : sprintf('%02d', $array['month']);
+    $string .= '-';
+    $string .= empty($array['day']) ? '00' : sprintf('%02d', $array['day']);
+  }
+
+  if (!isset($type)) {
+    $string .= 'T';
+  }
+
+  if ($type == 'time' || !isset($type)) {
+    $string .= empty($array['hour']) ? '00' :  sprintf('%02d', $array['hour']);
+    $string .= ':';
+    $string .= empty($array['minute']) ? '00' :  sprintf('%02d', $array['minute']);
+    $string .= ':';
+    $string .= empty($array['second']) ? '00' :  sprintf('%02d', $array['second']);
+  }
+
+  return $string;
+}
+
+/**
+ * Get a date format according to the site settings.
+ *
+ * @param $size
+ *   A choice of 'short', 'medium', or 'long' date formats.
+ */
+function webform_date_format($size = 'medium') {
+    // Format date according to site's given format.
+    $format = variable_get('date_format_' . $size, 'D, m/d/Y - H:i');
+    $time = 'aABgGhHisueIOPTZ';
+    $day_of_week = 'Dlw';
+    $special = ',-: ';
+    $date_format = trim($format, $time . $day_of_week . $special);
+
+    // Ensure that a day, month, and year value are present. Use a default
+    // format if all the values are not found.
+    if (!preg_match('/[dj]/', $date_format) || !preg_match('/[FmMn]/', $date_format) || !preg_match('/[oYy]/', $date_format)) {
+      $date_format = 'm/d/Y';
+    }
+
+    return $date_format;
+}
+
+/**
+ * Return a date in the format specied taking into consideration user timezones.
+ */
+function webform_strtodate($format, $string, $timezone_name = NULL) {
+  // Adjust the time based on the user or site timezone.
+  // The "timezone_name" variable is provided by DateAPI in Drupal 6.
+  if (variable_get('configurable_timezones', 1) && $timezone_name == 'user') {
+    $timezone_name = isset($GLOBALS['user']->timezone_name) ? $GLOBALS['user']->timezone_name : NULL;
+  }
+  elseif (empty($timezone_name) || $timezone_name == 'user') {
+    $timezone_name = variable_get('date_default_timezone_name', NULL);
+  }
+
+  if (!empty($timezone_name) && class_exists('DateTimeZone')) {
+    $timezone = new DateTimeZone($timezone_name);
+    $datetime = new DateTime($string, $timezone);
+    return $datetime->format($format);
+  }
+  else {
+    return date($format, strtotime($string));
+  }
+}
+
+/**
+ * Get a timestamp in GMT time, ensuring timezone accuracy.
+ */
+function webform_strtotime($date) {
+  $current_tz = date_default_timezone_get();
+  date_default_timezone_set('UTC');
+  $timestamp = strtotime($date);
+  date_default_timezone_set($current_tz);
+  return $timestamp;
 }
 
 /**

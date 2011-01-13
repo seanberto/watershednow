@@ -1,0 +1,6 @@
+$Id: CHANGELOG.txt,v 1.1.2.3 2010/12/09 18:25:31 andrewschulman Exp $
+
+Role Delegation 6.x-1.4, 2010-12-09
+-----------------------------------
+#170543 by Andrew Schulman: Rename or delete 'assign role' permissions when roles are renamed or deleted.
+#797452 by AlexisWilke, teliseo: Roles were not being shown in their usual location.

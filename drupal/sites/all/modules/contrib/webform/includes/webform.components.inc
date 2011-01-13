@@ -1,5 +1,5 @@
 <?php
-// $Id: webform.components.inc,v 1.25.2.27 2010/10/20 03:05:15 quicksketch Exp $
+// $Id: webform.components.inc,v 1.25.2.30 2011/01/05 06:07:09 quicksketch Exp $
 
 /**
  * @file
@@ -133,6 +133,7 @@ function webform_components_form($form_state, $node) {
     '#type' => 'submit',
     '#value' => t('Submit'),
     '#weight' => 45,
+    '#access' => count($node->webform['components']) > 0,
   );
 
   return $form;
@@ -366,7 +367,7 @@ function webform_component_edit_form(&$form_state, $node, $component, $clone = F
     '#type' => 'textfield',
     '#default_value' => empty($component['form_key']) ? _webform_safe_name($component['name']) : $component['form_key'],
     '#title' => t('Field Key'),
-    '#description' => t('Enter a machine readable key for this form element. May contain only lowercase alphanumeric characters and underscores. This key will be used as the name attribute of the form element. This value has no effect on the way data is saved, but may be helpful if doing custom form processing.'),
+    '#description' => t('Enter a machine readable key for this form element. May contain only alphanumeric characters and underscores. This key will be used as the name attribute of the form element. This value has no effect on the way data is saved, but may be helpful if doing custom form processing.'),
     '#required' => TRUE,
     '#weight' => -9,
   );
@@ -558,7 +559,7 @@ function webform_component_edit_form(&$form_state, $node, $component, $clone = F
 function webform_component_edit_form_validate($form, &$form_state) {
   $node = node_load($form_state['values']['nid']);
 
-  if (!preg_match('!^[a-z0-9_]+$!', $form_state['values']['form_key'])) {
+  if (!preg_match('/^[a-z0-9_]+$/i', $form_state['values']['form_key'])) {
     form_set_error('form_key', t('The field key %field_key is invalid. Please include only lowercase alphanumeric characters and underscores.', array('%field_key' => $form_state['values']['form_key'])));
   }
 
@@ -806,6 +807,7 @@ function webform_component_list($node, $component_filter = NULL, $indent = TRUE,
   }
 
   // Remove groups that do not have any children.
+  $cid = 0;
   $previous_cid = 0;
   foreach ($options as $cid => $label) {
     if (isset($node->webform['components'][$previous_cid]['type']) && webform_component_feature($node->webform['components'][$previous_cid]['type'], 'group') && webform_component_feature($node->webform['components'][$cid]['type'], 'group')) {
@@ -814,7 +816,7 @@ function webform_component_list($node, $component_filter = NULL, $indent = TRUE,
   }
 
   // Remove the last item from the list if it's a group.
-  if (webform_component_feature($node->webform['components'][$cid]['type'], 'group')) {
+  if ($cid && webform_component_feature($node->webform['components'][$cid]['type'], 'group')) {
     unset($options[$cid]);
   }
 

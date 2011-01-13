@@ -1,5 +1,5 @@
 <?php
-// $Id: select.inc,v 1.39.2.26 2010/10/18 07:20:54 quicksketch Exp $
+// $Id: select.inc,v 1.39.2.28 2011/01/05 04:39:18 quicksketch Exp $
 
 /**
  * @file
@@ -277,8 +277,10 @@ function _webform_render_select($component, $value = NULL, $filter = TRUE) {
     _webform_shuffle_options($options);
   }
 
-  if ($component['extra']['aslist'] && !$component['extra']['multiple'] && !($component['mandatory'] && $default_value !== '')) {
-    $options = array('' => t('select...')) + $options;
+  // Add default options if using a select list with no default. This matches
+  // Drupal 7's handling of select lists.
+  if ($component['extra']['aslist'] && !$component['extra']['multiple'] && $default_value === '') {
+    $options = array('' => ($component['mandatory'] ? t('- Select -') : t('- None -'))) + $options;
   }
 
   // Set the component options.
@@ -661,7 +663,11 @@ function _webform_csv_headers_select($component, $export_options) {
         $headers[0][] = '';
         $headers[1][] = '';
       }
-      $headers[2][] = $key;
+      if ($export_options['select_keys']) {
+        $headers[2][] = $key;
+      } else {
+        $headers[2][] = $item;
+      }
       $count++;
     }
   }

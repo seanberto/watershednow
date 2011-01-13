@@ -1,5 +1,5 @@
 <?php
-// $Id: date.inc,v 1.16.2.4 2009/03/04 19:19:34 dww Exp $
+// $Id: date.inc,v 1.16.2.9 2011/01/08 23:42:28 ezrag Exp $
 
 
 /**
@@ -19,19 +19,19 @@ function _signup_date_admin_sql($content_type) {
   // content types, we'll potentially be JOINing on the same tables and
   // columns for different content types.  To defend against duplicate table
   // names or ambiguous columns in the query, use the content type to alias.
-  $alias = db_escape_table($content_type);
+  // Also, prefix it to make sure it's never a reserved word.
+  $alias = 'signup_alias_' . db_escape_table($content_type);
 
   // See what fields to SELECT.
   $fields[] = $alias .'.'. $field['database']['columns']['value']['column'];
   if (isset($field['database']['columns']['timezone']['column'])) {
     $fields[] = $alias .'.'. $field['database']['columns']['timezone']['column'];
   }
-  // We need to quote the alias in case someone used a reserved word for the
-  // machine-readable name of a content type.
-  $table = '{'. $field['database']['table'] .'} `'. $alias .'`';
+  $table = '{'. $field['database']['table'] ."} ". $alias;
   return array(
     'fields' => $fields,
     'joins' => array("LEFT JOIN $table ON $alias.vid = n.vid"),
+    'group_by' => $fields,
   );
 }
 
@@ -84,7 +84,7 @@ function signup_content_type_fields() {
  */
 function _signup_date_get_node_scheduler($node) {
   $field = signup_date_field($node->type);
-  if (isset($node->{$field['field_name']})) {
+  if (!empty($node->{$field['field_name']}[0]['value'])) {
     return 'date';
   }
   if (isset($node->{$field['database']['columns']['value']['column']})) {
@@ -249,7 +249,7 @@ function signup_date_field_check_config($type, $name) {
         '%signup_date_field' => t('Date field to use with signup'),
         '@type_admin_url' => url('admin/content/node-type/'. $type_url),
         '@type_add_field_url' => url('admin/content/node-type/'. $type_url .'/fields'),
-        '%none' => t('<none>'),
+        '%none' => '<' . t('none') . '>',
       );
       // Administrator hasn't specifically turned off date support...
       if (signup_field_names($type)) {
@@ -281,12 +281,12 @@ function _signup_get_date_field_options($type) {
   $options = array();
   // Add "Not specified" if the user never selected a field.
   if (variable_get('signup_date_field_'. $type, 0) == 0) {
-    $options = array(0 => t('<Not specified>'));
+    $options = array(0 => '<' . t('Not specified') . '>');
   }
   // Add any date fields from this node type.
   $options += signup_field_names($type);
   // Always add 'None' as the final choice.
-  $options += array('none' => t('<None>'));
+  $options += array('none' => '<' . t('None') . '>');
   return $options;
 }
 
@@ -302,7 +302,7 @@ function _signup_date_reminder_sql($content_type) {
   // Figure out what TZ we want to do the date comparisons in.
   $compare_tz = $field['tz_handling'] == 'none' ? date_default_timezone_name() : 'UTC';
   // Get a DateAPI SQL handler class for this field.
-  $handler = _signup_date_sql_handler($field, $compare_tz);
+  $handler = date_field_get_sql_handler($field, $compare_tz);
 
   // Find the current time in the appropriate TZ for this field.
   $now_date = date_now($compare_tz);
@@ -314,8 +314,8 @@ function _signup_date_reminder_sql($content_type) {
 
   // Create SQL to represent the time we should start sending reminders, based
   // on the SQL for the start time and the reminder_days_before field.
-  $reminder_start = _signup_date_sql_math($start_time, 'SUB', 's.reminder_days_before', 'DAY');
-  $reminder_stop = _signup_date_sql_math($start_time, 'ADD', 1, 'HOUR');
+  $reminder_start = $handler->sql_date_math($start_time, 'SUB', 's.reminder_days_before', 'DAY');
+  $reminder_stop = $handler->sql_date_math($start_time, 'ADD', 1, 'HOUR');
 
   // The WHERE clauses are now trivial: We want to make sure a) the current
   // time is after the time we should start sending reminders, but before the
@@ -350,7 +350,7 @@ function _signup_date_autoclose_sql($content_type) {
   // Figure out what TZ we want to do the date comparisons in.
   $compare_tz = $field['tz_handling'] == 'none' ? date_default_timezone_name() : 'UTC';
   // Get a DateAPI SQL handler class for this field.
-  $handler = _signup_date_sql_handler($field, $compare_tz);
+  $handler = date_field_get_sql_handler($field, $compare_tz);
 
   // Compute a string representing the moment when signups should start
   // auto-closing.  If the field has no TZ handling, we just want to grab the
@@ -377,89 +377,6 @@ function _signup_date_autoclose_sql($content_type) {
     'joins' => array("INNER JOIN $table ON $table.vid = n.vid"),
     'where' => $where,
   );
-}
-
-/**
- * Generate a DateAPI SQL handler for the given CCK date field.
- *
- * This can be removed once revision 1.61.2.4.2.32 is widely available in an
- * official release.
- */
-function _signup_date_sql_handler($field, $compare_tz = NULL) {
-  // Workaround for a bug in DateAPI upto 6.x-2.0-rc5.
-  static $mysql_db_offset_set = FALSE;
-  module_load_include('inc', 'date_api', 'date_api_sql');
-
-  // Create a DateAPI SQL handler class for this field type.
-  $handler = new date_sql_handler();
-  $handler->construct($field['type']);
-
-  // If this date field stores a timezone in the DB, tell the handler about it.
-  if ($field['tz_handling'] == 'date') {
-    // The field has a date column
-    $handler->db_timezone_field = $field['database']['columns']['timezone']['column'];
-  }
-  else {
-    $handler->db_timezone = date_get_timezone_db($field['tz_handling']);
-  }
-
-  if (empty($compare_tz)) {
-    $compare_tz = date_get_timezone($field['tz_handling']);
-  }
-  $handler->local_timezone = $compare_tz;
-
-  // Now that the handler is properly initialized, tell the DB what TZ to use.
-  $handler->set_db_timezone();
-
-  // Up to and including DateAPI 6.x-2.0-rc5, the previous call only worked
-  // for mysqli and pgsql. It was a no-op on mysql itself, so in that case, we
-  // have to do the work ourselves here or datestamp fields don't work.
-  if ($GLOBALS['db_type'] == 'mysql' && !$mysql_db_offset_set && version_compare(db_version(), '4.1.3', '>=')) {
-    db_query("SET @@session.time_zone = '+00:00'");
-    $mysql_db_offset_set = TRUE;
-  }
-
-  return $handler;
-}
-
-/**
- * Helper function to handle date math across DB types.
- *
- * This can be removed once date_api_sql.inc revision 1.9.2.3.2.28 is widely
- * available in an official release.
- *
- * @param $field
- *   The field to be adjusted.
- * @param $direction
- *   Either ADD or SUB.
- * @param $count
- *   The number of values to adjust.
- * @param $granularity
- *   The granularity of the adjustment, should be singular,
- *   like SECOND, MINUTE, DAY, HOUR.
- */
-function _signup_date_sql_math($field, $direction, $count, $granularity) {
-  $granularity = strtoupper($granularity);
-  switch ($GLOBALS['db_type']) {
-    case 'mysql':
-    case 'mysqli':
-      if ($direction == 'ADD') {
-        return "DATE_ADD($field, INTERVAL $count $granularity)";
-      }
-      else {
-        return "DATE_SUB($field, INTERVAL $count $granularity)";
-      }
-      
-    case 'pgsql':
-      $granularity .= 'S';
-      if ($direction == 'ADD') {
-        return "($field + INTERVAL '$count $granularity')";
-      }
-      else {
-        return "($field - INTERVAL '$count $granularity')";
-      }
-  }
-  return $field;
 }
 
 /**

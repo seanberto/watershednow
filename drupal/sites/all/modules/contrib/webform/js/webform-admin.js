@@ -1,4 +1,4 @@
-// $Id: webform-admin.js,v 1.1.2.6 2010/10/17 18:55:11 quicksketch Exp $
+// $Id: webform-admin.js,v 1.1.2.8 2010/12/30 02:57:20 quicksketch Exp $
 
 /**
  * Webform node form interface enhancments.
@@ -55,8 +55,8 @@ Drupal.webform.setActive = function(context) {
 
 Drupal.webform.updateTemplate = function(context) {
   var defaultTemplate = $('#edit-templates-default').val();
-  var $templateSelect = $('#webform-template-fieldset select', context);
-  var $templateTextarea = $('#webform-template-fieldset textarea', context);
+  var $templateSelect = $('#webform-template-fieldset select#edit-template-option', context);
+  var $templateTextarea = $('#webform-template-fieldset textarea:visible', context);
 
   var updateTemplateSelect = function() {
     if ($(this).val() == defaultTemplate) {

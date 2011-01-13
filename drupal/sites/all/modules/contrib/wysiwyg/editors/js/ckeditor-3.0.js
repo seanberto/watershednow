@@ -1,4 +1,4 @@
-// $Id: ckeditor-3.0.js,v 1.2.4.5 2009/11/17 15:31:33 twod Exp $
+// $Id: ckeditor-3.0.js,v 1.2.4.8 2010/12/20 03:42:54 sun Exp $
 (function($) {
 
 Drupal.wysiwyg.editor.init.ckeditor = function(settings) {
@@ -60,6 +60,9 @@ Drupal.wysiwyg.editor.attach.ckeditor = function(context, params, settings) {
         }
       }
       else {
+        // CKEditor adds default formatting to <br>, so we want to remove that
+        // here too.
+        tags.br = 1;
         // No indents or linebreaks;
         for (var tag in tags) {
           if (tag == 'pre') {
@@ -106,6 +109,18 @@ Drupal.wysiwyg.editor.attach.ckeditor = function(context, params, settings) {
         });
       }
     },
+
+    selectionChange: function (event) {
+      $.each(Drupal.settings.wysiwyg.plugins[params.format].drupal, function (name) {
+        var plugin = Drupal.wysiwyg.plugins[name];
+        if ($.isFunction(plugin.isNode)) {
+          var node = event.data.selection.getSelectedElement();
+          var state = plugin.isNode(node ? node.$ : null) ? CKEDITOR.TRISTATE_ON : CKEDITOR.TRISTATE_OFF;
+          event.editor.getCommand(name).setState(state);
+        }
+      });
+    },
+
     focus: function(ev) {
       Drupal.wysiwyg.activeId = ev.editor.name;
     }
@@ -151,10 +166,28 @@ Drupal.wysiwyg.editor.instance.ckeditor = {
         }
         if (typeof Drupal.wysiwyg.plugins[pluginName].invoke == 'function') {
           var pluginCommand = {
-            exec: function(editor) {
-              var data = { format: 'html', node: editor.getSelection().getSelectedElement() };
-              // @todo This is NOT the same as data.node.
-              data.content = data.node ? data.node.innerHTML : '';
+            exec: function (editor) {
+              var data = { format: 'html' };
+              var selection = editor.getSelection();
+              if (selection) {
+                data.node = selection.getSelectedElement();
+                if (selection.getType() == CKEDITOR.SELECTION_TEXT) {
+                  if (CKEDITOR.env.ie) {
+                    data.content = selection.getNative().createRange().text;
+                  }
+                  else {
+                    data.content = selection.getNative().toString();
+                  }
+                }
+                else {
+                  // content is supposed to contain the "outerHTML".
+                  data.content = data.node.$.parentNode.innerHTML;
+                }
+                data.node = data.node.$;
+              }
+              else {
+                data.content = '';
+              }
               Drupal.wysiwyg.plugins[pluginName].invoke(data, pluginSettings, editor.name);
             }
           };

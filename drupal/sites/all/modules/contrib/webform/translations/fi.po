@@ -1,4 +1,4 @@
-# $Id: fi.po,v 1.2 2009/11/06 01:49:48 quicksketch Exp $
+# $Id: fi.po,v 1.2.2.1 2011/01/05 04:39:18 quicksketch Exp $
 #
 # LANGUAGE translation of Drupal (general)
 # Copyright YEAR NAME <EMAIL@ADDRESS>
@@ -1348,8 +1348,8 @@ msgid "To use the option with a select component, you must use key-value pairs s
 msgstr "Käyttääksesi valintaa komponentille, sinun on annettava avain-arvo-pari eroteltuna |-merkillä, esimerkiksi user@example.com|Esimerkkikäyttäjä."
 
 #: components/select.inc:110
-msgid "select..."
-msgstr "valitse..."
+msgid "- Select -"
+msgstr "- Valitse -"
 
 #: components/select.inc:271
 msgid "Allows creation of checkboxes, radio buttons, or select menus."

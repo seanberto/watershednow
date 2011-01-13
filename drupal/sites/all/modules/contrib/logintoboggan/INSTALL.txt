@@ -1,4 +1,4 @@
-$Id: INSTALL.txt,v 1.2.2.1 2009/03/30 03:34:57 thehunmonkgroup Exp $
+$Id: INSTALL.txt,v 1.2.2.2 2011/01/05 18:56:44 thehunmonkgroup Exp $
 
 *******************************************************
     INSTALL.txt for logintoboggan.module for Drupal
@@ -6,7 +6,7 @@ $Id: INSTALL.txt,v 1.2.2.1 2009/03/30 03:34:57 thehunmonkgroup Exp $
 
 INSTALLATION:
 
-Place entire loggintoboggan module folder into
+Place entire logintoboggan module folder into
   (a) your sites/all/modules directory
   (b) your sites/[my site]/modules directory.
 

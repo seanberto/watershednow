@@ -1,4 +1,4 @@
-# $Id: cs.po,v 1.3 2009/11/06 00:45:29 quicksketch Exp $
+# $Id: cs.po,v 1.3.2.1 2011/01/05 04:39:18 quicksketch Exp $
 #
 # Czech translation of Drupal Webform
 # Copyright YEAR NAME <EMAIL@ADDRESS>
@@ -1348,8 +1348,8 @@ msgid "To use the option with a select component, you must use key-value pairs s
 msgstr "Při použití s rozbalovacím menu je nutné zadávat hodnoty jako dvojice klíč-hodnota oddělené znakem roury, např. uzivatel@priklad.cz|Jmeno."
 
 #: components/select.inc:110
-msgid "select..."
-msgstr "zvolte..."
+msgid "- Select -"
+msgstr "- Zvolte -"
 
 #: components/select.inc:271
 msgid "Allows creation of checkboxes, radio buttons, or select menus."

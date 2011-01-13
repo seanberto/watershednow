@@ -1596,8 +1596,8 @@ msgid ""
 msgstr ""
 
 #: webform/components/select.inc:87
-msgid "select..."
-msgstr "lista..."
+msgid "- Select -"
+msgstr "- Lista -"
 
 #: webform/components/select.inc:248
 msgid "Allows creation of checkboxes, radio buttons, or select menus."
