@@ -362,6 +362,8 @@ function _watershednow_define_perms() {
     'edit own update_feed content',
     'edit own wn_hp_callout content',
     'import update_feed feeds',
+    'administer feeds',
+    'clear update_feed feeds',
     'administer menu',
     'delete revisions',
     'revert revisions',
@@ -389,7 +391,7 @@ function _watershednow_define_perms() {
     'edit own webform submissions'
     );
 
-  $default_perms['web_admin'] = array(
+  $default_perms['web admin'] = array(
     'access wn dashboard',
     'access administration menu',
     'access donation reports',
@@ -447,6 +449,8 @@ function _watershednow_define_perms() {
     'edit own update_feed content',
     'edit own wn_hp_callout content',
     'import update_feed feeds',
+    'administer feeds',
+    'clear update_feed feeds',
     'administer follow',
     'change follow link titles',
     'edit site follow links',
@@ -677,18 +681,11 @@ function _watershednow_configure_roles() {
   $default_roles = user_roles(); // getting roles and perms.
   $default_perms = _watershednow_define_perms(); // Grabbing array of permissions.
   foreach ($default_roles as $rid => $role) {
-    switch( $role ) {
-      case 'support':
-        install_add_permissions($rid, $default_perms['support']);
-        break;
-      case 'staff':
-        install_add_permissions($rid, $default_perms['staff']);
-        break;
-      case 'web admin':
-        install_add_permissions($rid, $default_perms['web_admin']);
-        break;
+    if( isset($default_perms[$role]) ) {
+      install_add_permissions($rid, $default_perms[$role]);
     }
   }
+
   install_add_permissions('1', $default_perms['anonymous']);
   install_add_permissions('2', $default_perms['authenticated']);
 
