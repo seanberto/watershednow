@@ -18,7 +18,20 @@ function wn_common_update_6000( &$sandbox ) {
   module_list(TRUE);
   module_rebuild_cache();
 
-  //install mollom
+  //include install_profile_api user functions
+  include($_SERVER['DOCUMENT_ROOT'] . '/profiles/watershednow/libraries/install_profile_api/core/user.inc');
+
+  //add feed permissions to staff and web admin
+  foreach( array('web admin','staff') as $role) {
+    $role_rid = install_get_rid($role);
+    install_add_permissions($role_rid,array(
+      'administer feeds',
+      'clear update_feed feeds',
+      'import update_feed feeds',
+    ));
+  }
+
+  // Install Mollom for spam protection
   drupal_install_modules(array('mollom'));
 
   // return empty array so Drupal does not complain about array_merge
