@@ -357,7 +357,7 @@ function wn_donations_content_default_fields() {
     'module' => 'text',
     'active' => '1',
     'text_processing' => '1',
-    'max_length' => '600',
+    'max_length' => '3000',
     'allowed_values' => '',
     'allowed_values_php' => '',
     'widget' => array(
@@ -373,7 +373,7 @@ function wn_donations_content_default_fields() {
       'default_value_php' => NULL,
       'label' => 'Sidebar content',
       'weight' => '-1',
-      'description' => 'Optionally, can enter up to 600 characters of additional content to be displayed in the sidebar on this donation campaign page.',
+      'description' => 'Optionally, can enter up to 3000 characters of additional content to be displayed in the sidebar on this donation campaign page.',
       'type' => 'text_textarea',
       'module' => 'text',
     ),

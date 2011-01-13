@@ -252,8 +252,8 @@ variables[openlayers_layers_google_api] = ''
 
 ; Setup Mollom API Keys - See http://mollom.com
 ; Mollom is used to prevent spam.
-variables[mollom_public_key] = '';
-variables[mollom_private_key] = '';
+variables[mollom_public_key] = ''
+variables[mollom_private_key] = ''
 
 ; Set VoteSmart API key
 variables[vs_webform_key] = ''

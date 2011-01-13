@@ -50,6 +50,30 @@ function wn_common_update_6001( &$sandbox ) {
   return array();
 }
 
+
+/**
+ * Increased "sidebar content" field character limit restriction (from 600 characters to 3000 characters)
+ * See http://drupal.org/node/1022324
+ */
+function wn_common_update_6002( &$sandbox ) {
+  //update the description
+  $result = db_query("SELECT * FROM {content_node_field_instance} WHERE field_name = 'field_sidebar'");
+  while ($field = db_fetch_array($result)) {
+    $field['description'] = str_replace('600','3000',$field['description']);
+    db_query("UPDATE {content_node_field_instance} SET description='%s' WHERE field_name='%s' AND type_name='%s'", $field['description'], $field['field_name'], $field['type_name']);
+  }
+
+  //increase the maxlength from 600 to 3000
+  $result = db_query("SELECT * FROM {content_node_field} WHERE field_name = 'field_sidebar'");
+  while ($field = db_fetch_array($result)) {
+    $new_settings = unserialize($field['global_settings']);
+    $new_settings['max_length'] = 3000;
+    db_query("UPDATE {content_node_field} SET global_settings='%s' WHERE field_name='field_sidebar'", serialize($new_settings));
+  }
+
+  return array(); //return empty array so Drupal does not throw errors
+}
+
 function wn_common_configure_mollom() {
   variable_set('mollom_fallback','1'); // '1' Accept all form submissions if Mollom server is down
 

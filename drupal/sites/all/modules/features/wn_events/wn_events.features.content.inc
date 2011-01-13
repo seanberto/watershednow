@@ -440,7 +440,7 @@ function wn_events_content_default_fields() {
     'module' => 'text',
     'active' => '1',
     'text_processing' => '1',
-    'max_length' => '600',
+    'max_length' => '3000',
     'allowed_values' => '',
     'allowed_values_php' => '',
     'widget' => array(
@@ -456,7 +456,7 @@ function wn_events_content_default_fields() {
       'default_value_php' => NULL,
       'label' => 'Sidebar content',
       'weight' => 0,
-      'description' => 'Optionally, can enter up to 600 characters of additional content to be displayed in the sidebar on this event page.',
+      'description' => 'Optionally, can enter up to 3000 characters of additional content to be displayed in the sidebar on this event page.',
       'type' => 'text_textarea',
       'module' => 'text',
     ),

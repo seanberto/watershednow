@@ -1,0 +1,4 @@
+wn_common/wn_common.features.content.inc:    'max_length' => '600',
+wn_donations/wn_donations.features.content.inc:    'max_length' => '600',
+wn_events/wn_events.features.content.inc:    'max_length' => '600',
+wn_takeaction/wn_takeaction.features.content.inc:    'max_length' => '600',
