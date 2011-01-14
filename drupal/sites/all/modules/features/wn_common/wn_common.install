@@ -23,11 +23,13 @@ function wn_common_update_6000( &$sandbox ) {
 
   //add feed permissions to staff and web admin
   $new_permissions = array('staff' => array(
-    'administer feeds',
+    'delete any update_feed content',
     'clear update_feed feeds',
     'import update_feed feeds',
   ));
-  $new_permissions['web admin'] = array_merge($new_permissions['staff'], array('administer nodes'));
+  $new_permissions['web admin'] = array_merge($new_permissions['staff'], array(
+    'administer nodes'
+  ));
 
   foreach( $new_permissions as $role => $perms ) {
     $role_rid = install_get_rid($role);
