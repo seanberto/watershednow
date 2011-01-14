@@ -360,6 +360,13 @@ div.wn-credit {
 }
 
 /*
+ * Events
+ */
+.view-updates .views-field-created, .view-events .views-field-field-date-event-value, .node-created {
+  font-style: italic;
+}
+
+/*
  *  Styles for customized Events form view
  */
 

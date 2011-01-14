@@ -7,9 +7,11 @@
 
     <?php print $picture; ?>
 
-    <?php if ($submitted): ?>
+    <?php if( $node->type == 'update' && $page ): ?>
+      <span class="node-created"><?php print format_date($node->created,'large'); ?></span>
+    <?php elseif( $submitted ): ?>
       <span class="submitted"><?php print $submitted; ?></span>
-    <?php endif; ?>
+    <?php endif;?>
 
     <div class="content">
       <?php print $content; ?>
@@ -19,7 +21,7 @@
       <div class="taxonomy"><?php print $terms; ?></div>
     <?php endif;?>
 
-    <?php if ($links): ?> 
+    <?php if ($links): ?>
       <div class="links"> <?php print $links; ?></div>
     <?php endif; ?>
 

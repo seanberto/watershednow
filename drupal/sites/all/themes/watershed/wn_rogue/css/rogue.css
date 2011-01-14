@@ -62,10 +62,6 @@ h1.title {
   border-bottom: 1px dotted #fff;
 }
 
-.view-updates .views-field-created, .view-events .views-field-field-date-event-value {
-  font-style: italic;
-}
-
 #content-area .view-updates .views-field-created, #content-area .view-events .views-field-field-date-event-value {
   color: #ebebeb;
 }
