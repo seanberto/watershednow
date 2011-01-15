@@ -647,6 +647,7 @@ function _watershednow_filters_wysiwyg() {
           'JustifyRight' => 1,
           'Link' => 1,
           'Unlink' => 1,
+          'Image' => 1,
           'Format' => 1,
           ),
         ),

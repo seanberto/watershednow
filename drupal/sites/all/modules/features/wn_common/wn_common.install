@@ -75,6 +75,17 @@ function wn_common_update_6002( &$sandbox ) {
 
   return array(); //return empty array so Drupal does not throw errors
 }
+function wn_common_update_6003( &$sandbox ) {
+  //format 3 is the block input format as defined in our Watershed install profile
+  $cur_settings = db_result(db_query("SELECT settings FROM {wysiwyg} WHERE format = 3"));
+  if( !$cur_settings ) { return array(); }
+
+  $new_settings = unserialize($cur_settings);
+  $new_settings['buttons']['default']['Image'] = 1; // add image button
+
+  db_query("UPDATE {wysiwyg} SET settings = '%s' WHERE format = 3", serialize($new_settings));
+  return array();
+}
 
 function wn_common_configure_mollom() {
   variable_set('mollom_fallback','1'); // '1' Accept all form submissions if Mollom server is down
