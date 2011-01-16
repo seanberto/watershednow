@@ -75,6 +75,7 @@ function wn_common_update_6002( &$sandbox ) {
 
   return array(); //return empty array so Drupal does not throw errors
 }
+
 function wn_common_update_6003( &$sandbox ) {
   //format 3 is the block input format as defined in our Watershed install profile
   $cur_settings = db_result(db_query("SELECT settings FROM {wysiwyg} WHERE format = 3"));
@@ -85,6 +86,16 @@ function wn_common_update_6003( &$sandbox ) {
 
   db_query("UPDATE {wysiwyg} SET settings = '%s' WHERE format = 3", serialize($new_settings));
   return array();
+}
+
+
+/**
+ * Tertiary sidebar links should not change the display of the sidebar menu.
+ * See http://drupal.org/node/998596
+ */
+function wn_common_update_6004( &$sandbox ) {
+  variable_set('menu_block_1_follow', 0);
+  return array(); //return empty array so Drupal does not throw errors
 }
 
 function wn_common_configure_mollom() {

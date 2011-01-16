@@ -206,6 +206,8 @@ variables[site_newsletter] = '<form name="newsletter"><input type="text" name="u
 
 variables[date_default_timezone_name] = America/New_York
 
+; Tertiary links do not change the menu block appearance
+variables[menu_block_1_follow] = 0
 
 ; ----------------------------------------------
 ; Theme Config
