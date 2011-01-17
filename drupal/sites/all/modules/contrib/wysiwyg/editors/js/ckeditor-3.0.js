@@ -183,7 +183,7 @@ Drupal.wysiwyg.editor.instance.ckeditor = {
                   // content is supposed to contain the "outerHTML".
                   data.content = data.node.$.parentNode.innerHTML;
                 }
-                data.node = data.node.$;
+                //data.node = data.node.$;
               }
               else {
                 data.content = '';
