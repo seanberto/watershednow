@@ -56,6 +56,12 @@ $(function(){
     $page_shadow.height(1); //used to get rid of scrollbars, as they alter the offsets
     $page_shadow.css(shadow_css());
   });
+  
+  //recalculate shadow position if the window is resized
+  $(window).resize(function(){
+    $page_shadow.height(1); //used to get rid of scrollbars, as they alter the offsets
+    $page_shadow.css(shadow_css());
+  });
 
   $('body').append($page_shadow);
 });
