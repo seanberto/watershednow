@@ -183,6 +183,7 @@ body.node-type-map-feature #sidebar-second .block.odd {
 
 #footer-inner {
   padding: 25px 25px 0 50px;
+  position:relative;
 }
 
 #footer .block {
@@ -213,6 +214,6 @@ body.node-type-map-feature #sidebar-second .block.odd {
 /** Optional Waterkeeper Alliance Logo styles for footer. */
 #wka {
   position: absolute;
-  right: 145px;
-  bottom: 100px;
+  right: 45px;
+  bottom: 45px;
 }
