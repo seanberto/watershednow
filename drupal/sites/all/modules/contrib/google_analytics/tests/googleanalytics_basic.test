@@ -1,5 +1,5 @@
 <?php
-// $Id: googleanalytics_basic.test,v 1.2.2.9 2009/07/25 23:58:40 hass Exp $
+// $Id: googleanalytics_basic.test,v 1.7.2.5 2010/12/25 20:03:19 hass Exp $
 
 /**
  * @file
@@ -28,12 +28,12 @@ class GoogleAnalyticsBasicTest extends DrupalWebTestCase {
   public function testGoogleAnalytics() {
     // Check for setting page's presence.
     $this->drupalGet('admin/settings/googleanalytics');
-    $this->assertRaw(t('Google Analytics account number'), '[testGoogleAnalytics]: Settings page displayed.');
+    $this->assertRaw(t('Web Property ID'), '[testGoogleAnalytics]: Settings page displayed.');
 
     // Check for account code validation.
     $edit['googleanalytics_account'] = $this->randomName(2);
     $this->drupalPost('admin/settings/googleanalytics', $edit, 'Save configuration');
-    $this->assertRaw(t('A valid Google Analytics account number is case sensitive and formatted like UA-xxxxxx-x.'), '[testGoogleAnalytics]: Invalid account number validated.');
+    $this->assertRaw(t('A valid Google Analytics Web Property ID is case sensitive and formatted like UA-xxxxxx-x.'), '[testGoogleAnalytics]: Invalid Web Property ID number validated.');
   }
 
   public function testGoogleAnalyticsTracking() {
@@ -51,8 +51,17 @@ class GoogleAnalyticsBasicTest extends DrupalWebTestCase {
 
     /* Sample JS code as added to page:
     <script type="text/javascript" src="/sites/all/modules/google_analytics/googleanalytics.js?w"></script>
-    <script type="text/javascript">var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));</script>
-    <script type="text/javascript">var pageTracker = _gat._getTracker("UA-123456-7");pageTracker._trackPageview();</script>
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-123456-7']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
     */
 
     // Test whether tracking code uses latest JS.

@@ -1,4 +1,4 @@
-// $Id: README.txt,v 1.4.2.4 2010/09/23 19:26:46 hass Exp $
+// $Id: README.txt,v 1.7.2.6 2011/01/16 22:45:09 hass Exp $
 
 Module: Google Analytics
 Author: Alexander Hass <http://drupal.org/user/85918>
@@ -23,11 +23,6 @@ sites/all/modules directory as usual.
 Usage
 =====
 In the settings page enter your Google Analytics account number.
-
-You can also track the username and/or user ID who visits each page.
-This data will be visible in Google Analytics as segmentation data.
-If you enable the profile.module you can also add more detailed
-information about each user to the segmentation tracking.
 
 All pages will now have the required JavaScript added to the
 HTML footer can confirm this by viewing the page source from
@@ -58,6 +53,20 @@ that can be used in this textarea can be found on the handbook page
 
 A code snippet that creates opt-out by role functionality for unchecked roles
 can be found in the Google Analytics handbook at http://drupal.org/node/261997.
+
+Custom variables
+=================
+One example for custom variables tracking is the "User roles" tracking. Enter
+the below configuration data into the custom variables settings form under
+admin/settings/googleanalytics.
+
+Slot: 1
+Name: User roles
+Value: [user-role-names]
+Scope: Visitor
+
+More details about Custom variables can be found in the Google API documentation at
+http://code.google.com/intl/en/apis/analytics/docs/tracking/gaTrackingCustomVariables.html
 
 Advanced Settings
 =================
