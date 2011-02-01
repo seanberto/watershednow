@@ -1,5 +1,5 @@
 <?php
-// $Id: wysiwyg.api.php,v 1.3.2.3 2010/12/19 23:27:09 sun Exp $
+// $Id: wysiwyg.api.php,v 1.3.2.4 2011/01/06 00:19:10 sun Exp $
 
 /**
  * @file
@@ -173,3 +173,35 @@ function hook_INCLUDE_plugin() {
   return $plugins;
 }
 
+/**
+ * Act on editor profile settings.
+ *
+ * This hook is invoked from wysiwyg_get_editor_config() after the JavaScript
+ * settings have been generated for an editor profile and before the settings
+ * are added to the page. The settings may be customized or enhanced; typically
+ * with options that cannot be controlled through Wysiwyg module's
+ * administrative UI currently.
+ *
+ * Modules implementing this hook to enforce settings that can also be
+ * controlled through the UI should also implement
+ * hook_form_wysiwyg_profile_form_alter() to adjust or at least indicate on the
+ * editor profile configuration form that certain/affected settings cannot be
+ * changed.
+ *
+ * @param $settings
+ *   An associative array of JavaScript settings to pass to the editor.
+ * @param $context
+ *   An associative array containing additional context information:
+ *   - editor: The plugin definition array of the editor.
+ *   - profile: The editor profile object, as loaded from the database.
+ *   - theme: The name of the editor theme/skin.
+ */
+function hook_wysiwyg_editor_settings_alter(&$settings, $context) {
+  // Each editor has its own collection of native settings that may be extended
+  // or overridden. Please consult the respective official vendor documentation
+  // for details.
+  if ($context['profile']->editor == 'tinymce') {
+    // Supported values to JSON data types.
+    $settings['cleanup_on_startup'] = TRUE;
+  }
+}

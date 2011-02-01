@@ -1,7 +1,19 @@
-// $Id: CHANGELOG.txt,v 1.149.2.78 2010/12/20 03:44:37 sun Exp $
+// $Id: CHANGELOG.txt,v 1.149.2.87 2011/01/30 23:31:31 sun Exp $
 
 Wysiwyg 6.x-2.x, xxxx-xx-xx
 ---------------------------
+
+
+Wysiwyg 6.x-2.3, 2011-01-30
+---------------------------
+#1025296 by TwoD: Updated CKEditor to support iFrame button.
+#737318 by TwoD: Fixed CKEditor default skin array not being reindexed.
+by sun: Fixed coding style in wysiwyg_schema().
+#964978 by sun, TwoD: Added hook_wysiwyg_editor_settings_alter() documentation.
+#775972 by TwoD, Agileware, sun: Fixed broken user default status preferences.
+#1007066 by TwoD, penguin25: Fixed CKEditor ignores resizable option.
+#613944 by TwoD, sun: Fixed data.node not always present in CKEditor.
+#1009880 by TwoD: Fixed selection handling broken in CKEditor.
 
 
 Wysiwyg 6.x-2.2, 2010-12-20

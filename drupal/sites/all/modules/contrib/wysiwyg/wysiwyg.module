@@ -1,5 +1,5 @@
 <?php
-// $Id: wysiwyg.module,v 1.33.2.12 2010/11/06 17:57:36 sun Exp $
+// $Id: wysiwyg.module,v 1.33.2.14 2011/01/06 02:00:34 sun Exp $
 
 /**
  * @file
@@ -626,44 +626,69 @@ function wysiwyg_profile_load_all() {
 /**
  * Implementation of hook_user().
  */
-function wysiwyg_user($type, &$edit, &$user, $category = NULL) {
-  if ($type == 'form' && $category == 'account') {
-    // @todo http://drupal.org/node/322433
-    $profile = new stdClass;
-    if (isset($profile->settings['user_choose']) && $profile->settings['user_choose']) {
-      $form['wysiwyg'] = array(
-        '#type' => 'fieldset',
-        '#title' => t('Wysiwyg Editor settings'),
-        '#weight' => 10,
-        '#collapsible' => TRUE,
-        '#collapsed' => TRUE,
-      );
+function wysiwyg_user($op, &$edit, $account, $category = NULL) {
+  if ($op == 'form' && $category == 'account') {
+    $user_formats = filter_formats();
+    $options = array();
+    $options_default = array();
+    foreach (wysiwyg_profile_load_all() as $format => $profile) {
+      // Only show profiles that have user_choose enabled.
+      if (!empty($profile->settings['user_choose']) && isset($user_formats[$format])) {
+        $options[$format] = check_plain($user_formats[$format]->name);
+        if (wysiwyg_user_get_status($profile, $account)) {
+          $options_default[] = $format;
+        }
+      }
+    }
+    if (!empty($options)) {
       $form['wysiwyg']['wysiwyg_status'] = array(
-        '#type' => 'checkbox',
-        '#title' => t('Enable editor by default'),
-        '#default_value' => isset($user->wysiwyg_status) ? $user->wysiwyg_status : (isset($profile->settings['default']) ? $profile->settings['default'] : FALSE),
-        '#return_value' => 1,
-        '#description' => t('If enabled, rich-text editing is enabled by default in textarea fields.'),
+        '#type' => 'checkboxes',
+        '#title' => t('Text formats enabled for rich-text editing'),
+        '#options' => $options,
+        '#default_value' => $options_default,
       );
-      return array('wysiwyg' => $form);
+      return $form;
     }
   }
-  elseif ($type == 'validate' && isset($edit['wysiwyg_status'])) {
-    return array('wysiwyg_status' => $edit['wysiwyg_status']);
+  elseif ($op == 'insert' || $op == 'update') {
+    if (isset($edit['wysiwyg_status'])) {
+      db_query("DELETE FROM {wysiwyg_user} WHERE uid = %d", $account->uid);
+      foreach ($edit['wysiwyg_status'] as $format => $status) {
+        db_query("INSERT INTO {wysiwyg_user} (uid, format, status) VALUES (%d, %d, %d)", array(
+          $account->uid,
+          $format,
+          (int) (bool) $status,
+        ));
+      }
+    }
   }
 }
 
-function wysiwyg_user_get_status($profile) {
+function wysiwyg_user_get_status($profile, $account = NULL) {
   global $user;
 
-  if (!empty($profile->settings['user_choose']) && isset($user->wysiwyg_status)) {
-    $status = $user->wysiwyg_status;
+  if (!isset($account)) {
+    $account = $user;
+  }
+
+  // Default wysiwyg editor status information is only required on forms, so we
+  // do not pre-emptively load and attach this information on every user_load().
+  if (!isset($account->wysiwyg_status)) {
+    $account->wysiwyg_status = array();
+    $result = db_query("SELECT format, status FROM {wysiwyg_user} WHERE uid = %d", $account->uid);
+    while ($row = db_fetch_object($result)) {
+      $account->wysiwyg_status[$row->format] = $row->status;
+    }
+  }
+
+  if (!empty($profile->settings['user_choose']) && isset($account->wysiwyg_status[$profile->format])) {
+    $status = $account->wysiwyg_status[$profile->format];
   }
   else {
     $status = isset($profile->settings['default']) ? $profile->settings['default'] : TRUE;
   }
 
-  return $status;
+  return (bool) $status;
 }
 
 /**
