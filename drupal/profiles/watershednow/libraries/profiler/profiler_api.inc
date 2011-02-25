@@ -22,7 +22,10 @@ function profiler_profile_modules($config) {
   // Although the profile module is marked as required, it needs to go after
   // every dependency, including non-required ones. So clear its required
   // flag for now to allow it to install late.
-  $files[$install_state['parameters']['profile']]->info['required'] = FALSE;
+  if ( isset( $install_state ) ) {
+    $files[$install_state['parameters']['profile']]->info['required'] = FALSE;    
+  }
+  
   // Add modules that other modules depend on.
   foreach ($modules as $module) {
     if ($files[$module]->requires) {
