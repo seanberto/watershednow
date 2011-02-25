@@ -493,7 +493,7 @@ function _webform_display_vs_webform($component, $value, $format = 'html') {
  * through the returned array, validating the emails;
  * If the email is valid webform will send an email.
  */
-function _webform_submit_vs_webform($component, &$value) {
+function _webform_submit_vs_webform($component, $value) {
   if ( empty($value) || !is_array($value['vs_webform']['candidates']) ) return NULL;
 
   $ret = array(0 => ''); //placeholder for serialized value
@@ -607,10 +607,17 @@ function _vs_webform_validate($form, &$form_state, $allow_no_candidates_selected
     return; // wait until we have a valid zip or state
   }
 
-  $allowed_candidates = vs_webform_get_candidates(array(
-    'state' => $vs_webform['state']['#value'],
-    'zip' => $vs_webform['zip']['#value']
-  ));
+  if( empty($vs_webform['zip']['#value']) ) {
+    $allowed_candidates = vs_webform_get_candidates(array(
+      'state' => $vs_webform['state']['#value']
+    ));
+  }
+  else {
+    $allowed_candidates = vs_webform_get_candidates(array(
+      'state' => $vs_webform['state']['#value'],
+      'zip' => $vs_webform['zip']['#value']
+    ));
+  }
   
   if ( empty($allowed_candidates) ) {
     form_set_error('vs_webform',t('Unable to find officials with information provided.'));
@@ -618,7 +625,7 @@ function _vs_webform_validate($form, &$form_state, $allow_no_candidates_selected
   }
   
   $candidates = element_children($vs_webform['candidates']);//alias
-  if( !$allow_no_candidates_selected ) {
+  if ( !$allow_no_candidates_selected ) {
     if ( empty($vs_webform['candidates']) ) {
       form_set_error('vs_webform', t('Please select one or more officials.'));
       return;

@@ -423,6 +423,11 @@ function vs_webform_get_candidate($candidateId, $partial_candidate_xml = NULL, $
   return $candidates[$candidateId];
 }
 
+/**
+ * Provides an array of candidates keyed on candidate id
+ * @param $args an array with state and zip 
+ * @return unknown_type
+ */
 function vs_webform_get_candidates($args) {
   $args['zip'] = preg_replace('@[^\d]@', '', $args['zip']);//strip non digits
 
@@ -513,8 +518,10 @@ function vs_webform_get_office_types() {
   if (!$types || empty($types->data)) {
     $types = array();
     $result = _vs_webform_api('Office.getTypes', array(), NULL, 'json');
-    foreach ($result->officeTypes->type as $type) {
-      $types[$type->officeTypeId] = $type->name;
+    if ( isset($result) && is_array($result->officeTypes->type) ) {
+      foreach ($result->officeTypes->type as $type) {
+        $types[$type->officeTypeId] = $type->name;
+      }
     }
     cache_set('vs_webform_office_types', $types);
     return $types;
