@@ -1,4 +1,4 @@
-// $Id: webform.js,v 1.1.2.5 2010/08/30 16:58:02 quicksketch Exp $
+// $Id: webform.js,v 1.1.2.6 2011/02/20 01:59:37 quicksketch Exp $
 
 /**
  * JavaScript behaviors for the front-end display of webforms.
@@ -50,6 +50,9 @@ Drupal.webform.datepicker = function(context) {
         year = year ? year : today.getFullYear();
         month = month ? month : today.getMonth() + 1;
         day = day ? day : today.getDate();
+
+        // Make sure that the default year fits in the available options.
+        year = (year < startYear || year > endYear) ? startYear : year;
 
         // jQuery UI Datepicker will read the input field and base its date off
         // of that, even though in our case the input field is a button.

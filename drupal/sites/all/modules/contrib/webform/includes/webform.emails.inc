@@ -1,5 +1,5 @@
 <?php
-// $Id: webform.emails.inc,v 1.9.2.12 2010/12/30 01:17:21 quicksketch Exp $
+// $Id: webform.emails.inc,v 1.9.2.13 2011/02/18 17:25:33 quicksketch Exp $
 
 /**
  * @file
@@ -400,6 +400,10 @@ function webform_email_edit_form_validate($form, &$form_state) {
  * Submit handler for webform_email_edit_form().
  */
 function webform_email_edit_form_submit($form, &$form_state) {
+  // Ensure a webform record exists.
+  $node = $form_state['values']['node'];
+  webform_ensure_record($node);
+
   // Merge the e-mail, name, address, and subject options into single values.
   $email = array(
     'eid' => $form_state['values']['eid'],
@@ -483,8 +487,16 @@ function webform_email_delete_form($form_state, $node, $email) {
  * Submit handler for webform_component_delete_form().
  */
 function webform_email_delete_form_submit($form, &$form_state) {
+  // Delete the e-mail settings.
+  $node = $form_state['values']['node'];
+  $email = $form_state['values']['email'];
+  webform_email_delete($node, $email);
   drupal_set_message(t('E-mail settings deleted.'));
-  webform_email_delete($form_state['values']['node'], $form_state['values']['email']);
+
+  // Check if this webform still contains any information.
+  unset($node->webform['emails'][$email['eid']]);
+  webform_check_record($node);
+
   $form_state['redirect'] = 'node/' . $form_state['values']['node']->nid . '/webform/emails';
 }
 

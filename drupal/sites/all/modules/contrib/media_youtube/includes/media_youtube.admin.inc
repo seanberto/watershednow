@@ -1,5 +1,5 @@
 <?php
-// $Id: media_youtube.admin.inc,v 1.1.2.8 2010/10/10 17:39:30 aaron Exp $
+// $Id: media_youtube.admin.inc,v 1.1.2.11 2011/02/04 16:06:40 aaron Exp $
 
 /**
  * @file
@@ -27,7 +27,7 @@ function media_youtube_admin_form() {
   // Find the Zend library.
   $zend_path = media_youtube_zend_path();
 
-  if (!$zend_path && module_exists('media_mover')) {
+  if (!$zend_path && module_exists('media_mover_api')) {
     drupal_set_message(t("For complete video upload capabilities, you need to download the !zend and extract the entire contents of the archive into the %path folder of your server.", array('!zend' => l(t('Zend PHP library'), 'http://framework.zend.com/download/gdata/', array('attributes' => array('target' => '_blank'))), '%path' => 'sites/all/libraries')), 'warning');
   }
 
@@ -118,6 +118,13 @@ function media_youtube_admin_form() {
     '#description' => t("If checked, additional info, such as title and rating, will NOT be displayed on the YouTube player."),
   );
 
+  $form['player']['player_options'][media_youtube_variable_name('html5_player')] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Use the HTML5 player instead of the Flash-based'),
+    '#default_value' => media_youtube_variable_get('html5_player'),
+    '#description' => t("If checked, the HTML5 capable player will be used instead of the regular flash-based. This is achieved as an iframe."),
+  );
+
   $form['player']['jwflv'] = array(
     '#type' => 'fieldset',
     '#title' => t('JW FLV Media Player Options'),
@@ -164,6 +171,12 @@ function media_youtube_admin_form() {
     '#title' => t('YouTube password'),
     '#default_value' => media_youtube_variable_get('youtube_password'),
     '#description' => t('If you plan to upload videos, you will need to enter the YouTube account password here.'),
+  );
+  $form['api'][media_youtube_variable_name('store_raw_metadata')] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Store raw metadata'),
+    '#description' => t('If checked, then store the full metadata supplied by the YouTube API. Note that the Media: YouTube module does not need this, so only check it if directed to by another module, or if you know you need it for custom purposes.'),
+    '#default_value' => media_youtube_variable_get('store_raw_metadata'),
   );
 
   $form['status'] = array(

@@ -1,5 +1,5 @@
 <?php
-// $Id: flickr_sets.inc,v 1.1.2.26 2010/02/01 20:01:19 aaron Exp $
+// $Id: flickr_sets.inc,v 1.1.2.27 2011/01/28 22:45:54 aaron Exp $
 
 /**
  * @file
@@ -393,7 +393,7 @@ function emvideo_flickr_sets_thumbnail($field, $item, $formatter, $node, $width,
  *  @return
  *    the html of the embedded video
  */
-function emvideo_flickr_sets_video($embed, $width, $height, $field, $item, &$node, $autoplay, $options = array()) {
+function emvideo_flickr_sets_video($embed, $width, $height, $field, $item, $node, $autoplay, $options = array()) {
   $options['node'] = $options['node'] ? $options['node'] : $node;
   $options['field'] = $options['field'] ? $options['field'] : $field;
   $options['player'] = $options['player'] ? $options['player'] : ($field['widget']['media_flickr_player_video'] ? $field['widget']['media_flickr_player_video'] : variable_get('media_flickr_player', 'flash'));
@@ -418,7 +418,7 @@ function emvideo_flickr_sets_video($embed, $width, $height, $field, $item, &$nod
  *  @return
  *    the html of the embedded video
  */
-function emvideo_flickr_sets_preview($embed, $width, $height, $field, $item, &$node, $autoplay, $options = array()) {
+function emvideo_flickr_sets_preview($embed, $width, $height, $field, $item, $node, $autoplay, $options = array()) {
   $options['node'] = $options['node'] ? $options['node'] : $node;
   $options['field'] = $options['field'] ? $options['field'] : $field;
   $options['player'] = $options['player'] ? $options['player'] : ($field['widget']['media_flickr_player_preview'] ? $field['widget']['media_flickr_player_preview'] : variable_get('media_flickr_player', 'flash'));

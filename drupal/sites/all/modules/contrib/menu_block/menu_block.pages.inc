@@ -1,6 +1,4 @@
 <?php
-// $Id: menu_block.pages.inc,v 1.21 2010/03/22 19:19:36 johnalbin Exp $
-
 /**
  * @file
  * Provides infrequently used pages for menu_block.
@@ -40,8 +38,8 @@ function _menu_block_help($path, $arg) {
       . '<dd>' . t('For menu trees that start with the 2nd level or deeper, the default block title will be the title for the parent menu item of the specified level. If this option is checked, the block title will be a link to that menu item.') . '</dd>'
       . '<dt><strong>' . t('Administrative title') . '</strong></dt>'
       . '<dd>' . t('To help identify the block on the administer blocks page, you can specify a unique title to be used on that page. If blank, the regular title will be used.') . '</dd>'
-      . '<dt><strong>' . t('Parent item') . '</strong></dt>'
-      . '<dd>' . t('First select the menu. Then select the parent item from that menu. The tree of links will only contain children of the selected parent item.') . '</dd>'
+      . '<dt><strong>' . t('Menu name') . '</strong></dt>'
+      . '<dd>' . t('Select the menu to use for the tree of links.') . '</dd>'
       . '<dt><strong>' . t('Starting level') . '</strong></dt>'
       . '<dd>' . t('Blocks that start with the 1st level will always be visible. Blocks that start with the 2nd level or deeper will only be visible when the trail to the active menu item is in the block’s tree.') . '</dd>'
       . '<dt><strong>' . t('Make the starting level follow the active menu item') . '</strong></dt>'
@@ -52,6 +50,8 @@ function _menu_block_help($path, $arg) {
       . '<dd>' . t('All children of this menu will be expanded.') . '</dd>'
       . '<dt><strong>' . t('Sort') . '</strong></dt>'
       . '<dd>' . t('Sort each item in the active trail to the top of its level. When used on a deep or wide menu tree, the active menu item’s children will be easier to see when the page is reloaded.') . '</dd>'
+      . '<dt><strong>' . t('Fixed parent item') . '</strong></dt>'
+      . '<dd>' . t('If you select a specific menu item, you alter the “starting level” and “maximum depth” options to be relative to the fixed parent item. The tree of links will only contain children of the selected parent item.') . '</dd>'
       . '</dl>'
       . '<h3>' . t('Styling menu blocks') . '</h3>'
       . '<p>' . t('Themers should be aware of the myriad of classes, templates and theme functions available to them. See the <a href="!url">online documentation</a> or the README.txt file for detailed information about each of them.', array('!url' => url('http://drupal.org/node/748022'))) . '</p>'

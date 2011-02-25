@@ -1,6 +1,4 @@
 <?php
-// $Id: menu_block.sort.inc,v 1.2 2010/03/13 20:05:53 johnalbin Exp $
-
 /**
  * @file
  * Provides optional sorting of the active trail in the menu tree.

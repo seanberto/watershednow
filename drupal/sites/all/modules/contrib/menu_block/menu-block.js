@@ -1,5 +1,3 @@
-// $Id: menu-block.js,v 1.5.2.1 2010/03/23 21:10:48 johnalbin Exp $
-
 (function ($) {
 
 Drupal.behaviors.menu_block = function (context) {
@@ -39,16 +37,14 @@ Drupal.behaviors.menu_block = function (context) {
       $('.menu-block-title-link').css('display', 'none');
     }
 
-    // Split the un-wieldly "parent item" pull-down into two hierarchal pull-downs.
-    $('.menu-block-parent', context)
-      .html(Drupal.settings.menu_block.parent_options[Drupal.settings.menu_block.menus_default])
-      .val(Drupal.settings.menu_block.parent_default)
-      .before(Drupal.settings.menu_block.menus);
-    $('.menu-block-parent-menu', context).change( function() {
-      $('.menu-block-parent')
-        .html(Drupal.settings.menu_block.parent_options[$('.menu-block-parent-menu').val()])
-        .val(Drupal.settings.menu_block.parent_default);
-    } );
+    // Syncronize the display of menu and parent item selects.
+    $('.menu-block-parent-mlid', context).change( function() {
+      var menuItem = $(this).val().split(':');
+      $('.menu-block-menu-name').val(menuItem[0]);
+    });
+    $('.menu-block-menu-name', context).change( function() {
+      $('.menu-block-parent-mlid').val($(this).val() + ':0');
+    });
   }
 
   // Toggle display of "follow parent" if "follow" has been checked.

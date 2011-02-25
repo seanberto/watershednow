@@ -1,5 +1,5 @@
 <?php
-// $Id: media_youtube.api.inc,v 1.1.2.6 2010/05/13 07:18:21 aaron Exp $
+// $Id: media_youtube.api.inc,v 1.1.2.7 2011/02/04 17:59:08 aaron Exp $
 
 /**
  * @file
@@ -29,6 +29,9 @@ function _media_youtube_check_upload($video_id, $youtube_username = NULL, $youtu
   Zend_Loader::loadClass('Zend_Gdata_App_HttpException', $path);
   Zend_Loader::loadClass('Zend_Gdata_App_Extension_Control', $path);
   Zend_Loader::loadClass('Zend_Gdata_YouTube_Extension_State', $path);
+  Zend_Loader::loadClass('Zend_Gdata_AuthSub', $path);
+  Zend_Loader::loadClass('Zend_Gdata_ClientLogin', $path);
+  Zend_Loader::loadClass('Zend_Uri_Http', $path);
 
   $httpClient = _media_youtube_get_auth_sub_http_client($youtube_username, $youtube_password);
   $youTubeService = new Zend_Gdata_YouTube($httpClient);

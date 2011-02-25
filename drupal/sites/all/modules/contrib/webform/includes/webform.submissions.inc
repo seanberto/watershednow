@@ -1,5 +1,5 @@
 <?php
-// $Id: webform.submissions.inc,v 1.18.2.14 2011/01/05 23:46:02 quicksketch Exp $
+// $Id: webform.submissions.inc,v 1.18.2.20 2011/02/23 02:11:01 quicksketch Exp $
 
 /**
  * @file
@@ -11,6 +11,13 @@
 
 /**
  * Given an array of submitted values, flatten it into data for a submission.
+ *
+ * @param $node
+ *   The node object containing the current webform.
+ * @param $submitted
+ *   The submitted user values from the webform.
+ * @return
+ *   An array suitable for use in the 'data' property of a $submission object.
  */
 function webform_submission_data($node, $submitted) {
   $data = array();
@@ -32,6 +39,16 @@ function webform_submission_data($node, $submitted) {
   return $data;
 }
 
+/**
+ * Update a webform submission entry in the database.
+ *
+ * @param $node
+ *   The node object containing the current webform.
+ * @param $submission
+ *   The webform submission object to be saved into the database.
+ * @return
+ *   The existing submission SID.
+ */
 function webform_submission_update($node, $submission) {
   // Allow other modules to modify the submission before saving.
   foreach (module_implements('webform_submission_presave') as $module) {
@@ -46,7 +63,11 @@ function webform_submission_update($node, $submission) {
   // preserve any data from form pages not visited in this submission.
   if ($submission->is_draft) {
     $submitted_cids = array_keys($submission->data);
-    db_query("DELETE FROM {webform_submitted_data} WHERE sid = %d AND cid IN (" . implode(', ', $submitted_cids) . ")", $submission->sid);
+    if ($submitted_cids) {
+      $placeholders = db_placeholders($submitted_cids);
+      $arguments = array_merge(array($submission->sid), $submitted_cids);
+      db_query("DELETE FROM {webform_submitted_data} WHERE sid = %d AND cid IN (" . $placeholders . ")", $arguments);
+    }
   }
   else {
     db_query("DELETE FROM {webform_submitted_data} WHERE sid = %d", $submission->sid);
@@ -61,6 +82,16 @@ function webform_submission_update($node, $submission) {
   return $submission->sid;
 }
 
+/**
+ * Insert a webform submission entry in the database.
+ *
+ * @param $node
+ *   The node object containing the current webform.
+ * @param $submission
+ *   The webform submission object to be saved into the database.
+ * @return
+ *   The new submission SID.
+ */
 function webform_submission_insert($node, $submission) {
   // The submission ID may already be set if being called as an update.
   if (!isset($submission->sid) && (!isset($submission->is_new) || $submission->is_new == FALSE)) {
@@ -114,6 +145,150 @@ function webform_submission_delete($node, $submission) {
   db_query('DELETE FROM {webform_submissions} WHERE nid = %d AND sid = %d', $node->nid, $submission->sid);
 
   module_invoke_all('webform_submission_delete', $node, $submission);
+}
+
+/**
+ * Send related e-mails related to a submission.
+ *
+ * This function is usually invoked when a submission is completed, but may be
+ * called any time e-mails should be redelivered.
+ *
+ * @param $node
+ *   The node object containing the current webform.
+ * @param $submission
+ *   The webform submission object to be used in sending e-mails.
+ * @param $emails
+ *   (optional) An array of specific e-mail settings to be used. If omitted, all
+ *   e-mails in $node->webform['emails'] will be sent.
+ */
+function webform_submission_send_mail($node, $submission, $emails = NULL) {
+  global $user;
+
+  // Get the list of e-mails we'll be sending.
+  $emails = isset($emails) ? $emails : $node->webform['emails'];
+
+  // Create a themed message for mailing.
+  $send_count = 0;
+  foreach ($emails as $eid => $email) {
+    // Set the HTML property based on availablity of MIME Mail.
+    $email['html'] = ($email['html'] && module_exists('mimemail'));
+
+    // Pass through the theme layer if using the default template.
+    if ($email['template'] == 'default') {
+      $email['message'] = theme(array('webform_mail_' . $node->nid, 'webform_mail', 'webform_mail_message'), $node, $submission, $email);
+    }
+    else {
+      $email['message'] = $email['template'];
+    }
+
+    // Replace tokens in the message.
+    $email['message'] = _webform_filter_values($email['message'], $node, $submission, $email, FALSE, TRUE);
+
+    // Build the e-mail headers.
+    $email['headers'] = theme(array('webform_mail_headers_' . $node->nid, 'webform_mail_headers'), $node, $submission, $email);
+
+    // Assemble the From string.
+    if (isset($email['headers']['From'])) {
+      // If a header From is already set, don't override it.
+      $email['from'] = $email['headers']['From'];
+      unset($email['headers']['From']);
+    }
+    else {
+      $email['from'] = webform_format_email_address($email['from_address'], $email['from_name'], $node, $submission);
+    }
+
+    // Update the subject if set in the themed headers.
+    if (isset($email['headers']['Subject'])) {
+      $email['subject'] = $email['headers']['Subject'];
+      unset($email['headers']['Subject']);
+    }
+    else {
+      $email['subject'] = webform_format_email_subject($email['subject'], $node, $submission);
+    }
+
+    // Update the to e-mail if set in the themed headers.
+    if (isset($email['headers']['To'])) {
+      $email['email'] = $email['headers']['To'];
+      unset($email['headers']['To']);
+    }
+
+    // Generate the list of addresses that this e-mail will be sent to.
+    $addresses = array_filter(explode(',', $email['email']));
+    $addresses_final = array();
+    foreach ($addresses as $address) {
+      $address = trim($address);
+
+      // After filtering e-mail addresses with component values, a single value
+      // might contain multiple addresses (such as from checkboxes or selects).
+      $address = webform_format_email_address($address, NULL, $node, $submission, TRUE, FALSE, 'short');
+
+      if (is_array($address)) {
+        foreach ($address as $new_address) {
+          $new_address = trim($new_address);
+          if (valid_email_address($new_address)) {
+            $addresses_final[] = $new_address;
+          }
+        }
+      }
+      elseif (valid_email_address($address)) {
+        $addresses_final[] = $address;
+      }
+    }
+
+    // Mail the webform results.
+    foreach ($addresses_final as $address) {
+      // Verify that this submission is not attempting to send any spam hacks.
+      if (_webform_submission_spam_check($address, $email['subject'], $email['from'], $email['headers'])) {
+        watchdog('webform', 'Possible spam attempt from @remote_addr' . "<br />\n" . nl2br(htmlentities($email['message'])), array('@remote_add' => ip_address()));
+        drupal_set_message(t('Illegal information. Data not submitted.'), 'error');
+        return FALSE;
+      }
+
+      $language = $user->uid ? user_preferred_language($user) : language_default();
+      $mail_params = array(
+        'message' => $email['message'],
+        'subject' => $email['subject'],
+        'headers' => $email['headers'],
+        'node' => $node,
+        'submission' => $submission,
+      );
+
+      if (module_exists('mimemail')) {
+        // Load attachments for the e-mail.
+        $attachments = array();
+        if ($email['attachments']) {
+          webform_component_include('file');
+          foreach ($node->webform['components'] as $component) {
+            if (webform_component_feature($component['type'], 'attachment') && !empty($submission->data[$component['cid']]['value'][0])) {
+              $file = webform_get_file($submission->data[$component['cid']]['value'][0]);
+              if ($file) {
+                $file->list = 1; // Needed to include in attachments.
+                $attachments[] = $file;
+              }
+            }
+          }
+        }
+
+        // Prepare (but don't send) the e-mail normally.
+        $message = drupal_mail('webform', 'submission', $address, $language, $mail_params, $email['from'], FALSE);
+
+        // Send the e-mail via MIME mail.
+        $message = mimemail($email['from'], $address, $message['subject'], $message['body'], !$email['html'], $email['headers'], $email['html'] ? NULL : $message['body'], $attachments, 'webform');
+        if ($message) {
+          $send_count++;
+        }
+      }
+      else {
+        // Normal Drupal mailer.
+        $message = drupal_mail('webform', 'submission', $address, $language, $mail_params, $email['from']);
+        if ($message['result']) {
+          $send_count++;
+        }
+      }
+    }
+  }
+
+  return $send_count;
 }
 
 /**
@@ -202,20 +377,133 @@ function webform_submission_page($node, $submission, $format) {
 
   // Add navigation for administrators.
   if (webform_results_access($node)) {
-    $navigation = ($mode != 'pdf') ? theme('webform_submission_navigation', $node, $submission, $mode) : NULL;
-    $information = theme('webform_submission_information', $node, $submission);
+    $navigation = in_array($mode, array('display', 'form')) ? theme('webform_submission_navigation', $node, $submission, $mode) : NULL;
+    $information = theme('webform_submission_information', $node, $submission, $mode);
   }
   else {
     $navigation = NULL;
     $information = NULL;
   }
 
+  // Actions may be shown to all users.
+  $actions = theme('links', module_invoke_all('webform_submission_actions', $node, $submission), array('class' => 'links inline webform-submission-actions'));
+
   // Disable the page cache for anonymous users viewing or editing submissions.
   if (!$user->uid) {
     webform_disable_page_cache();
   }
 
-  return theme('webform_submission_page', $node, $submission, $output, $navigation, $information);
+  return theme('webform_submission_page', $node, $submission, $output, $navigation, $information, $actions);
+}
+
+/**
+ * Form to resend specific e-mails associated with a submission.
+ */
+function webform_submission_resend($form_state, $node, $submission) {
+  // Render the admin UI breadcrumb.
+  webform_set_breadcrumb($node, $submission);
+
+  $form['#tree'] = TRUE;
+  $form['#node'] = $node;
+  $form['#submission'] = $submission;
+
+  foreach ($node->webform['emails'] as $eid => $email) {
+    $email_addresses = array_filter(explode(',', check_plain($email['email'])));
+    foreach ($email_addresses as $key => $email_address) {
+      $email_addresses[$key] = webform_format_email_address($email_address, NULL, $node, $submission, FALSE);
+    }
+    $valid_email = !empty($email_addresses[0]) && valid_email_address($email_addresses[0]);
+    $form['resend'][$eid] = array(
+      '#type' => 'checkbox',
+      '#default_value' => $valid_email ? TRUE : FALSE,
+      '#disabled' => $valid_email ? FALSE : TRUE,
+    );
+    $form['emails'][$eid]['email'] = array(
+      '#value' => implode('<br />', $email_addresses),
+    );
+    if (!$valid_email) {
+      $form['emails'][$eid]['email']['#value'] .= ' (' . t('empty') . ')';
+    }
+    $form['emails'][$eid]['subject'] = array(
+      '#value' => check_plain(webform_format_email_subject($email['subject'], $node, $submission)),
+    );
+
+    $form['actions'] = array('#type' => 'markup');
+    $form['actions']['resend'] = array(
+      '#type' => 'submit',
+      '#value' => 'Resend e-mails',
+    );
+    $form['actions']['cancel'] = array(
+      '#type' => 'markup',
+      '#value' => l(t('Cancel'), isset($_GET['destination']) ? $_GET['destination'] : 'node/' . $node->nid . '/submission/' . $submission->sid),
+    );
+  }
+  return $form;
+}
+
+/**
+ * Validate handler for webform_submission_resend().
+ */
+function webform_submission_resend_validate($form, &$form_state) {
+  if (count(array_filter($form_state['values']['resend'])) == 0) {
+    form_set_error('emails', t('You must select at least one email address to resend submission.'));
+  }
+}
+
+/**
+ * Submit handler for webform_submission_resend().
+ */
+function webform_submission_resend_submit($form, &$form_state) {
+  $node = $form['#node'];
+  $submission = $form['#submission'];
+
+  $emails = array();
+  foreach ($form_state['values']['resend'] as $eid => $checked) {
+    if ($checked) {
+      $emails[] = $form['#node']->webform['emails'][$eid];
+    }
+  }
+  $sent_count = webform_submission_send_mail($node, $submission, $emails);
+  if ($sent_count) {
+    drupal_set_message(format_plural($sent_count,
+      'Successfully re-sent submission #@sid to 1 recipient.',
+      'Successfully re-sent submission #@sid to @count recipients.',
+      array('@sid' => $submission->sid)
+    ));
+  }
+  else {
+    drupal_set_message(t('No e-mails were able to be sent due to a server error.'), 'error');
+  }
+}
+
+/**
+ * Theme the node components form. Use a table to organize the components.
+ *
+ * @param $form
+ *   The form array.
+ * @return
+ *   Formatted HTML form, ready for display.
+ */
+function theme_webform_submission_resend($form) {
+  $header = array('',t('E-mail to'), t('Subject'));
+  $rows = array();
+  if (!empty($form['emails'])) {
+    foreach (element_children($form['emails']) as $eid) {
+      // Add each component to a table row.
+      $rows[] = array(
+        drupal_render($form['resend'][$eid]),
+        drupal_render($form['emails'][$eid]['email']),
+        drupal_render($form['emails'][$eid]['subject']),
+      );
+    }
+  }
+  else {
+    $rows[] = array(array('data' => t('This webform is currently not setup to send emails.'), 'colspan' => 3));
+  }
+  $output = '';
+  $output .= theme('table', $header, $rows, array('id' => 'webform-emails'));
+  $output .= drupal_render($form);
+  return $output;
 }
 
 /**
@@ -377,7 +665,7 @@ function webform_get_submission_count($nid, $uid = NULL, $reset = FALSE) {
   static $counts;
 
   if (!isset($counts[$nid][$uid]) || $reset) {
-    $query = 'SELECT count(*) FROM {webform_submissions} WHERE nid = %d';
+    $query = 'SELECT count(*) FROM {webform_submissions} WHERE nid = %d AND is_draft = 0';
     $arguments = array($nid);
     if ($uid !== NULL) {
       $query .= ' AND uid = %d';

@@ -1,5 +1,5 @@
 <?php
-// $Id: webform.admin.inc,v 1.4.2.4 2010/08/30 20:22:15 quicksketch Exp $
+// $Id: webform.admin.inc,v 1.4.2.5 2011/02/23 00:49:42 quicksketch Exp $
 
 /**
  * @file
@@ -79,6 +79,7 @@ function webform_admin_settings() {
     ),
     '#default_value' => variable_get('webform_default_format', 0),
     '#description' => t('The default format for new e-mail settings. Webform e-mail options take precedence over the settings for system-wide e-mails configured in MIME mail.'),
+    '#access' => module_exists('mimemail'),
   );
 
   $form['email']['webform_format_override']  = array(
@@ -90,6 +91,7 @@ function webform_admin_settings() {
     ),
     '#default_value' => variable_get('webform_format_override', 0),
     '#description' => t('Force all webform e-mails to be sent in the default format.'),
+    '#access' => module_exists('mimemail'),
   );
 
   $form['advanced'] = array(
