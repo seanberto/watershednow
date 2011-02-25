@@ -1,5 +1,5 @@
 <?php
-// $Id: flickr.inc,v 1.1.2.1 2009/12/07 20:08:41 aaron Exp $
+// $Id: flickr.inc,v 1.1.2.3 2010/11/17 16:46:48 aaron Exp $
 
 /**
  * @file
@@ -272,4 +272,11 @@ function _emimage_flickr_guess_size($width, $height) {
 
   // If we don't have width or height set, then get the original size.
   return '5';
+}
+
+function emimage_flickr_thumbnail($field, $item, $formatter, $node, $width, $height) {
+  // As this is called by emthumb to grab the original size when available,
+  // for later use w/ imagecache, we'll try to grab an intentionally large
+  // image, at 4800x4800.
+  return emimage_flickr_image_url($item['value'], 4800, 4800, $formatter, $field, $item, $node);
 }

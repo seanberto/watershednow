@@ -1,5 +1,5 @@
 <?php
-// $Id: media_youtube.variables.inc,v 1.1.2.8 2010/11/12 15:09:38 aaron Exp $
+// $Id: media_youtube.variables.inc,v 1.1.2.12 2011/02/04 17:17:25 aaron Exp $
 
 /**
  * @file Contains the variables and defaults used by Media: YouTube.
@@ -28,7 +28,7 @@ define('MEDIA_YOUTUBE_REST_ENDPOINT', 'http://gdata.youtube.com/feeds/api/videos
  * we must increment this value, which will allow older content to be updated
  * to the new version automatically.
  */
-define('MEDIA_YOUTUBE_DATA_VERSION', 4);
+define('MEDIA_YOUTUBE_DATA_VERSION', 5);
 
 /**
  * These are player defaults. @TODO: Use variable namespace instead.
@@ -181,6 +181,18 @@ function media_youtube_variable_default($name = NULL) {
 
       'cron_time' => 10,
       'cron_limit' => 50,
+
+      // If TRUE, then store the entire metadata fetched from YouTube.
+      'store_raw_metadata' => FALSE,
+
+      // HTML5 Iframe variables.
+      'iframe_title' => 'YouTube video player',
+      'html5_player' => FALSE,
+
+      // We accidentally destroyed all thumbnails in a bad update.
+      // If that's been run improperly, then this will stay FALSE, and
+      // we need to self-correct.
+      'media_youtube_update_6012' => FALSE,
     );
   }
 

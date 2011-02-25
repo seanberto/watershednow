@@ -1,5 +1,5 @@
 <?php
-// $Id: youtube.inc,v 1.1.2.18 2010/11/12 15:58:57 aaron Exp $
+// $Id: youtube.inc,v 1.1.2.23 2011/02/04 17:38:09 aaron Exp $
 
 /**
  * @file
@@ -64,64 +64,7 @@ function emvideo_youtube_data_version() {
  * provides an array to be serialised and made available with $item elsewhere
  */
 function emvideo_youtube_data($field, $item) {
-  $data = array();
-
-  // Create some 'field' version control.
-  $data['emvideo_youtube_version'] = $data['emvideo_data_version'] = MEDIA_YOUTUBE_DATA_VERSION;
-
-  // Store the raw data from YouTube's API.
-  $data['raw'] = emvideo_youtube_request($item['value']);
-
-  // Store the video's duration.
-  $data['duration'] = intval($data['raw']['MEDIA:GROUP']['YT:DURATION'][1]['SECONDS']);
-
-  // Gather info about the item's raw flash video.
-  // RSS / MRSS feeds with the item would have enough info.
-  // Alternatively try getting the minimum from an HTTP get.
-  // Get info from a youtube playlist.
-  if (strpos($item['value'], 'PLAYLIST_') === 0) {
-    $playlist_id = substr($item['value'], 9);
-    $url = 'http://youtube.com/p/'. $playlist_id;
-    $data['playlist'] = 1;
-
-    // Get the large thumbnail of the first video.
-    // Use the Youtube Google API to get this data.
-    $api_url = 'http://gdata.youtube.com/feeds/api/playlists/' . $playlist_id;
-    $result = drupal_http_request($api_url);
-    if ($result->code == 200) {
-      $parser = drupal_xml_parser_create($result->data);
-      $vals = array();
-      $index = array();
-      xml_parse_into_struct($parser, $result->data, $vals, $index);
-      xml_parser_free($parser);
-      if (count($vals)) {
-        foreach ($vals as $val) {
-          if ($val['tag'] == 'MEDIA:THUMBNAIL' && $val['attributes']['HEIGHT'] == '240') {
-            $data['thumbnail']['url'] = $val['attributes']['URL'];
-            break;
-          }
-        }
-      }
-    }
-  }
-  // Get info from a single video.
-  else {
-    $url = 'http://youtube.com/v/'. $item['value'];
-    $data['playlist'] = 0;
-    // Get the large thumbnail.
-    $data['thumbnail']['url'] = 'http://img.youtube.com/vi/'. $item['value'] .'/0.jpg';
-  }
-
-  $response = emfield_request_header('youtube', $url);
-
-  if ($response->code == 200) {
-    // Don't give the 303 path.
-    $data['flash']['url'] = $url;
-    $data['flash']['size'] = $response->headers['Content-Length'];
-    $data['flash']['mime'] = $response->headers['Content-Type'];
-  }
-
-  return $data;
+  return media_youtube_emfield_data($item['value']);
 }
 
 /**
@@ -151,17 +94,6 @@ function emvideo_youtube_rss($item, $teaser = NULL) {
 }
 
 /**
- * this is a wrapper for emvideo_request_xml that includes youtube's api key
- */
-function emvideo_youtube_request($video_id, $cached = TRUE) {
-  $args['dev_id'] = trim(media_youtube_variable_get('api_key'));
-  $args['method'] = $method;
-
-  $request = emfield_request_xml('youtube', MEDIA_YOUTUBE_REST_ENDPOINT .'/'. $code, array('video' => $code, 'v' => '2'), $cached);
-  return $request;
-}
-
-/**
  * hook emvideo_PROVIDER_extract
  * this is called to extract the video code from a pasted URL or embed code.
  * @param $video_id
@@ -186,10 +118,13 @@ function emvideo_youtube_extract($video_id = '') {
   // src="http://www.youtube.com/v/nvbQQnvxXDk"
   // http://youtube.com/watch?v=nvbQQnvxXDk
   // http://www.youtube.com/watch?v=YzFCA-xUc8w&feature=dir
+  // src="http://www.youtube.com/embed/kge8zlJfwQQ"
+  // http://youtu.be/bh-BwFNNAGc
   return array(
-    '@youtube\.com/v/([^"\&\? ]+)@i',
+    '@youtube\.com/(?:v|embed)/([^"\&\? ]+)@i',
     '@youtube\.com/watch\?v=([^"\& ]+)@i',
     '@youtube\.com/\?v=([^"\& ]+)@i',
+    '@youtu.be/([^"\& ]+)@i',
   );
 }
 
@@ -241,7 +176,7 @@ function emvideo_youtube_convert_color($color = NULL) {
  *    a URL pointing to the thumbnail
  */
 function emvideo_youtube_thumbnail($field, $item, $formatter, $node, $width, $height, $options = array()) {
-  if ($item['data']['thumbnail']['url']) {
+  if (isset($item['data']['thumbnail']['url'])) {
     return $item['data']['thumbnail']['url'];
   }
 
@@ -275,7 +210,12 @@ function emvideo_youtube_video($video_id, $width, $height, $field, $item, $node,
   $options['item'] = isset($options['item']) ? $options['item'] : $item;
   $options['node'] = isset($options['node']) ? $options['node'] : $node;
   $options['autoplay'] = isset($options['autoplay']) ? $options['autoplay'] : $autoplay;
-  $output = theme('media_youtube_flash', $options);
+  $options['html5'] = isset($options['html5']) ? $options['html5'] : media_youtube_variable_get('html5_player');
+  if ($options['html5']) {
+    $output = theme('media_youtube_html5', $options);
+  } else {
+    $output = theme('media_youtube_flash', $options);
+  }
   return $output;
 }
 
@@ -303,7 +243,12 @@ function emvideo_youtube_preview($video_id, $width, $height, $field, $item, $nod
   $options['item'] = isset($options['item']) ? $options['item'] : $item;
   $options['node'] = isset($options['node']) ? $options['node'] : $node;
   $options['autoplay'] = isset($options['autoplay']) ? $options['autoplay'] : $autoplay;
-  $output = theme('media_youtube_flash', $options);
+  $options['html5'] = isset($options['html5']) ? $options['html5'] : media_youtube_variable_get('html5_player');
+  if ($options['html5']) {
+    $output = theme('media_youtube_html5', $options);
+  } else {
+    $output = theme('media_youtube_flash', $options);
+  }
   return $output;
 }
 

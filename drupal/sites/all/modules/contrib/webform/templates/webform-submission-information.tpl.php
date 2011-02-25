@@ -1,5 +1,5 @@
 <?php
-// $Id: webform-submission-information.tpl.php,v 1.1.2.1 2011/01/05 03:21:29 quicksketch Exp $
+// $Id: webform-submission-information.tpl.php,v 1.1.2.2 2011/02/17 04:08:55 quicksketch Exp $
 
 /**
  * @file
@@ -9,6 +9,8 @@
  * - $node: The node object for this webform.
  * - $submission: The contents of the webform submission.
  * - $account: The user that submitted the form.
+ * - $mode: The mode of the submission being viewed. May be one of "display",
+ *   "form", "print", or "pdf".
  */
 ?>
 <fieldset class="webform-submission-info clear-block">

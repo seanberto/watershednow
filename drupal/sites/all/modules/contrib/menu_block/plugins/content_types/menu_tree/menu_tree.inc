@@ -1,6 +1,4 @@
 <?php
-// $Id: menu_tree.inc,v 1.1.2.3 2010/03/24 12:13:01 johnalbin Exp $
-
 /**
  * @file
  * Provides ctools integration for "Menu block" trees.

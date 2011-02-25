@@ -1,5 +1,5 @@
 <?php
-// $Id: file.inc,v 1.17.2.12 2010/12/29 21:56:49 quicksketch Exp $
+// $Id: file.inc,v 1.17.2.13 2011/02/07 03:51:19 quicksketch Exp $
 
 /**
  * @file
@@ -346,11 +346,15 @@ function _webform_render_file($component, $value = NULL, $filter = TRUE) {
  */
 function theme_webform_render_file($element) {
   // Add information about the existing file, if any.
+  if (isset($element['#default_value'])) {
+    $element['_fid']['#value'] = $element['#default_value'];
+  }
   $value = $element['_fid']['#value'] ? $element['_fid']['#value'] : $element['_old']['#value'];
+
   if ($value && ($file = webform_get_file($value))) {
     $firstchild = array_shift(array_keys($element));
     $element[$firstchild]['#suffix'] = ' ' . l(t('Download !filename', array('!filename' => webform_file_name($file->filepath))), webform_file_url($file->filepath)) . (isset($element['#suffix']) ? $element['#suffix'] : '');
-    $element[$firstchild]['#description'] = ' <div class="webform-newfile-message">'. t('Uploading a new file will replace the current file.') .'</div>'. $element[$firstchild]['#description'];
+    $element[$firstchild]['#description'] = '<div class="webform-newfile-message">'. t('Uploading a new file will replace the current file.') . '</div>' . (isset($element[$firstchild]['#description']) ? $element[$firstchild]['#description'] : '');
   }
 
   // Add the required asterisk.

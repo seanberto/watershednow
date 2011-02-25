@@ -1,5 +1,5 @@
 <?php
-// $Id: webform.pages.inc,v 1.10.2.5 2011/01/06 18:35:00 quicksketch Exp $
+// $Id: webform.pages.inc,v 1.10.2.6 2011/02/07 03:51:19 quicksketch Exp $
 
 /**
  * @file
@@ -172,9 +172,15 @@ function webform_configure_form(&$form_state, $node) {
   );
   $form['advanced']['allow_draft'] = array(
     '#type' => 'checkbox',
-    '#title' => t('Allow users to save a draft'),
+    '#title' => t('Show "Save draft" button'),
     '#default_value' => $node->webform['allow_draft'],
-    '#description' => t('Allow your users to save and finish the form later.'),
+    '#description' => t('Allow your users to save and finish the form later. This option is available only for authenticated users.'),
+  );
+  $form['advanced']['auto_save'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Automatically save as draft between pages'),
+    '#default_value' => $node->webform['auto_save'],
+    '#description' => t('Automatically save partial submissions when users click the "Next" or "Previous" buttons in a multipage form.'),
   );
   $form['advanced']['submit_notice'] = array(
     '#type' => 'checkbox',
@@ -262,6 +268,9 @@ function webform_configure_form_submit($form, &$form_state) {
 
   // Set the draft option.
   $node->webform['allow_draft'] = $form_state['values']['allow_draft'];
+
+  // Set the auto-save draft option.
+  $node->webform['auto_save'] = $form_state['values']['auto_save'];
 
   // Set the submit limit to -1 if set to unlimited.
   if ($form_state['values']['enforce_limit'] == 'no') {

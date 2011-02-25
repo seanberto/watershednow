@@ -7,9 +7,9 @@ core = 6.x
 dependencies[] = emfield
 dependencies[] = emvideo
 
-; Information added by drupal.org packaging script on 2010-11-12
-version = "6.x-1.2"
+; Information added by drupal.org packaging script on January 1, 1970 - 00:00
+version = "6.x-1.3"
 core = "6.x"
 project = "media_youtube"
-datestamp = "1289578575"
+datestamp = "1296846508"
 

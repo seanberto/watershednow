@@ -3,11 +3,11 @@ name = Webform
 description = Enables the creation of forms and questionnaires.
 core = 6.x
 package = Webform
-php = 5.0
+php = 5.1
 
-; Information added by drupal.org packaging script on 2011-01-12
-version = "6.x-3.6"
+; Information added by drupal.org packaging script on 2011-02-24
+version = "6.x-3.7"
 core = "6.x"
 project = "webform"
-datestamp = "1294819899"
+datestamp = "1298534080"
 

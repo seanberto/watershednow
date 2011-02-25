@@ -1,5 +1,5 @@
 <?php
-// $Id: media_youtube.module,v 1.1.2.23 2010/11/12 15:58:57 aaron Exp $
+// $Id: media_youtube.module,v 1.1.2.28 2011/02/04 18:48:05 aaron Exp $
 
 /**
  *  @file
@@ -60,6 +60,12 @@ function media_youtube_theme($existing, $type, $theme, $path) {
       'file' => 'media_youtube.theme.inc',
       'template' => 'media-youtube-flash',
     ),
+    'media_youtube_html5'  => array(
+      'arguments' => array('variables' => array()),
+      'path' => $path .'/themes',
+      'file' => 'media_youtube.theme.inc',
+      'template' => 'media-youtube-html5',
+    ),
     'media_youtube_default_external' => array(
       'arguments' => array('variables' => array()),
       'path' => $path .'/themes',
@@ -73,7 +79,9 @@ function media_youtube_theme($existing, $type, $theme, $path) {
  * Implementation of hook_flush_caches().
  */
 function media_youtube_flush_caches() {
-  return array('cache_media_youtube_status');
+  if (db_table_exists('cache_media_youtube_status')) {
+    return array('cache_media_youtube_status');
+  }
 }
 
 /**
@@ -122,9 +130,9 @@ function media_youtube_cron() {
         drupal_write_record('media_youtube_metadata', $media, 'value');
 
         // Now record each node that uses this video.
-        $data = db_query("SELECT value, nid, field_name, delta FROM {media_youtube_node_data} WHERE value = '%s'", $media['value']);
+        $data = db_query("SELECT value, vid, field_name, delta FROM {media_youtube_node_data} WHERE value = '%s'", $media['value']);
         while ($item = db_fetch_array($data)) {
-          $node = node_load($item['nid']);
+          $node = node_load(array('vid' => $item['vid']));
           $node->{$item['field_name']}[$item['delta']]['status'] = $media['status'];
           node_save($node);
         }
@@ -149,10 +157,10 @@ function media_youtube_emfield_field_extra($op, &$node, $field, &$items, $teaser
         }
 
         // Delete any existing associations for this field delta.
-        db_query("DELETE FROM {media_youtube_node_data} WHERE value = '%s' AND nid = %d AND field_name = '%s' AND delta = %d", $item['value'], $node->nid, $field['field_name'], $delta);
+        db_query("DELETE FROM {media_youtube_node_data} WHERE value = '%s' AND vid = %d AND field_name = '%s' AND delta = %d", $item['value'], $node->vid, $field['field_name'], $delta);
 
         // Associate this field delta to the specific metadata.
-        $item['nid'] = $node->nid;
+        $item['vid'] = $node->vid;
         $item['field_name'] = $field['field_name'];
         $item['delta'] = $delta;
         drupal_write_record('media_youtube_node_data', $item);
@@ -380,9 +388,13 @@ function media_youtube_check_status($video_id, $reset = FALSE) {
       $status[$video_id] = $cache->data;
     }
     else {
-      if (media_youtube_zend_path()) {
-        Zend_Loader::loadClass('Zend_Gdata_YouTube');
+      if ($path = media_youtube_zend_path()) {
+        Zend_Loader::loadClass('Zend_Gdata_YouTube', $path);
         Zend_Loader::loadClass('Zend_Gdata_App_HttpException', $path);
+        Zend_Loader::loadClass('Zend_Gdata_AuthSub', $path);
+        Zend_Loader::loadClass('Zend_Gdata_ClientLogin', $path);
+        Zend_Loader::loadClass('Zend_Uri_Http', $path);
+
         $yt = new Zend_Gdata_YouTube();
         try {
           $videoEntry = $yt->getVideoEntry($video_id);
@@ -500,4 +512,79 @@ function media_youtube_token_list($type = 'media_youtube_status') {
     $tokens['media_youtube_status']['message-raw']      = t("The YouTube video status message. Warning: raw data.");
     return $tokens;
   }
+}
+
+/**
+ * this is a wrapper for emvideo_request_xml that includes youtube's api key
+ */
+function media_youtube_request_metadata($video_id, $cached = TRUE) {
+  $args['dev_id'] = trim(media_youtube_variable_get('api_key'));
+  $args['method'] = $method;
+
+  $request = emfield_request_xml('youtube', MEDIA_YOUTUBE_REST_ENDPOINT .'/'. $video_id, array('video' => $video_id, 'v' => '2'), $cached);
+  return $request;
+}
+
+function media_youtube_emfield_data($video_id) {
+  $data = array();
+
+  // Create some 'field' version control.
+  $data['emvideo_youtube_version'] = $data['emvideo_data_version'] = MEDIA_YOUTUBE_DATA_VERSION;
+
+  // Store the raw data from YouTube's API.
+  $raw = media_youtube_request_metadata($video_id);
+  if (media_youtube_variable_get('store_raw_metadata')) {
+    $data['raw'] = $raw;
+  }
+
+  // Store the video's duration.
+  $data['duration'] = intval($raw['MEDIA:GROUP']['YT:DURATION'][1]['SECONDS']);
+
+  // Gather info about the item's raw flash video.
+  // RSS / MRSS feeds with the item would have enough info.
+  // Alternatively try getting the minimum from an HTTP get.
+  // Get info from a youtube playlist.
+  if (strpos($video_id, 'PLAYLIST_') === 0) {
+    $playlist_id = substr($video_id, 9);
+    $url = 'http://youtube.com/p/'. $playlist_id;
+    $data['playlist'] = 1;
+
+    // Get the large thumbnail of the first video.
+    // Use the Youtube Google API to get this data.
+    $api_url = 'http://gdata.youtube.com/feeds/api/playlists/' . $playlist_id;
+    $result = drupal_http_request($api_url);
+    if ($result->code == 200) {
+      $parser = drupal_xml_parser_create($result->data);
+      $vals = array();
+      $index = array();
+      xml_parse_into_struct($parser, $result->data, $vals, $index);
+      xml_parser_free($parser);
+      if (count($vals)) {
+        foreach ($vals as $val) {
+          if ($val['tag'] == 'MEDIA:THUMBNAIL' && $val['attributes']['HEIGHT'] >= 240) {
+            $data['thumbnail']['url'] = $val['attributes']['URL'];
+            break;
+          }
+        }
+      }
+    }
+  }
+  // Get info from a single video.
+  else {
+    $url = 'http://youtube.com/v/'. $video_id;
+    $data['playlist'] = 0;
+    // Get the large thumbnail.
+    $data['thumbnail']['url'] = 'http://img.youtube.com/vi/'. $video_id .'/0.jpg';
+  }
+
+  $response = emfield_request_header('youtube', $url);
+
+  if ($response->code == 200) {
+    // Don't give the 303 path.
+    $data['flash']['url'] = $url;
+    $data['flash']['size'] = $response->headers['Content-Length'];
+    $data['flash']['mime'] = $response->headers['Content-Type'];
+  }
+
+  return $data;
 }

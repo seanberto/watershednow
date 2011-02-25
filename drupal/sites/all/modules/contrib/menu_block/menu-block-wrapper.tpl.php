@@ -1,6 +1,4 @@
 <?php
-// $Id: menu-block-wrapper.tpl.php,v 1.8 2010/03/17 06:30:20 johnalbin Exp $
-
 /**
  * @file
  * Default theme implementation to wrap menu blocks.

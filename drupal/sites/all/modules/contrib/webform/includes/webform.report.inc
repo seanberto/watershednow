@@ -1,5 +1,5 @@
 <?php
-// $Id: webform.report.inc,v 1.16.2.10 2010/09/29 18:38:19 quicksketch Exp $
+// $Id: webform.report.inc,v 1.16.2.13 2011/02/23 02:25:20 quicksketch Exp $
 
 /**
  * @file
@@ -54,20 +54,14 @@ function webform_results_submissions($node, $user_filter, $pager_count) {
     }
     $row[] = l(t('View'), "node/$node->nid/submission/$sid");
     $operation_count = 1;
-    if (module_exists('print_pdf') && user_access('access PDF version')) {
-      $row[] = l(t('PDF'), "printpdf/$node->nid/submission/$sid", array('query' => drupal_get_destination()));
-      $operation_count++;
-    }
-    if (module_exists('print') && user_access('access print')) {
-      $row[] = l(t('Print'), "print/$node->nid/submission/$sid");
-      $operation_count++;
-    }
+    // No need to call this multiple times, just reference this in a variable.
+    $destination = drupal_get_destination();
     if (webform_submission_access($node, $submission, 'edit', $user)) {
-      $row[] = l(t('Edit'), "node/$node->nid/submission/$sid/edit", array('query' => drupal_get_destination()));
+      $row[] = l(t('Edit'), "node/$node->nid/submission/$sid/edit", array('query' => $destination));
       $operation_count++;
     }
     if (webform_submission_access($node, $submission, 'delete', $user)) {
-      $row[] = l(t('Delete'), "node/$node->nid/submission/$sid/delete", array('query' => drupal_get_destination()));
+      $row[] = l(t('Delete'), "node/$node->nid/submission/$sid/delete", array('query' => $destination));
       $operation_count++;
     }
     if ($operation_count < $operation_total) {
@@ -486,7 +480,7 @@ function theme_webform_results_download_select_format($element) {
  *   27 Feb 2005       ,1035,56 ,212   ,X         ,        ,        ,..,       ,X          ,X       ,X       ,..,X       ,How is this?
  *
  */
-function webform_results_download($node, $format = 'delimiter', $options = array()) {
+function webform_results_download($node, $format = 'delimited', $options = array()) {
   module_load_include('inc', 'webform', 'includes/webform.export');
   module_load_include('inc', 'webform', 'includes/webform.components');
 
@@ -504,6 +498,7 @@ function webform_results_download($node, $format = 'delimiter', $options = array
     $options = array(
       'delimiter' => variable_get('webform_csv_delimiter', '\t'),
       'components' => array_keys($submission_information) + array_keys(webform_component_list($node, 'csv', TRUE)),
+      'components' => array_merge(array_keys($submission_information), array_keys(webform_component_list($node, 'csv', TRUE))),
       'select_display' => 'value',
       'select_format' => 'separate',
     );
@@ -667,7 +662,7 @@ function theme_webform_results_analysis($node, $data, $sids = array(), $analysis
 
   $header = array(
     $single ? $analysis_component['name'] : t('Q'),
-    array('data' => $single ? '&nbsp' : t('responses'), 'colspan' => '10')
+    array('data' => $single ? '&nbsp;' : t('responses'), 'colspan' => '10')
   );
 
   foreach ($data as $cid => $row_data) {

@@ -1,6 +1,4 @@
 <?php
-// $Id: menu_block.install,v 1.18 2010/03/22 07:12:51 johnalbin Exp $
-
 /**
  * @file
  * Provides install, upgrade and un-install functions for menu_block.
@@ -44,11 +42,7 @@ function menu_block_install() {
 }
 
 /**
- * Implements hook_update_N().
- *
- * Pre-1.0 versions used a different naming convention for block names. Convert
- * the old names to the new format. An unfortunate side effect of this renaming
- * is that it disables all the previously enabled blocks.
+ * Convert pre-1.0 configurations to the new block naming convention.
  */
 function menu_block_update_5100() {
   $delta = 0;
@@ -74,11 +68,7 @@ function menu_block_update_5100() {
 }
 
 /**
- * Implements hook_update_N().
- *
- * Converts $menu_block_enabled_blocks to $menu_block_ids and
- * $menu_block_DELTA_mid to $menu_block_DELTA_menu_name. Also deletes un-enabled
- * menu blocks.
+ * Converts enabled blocks list to ID list and deletes un-enabled blocks.
  */
 function menu_block_update_5200() {
   $block_ids = array();
@@ -112,8 +102,6 @@ function menu_block_update_5200() {
 }
 
 /**
- * Implements hook_update_N().
- *
  * Converts the mids to menu names using the D5-stored menu_title variable.
  */
 function menu_block_update_6200() {
@@ -132,8 +120,6 @@ function menu_block_update_6200() {
 }
 
 /**
- * Implements hook_update_N().
- *
  * Converts the menu names to parent items.
  */
 function menu_block_update_6201() {

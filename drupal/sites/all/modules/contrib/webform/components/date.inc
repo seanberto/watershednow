@@ -1,5 +1,5 @@
 <?php
-// $Id: date.inc,v 1.29.2.17 2011/01/06 18:35:00 quicksketch Exp $
+// $Id: date.inc,v 1.29.2.18 2011/02/07 03:51:19 quicksketch Exp $
 
 /**
  * @file
@@ -153,6 +153,11 @@ function _webform_render_date($component, $value = NULL, $filter = TRUE) {
  */
 function webform_expand_date($element) {
   $component = $element['#webform_component'];
+
+  // Accept a string or array value for #default_value.
+  if (isset($element['#default_value']) && is_string($element['#default_value'])) {
+    $element['#default_value'] = webform_date_array($element['#default_value'], 'date');
+  }
 
   // Set defaults according to existing #default_value (set by Form API)
   if (isset($element['#default_value']['month']) || isset($element['#default_value']['day']) || isset($element['#default_value']['year'])) {
