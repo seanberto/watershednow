@@ -556,7 +556,7 @@ function watershed_newsletter_html_filter( $html ) {
  * Also, edits not saved with certain combinations of WYSIWYG editor.
  */
 function watershed_boxes_box($block) {
-  $output = '<div id="boxes-box-"' . $block['delta'] . ' class="boxes-box">';
+  $output = '<div id="boxes-box-' . $block['delta'] . '" class="boxes-box">';
   $output .= '<div class="boxes-box-content">' . $block['content'] . '</div>';
   $output .= '</div>';
   return $output;
