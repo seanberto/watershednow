@@ -544,6 +544,9 @@ function watershed_newsletter_html_filter( $html ) {
       }
       // get resulting html
       $html = $doc->saveHTML();
+      /* we need to strip tags again, because saveHTML() adds doctype and html tags to result */
+      $html = strip_tags($html,'<form><button><input><script><label>');
+
     } catch( Exception $e ) {}
     return $html;
 }
