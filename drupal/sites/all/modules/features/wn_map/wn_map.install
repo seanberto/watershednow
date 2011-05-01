@@ -80,7 +80,7 @@ function wn_map_enable() {
       // Now copy default images to files directory.
       $source = $source_dir . '/' . $filename;
       $destination = $dest_dir . '/' . $filename;
-      file_copy(&$source, $destination);
+      file_copy($source, $destination);
     }
     
   }

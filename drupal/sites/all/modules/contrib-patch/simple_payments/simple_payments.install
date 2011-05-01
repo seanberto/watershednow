@@ -101,6 +101,6 @@ function simple_payments_update_6102() {
     'scale' => 2,
   );
   
-  db_change_field(&$ret, 'simple_payment', 'amount', 'amount', $spec);
+  db_change_field($ret, 'simple_payment', 'amount', 'amount', $spec);
   db_query("UPDATE {simple_payment} SET amount = (amount / 100)");
 }
