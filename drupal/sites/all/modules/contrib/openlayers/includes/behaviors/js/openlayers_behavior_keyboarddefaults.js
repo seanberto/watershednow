@@ -1,4 +1,3 @@
-// $Id: openlayers_behavior_keyboarddefaults.js,v 1.1.2.3 2009/09/28 01:11:41 zzolo Exp $
 
 /**
  * @file

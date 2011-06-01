@@ -1,5 +1,10 @@
 <?php
-// $Id: webform_handler_field_node_link_results.inc,v 1.1.2.2 2010/09/11 02:18:53 quicksketch Exp $
+
+/**
+ * @file
+ * Views handler to display a results link for Webform submissions.
+ */
+
 /**
  * Field handler to present a link node edit.
  */

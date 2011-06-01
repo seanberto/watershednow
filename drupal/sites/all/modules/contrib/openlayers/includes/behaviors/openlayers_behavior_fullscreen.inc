@@ -1,5 +1,4 @@
 <?php
-// $Id: openlayers_behavior_fullscreen.inc,v 1.1.2.3 2010/09/01 20:07:55 tmcw Exp $
 
 /**
  * @file

@@ -1,5 +1,4 @@
 <?php
-// $Id$
 
 /**
  * @file
@@ -12,7 +11,7 @@ class WebformTestCase extends DrupalWebTestCase {
   public $webform_users;
 
   /**
-   * Implementation of setUp().
+   * Implements setUp().
    */
   function setUp() {
     // Enable Webform.
@@ -613,7 +612,7 @@ class WebformTestCase extends DrupalWebTestCase {
  */
 class WebformGeneralTestCase extends WebformTestCase {
   /**
-   * Implementation of getInfo().
+   * Implements getInfo().
    */
   public static function getInfo() {
     return array(

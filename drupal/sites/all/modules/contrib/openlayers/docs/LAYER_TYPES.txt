@@ -1,4 +1,3 @@
-$Id: LAYER_TYPES.txt,v 1.1.2.5 2010/06/14 16:12:40 tmcw Exp $
 
 Current for 6.x-2.x
 

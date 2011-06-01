@@ -1,5 +1,4 @@
 <?php
-// $Id: openlayers_ui.module,v 1.1.2.40 2010/09/05 14:35:10 zzolo Exp $
 
 /**
  * Implementation of hook_help
@@ -134,8 +133,7 @@ function openlayers_ui_menu() {
     'page arguments' => array('openlayers_ui_layers_form', 4),
     'access arguments' => array('administer openlayers'),
     'file' => 'includes/openlayers_ui.layers.inc',
-    'type' => MENU_LOCAL_TASK,
-    'tab_parent' => 'admin/build/openlayers/layers',
+    'type' => MENU_NORMAL_ITEM,
   );
   $items['admin/build/openlayers/layers/%openlayers_layer_export/delete'] = array(
     'title' => 'Delete layer',
@@ -323,6 +321,14 @@ function openlayers_ui_menu() {
     'access callback' => TRUE,
     'file' => 'includes/openlayers_ui.presets.inc',
     'type' => MENU_CALLBACK,
+  );
+  $items['openlayers/ahah/style_plugin/%'] = array(
+    'title' => 'OpenLayers Style Plugin AHAH',
+    'page callback' => 'openlayers_ui_style_plugin_ahah',
+    'page arguments' => array(3), // 3rd url item (the '%') is first arg
+    'access callback' => TRUE,
+    'file' => 'includes/openlayers_ui.styles.inc',
+    'type' => MENU_CALLBACK, 
   );
 
   return $items;

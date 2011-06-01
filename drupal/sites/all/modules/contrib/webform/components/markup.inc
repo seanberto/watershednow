@@ -1,5 +1,4 @@
 <?php
-// $Id: markup.inc,v 1.13.2.5 2010/10/18 07:20:54 quicksketch Exp $
 
 /**
  * @file
@@ -7,7 +6,7 @@
  */
 
 /**
- * Implementation of _webform_defaults_component().
+ * Implements _webform_defaults_component().
  */
 function _webform_defaults_markup() {
   return array(
@@ -23,7 +22,7 @@ function _webform_defaults_markup() {
 }
 
 /**
- * Implementation of _webform_edit_component().
+ * Implements _webform_edit_component().
  */
 function _webform_edit_markup($component) {
   $form = array();
@@ -40,13 +39,12 @@ function _webform_edit_markup($component) {
 
   $form['extra']['description'] = array(); // No description for markup.
   $form['display'] = array('#type' => 'markup'); // Hide the display options.
-  $form['display']['title_display'] = array();
 
   return $form;
 }
 
 /**
- * Implementation of _webform_render_component().
+ * Implements _webform_render_component().
  */
 function _webform_render_markup($component, $value = NULL, $filter = TRUE) {
   $element = array(
@@ -67,7 +65,7 @@ function _webform_render_markup($component, $value = NULL, $filter = TRUE) {
 }
 
 /**
- * Implementation of _webform_display_component().
+ * Implements _webform_display_component().
  */
 function _webform_display_markup($component, $value, $format = 'html') {
   return array();

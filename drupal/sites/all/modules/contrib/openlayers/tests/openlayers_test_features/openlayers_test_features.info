@@ -1,0 +1,20 @@
+core = "6.x"
+dependencies[] = "openlayers"
+description = "This module is to provide a feature for testing purposes."
+features[ctools][] = "openlayers:openlayers_layers:1"
+features[ctools][] = "openlayers:openlayers_presets:1"
+features[ctools][] = "openlayers:openlayers_styles:1"
+features[openlayers_layers][] = "openlayers_test_features_layer_google"
+features[openlayers_map_presets][] = "openlayers_test_features_map"
+features[openlayers_styles][] = "openlayers_test_features_style_example"
+name = "OpenLayers Test Features"
+package = "OpenLayers"
+project = "openlayers_test_features"
+project status url = "http://drupal.org/project/openlayers"
+
+; Information added by drupal.org packaging script on 2011-05-23
+version = "6.x-2.0-beta1"
+core = "6.x"
+project = "openlayers"
+datestamp = "1306124217"
+

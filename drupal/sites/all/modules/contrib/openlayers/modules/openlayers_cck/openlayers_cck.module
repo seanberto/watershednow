@@ -1,5 +1,4 @@
 <?php
-// $Id: openlayers_cck.module,v 1.54.2.36 2010/09/12 09:22:51 zzolo Exp $
 
 /**
  * @file
@@ -197,9 +196,16 @@ function openlayers_cck_field($op, &$node, $field, &$items, $teaser, $page) {
       // Check if field is valid WKT format
       foreach ($items as $delta => $value) {
         // @@TODO: validate WKT
+        // if the field is required, prevent the submission of empty geo 
+        // collections, which break maps
+        if ($field['required']) {
+          if ($value[$field['type']] == 'GEOMETRYCOLLECTION()') {
+            form_set_error($field['field_name'], t('@name is required.', 
+              array('@name' => $field['widget']['label'])));
+          }
+        }
       }
       break;
-
   }
 }
 

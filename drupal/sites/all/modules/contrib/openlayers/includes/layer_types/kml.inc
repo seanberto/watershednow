@@ -1,5 +1,4 @@
 <?php
-// $Id: kml.inc,v 1.1.2.9 2010/05/30 21:46:15 zzolo Exp $
 
 /**
  * @file

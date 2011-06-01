@@ -1,5 +1,4 @@
 <?php
-// $Id: webform.components.inc,v 1.25.2.31 2011/02/18 17:25:33 quicksketch Exp $
 
 /**
  * @file
@@ -131,7 +130,7 @@ function webform_components_form($form_state, $node) {
 
   $form['submit'] = array(
     '#type' => 'submit',
-    '#value' => t('Submit'),
+    '#value' => t('Save'),
     '#weight' => 45,
     '#access' => count($node->webform['components']) > 0,
   );
@@ -326,6 +325,11 @@ function webform_components_form_submit($form, &$form_state) {
     // been saved, it is necessary to explicitly clear the cache to make sure
     // the updated webform is visible to anonymous users.
     cache_clear_all();
+
+    // Clear the entity cache if Entity Cache module is installed.
+    if (module_exists('entitycache')) {
+      cache_clear_all($node->nid, 'cache_entity_node');
+    }
   }
 }
 
@@ -333,11 +337,10 @@ function webform_component_edit_form(&$form_state, $node, $component, $clone = F
   drupal_set_title(t('Edit component: @name', array('@name' => $component['name'])));
   drupal_add_css(drupal_get_path('module', 'webform') . '/css/webform-admin.css', 'theme', 'all', FALSE);
 
+  $form['#tree'] = TRUE;
+
   // Print the correct field type specification.
   // We always need: name and description.
-  $form = array(
-    '#tree' => TRUE,
-  );
   $form['type'] = array(
     '#type' => 'value',
     '#value' => $component['type'],
@@ -387,15 +390,32 @@ function webform_component_edit_form(&$form_state, $node, $component, $clone = F
     '#collapsed' => FALSE,
     '#weight' => 8,
   );
-  $form['display']['title_display'] = array(
-    '#type' => 'checkbox',
-    '#title' => t('Hide component title'),
-    '#default_value' => !empty($component['extra']['title_display']),
-    '#return_value' => 'none',
-    '#description' => t('Do not display the title or label of this field in the form.'),
-    '#weight' => 8,
-    '#parents' => array('extra', 'title_display'),
-  );
+  if (webform_component_feature($component['type'], 'title_display')) {
+    if (webform_component_feature($component['type'], 'title_inline')) {
+      $form['display']['title_display'] = array(
+        '#type' => 'select',
+        '#title' => t('Label display'),
+        '#default_value' => !empty($component['extra']['title_display']) ? $component['extra']['title_display'] : 'before',
+        '#options' => array(
+          'before' => t('Above'),
+          'inline' => t('Inline'),
+          'none' => t('None'),
+        ),
+        '#description' => t('Determines the placement of the component\'s label.'),
+      );
+    }
+    else {
+      $form['display']['title_display'] = array(
+        '#type' => 'checkbox',
+        '#title' => t('Hide label'),
+        '#default_value' => !empty($component['extra']['title_display']),
+        '#return_value' => 'none',
+        '#description' => t('Do not display the label of this component.'),
+      );
+    }
+    $form['display']['title_display']['#weight'] = 8;
+    $form['display']['title_display']['#parents'] = array('extra', 'title_display');
+  }
 
   // Validation settings.
   $form['validation'] = array(
@@ -546,7 +566,7 @@ function webform_component_edit_form(&$form_state, $node, $component, $clone = F
   // Add the submit button.
   $form['submit'] = array(
     '#type' => 'submit',
-    '#value' => t('Submit'),
+    '#value' => t('Save component'),
     '#weight' => 50,
   );
 
@@ -611,7 +631,12 @@ function webform_component_edit_form_submit($form, &$form_state) {
   // the updated webform is visible to anonymous users.
   cache_clear_all();
 
-  $form_state['redirect'] = array('node/' . $form_state['values']['nid'] . '/webform/components', isset($cid) ? 'cid=' . $cid : '');
+  // Clear the entity cache if Entity Cache module is installed.
+  if (module_exists('entitycache')) {
+    cache_clear_all($node->nid, 'cache_entity_node');
+  }
+
+  $form_state['redirect'] = array('node/' . $node->nid . '/webform/components', isset($cid) ? 'cid=' . $cid : '');
 }
 
 function webform_component_delete_form($form_state, $node, $component) {
@@ -650,7 +675,17 @@ function webform_component_delete_form_submit($form, &$form_state) {
   unset($node->webform['components'][$component['cid']]);
   webform_check_record($node);
 
-  $form_state['redirect'] = 'node/' . $form_state['values']['node']->nid . '/webform/components';
+  // Since Webform components have been updated but the node itself has not
+  // been saved, it is necessary to explicitly clear the cache to make sure
+  // the updated webform is visible to anonymous users.
+  cache_clear_all();
+
+  // Clear the entity cache if Entity Cache module is installed.
+  if (module_exists('entitycache')) {
+    cache_clear_all($node->nid, 'cache_entity_node');
+  }
+
+  $form_state['redirect'] = 'node/' . $node->nid . '/webform/components';
 }
 
 /**
@@ -666,12 +701,17 @@ function webform_component_insert(&$component) {
     $function($component);
   }
 
-  db_lock_table('webform_component');
-  $component['cid'] = isset($component['cid']) ? $component['cid'] : db_result(db_query('SELECT MAX(cid) FROM {webform_component} WHERE nid = %d', $component['nid'])) + 1;
-  $component['value'] = isset($component['value']) ? $component['value'] : NULL;
-  $component['mandatory'] = isset($component['mandatory']) ? $component['mandatory'] : 0;
-  db_query("INSERT INTO {webform_component} (nid, cid, pid, form_key, name, type, value, extra, mandatory, weight) VALUES (%d, %d, %d, '%s', '%s', '%s', '%s', '%s', %d, %d)", $component['nid'], $component['cid'], $component['pid'], $component['form_key'], $component['name'], $component['type'], $component['value'], serialize($component['extra']), $component['mandatory'], $component['weight']);
-  db_unlock_tables();
+  if (lock_acquire('webform_component_insert_' . $component['nid'], 5)) {
+    $component['cid'] = isset($component['cid']) ? $component['cid'] : db_result(db_query('SELECT MAX(cid) FROM {webform_component} WHERE nid = %d', $component['nid'])) + 1;
+    $component['value'] = isset($component['value']) ? $component['value'] : NULL;
+    $component['mandatory'] = isset($component['mandatory']) ? $component['mandatory'] : 0;
+    db_query("INSERT INTO {webform_component} (nid, cid, pid, form_key, name, type, value, extra, mandatory, weight) VALUES (%d, %d, %d, '%s', '%s', '%s', '%s', '%s', %d, %d)", $component['nid'], $component['cid'], $component['pid'], $component['form_key'], $component['name'], $component['type'], $component['value'], serialize($component['extra']), $component['mandatory'], $component['weight']);
+    lock_release('webform_component_insert_' . $component['nid']);
+  }
+  else {
+    watchdog('webform', 'A Webform component could not be saved because a timeout occurred while trying to acquire a lock for the node. Details: <pre>@component</pre>', array('@component' => print_r($component, TRUE)));
+    return FALSE;
+  }
 
   // Post-insert actions.
   module_invoke_all('webform_component_insert', $component);
@@ -758,6 +798,8 @@ function webform_component_clone(&$node, &$component) {
 
 /**
  * Check if a component has a particular feature.
+ *
+ * @see hook_webform_component_info()
  */
 function webform_component_feature($type, $feature) {
   $components = webform_components();
@@ -767,9 +809,12 @@ function webform_component_feature($type, $feature) {
     'email_address' => FALSE,
     'email_name' => FALSE,
     'required' => TRUE,
+    'title_display' => TRUE,
+    'title_inline' => TRUE,
     'conditional' => TRUE,
     'spam_analysis' => FALSE,
     'group' => FALSE,
+    'attachment' => FALSE,
   );
   return isset($components[$type]['features'][$feature]) ? $components[$type]['features'][$feature] : !empty($defaults[$feature]);
 }
@@ -814,20 +859,6 @@ function webform_component_list($node, $component_filter = NULL, $indent = TRUE,
         $options[$cid] = $prefix . $component['name'];
       }
     }
-  }
-
-  // Remove groups that do not have any children.
-  $cid = 0;
-  $previous_cid = 0;
-  foreach ($options as $cid => $label) {
-    if (isset($node->webform['components'][$previous_cid]['type']) && webform_component_feature($node->webform['components'][$previous_cid]['type'], 'group') && webform_component_feature($node->webform['components'][$cid]['type'], 'group')) {
-      unset($options[$cid]);
-    }
-  }
-
-  // Remove the last item from the list if it's a group.
-  if ($cid && webform_component_feature($node->webform['components'][$cid]['type'], 'group')) {
-    unset($options[$cid]);
   }
 
   // Convert page breaks into optgroups.

@@ -1,5 +1,4 @@
 <?php
-// $Id: emvideo_handler_argument_duration.inc,v 1.1.2.1 2009/09/30 15:56:48 aaron Exp $
 
 /**
  * @file

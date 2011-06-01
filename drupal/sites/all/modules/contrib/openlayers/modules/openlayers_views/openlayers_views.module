@@ -1,5 +1,4 @@
 <?php
-// $Id: openlayers_views.module,v 1.4.2.19 2010/08/16 13:25:20 tmcw Exp $
 
 /**
  * @file
@@ -90,10 +89,8 @@ function openlayers_views_openlayers_layers() {
         $layer = new stdClass();
         $layer->api_version = 1;
         $layer->name = $view->name . '_' . $display;
-        $layer->title = 
-          isset($view->display['default']->handler->options['title']) ?
-            $view->display['default']->handler->options['title'] : 
-            $view->name;
+        $layer->title = $view->get_title();
+        if ( empty($layer->title) ) $layer->title = $view->name;
         $layer->description = $view->description . ' - ' . $data->display_title;
         $layer->data = array(
           'layer_type' => 'openlayers_views_vector',

@@ -1,5 +1,4 @@
 <?php
-// $Id: emfield.rss.inc,v 1.1.2.4 2008/10/08 17:39:09 alexua Exp $
 
 /**
  * @file

@@ -1,5 +1,8 @@
-/* $Id: filefield_sources.js,v 1.5 2010/08/11 00:19:20 quicksketch Exp $ */
+(function ($) {
 
+/**
+ * Behavior to add source options to configured fields.
+ */
 Drupal.behaviors.fileFieldSources = function(context) {
   $('div.filefield-sources-list a', context).click(function() {
     $fileFieldElement = $(this).parents('div.form-item:first').find('div.filefield-element:first');
@@ -73,7 +76,7 @@ Drupal.fileFieldSources = {
         $(textfield).addClass('hint');
       }
 
-      $(textfield).click(hideHintText);
+      $(textfield).focus(hideHintText);
       $(textfield).blur(showHintText);
 
       function showHintText() {
@@ -99,3 +102,5 @@ Drupal.fileFieldSources = {
     $('div.filefield-element input.hint').val('').removeClass('hint');
   }
 };
+
+})(jQuery);

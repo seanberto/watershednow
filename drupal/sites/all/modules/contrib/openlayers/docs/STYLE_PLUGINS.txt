@@ -1,0 +1,180 @@
+
+Current for 6.x-2.x
+
+Style plugins are code snippets providing style context
+callbacks to OpenLayers styles.
+
+Such callbacks (written in JavaScript) are needed to provide
+styling which is dependent on characteristics which are not
+known at time of PHP rendering.
+
+A common example is changing pointRadius style property based
+on the number of features taking place in a cluster, whereas
+clustering is performed by JavaScript and so cluster composition
+changes w/out PHP being invoked.
+
+# Creating a new OpenLayers Style Plugin from Scratch
+
+First, you'll need to create a module. Of course, skip through this step if
+there's already a module that exists to which this style plugin will be added.
+But if not, create a file called `modulename.info` with the contents
+
+    core = "6.x"
+    dependencies[] = "openlayers"
+    name = "modulename"
+    package = "OpenLayers"
+    project = "modulename"
+
+Then you'll want to register your style plugins.
+
+## Registering plugins directory
+
+This is done implementing `hook_ctools_plugin_directory'
+and `hook_ctools_plugin_api'.
+
+Since your module is called `modulename', their implementation would be:
+
+  function modulename_ctools_plugin_api($module, $api) {
+    // Define plugins for OpenLayers plugins api
+    if ($module == "openlayers") {
+      switch ($api) {
+        case 'openlayers_styles':
+          return array('version' => 1);
+      }
+    }
+  }
+
+  function modulename_ctools_plugin_directory($module, $plugin) {
+    if ($module == 'openlayers' && $plugin == 'style_plugin') {
+      return 'plugins/style_plugin';
+    }
+  }
+
+At that point you can put actual plugins, one file per plugin,
+in the `plugins/style_plugin' directory, or whatever you returned
+from the `hook_ctools_plugin_directory' implementation. 
+
+## Writing the minimal PHP side of plugin
+
+A plugin file starts with a plugin definition, like the
+following:
+
+  // Define plugin for CTools
+  $plugin = array(
+    'title' => t('My style plugin title'),
+    'description' => t('What this plugin does'),
+    'style_plugin' => array(
+      'class' => 'modulename_pluginname', // <-- NOTE!
+      'parent' => 'openlayers_style_plugin',
+    ),
+  );
+
+The above definition says that the plugin is implemented by
+the `modulename_pluginname' class (see NOTE above), which is
+a subclass of `openlayers_style_plugin`. We implement that next:
+
+
+  class modulename_pluginname extends openlayers_style_plugin {
+
+    // Advertise which style properties we expose support for,
+    // and which callback to use for each one
+    function get_context_properties() {
+      return array(
+        'label' => 'getLabel' // <-- NOTE !
+      );
+    }
+
+    // Send the JS file containing the JavaScript side
+    // implementation of the plugin.
+    function render() {
+      drupal_add_js(drupal_get_path('module', 'modulename') .
+        '/plugins/style_plugin/modulename_pluginname.js');
+    }
+
+  }
+
+The above definition provides NO parameters to the actual context
+callback function. We'll see how to add configurability later.
+For now let's move on to the JavaScript side.
+
+## Writing the JavaScript side of plugin
+
+The OpenLayers module renderer will expect to find a
+Drupal.openlayers.style_plugins.<modulename_pluginname>
+Javascript class, as specified by the 'class' attribute of
+the 'style_plugin' array in the PHP plugin definition.
+
+The JavaScript side of style plugin will be put in the file
+referenced by the render() function of the PHP part, and will need
+to provide this class. As with the following example:
+
+ // Define the class constructor
+ Drupal.openlayers.style_plugin.modulename_pluginname = function (params) {
+   this.params = params;
+ };
+
+Note that the constructor can take parameters, which the PHP side
+of the style plugin can export to let user configure the style plugin.
+We'll see this later.
+
+In addition to the constructor, the Drupal OpenLayers module (`DOL',
+from now on) will also expect to find the callbacks advertised
+by the `get_context_properties` function of the PHP side of the style
+plugin. We'll need to provide those as well. They can be defined
+in the class prototype:
+
+  // Style plugin class prototype
+ Drupal.openlayers.style_plugin.modulename_pluginname.prototype = {
+
+   // Style context function
+   'getLabel' = function(feature) {
+      return feature.attributes.length;
+   }
+
+ }
+
+## Providing configurability of style plugin
+
+The PHP side of code can provide a configuration form for the plugin.
+As you saw above, the JavaScript class constructor will be passed
+configuration parameters. These parameters you can define from
+the PHP side, defining an options_form() and optionally an
+options_init() method. Example:
+
+  function options_init() {
+    return array(
+      'feature_weight' => 2,
+      'point_radius_min' => 6,
+      'point_radius_max' => 12,
+    );
+  }
+
+  function options_form($defaults = array()) {
+    $form = array();
+
+    $form['point_radius_min'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Min radius'),
+      '#description' => t('Minimum value for the point radius.'),
+      '#default_value' => isset($defaults['point_radius_min']) ?
+        $defaults['point_radius_min'] : 6,
+    );
+    $form['point_radius_max'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Max radius'),
+      '#description' => t('Maximum value for the point radius.'),
+      '#default_value' => isset($defaults['point_radius_max']) ?
+        $defaults['point_radius_max'] : 12,
+    );
+    $form['feature_weight'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Feature weight'),
+      '#description' => t('Weight of each additional feature for the final point
+ radius.'),
+      '#default_value' => isset($defaults['feature_weight']) ?
+        $defaults['feature_weight'] : 2,
+    );
+
+    return $form;
+  }
+

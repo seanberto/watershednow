@@ -1,4 +1,3 @@
-; $Id: emfield.info,v 1.1.6.5.2.4 2010/05/13 12:19:22 aaron Exp $
 
 name = Embedded Media Field
 description = Provides an engine for modules to integrate various 3rd party media content providers.
@@ -7,9 +6,9 @@ dependencies[] = content
 package = Media
 php = 5.2
 
-; Information added by drupal.org packaging script on 2010-12-08
-version = "6.x-2.4"
+; Information added by drupal.org packaging script on 2011-05-06
+version = "6.x-2.5"
 core = "6.x"
 project = "emfield"
-datestamp = "1291844140"
+datestamp = "1304705515"
 

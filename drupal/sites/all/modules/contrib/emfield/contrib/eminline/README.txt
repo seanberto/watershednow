@@ -1,4 +1,3 @@
-// $Id: README.txt,v 1.1.4.3 2009/09/24 13:41:05 aaron Exp $
 
 README for Embedded Inline Media
 

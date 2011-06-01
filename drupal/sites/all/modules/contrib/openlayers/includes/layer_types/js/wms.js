@@ -1,4 +1,3 @@
-// $Id: wms.js,v 1.1.2.2 2010/06/09 12:57:17 tmcw Exp $
 
 /**
  * @file
@@ -8,7 +7,7 @@
 /**
  * Openlayer layer handler for WMS layer
  */
-Drupal.openlayers.layer.wms = function (title, map, options) {
+Drupal.openlayers.layer.wms = function(title, map, options) {
   var styleMap = Drupal.openlayers.getStyleMap(map, options.drupalID);
 
   /* TODO: have PHP take care of the casts here, not JS! */
@@ -20,7 +19,7 @@ Drupal.openlayers.layer.wms = function (title, map, options) {
   }
 
   options.params.drupalID = options.drupalID;
-  var layer = new OpenLayers.Layer.WMS(title, 
+  var layer = new OpenLayers.Layer.WMS(title,
     options.base_url, options.options, options.params);
   layer.styleMap = styleMap;
   return layer;

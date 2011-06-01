@@ -1,5 +1,4 @@
 <?php
-// $Id: openlayers_cck_vector_layer.inc,v 1.1.2.3 2010/05/18 19:25:57 tmcw Exp $
 
 /**
  * @file

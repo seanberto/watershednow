@@ -1,5 +1,4 @@
 <?php
-// $Id: webform.options.inc,v 1.1.2.2 2010/03/29 03:19:49 quicksketch Exp $
 
 /**
  * @file
@@ -9,7 +8,7 @@
 /**
  * Private implementation of hook_webform_select_options_info().
  *
- * @see webform_webform_select_options_info().
+ * @see webform_webform_select_options_info()
  */
 function _webform_options_info() {
   $items = array();

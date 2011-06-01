@@ -1,4 +1,3 @@
-/* $Id: webform.css,v 1.1.2.3 2010/10/17 18:53:09 quicksketch Exp $ */
 
 /**
  * Front-end styling for the display of webforms.
@@ -8,7 +7,14 @@ input.webform-calendar {
   padding: 3px;
   vertical-align: top;
 }
+.webform-container-inline label {
+  display: inline;
+  margin-right: 1em;
+}
 .webform-container-inline div,
 .webform-container-inline div.form-item {
   display: inline;
+}
+.webform-container-inline div.description {
+  display: block;
 }

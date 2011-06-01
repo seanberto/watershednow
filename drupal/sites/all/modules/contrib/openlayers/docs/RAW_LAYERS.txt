@@ -1,4 +1,3 @@
-$Id: RAW_LAYERS.txt,v 1.1.2.2 2010/06/01 02:53:40 tmcw Exp $
 
 Raw layers are an addition to OpenLayers post-alpha7 which allow users to 
 manually add points to a layer type. In comparison to the layer_type 

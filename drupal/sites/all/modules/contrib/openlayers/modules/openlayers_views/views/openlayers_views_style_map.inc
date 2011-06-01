@@ -1,5 +1,4 @@
 <?php
-// $Id: openlayers_views_style_map.inc,v 1.20.2.9 2010/05/14 17:02:24 rsoden Exp $
 
 /**
  * @file

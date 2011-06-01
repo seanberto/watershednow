@@ -1,5 +1,4 @@
 <?php
-// $Id: raw.inc,v 1.1.2.3 2010/08/16 21:25:09 tmcw Exp $
 
 /**
  * @file

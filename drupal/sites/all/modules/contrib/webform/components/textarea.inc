@@ -1,5 +1,4 @@
 <?php
-// $Id: textarea.inc,v 1.20.2.8 2010/10/18 07:20:54 quicksketch Exp $
 
 /**
  * @file
@@ -7,7 +6,7 @@
  */
 
 /**
- * Implementation of _webform_defaults_component().
+ * Implements _webform_defaults_component().
  */
 function _webform_defaults_textarea() {
   return array(
@@ -31,7 +30,7 @@ function _webform_defaults_textarea() {
 
 
 /**
- * Implementation of _webform_theme_component().
+ * Implements _webform_theme_component().
  */
 function _webform_theme_textarea() {
   return array(
@@ -42,7 +41,7 @@ function _webform_theme_textarea() {
 }
 
 /**
- * Implementation of _webform_edit_component().
+ * Implements _webform_edit_component().
  */
 function _webform_edit_textarea($component) {
   $form = array();
@@ -94,7 +93,7 @@ function _webform_edit_textarea($component) {
 }
 
 /**
- * Implementation of _webform_render_component().
+ * Implements _webform_render_component().
  */
 function _webform_render_textarea($component, $value = NULL, $filter = TRUE) {
   $element = array(
@@ -127,7 +126,7 @@ function _webform_render_textarea($component, $value = NULL, $filter = TRUE) {
 }
 
 /**
- * Implementation of _webform_display_component().
+ * Implements _webform_display_component().
  */
 function _webform_display_textarea($component, $value, $format = 'html') {
   return array(
@@ -147,14 +146,14 @@ function _webform_display_textarea($component, $value, $format = 'html') {
  */
 function theme_webform_display_textarea($element) {
   $output = $element['#format'] == 'html' ? str_replace("\n", '<br />', check_plain($element['#value'])) : $element['#value'];
-  if (strlen($output) > 80) {
+  if (drupal_strlen($output) > 80) {
     $output = ($element['#format'] == 'html') ? '<div class="webform-long-answer">' . $output . '</div>' : $output;
   }
   return $output !== '' ? $output : ' ';
 }
 
 /**
- * Implementation of _webform_analysis_component().
+ * Implements _webform_analysis_component().
  */
 function _webform_analysis_textarea($component, $sids = array()) {
   $placeholders = count($sids) ? array_fill(0, count($sids), "'%s'") : array();
@@ -183,14 +182,14 @@ function _webform_analysis_textarea($component, $sids = array()) {
 }
 
 /**
- * Implementation of _webform_table_component().
+ * Implements _webform_table_component().
  */
 function _webform_table_textarea($component, $value) {
   return empty($value[0]) ? '' : check_plain($value[0]);
 }
 
 /**
- * Implementation of _webform_csv_headers_component().
+ * Implements _webform_csv_headers_component().
  */
 function _webform_csv_headers_textarea($component, $export_options) {
   $header = array();
@@ -201,7 +200,7 @@ function _webform_csv_headers_textarea($component, $export_options) {
 }
 
 /**
- * Implementation of _webform_csv_data_component().
+ * Implements _webform_csv_data_component().
  */
 function _webform_csv_data_textarea($component, $export_options, $value) {
   return empty($value[0]) ? '' : $value[0];

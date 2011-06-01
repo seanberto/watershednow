@@ -1,5 +1,4 @@
 <?php
-// $Id: webform_hooks.php,v 1.9.2.11 2011/02/19 00:24:08 quicksketch Exp $
 
 /**
  * @file
@@ -135,6 +134,8 @@ function hook_webform_submission_actions($node, $submission) {
       'query' => drupal_get_destination(),
     );
   }
+
+  return $actions;
 }
 
 /**
@@ -265,7 +266,7 @@ function hook_webform_component_delete($component) {
  * See the sample component implementation for details on each one of these
  * callbacks.
  *
- * @see webform_component
+ * @see webform_components()
  */
 function hook_webform_component_info() {
   $components = array();
@@ -276,23 +277,39 @@ function hook_webform_component_info() {
     'features' => array(
       // Add content to CSV downloads. Defaults to TRUE.
       'csv' => TRUE,
+
       // Show this field in e-mailed submissions. Defaults to TRUE.
       'email' => TRUE,
+
       // Allow this field to be used as an e-mail FROM or TO address. Defaults
       // to FALSE.
       'email_address' => FALSE,
+
       // Allow this field to be used as an e-mail SUBJECT or FROM name. Defaults
       // to FALSE.
       'email_name' => TRUE,
+
       // This field may be toggled as required or not. Defaults to TRUE.
       'required' => TRUE,
+
+      // This field has a title that can be toggled as displayed or not.
+      'title_display' => TRUE,
+
+      // This field has a title that can be displayed inline.
+      'title_inline' => TRUE,
+
       // If this field can be used as a conditional SOURCE. All fields may
       // always be displayed conditionally, regardless of this setting.
       // Defaults to TRUE.
       'conditional' => TRUE,
-      // If this field allows other fields to be grouped within it (like a 
+
+      // If this field allows other fields to be grouped within it (like a
       // fieldset or tabs). Defaults to FALSE.
       'group' => FALSE,
+
+      // If this field can be used for SPAM analysis, usually with Mollom.
+      'spam_analysis' => FALSE,
+
       // If this field saves a file that can be used as an e-mail attachment.
       // Defaults to FALSE.
       'attachment' => FALSE,
@@ -409,7 +426,7 @@ function _webform_render_component($component, $value = NULL) {
     '#weight' => $component['weight'],
     '#description'   => _webform_filter_descriptions($component['extra']['description']),
     '#default_value' => $component['value'],
-    '#prefix' => '<div class="webform-component-'. $component['type'] .'" id="webform-component-'. $component['form_key'] .'">',
+    '#prefix' => '<div class="webform-component-' . $component['type'] . '" id="webform-component-' . $component['form_key'] . '">',
     '#suffix' => '</div>',
   );
 
@@ -422,7 +439,7 @@ function _webform_render_component($component, $value = NULL) {
 
 /**
  * Display the result of a submission for a component.
- * 
+ *
  * The output of this function will be displayed under the "Results" tab then
  * "Submissions". This should output the saved data in some reasonable manner.
  *
@@ -540,7 +557,7 @@ function _webform_theme_component() {
 
 /**
  * Calculate and returns statistics about results for this component.
- * 
+ *
  * This takes into account all submissions to this webform. The output of this
  * function will be displayed under the "Results" tab then "Analysis".
  *
@@ -620,7 +637,7 @@ function _webform_table_component($component, $value) {
   if (is_array($value)) {
     foreach ($value as $item => $value) {
       if ($value !== '') {
-        $output .= $questions[$item] .': '. check_plain($value) .'<br />';
+        $output .= $questions[$item] . ': ' . check_plain($value) . '<br />';
       }
     }
   }

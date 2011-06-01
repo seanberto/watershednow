@@ -1,4 +1,3 @@
-// $Id: webform.js,v 1.1.2.6 2011/02/20 01:59:37 quicksketch Exp $
 
 /**
  * JavaScript behaviors for the front-end display of webforms.

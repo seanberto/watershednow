@@ -1,5 +1,4 @@
 <?php
-// $Id: emfield.audit.inc,v 1.1.2.4 2010/10/22 18:43:23 aaron Exp $
 
 /**
  * @file emfield/includes/emfield.audit.inc
@@ -34,7 +33,7 @@ function _emfield_audit() {
     $table = $db_info['table'];
     $provider_column = $db_info['columns']['provider']['column'];
     $module = $field['module'];
-    $sql = "SELECT $provider_column FROM {{$table}} GROUP BY $provider_column";
+    $sql = "SELECT $provider_column FROM {{$table}} WHERE $provider_column IS NOT NULL GROUP BY $provider_column";
     $results = db_query($sql);
     while ($result = db_fetch_object($results)) {
       $provider = emfield_system_list($module, $result->$provider_column);

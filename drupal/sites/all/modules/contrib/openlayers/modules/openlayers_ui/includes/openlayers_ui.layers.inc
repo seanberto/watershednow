@@ -1,5 +1,4 @@
 <?php
-// $Id: openlayers_ui.layers.inc,v 1.1.2.6 2010/03/22 23:55:10 zzolo Exp $
 
 /**
  * @file

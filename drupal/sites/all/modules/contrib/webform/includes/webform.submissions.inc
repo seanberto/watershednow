@@ -1,5 +1,4 @@
 <?php
-// $Id: webform.submissions.inc,v 1.18.2.20 2011/02/23 02:11:01 quicksketch Exp $
 
 /**
  * @file
@@ -171,7 +170,7 @@ function webform_submission_send_mail($node, $submission, $emails = NULL) {
   $send_count = 0;
   foreach ($emails as $eid => $email) {
     // Set the HTML property based on availablity of MIME Mail.
-    $email['html'] = ($email['html'] && module_exists('mimemail'));
+    $email['html'] = ($email['html'] && webform_email_html_capable());
 
     // Pass through the theme layer if using the default template.
     if ($email['template'] == 'default') {
@@ -253,7 +252,7 @@ function webform_submission_send_mail($node, $submission, $emails = NULL) {
         'submission' => $submission,
       );
 
-      if (module_exists('mimemail')) {
+      if (webform_email_html_capable()) {
         // Load attachments for the e-mail.
         $attachments = array();
         if ($email['attachments']) {
@@ -262,19 +261,20 @@ function webform_submission_send_mail($node, $submission, $emails = NULL) {
             if (webform_component_feature($component['type'], 'attachment') && !empty($submission->data[$component['cid']]['value'][0])) {
               $file = webform_get_file($submission->data[$component['cid']]['value'][0]);
               if ($file) {
-                $file->list = 1; // Needed to include in attachments.
                 $attachments[] = $file;
               }
             }
           }
         }
+        $message['attachments'] = $attachments;
 
         // Prepare (but don't send) the e-mail normally.
         $message = drupal_mail('webform', 'submission', $address, $language, $mail_params, $email['from'], FALSE);
 
         // Send the e-mail via MIME mail.
-        $message = mimemail($email['from'], $address, $message['subject'], $message['body'], !$email['html'], $email['headers'], $email['html'] ? NULL : $message['body'], $attachments, 'webform');
-        if ($message) {
+        $message = mimemail($message['from'], $message['to'], $message['subject'], $message['body'], !$email['html'], $message['headers'], $email['html'] ? NULL : $message['body'], $message['attachments'], 'webform');
+        // Support boolean (older) or array-based return values from MIME Mail.
+        if ((is_array($message) && $message['result']) || (!is_array($message) && $message)) {
           $send_count++;
         }
       }
@@ -303,6 +303,9 @@ function webform_submission_send_mail($node, $submission, $emails = NULL) {
  */
 function webform_submission_delete_form($form_state, $node, $submission) {
   webform_set_breadcrumb($node, $submission);
+
+  // Set the correct page title.
+  drupal_set_title(webform_submission_title($node, $submission));
 
   // Keep the NID and SID in the same location as the webform_client_form().
   // This helps mollom identify the same fields when deleting a submission.
@@ -358,6 +361,9 @@ function webform_submission_page($node, $submission, $format) {
 
   // Render the admin UI breadcrumb.
   webform_set_breadcrumb($node, $submission);
+
+  // Set the correct page title.
+  drupal_set_title(webform_submission_title($node, $submission));
 
   if ($format == 'form') {
     $output = drupal_get_form('webform_client_form_' . $node->nid, $node, $submission);
@@ -431,7 +437,7 @@ function webform_submission_resend($form_state, $node, $submission) {
     $form['actions'] = array('#type' => 'markup');
     $form['actions']['resend'] = array(
       '#type' => 'submit',
-      '#value' => 'Resend e-mails',
+      '#value' => t('Resend e-mails'),
     );
     $form['actions']['cancel'] = array(
       '#type' => 'markup',
@@ -485,7 +491,7 @@ function webform_submission_resend_submit($form, &$form_state) {
  *   Formatted HTML form, ready for display.
  */
 function theme_webform_submission_resend($form) {
-  $header = array('',t('E-mail to'), t('Subject'));
+  $header = array('', t('E-mail to'), t('Subject'));
   $rows = array();
   if (!empty($form['emails'])) {
     foreach (element_children($form['emails']) as $eid) {
@@ -525,11 +531,17 @@ function webform_submission_render($node, $submission, $email, $format) {
   // Set the theme function for submissions.
   $renderable['#theme'] = array('webform_submission_' . $node->nid, 'webform_submission');
 
-  _webform_components_tree_build($node->webform['components'], $component_tree, 0, $page_count);
+  // Remove excluded components.
+  $components = $node->webform['components'];
+  foreach ($excluded_components as $cid) {
+    unset($components[$cid]);
+  }
+
+  _webform_components_tree_build($components, $component_tree, 0, $page_count);
 
   // Recursively add components to the form.
   foreach ($component_tree['children'] as $cid => $component) {
-    if (!in_array($cid, $excluded_components) && _webform_client_form_rule_check($node, $component, $component['page_num'], NULL, $submission)) {
+    if (_webform_client_form_rule_check($node, $component, $component['page_num'], NULL, $submission)) {
       _webform_client_form_add_component($node, $component, NULL, $renderable, $renderable, NULL, $submission, $format);
     }
   }

@@ -1,5 +1,4 @@
 <?php
-// $Id: googleanalytics.admin.inc,v 1.13.2.16 2011/01/16 18:22:18 hass Exp $
 
 /**
  * @file
@@ -26,42 +25,32 @@ function googleanalytics_admin_settings_form(&$form_state) {
     '#description' => t('This ID is unique to each site you want to track separately, and is in the form of UA-xxxxxxx-yy. To get a Web Property ID, <a href="@analytics">register your site with Google Analytics</a>, or if you already have registered your site, go to your Google Analytics Settings page to see the ID next to every site profile. <a href="@webpropertyid">Find more information in the documentation</a>.', array('@analytics' => 'http://www.google.com/analytics/', '@webpropertyid' => 'http://code.google.com/apis/analytics/docs/concepts/gaConceptsAccounts.html#webProperty')),
   );
 
-  // Standard tracking configurations.
-  $form['user_vis_settings'] = array(
+  $form['domain_tracking'] = array(
     '#type' => 'fieldset',
-    '#title' => t('User specific tracking settings'),
-    '#collapsible' => TRUE,
-  );
-  $form['user_vis_settings']['googleanalytics_custom'] = array(
-    '#type' => 'radios',
-    '#title' => t('Custom tracking settings'),
-    '#options' => array(
-      t('Users cannot control whether they are tracked or not.'),
-      t('Track users by default, but let individual users to opt out.'),
-      t('Do not track users by default, but let individual users to opt in.')
-    ),
-    '#description' => t('Allow individual users to customize the visibility of tracking in their account settings. Only users with %permission permission are allowed to set their own preference.', array('%permission' => t('opt-in or out of tracking'))),
-    '#default_value' => variable_get('googleanalytics_custom', 0),
+    '#title' => t('Domains'),
+  	'#collapsible' => TRUE,
   );
 
-  // Render the role overview.
-  $form['role_vis_settings'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Role specific tracking settings'),
-    '#collapsible' => TRUE,
-  );
-
-  $roles = user_roles();
-  $role_options = array();
-  foreach ($roles as $rid => $name) {
-    $role_options[$rid] = $name;
+  global $cookie_domain;
+  $multiple_sub_domains = array();
+  foreach (array('www', 'app', 'shop') as $subdomain) {
+    if (count(explode('.', $cookie_domain)) > 2 && !is_numeric(str_replace('.', '', $cookie_domain))) {
+      $multiple_sub_domains[] = $subdomain . $cookie_domain;
+    }
+    // IP addresses or localhost.
+    else {
+      $multiple_sub_domains[] = $subdomain . '.example.com';
+    }
   }
-  $form['role_vis_settings']['googleanalytics_roles'] = array(
-    '#type' => 'checkboxes',
-    '#title' => t('Add tracking for specific roles'),
-    '#default_value' => variable_get('googleanalytics_roles', array()),
-    '#options' => $role_options,
-    '#description' => t('Add tracking only for the selected role(s). If none of the roles are selected, all users will be tracked. If a user has any of the roles checked, that user will be tracked.'),
+
+  $form['domain_tracking']['googleanalytics_domain_mode'] = array(
+    '#type' => 'radios',
+    '#title' => t('What are you tracking?'),
+    '#options' => array(
+      0 => t('A single domain (default)') . '<div class="description">' . t('Domain: @domain', array('@domain' => $_SERVER['HTTP_HOST'])) . '</div>',
+      1 => t('One domain with multiple subdomains') . '<div class="description">' . t('Examples: @domains', array('@domains' => implode(', ', $multiple_sub_domains))) . '</div>',
+    ),
+    '#default_value' => variable_get('googleanalytics_domain_mode', 0),
   );
 
   // Page specific visibility configurations.
@@ -74,7 +63,7 @@ function googleanalytics_admin_settings_form(&$form_state) {
 
   $access = user_access('use PHP for tracking visibility');
   $visibility = variable_get('googleanalytics_visibility', 0);
-  $pages = variable_get('googleanalytics_pages', '');
+  $pages = variable_get('googleanalytics_pages', GOOGLEANALYTICS_PAGES);
 
   if ($visibility == 2 && !$access) {
     $form['page_vis_settings'] = array();
@@ -101,8 +90,57 @@ function googleanalytics_admin_settings_form(&$form_state) {
       '#default_value' => $pages,
       '#description' => $description,
       '#wysiwyg' => FALSE,
+      '#rows' => 10,
     );
   }
+
+  // Render the role overview.
+  $form['role_vis_settings'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Role specific tracking settings'),
+    '#collapsible' => TRUE,
+  );
+
+  $form['role_vis_settings']['googleanalytics_visibility_roles'] = array(
+    '#type' => 'radios',
+    '#title' => t('Add tracking for specific roles'),
+    '#options' => array(
+      t('Add to the selected roles only'),
+      t('Add to every role except the selected ones'),
+    ),
+    '#default_value' => variable_get('googleanalytics_visibility_roles', 0),
+  );
+
+  $roles = user_roles();
+  $role_options = array();
+  foreach ($roles as $rid => $name) {
+    $role_options[$rid] = $name;
+  }
+  $form['role_vis_settings']['googleanalytics_roles'] = array(
+    '#type' => 'checkboxes',
+    '#title' => t('Roles'),
+    '#default_value' => variable_get('googleanalytics_roles', array()),
+    '#options' => $role_options,
+    '#description' => t('If none of the roles are selected, all users will be tracked. If a user has any of the roles checked, that user will be tracked (or excluded, depending on the setting above).'),
+  );
+
+  // Standard tracking configurations.
+  $form['user_vis_settings'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('User specific tracking settings'),
+    '#collapsible' => TRUE,
+  );
+  $form['user_vis_settings']['googleanalytics_custom'] = array(
+    '#type' => 'radios',
+    '#title' => t('Custom tracking settings'),
+    '#options' => array(
+      t('Users cannot control whether they are tracked or not.'),
+      t('Track users by default, but let individual users to opt out.'),
+      t('Do not track users by default, but let individual users to opt in.')
+    ),
+    '#description' => t('Allow individual users to customize the visibility of tracking in their account settings. Only users with %permission permission are allowed to set their own preference.', array('%permission' => t('opt-in or out of tracking'))),
+    '#default_value' => variable_get('googleanalytics_custom', 0),
+  );
 
   // Link specific configurations.
   $form['linktracking'] = array(
@@ -113,7 +151,7 @@ function googleanalytics_admin_settings_form(&$form_state) {
   );
   $form['linktracking']['googleanalytics_trackoutgoing'] = array(
     '#type' => 'checkbox',
-    '#title' => t('Track outgoing links'),
+    '#title' => t('Track outbound links'),
     '#default_value' => variable_get('googleanalytics_trackoutgoing', 1),
     '#description' => t('Enables tracking of clicks on outgoing links.')
   );
@@ -132,9 +170,35 @@ function googleanalytics_admin_settings_form(&$form_state) {
   $form['linktracking']['googleanalytics_trackfiles_extensions'] = array(
     '#type' => 'textfield',
     '#title' => t('File extensions to track'),
-    '#default_value' => variable_get('googleanalytics_trackfiles_extensions', GA_TRACKFILES_EXTENSIONS),
-    '#description' => t('A pipe separated list of file extensions that should be tracked when clicked with regular expression support. Example: !extensions', array('!extensions' => GA_TRACKFILES_EXTENSIONS)),
+    '#default_value' => variable_get('googleanalytics_trackfiles_extensions', GOOGLEANALYTICS_TRACKFILES_EXTENSIONS),
+    '#description' => t('A pipe separated list of file extensions that should be tracked when clicked with regular expression support. Example: !extensions', array('!extensions' => GOOGLEANALYTICS_TRACKFILES_EXTENSIONS)),
     '#maxlength' => 255,
+  );
+  $form['linktracking']['googleanalytics_trackoutboundaspageview'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Track clicks on outbound links as page views'),
+    '#default_value' => variable_get('googleanalytics_trackoutboundaspageview', 0),
+    '#description' => t('By default outbound links are tracked as <em>Events</em>. In rare situations like tracking of <em>Goals</em> it may be required to track outbound clicks as page views.'),
+  );
+
+  // Privacy specific configurations.
+  $form['tracking']['privacy'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Privacy'),
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
+  );
+  $form['tracking']['privacy']['googleanalytics_tracker_anonymizeip'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Anonymize visitors IP address'),
+    '#description' => t('Tell Google Analytics to anonymize the information sent by the tracker objects by removing the last octet of the IP address prior to its storage. Note that this will slightly reduce the accuracy of geographic reporting. In some countries it is not allowed to collect personally identifying information for privacy reasons and this setting may help you to comply with the local laws.'),
+    '#default_value' => variable_get('googleanalytics_tracker_anonymizeip', 0),
+  );
+  $form['tracking']['privacy']['googleanalytics_privacy_donottrack'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Universal web tracking opt-out'),
+    '#description' => t('If enabled and your server receives the <a href="http://donottrack.us/">Do-Not-Track</a> header from the client browser, the Google Analytics module will not embed any tracking code into your site. Compliance with Do Not Track could be purely voluntary, enforced by industry self-regulation, or mandated by state or federal law. Please accept your visitors privacy. If they have opt-out from tracking and advertising, you should accept their personal decision. This feature is currently limited to logged in users and disabled page caching.'),
+    '#default_value' => variable_get('googleanalytics_privacy_donottrack', 1),
   );
 
   // Backward compatibility only.
@@ -170,7 +234,8 @@ function googleanalytics_admin_settings_form(&$form_state) {
   }
 
   $form['googleanalytics_custom_var'] = array(
-    '#collapsible' => TRUE,
+  	'#collapsed' => TRUE,
+  	'#collapsible' => TRUE,
     '#description' => t('You can add Google Analytics <a href="!custom_var_documentation">Custom Variables</a> here. These will be added to every page that Google Analytics tracking code appears on. Google Analytics will only accept custom variables if the <em>name</em> and <em>value</em> combined are less than 64 bytes after URL encoding. Keep the names as short as possible and expect long values to get trimmed. You may use tokens in custom variable values. Global and user tokens are always available; on node pages, node tokens are also available.', array('!custom_var_documentation' => 'http://code.google.com/intl/en/apis/analytics/docs/tracking/gaTrackingCustomVariables.html')),
     '#theme' => 'googleanalytics_admin_custom_var_table',
     '#title' => t('Custom variables'),
@@ -237,13 +302,6 @@ function googleanalytics_admin_settings_form(&$form_state) {
     '#title' => t('Advanced settings'),
     '#collapsible' => TRUE,
     '#collapsed' => TRUE,
-  );
-
-  $form['advanced']['googleanalytics_tracker_anonymizeip'] = array(
-    '#type' => 'checkbox',
-    '#title' => t('Anonymize visitors IP address'),
-    '#default_value' => variable_get('googleanalytics_tracker_anonymizeip', 0),
-    '#description' => t('Tell Google Analytics to anonymize the information sent by the tracker objects by removing the last octet of the IP address prior to its storage. Note that this will slightly reduce the accuracy of geographic reporting. In some countries it is not allowed to collect personally identifying information for privacy reasons and this setting may help you to comply with the local laws.'),
   );
 
   $form['advanced']['googleanalytics_cache'] = array(
@@ -353,7 +411,7 @@ function googleanalytics_admin_settings_form_validate($form, &$form_state) {
   $form_state['values']['googleanalytics_codesnippet_after'] = trim($form_state['values']['googleanalytics_codesnippet_after']);
 
   if (!preg_match('/^UA-\d{4,}-\d+$/', $form_state['values']['googleanalytics_account'])) {
-    form_set_error('googleanalytics_account', t('A valid Google Analytics account number is case sensitive and formatted like UA-xxxxxx-x.'));
+    form_set_error('googleanalytics_account', t('A valid Google Analytics Web Property ID is case sensitive and formatted like UA-xxxxxxx-yy.'));
   }
 
   // Clear obsolete local cache if cache has been disabled.

@@ -1,4 +1,3 @@
-/* $Id: README.txt,v 1.1.2.1 2008/07/18 20:22:44 alexua Exp $ */
 
 /********************/
  Embedded Image Field

@@ -1,5 +1,4 @@
 <?php
-// $Id: webform-confirmation.tpl.php,v 1.2 2010/02/11 22:05:27 quicksketch Exp $
 
 /**
  * @file

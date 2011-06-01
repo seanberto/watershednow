@@ -1,5 +1,4 @@
 <?php
-// $Id: openlayers_behavior_zoomtolayer.inc,v 1.1.2.4 2010/03/22 23:55:10 zzolo Exp $
 
 /**
  * @file

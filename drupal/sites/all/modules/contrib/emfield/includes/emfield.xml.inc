@@ -1,5 +1,4 @@
 <?php
-// $Id: emfield.xml.inc,v 1.1.2.1 2009/12/08 19:26:09 aaron Exp $
 
 /**
  *  @file

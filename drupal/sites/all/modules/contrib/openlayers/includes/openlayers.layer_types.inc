@@ -1,5 +1,4 @@
 <?php
-// $Id: openlayers.layer_types.inc,v 1.1.2.5 2010/05/30 19:38:01 tmcw Exp $
 
 /**
  * @file

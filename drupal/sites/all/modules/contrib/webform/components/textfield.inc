@@ -1,5 +1,4 @@
 <?php
-// $Id: textfield.inc,v 1.21.2.10 2011/02/23 01:31:15 quicksketch Exp $
 
 /**
  * @file
@@ -7,7 +6,7 @@
  */
 
 /**
- * Implementation of _webform_defaults_component().
+ * Implements _webform_defaults_component().
  */
 function _webform_defaults_textfield() {
   return array(
@@ -32,7 +31,7 @@ function _webform_defaults_textfield() {
 }
 
 /**
- * Implementation of _webform_theme_component().
+ * Implements _webform_theme_component().
  */
 function _webform_theme_textfield() {
   return array(
@@ -43,7 +42,7 @@ function _webform_theme_textfield() {
 }
 
 /**
- * Implementation of _webform_edit_component().
+ * Implements _webform_edit_component().
  */
 function _webform_edit_textfield($component) {
   $form = array();
@@ -118,11 +117,11 @@ function _webform_edit_textfield($component) {
 }
 
 /**
- * Implementation of _webform_render_component().
+ * Implements _webform_render_component().
  */
 function _webform_render_textfield($component, $value = NULL, $filter = TRUE) {
   $element = array(
-    '#type' => $component['type'],
+    '#type' => 'textfield',
     '#title' => $filter ? _webform_filter_xss($component['name']) : $component['name'],
     '#title_display' => $component['extra']['title_display'] ? $component['extra']['title_display'] : 'before',
     '#default_value' => $filter ? _webform_filter_values($component['value'], NULL, NULL, NULL, FALSE) : $component['value'],
@@ -163,7 +162,7 @@ function _webform_render_textfield($component, $value = NULL, $filter = TRUE) {
 }
 
 /**
- * Implementation of _webform_display_component().
+ * Implements _webform_display_component().
  */
 function _webform_display_textfield($component, $value, $format = 'html') {
   return array(
@@ -191,7 +190,7 @@ function theme_webform_display_textfield($element) {
 }
 
 /**
- * Implementation of _webform_analysis_component().
+ * Implements _webform_analysis_component().
  */
 function _webform_analysis_textfield($component, $sids = array()) {
   $placeholders = count($sids) ? array_fill(0, count($sids), "'%s'") : array();
@@ -220,14 +219,14 @@ function _webform_analysis_textfield($component, $sids = array()) {
 }
 
 /**
- * Implementation of _webform_table_component().
+ * Implements _webform_table_component().
  */
 function _webform_table_textfield($component, $value) {
   return check_plain(empty($value[0]) ? '' : $value[0]);
 }
 
 /**
- * Implementation of _webform_csv_headers_component().
+ * Implements _webform_csv_headers_component().
  */
 function _webform_csv_headers_textfield($component, $export_options) {
   $header = array();
@@ -238,7 +237,7 @@ function _webform_csv_headers_textfield($component, $export_options) {
 }
 
 /**
- * Implementation of _webform_csv_data_component().
+ * Implements _webform_csv_data_component().
  */
 function _webform_csv_data_textfield($component, $export_options, $value) {
   return !isset($value[0]) ? '' : $value[0];

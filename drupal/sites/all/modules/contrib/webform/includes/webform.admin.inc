@@ -1,5 +1,4 @@
 <?php
-// $Id: webform.admin.inc,v 1.4.2.5 2011/02/23 00:49:42 quicksketch Exp $
 
 /**
  * @file
@@ -79,7 +78,7 @@ function webform_admin_settings() {
     ),
     '#default_value' => variable_get('webform_default_format', 0),
     '#description' => t('The default format for new e-mail settings. Webform e-mail options take precedence over the settings for system-wide e-mails configured in MIME mail.'),
-    '#access' => module_exists('mimemail'),
+    '#access' => webform_email_html_capable(),
   );
 
   $form['email']['webform_format_override']  = array(
@@ -91,7 +90,7 @@ function webform_admin_settings() {
     ),
     '#default_value' => variable_get('webform_format_override', 0),
     '#description' => t('Force all webform e-mails to be sent in the default format.'),
-    '#access' => module_exists('mimemail'),
+    '#access' => webform_email_html_capable(),
   );
 
   $form['advanced'] = array(
@@ -156,11 +155,14 @@ function webform_admin_settings() {
 
   $form = system_settings_form($form);
   $form['#theme'] = 'webform_admin_settings';
-  $form['#submit'][] = 'webform_admin_settings_submit';
+  array_unshift($form['#submit'], 'webform_admin_settings_submit');
 
   return $form;
 }
 
+/**
+ * Submit handler for the webform_admin_settings() form.
+ */
 function webform_admin_settings_submit($form, &$form_state) {
   $disabled_components = array();
   foreach ($form_state['values']['components'] as $name => $enabled) {
@@ -168,17 +170,18 @@ function webform_admin_settings_submit($form, &$form_state) {
       $disabled_components[] = $name;
     }
   }
-  variable_set('webform_disabled_components', $disabled_components);
+  // Update $form_state and let system_settings_form_submit() handle saving.
+  $form_state['values']['webform_disabled_components'] = $disabled_components;
+  unset($form_state['values']['components']);
 
-  $webform_types = array();
-  foreach ($form_state['values']['node_types'] as $type) {
-    if ($type) {
-      $webform_types[] = $type;
-    }
-  }
-  variable_set('webform_node_types', $webform_types);
+  // Change the name of the node type variable and clean it up.
+  $form_state['values']['webform_node_types'] = array_keys(array_filter($form_state['values']['node_types']));
+  unset($form_state['values']['node_types']);
 }
 
+/**
+ * Theme the output of the webform_admin_settings() form.
+ */
 function theme_webform_admin_settings($form) {
   // Format the components into a table.
   foreach (element_children($form['components']) as $key) {

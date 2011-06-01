@@ -1,4 +1,3 @@
-/* $Id: README.txt,v 1.1.4.5 2009/09/22 15:11:07 aaron Exp $ */
 
 /**********************/
  Embedded Media Import

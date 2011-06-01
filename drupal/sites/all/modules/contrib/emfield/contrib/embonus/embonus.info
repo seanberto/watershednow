@@ -1,0 +1,12 @@
+name = Embedded Media Bonus Pack
+description = Provides extra field information for embedded media fields.
+core = 6.x
+dependencies[] = emfield
+package = Media
+
+; Information added by drupal.org packaging script on 2011-05-06
+version = "6.x-2.5"
+core = "6.x"
+project = "emfield"
+datestamp = "1304705515"
+

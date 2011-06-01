@@ -1,4 +1,3 @@
-/* $Id: README.txt,v 1.1.6.6.2.1 2010/10/05 20:29:11 alexua Exp $ */
 
 /*********************/
  Embedded Media Field

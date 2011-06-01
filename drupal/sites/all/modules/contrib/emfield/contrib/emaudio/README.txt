@@ -1,4 +1,3 @@
-/* $Id: README.txt,v 1.1.4.5 2008/06/04 12:08:03 alexua Exp $ */
 
 /********************/
  Embedded Audio Field

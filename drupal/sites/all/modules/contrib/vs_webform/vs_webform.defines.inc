@@ -1,5 +1,4 @@
 <?php
-// $Id: vs_webform.defines.inc,v 1.2.2.2 2010/04/28 04:29:49 loubabe Exp $
 
 /**
  * @file

@@ -1,5 +1,4 @@
 <?php
-// $Id: emthumb.theme.inc,v 1.1.2.1.2.2 2010/10/20 20:21:22 aaron Exp $
 
 /**
  * @file

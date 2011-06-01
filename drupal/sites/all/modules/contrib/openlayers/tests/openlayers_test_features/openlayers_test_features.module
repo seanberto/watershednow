@@ -1,0 +1,3 @@
+<?php
+
+include_once('openlayers_test_features.features.inc');

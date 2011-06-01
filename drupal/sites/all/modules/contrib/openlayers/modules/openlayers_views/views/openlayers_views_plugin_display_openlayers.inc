@@ -1,5 +1,4 @@
 <?php
-// $Id: openlayers_views_plugin_display_openlayers.inc,v 1.1.2.3 2010/03/25 14:40:56 tmcw Exp $
 
 /**
  * @file

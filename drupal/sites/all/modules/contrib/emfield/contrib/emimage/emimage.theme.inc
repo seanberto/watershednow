@@ -1,5 +1,4 @@
 <?php
-// $Id: emimage.theme.inc,v 1.1.2.6.2.5 2010/11/17 17:01:12 aaron Exp $
 
 /**
  *  @file

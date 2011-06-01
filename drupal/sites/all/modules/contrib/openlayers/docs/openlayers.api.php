@@ -1,5 +1,4 @@
 <?php
-// $Id: openlayers.api.php,v 1.2.2.5 2010/06/02 23:13:40 zzolo Exp $
 
 /**
  * @file
@@ -281,4 +280,34 @@ function hook_openlayers_presets() {
     )
   );
   return array('default' => $default);
+}
+
+/**
+ * CTools Registration Hook (Style Plugins)
+ *
+ * IMPORTANT:
+ *
+ * In order to support style plugins, the first step is to
+ * tell CTools where to find the plugin.
+ *
+ * This function is just an example implementation of 
+ * hook_ctools_plugin_directory() and should be alter according to
+ * your module's name.
+ *
+ * For an example, please see the openlayers_test.module
+ *
+ * @param $module
+ *   Name of a module that supports CTools exportables.
+ * @param $plugin
+ *   Name of the kind of plugin supported.
+ * @return
+ *  If $module is 'openlayers', and $api is a type of exportable that
+ *  your module provides, and you are using Openlayers 2.x, then
+ *  return the directory relative to a module to look for this
+ *  particular plugin.
+ */
+function openlayers_ctools_plugin_directory($module, $plugin) {
+  if ($module == 'openlayers' && $plugin == 'style_plugin') {
+    return 'plugins/style_plugin';
+  }
 }

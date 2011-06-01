@@ -1,5 +1,4 @@
 <?php
-// $Id: openlayers_behavior_navigation.inc,v 1.1.2.5 2010/05/18 19:25:57 tmcw Exp $
 
 /**
  * @file

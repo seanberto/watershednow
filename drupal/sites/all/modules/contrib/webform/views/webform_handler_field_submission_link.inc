@@ -1,10 +1,9 @@
 <?php
-// $Id: webform_handler_field_submission_link.inc,v 1.2.2.1 2010/03/03 02:51:31 quicksketch Exp $
 
 /**
-* @file
-* Views handler to display links to a submission.
-*/
+ * @file
+ * Views handler to display links to a submission.
+ */
 
 /**
  * Field handler to present a link to the user.
@@ -23,7 +22,7 @@ class webform_handler_field_submission_link extends views_handler_field {
     $this->additional_fields['uid'] = 'uid';
 
     $this->additional_fields['node_uid'] = array(
-      'table' => 'node', 
+      'table' => 'node',
       'field' => 'uid',
     );
   }

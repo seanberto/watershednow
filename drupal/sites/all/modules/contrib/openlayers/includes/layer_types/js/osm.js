@@ -1,4 +1,3 @@
-// $Id: osm.js,v 1.1.2.1 2010/05/30 21:46:15 zzolo Exp $
 
 /**
  * @file
@@ -13,7 +12,7 @@ Drupal.openlayers.layer.osm = function(title, map, options) {
     if (options.maxExtent !== undefined) {
       options.maxExtent = new OpenLayers.Bounds.fromArray(options.maxExtent);
     }
-    options.projection = 'EPSG:'+options.projection;
+    options.projection = 'EPSG:' + options.projection;
     var layer = new OpenLayers.Layer.OSM(title, options.base_url, options);
     layer.styleMap = styleMap;
     return layer;

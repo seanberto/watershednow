@@ -1,5 +1,4 @@
 <?php
-// $Id: openlayers_cck.theme.inc,v 1.1.2.7 2010/05/13 23:07:37 zzolo Exp $
 
 /**
  * @file

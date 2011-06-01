@@ -1,5 +1,4 @@
 <?php
-// $Id: openlayers_behavior_drawfeatures.inc,v 1.1.2.3 2010/08/08 22:14:22 tmcw Exp $
 
 /**
  * @file

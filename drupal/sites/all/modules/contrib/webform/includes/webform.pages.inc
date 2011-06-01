@@ -1,5 +1,4 @@
 <?php
-// $Id: webform.pages.inc,v 1.10.2.6 2011/02/07 03:51:19 quicksketch Exp $
 
 /**
  * @file
@@ -62,7 +61,7 @@ function webform_configure_form(&$form_state, $node) {
     '#type' => 'item',
     '#title' => t('Redirection location'),
     '#theme' => 'webform_advanced_redirection_form',
-    '#description' => t('Choose where to redirect the user upon successful submission.'),
+    '#description' => t('Choose where to redirect the user upon successful submission.') . ' ' . t('The <em>Custom URL</em> option supports Webform token replacements.') . theme('webform_token_help', array('basic', 'node', 'special', 'submission')),
   );
   $form['submission']['redirection']['redirect']= array(
     '#type' => 'radios',

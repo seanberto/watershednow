@@ -1,5 +1,4 @@
 <?php
-// $Id: file.inc,v 1.17.2.13 2011/02/07 03:51:19 quicksketch Exp $
 
 /**
  * @file
@@ -7,7 +6,7 @@
  */
 
 /**
- * Implementation of _webform_defaults_component().
+ * Implements _webform_defaults_component().
  */
 function _webform_defaults_file() {
   return array(
@@ -32,7 +31,7 @@ function _webform_defaults_file() {
 }
 
 /**
- * Implementation of _webform_theme_component().
+ * Implements _webform_theme_component().
  */
 function _webform_theme_file() {
   return array(
@@ -49,7 +48,7 @@ function _webform_theme_file() {
 }
 
 /**
- * Implementation of _webform_edit_component().
+ * Implements _webform_edit_component().
  */
 function _webform_edit_file($component) {
     $form = array();
@@ -160,7 +159,7 @@ function _webform_edit_file_size_validate($element) {
 }
 
 /**
- * A Form API after build function.
+ * A Form API after build and validate function.
  *
  * Ensure that the destination directory exists and is writable.
  */
@@ -170,14 +169,23 @@ function _webform_edit_file_check_directory($element) {
 
   $destination_dir = $base_dir . '/' . $element['#value'];
 
-  // Try to make the directory recursively before calling file_check_directory().
-  // This may be removed in D7, as recusive is the default there.
-  @mkdir($destination_dir, 0775, TRUE);
-
-  $destination_success = file_check_directory($destination_dir, FILE_CREATE_DIRECTORY);
-  if (!$base_success || !$destination_success) {
-    form_set_error('savelocation', t('The save directory %directory could not be created. Check that the webform files directory is writtable.', array('%directory' => $destination_dir)));
+  // Sanity check input to prevent use parent (../) directories.
+  $real_base = realpath($base_dir);
+  $real_destination = realpath($destination_dir);
+  if (strpos($real_destination, $real_base) !== 0) {
+    form_error($element, t('The save directory %directory is not valid.', array('%directory' => $destination_dir)));
   }
+  else {
+    // Try to make the directory recursively before calling file_check_directory().
+    // This may be removed in D7, as recusive is the default there.
+    @mkdir($destination_dir, 0775, TRUE);
+    $destination_success = file_check_directory($destination_dir, FILE_CREATE_DIRECTORY);
+
+    if (!$base_success || !$destination_success) {
+      form_error($element, t('The save directory %directory could not be created. Check that the webform files directory is writtable.', array('%directory' => $destination_dir)));
+    }
+  }
+
   return $element;
 }
 
@@ -293,13 +301,21 @@ function theme_webform_edit_file($form) {
 }
 
 /**
- * Implementation of _webform_render_component().
+ * Implements _webform_render_component().
  */
 function _webform_render_file($component, $value = NULL, $filter = TRUE) {
-  $node = node_load($component['nid']);
-  $form_key = implode('_', webform_component_parent_keys($node, $component));
+  // Normally every file component is given a unique ID based on its key.
+  if (isset($component['nid'])) {
+    $node = node_load($component['nid']);
+    $form_key = implode('_', webform_component_parent_keys($node, $component));
+  }
+  // If being used as a default though, we don't yet have a form key.
+  else {
+    $form_key = 'default';
+  }
+
   $element[$form_key] = array(
-    '#type' => $component['type'],
+    '#type' => 'file',
     '#title' => $filter ? _webform_filter_xss($component['name']) : $component['name'],
     '#title_display' => $component['extra']['title_display'] ? $component['extra']['title_display'] : 'before',
     //'#required' => $component['mandatory'], // Drupal core bug with required file uploads.
@@ -317,6 +333,7 @@ function _webform_render_file($component, $value = NULL, $filter = TRUE) {
   $element['#webform_form_key'] = $form_key;
   $element['#weight'] = $component['weight'];
   $element['#theme'] = 'webform_render_file';
+  $element['#title_display'] = $element[$form_key]['#title_display'];
   $element['#theme_wrappers'] = array('webform_element_wrapper');
   $element['#post_render'] = array('webform_element_wrapper');
   $element['#webform_component'] = $component;
@@ -353,8 +370,8 @@ function theme_webform_render_file($element) {
 
   if ($value && ($file = webform_get_file($value))) {
     $firstchild = array_shift(array_keys($element));
-    $element[$firstchild]['#suffix'] = ' ' . l(t('Download !filename', array('!filename' => webform_file_name($file->filepath))), webform_file_url($file->filepath)) . (isset($element['#suffix']) ? $element['#suffix'] : '');
-    $element[$firstchild]['#description'] = '<div class="webform-newfile-message">'. t('Uploading a new file will replace the current file.') . '</div>' . (isset($element[$firstchild]['#description']) ? $element[$firstchild]['#description'] : '');
+    $element[$firstchild]['#suffix'] = ' ' . l(t('Download @filename', array('@filename' => webform_file_name($file->filepath))), webform_file_url($file->filepath)) . (isset($element['#suffix']) ? $element['#suffix'] : '');
+    $element[$firstchild]['#description'] = '<div class="webform-newfile-message">' . t('Uploading a new file will replace the current file.') . '</div>' . (isset($element[$firstchild]['#description']) ? $element[$firstchild]['#description'] : '');
   }
 
   // Add the required asterisk.
@@ -438,7 +455,7 @@ function _webform_validate_file($element, &$form_state) {
   }
 
   $dot = strrpos($_FILES['files']['name'][$form_key], '.');
-  $extension = drupal_strtolower(substr($_FILES['files']['name'][$form_key], $dot+1));
+  $extension = drupal_strtolower(drupal_substr($_FILES['files']['name'][$form_key], $dot+1));
   $file_error = FALSE;
   if (!empty($extensions) && !in_array($extension, $extensions)) {
     form_error($element, t("Files with the '%ext' extension are not allowed, please upload a file with a %exts extension.", array('%ext' => $extension, '%exts' => $extension_list)));
@@ -476,7 +493,7 @@ function _webform_validate_file($element, &$form_state) {
 }
 
 /**
- * Implementation of _webform_submit_component().
+ * Implements _webform_submit_component().
  */
 function _webform_submit_file($component, $value) {
 
@@ -500,7 +517,7 @@ function _webform_submit_file($component, $value) {
 }
 
 /**
- * Implementation of _webform_display_component().
+ * Implements _webform_display_component().
  */
 function _webform_display_file($component, $value, $format = 'html') {
   $fid = isset($value[0]) ? $value[0] : NULL;
@@ -526,7 +543,7 @@ function theme_webform_display_file($element) {
 }
 
 /**
- * Implementation of _webform_delete_component().
+ * Implements _webform_delete_component().
  */
 function _webform_delete_file($component, $value) {
   // Delete an individual submission file.
@@ -537,7 +554,7 @@ function _webform_delete_file($component, $value) {
 }
 
 /**
- * Implementation of _webform_analysis_component().
+ * Implements _webform_analysis_component().
  */
 function _webform_analysis_file($component, $sids = array()) {
   $placeholders = count($sids) ? array_fill(0, count($sids), "'%s'") : array();
@@ -567,20 +584,20 @@ function _webform_analysis_file($component, $sids = array()) {
 }
 
 /**
- * Implementation of _webform_table_component().
+ * Implements _webform_table_component().
  */
 function _webform_table_file($component, $value) {
   $output = '';
   $file = webform_get_file($value[0]);
   if (!empty($file->fid)) {
-    $output = '<a href="' . webform_file_url($file->filepath) . '">' . webform_file_name($file->filepath) . '</a>';
+    $output = '<a href="' . webform_file_url($file->filepath) . '">' . check_plain(webform_file_name($file->filepath)) . '</a>';
     $output .= ' (' . (int) ($file->filesize/1024) . ' KB)';
   }
   return $output;
 }
 
 /**
- * Implementation of _webform_csv_headers_component().
+ * Implements _webform_csv_headers_component().
  */
 function _webform_csv_headers_file($component, $export_options) {
   $header = array();
@@ -592,7 +609,7 @@ function _webform_csv_headers_file($component, $export_options) {
 }
 
 /**
- * Implementation of _webform_csv_data_component().
+ * Implements _webform_csv_data_component().
  */
 function _webform_csv_data_file($component, $export_options, $value) {
   $file = webform_get_file($value[0]);

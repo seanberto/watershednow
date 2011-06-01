@@ -1,5 +1,4 @@
 <?php
-// $Id: openlayers_behavior_tooltip.inc,v 1.1.2.3 2010/07/04 18:33:13 zzolo Exp $
 
 /**
  * @file

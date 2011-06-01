@@ -1,5 +1,4 @@
 <?php
-// $Id: emfield.themes.inc,v 1.1.2.1 2009/10/05 19:05:11 aaron Exp $
 
 /**
  *  @file

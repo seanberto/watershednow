@@ -1,5 +1,4 @@
 <?php
-// $Id: emfield.cck.inc,v 1.1.2.30.2.6 2010/07/21 20:12:01 aaron Exp $
 
 /**
  * @file
@@ -159,7 +158,7 @@ function _emfield_emfield_widget_settings($op, $widget, $module) {
       return $form;
 
     case 'save':
-      $columns = array('providers'); //, 'helper_module', );
+      $columns = array('providers');
       foreach (module_implements('emfield_widget_settings_extra') as $module) {
         $columns = array_merge($columns, module_invoke($module, 'emfield_widget_settings_extra', 'save', $widget));
       }
@@ -170,9 +169,11 @@ function _emfield_emfield_widget_settings($op, $widget, $module) {
 
 
 /**
- * Helper function for emfield_emfield_widget, which in turn is a help function
- * for all emfields  that implement hook_widget().
- * This creates default widget handling for all the Embedded Media Fields.
+ * Helper function for emfield_emfield_widget.
+ *
+ * This is a helper function for all emfields implementing cck's hook_widget().
+ * It creates default widget handling for all the Embedded Media Fields.
+ *
  * Helper modules are expected to call this function to create the widget,
  * which will include a list of all providers as well as handle data parsing.
  */
@@ -252,8 +253,10 @@ function _emfield_emfield_widget(&$form, &$form_state, $field, $items, $delta = 
     $tree[$module_extra] = call_user_func_array($function, $args);
 
     // In Drupal 6, we need to build multipart/form-data forms manually.
-    if (function_exists($module_extra. '_emfield_widget_extra_file_included')) {
-      if (call_user_func($module_extra. '_emfield_widget_extra_file_included')) {
+    // We'll invoke hook_emfield_widget_extra_file_included() for the module,
+    // and if it returns TRUE we'll build that form correctly.
+    if (module_hook($module_extra, 'emfield_widget_extra_file_included')) {
+      if (call_user_func_array($module_extra. '_emfield_widget_extra_file_included', $args)) {
         $form['#attributes'] = array('enctype' => "multipart/form-data");
       }
     }
@@ -296,6 +299,6 @@ function _emfield_emfield_field_settings($op, $field) {
       $data[$table_alias][$field_status]['sort']['field'] = $field_status;
       return $data;
     case 'database columns':
-      return emfield_field_columns($field);
+      return _emfield_field_columns($field);
   }
 }

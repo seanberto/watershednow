@@ -1,5 +1,4 @@
 <?php
-// $Id: pagebreak.inc,v 1.9.2.1 2010/09/28 22:43:56 quicksketch Exp $
 
 /**
  * @file
@@ -7,7 +6,7 @@
  */
 
 /**
- * Implementation of _webform_defaults_component().
+ * Implements _webform_defaults_component().
  */
 function _webform_defaults_pagebreak() {
   return array(
@@ -20,7 +19,7 @@ function _webform_defaults_pagebreak() {
 }
 
 /**
- * Implementation of _webform_theme_component().
+ * Implements _webform_theme_component().
  */
 function _webform_theme_pagebreak() {
   return array(
@@ -31,7 +30,7 @@ function _webform_theme_pagebreak() {
 }
 
 /**
- * Implementation of _webform_edit_component().
+ * Implements _webform_edit_component().
  */
 function _webform_edit_pagebreak($component) {
   $form = array();
@@ -43,13 +42,12 @@ function _webform_edit_pagebreak($component) {
 
   $form['extra']['description'] = array();  // No description.
   $form['display'] = array('#type' => 'markup'); // Hide the display options.
-  $form['display']['title_display'] = array();
 
   return $form;
 }
 
 /**
- * Implementation of _webform_render_component().
+ * Implements _webform_render_component().
  */
 function _webform_render_pagebreak($component, $value = NULL, $filter = TRUE) {
   $element = array(
@@ -61,7 +59,7 @@ function _webform_render_pagebreak($component, $value = NULL, $filter = TRUE) {
 }
 
 /**
- * Implementation of _webform_render_component().
+ * Implements _webform_render_component().
  */
 function _webform_display_pagebreak($component, $value = NULL, $format = 'html') {
   $element = array(

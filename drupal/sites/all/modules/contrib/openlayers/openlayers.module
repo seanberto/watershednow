@@ -1,5 +1,4 @@
 <?php
-// $Id: openlayers.module,v 1.69.2.82 2010/09/09 20:28:07 strk Exp $
 
 /**
  * @defgroup openlayers OpenLayers provides an API and
@@ -115,8 +114,26 @@ function openlayers_build_map($map = array()) {
   // styles and layer styles are not required parameters
   $map['styles'] = isset($map['styles']) ? 
     $map['styles'] : array();
-  $map['layer_styles'] = isset($map['layer_styles']) ? 
-    $map['layer_styles'] : array();
+
+  $layer_styles = array();
+  if ( isset($map['layer_styles']) ) {
+    foreach ($map['layer_styles'] as $layer => $style) {
+      // UPGRADE NOTE:
+      // Presets up to 6.x-2.x-alpha10 always had a single style
+      // per layer specified. Newer ones have them splitted by role
+      if ( is_array($style) ) {
+        $layer_styles[$layer] = $style;
+      }
+      else {
+        $layer_styles[$layer] = array(
+          'default' => $style,
+          'select' => $style,
+          'temporary' => $style
+        );
+      }
+    }
+  }
+  $map['layer_styles'] = $layer_styles;
 
   $map['layers'] = _openlayers_layers_process($map['layers'], $map);
   $map['behaviors'] = _openlayers_behaviors_render($map['behaviors'], $map);
@@ -444,6 +461,21 @@ function openlayers_layer_type_load($name, $reset = FALSE) {
 function openlayers_behaviors($reset = FALSE) {
   ctools_include('plugins');
   return ctools_get_plugins('openlayers', 'behaviors');
+}
+
+/**
+ * Get all style plugins.
+ *
+ * @ingroup openlayers_api
+ *
+ * @param $reset
+ *   Boolean whether to reset cache or not.
+ * @return
+ *   Array of style handler info.
+ */
+function openlayers_style_plugins($reset = FALSE) {
+  ctools_include('plugins');
+  return ctools_get_plugins('openlayers', 'style_plugin');
 }
 
 /**
@@ -901,6 +933,88 @@ class openlayers_layer_type {
   }
 
   function render(&$map) {}
+}
+
+/**
+ * Base class for style plugins
+ *
+ * We define base classes in the core module.
+ * All other parent classes can be autoloaded through ctools.
+ */
+class openlayers_style_plugin {
+
+  /**
+   * Return true if this plugin can handle
+   * the given property
+   */
+  function can_handle_property($propname) {
+    return array_key_exists($propname, $this->get_context_properties());
+  }
+
+  /**
+   * Get an array of style property callbacks
+   *
+   * @return
+   *   Array of <property_name> => <callback_name>
+   */
+  function get_context_properties() {
+    return array();
+  }
+
+  /**
+   * Initial default options.
+   *
+   * @return
+   *   Array of default options.
+   */
+  function options_init() {
+    return array();
+  }
+
+  /**
+   * Options form.
+   *
+   * @param $defaults
+   *   Array of default values for the form.
+   * @return
+   *   Array of Drupal form elements.
+   */
+  function options_form($defaults = array()) {
+    return array();
+  }
+
+  /**
+   * Render the style.
+   */
+  function render() {
+    // Render style.
+  }
+}
+
+/**
+ * Implementation of hook_ctools_plugin_directory
+ */
+function openlayers_ctools_plugin_directory($module, $plugin) {
+  // The format of plugin includes should be the
+  // following:
+  //   modulename_plugin_name.inc
+  //
+  // For example:
+  //  openlayers_style_plugin_name.inc
+  
+  // If this module needed to supply style plugins.
+  /*
+  if ($module == 'openlayers' && $plugin == 'style_plugin') {
+    return 'plugins/style_plugin';
+  }
+  */
+  
+  // This should change to the following when converted:
+  /*
+  if ($module == 'openlayers') {
+    return 'plugins/' . $plugin;
+  }
+  */
 }
 
 /**

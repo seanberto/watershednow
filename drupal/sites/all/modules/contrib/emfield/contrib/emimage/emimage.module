@@ -1,5 +1,4 @@
 <?php
-// $Id: emimage.module,v 1.1.2.14.2.4 2010/11/17 17:07:01 aaron Exp $
 
 /**
  * @file
@@ -64,10 +63,7 @@ function emimage_field_info() {
 
 /** Implementation of hook_field_settings **/
 function emimage_field_settings($op, $field) {
-  switch ($op) {
-    case 'database columns':
-      return module_invoke('emfield', 'field_columns', $field);
-  }
+  return emfield_emfield_field_settings($op, $field);
 }
 
 function emimage_handler_arg_provider($op, &$query, $argtype, $arg = '') {

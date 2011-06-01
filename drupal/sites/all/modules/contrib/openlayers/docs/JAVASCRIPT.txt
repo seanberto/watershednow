@@ -1,4 +1,3 @@
-$Id: JAVASCRIPT.txt,v 1.1.2.3 2010/03/18 14:25:34 tmcw Exp $
 
 Current for 6.x-2.0-alpha3
 

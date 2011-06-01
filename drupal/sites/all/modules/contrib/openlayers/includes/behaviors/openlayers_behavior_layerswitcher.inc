@@ -1,5 +1,4 @@
 <?php
-// $Id: openlayers_behavior_layerswitcher.inc,v 1.1.2.6 2010/08/31 08:26:28 strk Exp $
 
 /**
  * @file

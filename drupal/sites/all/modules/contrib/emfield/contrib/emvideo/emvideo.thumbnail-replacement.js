@@ -1,4 +1,3 @@
-// $Id: emvideo.thumbnail-replacement.js,v 1.1.2.2 2009/09/01 20:35:24 aaron Exp $
 
 /**
  *  @file

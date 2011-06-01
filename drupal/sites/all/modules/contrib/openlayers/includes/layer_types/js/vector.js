@@ -1,19 +1,18 @@
-// $Id: vector.js,v 1.1.2.1 2010/05/30 21:46:15 zzolo Exp $
 
 /**
  * Process Vector Layers
  *
  * @param layerOptions
- *   Object of options
+ *   Object of options.
  * @param map
- *   Reference to OpenLayers object
+ *   Reference to OpenLayers object.
  * @return
- *   Valid OpenLayers layer
+ *   Valid OpenLayers layer.
  */
 Drupal.openlayers.layer.vector = function(title, map, options) {
   var styleMap = Drupal.openlayers.getStyleMap(map, options.drupalID);
   var features = [];
-  
+
   // Since we add features manually, we take the features from the options
   // store locally and remove from original
   if (options.features !== undefined) {
@@ -26,7 +25,7 @@ Drupal.openlayers.layer.vector = function(title, map, options) {
 
   // Add features
   Drupal.openlayers.addFeatures(map, layer, features);
-  
+
   // Add styles
   layer.styleMap = styleMap;
   return layer;

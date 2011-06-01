@@ -1,4 +1,3 @@
-// $Id: readme.txt,v 1.1.2.1 2008/09/14 18:31:41 aaron Exp $
 
 THIS MODULE INTENTIONALLY LEFT BLANK.
 

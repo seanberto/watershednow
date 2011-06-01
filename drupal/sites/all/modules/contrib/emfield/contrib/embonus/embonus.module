@@ -1,0 +1,174 @@
+<?php
+
+/**
+ * Implementation of hook_emfield_widget_settings_extra().
+ */
+function embonus_emfield_widget_settings_extra($op, $widget) {
+  static $collect;
+
+  if (!isset($collect)) {
+    // We only collect the collect start/end times if requested by a module
+    // that implements hook_embonus_collect_start_end_times() and returns TRUE.
+    foreach (module_implements('embonus_collect_start_end_times') as $module) {
+      $collect = $collect || module_invoke($module, 'embonus_collect_start_end_times', $widget);
+    }
+  }
+  if ($collect) {
+    switch ($op) {
+      case 'form':
+        $form = array();
+        $form['collect_start_end_times'] = array(
+          '#type' => 'checkbox',
+          '#title' => t('Collect start & end times'),
+          '#description' => t('Some providers may respect start and end times when displaying media. Check this box if you wish to collect that information on a per-instance basis.'),
+          '#default_value' => isset($widget['collect_start_end_times']) ? $widget['collect_start_end_times'] : FALSE,
+        );
+        return $form;
+      case 'save':
+        return array('collect_start_end_times');
+    }
+  }
+}
+
+/**
+ * Implementation of hook_emfield_field_columns_extra().
+ */
+function embonus_emfield_field_columns_extra($field) {
+  if ($field['collect_start_end_times']) {
+    return array(
+      'start_time' => array('description' => "The time to start the media display.", 'type' => 'int', 'unsigned' => 'TRUE', 'sortable' => FALSE, 'not null' => TRUE, 'default' => 0),
+      'end_time' => array('description' => "The time to end the media display.", 'type' => 'int', 'unsigned' => 'TRUE', 'sortable' => FALSE, 'not null' => TRUE, 'default' => 0),
+    );
+  }
+}
+
+/**
+ * Implementation of hook_emfield_widget_extra().
+ */
+function embonus_emfield_widget_extra(&$form, &$form_state, $field, $items, $delta, $module) {
+  if ($field['widget']['collect_start_end_times']) {
+    $tree['start_end_times'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Start & end times'),
+      '#description' => t('Some providers may respect start and end times when displaying the media. If you enter those times here, then the media will be truncated to those times when displayed, if possible.'),
+      '#collapsible' => TRUE,
+      '#collapsed' => FALSE,
+    );
+    $tree['start_end_times']['start_time'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Start time'),
+      '#description' => t('Please enter the time, in seconds or mm:ss format, that you wish to start display of the media here. Leave blank to start at the beginning.'),
+      '#default_value' => (isset($items[$delta]['start_time']) && $items[$delta]['start_time']) ? embonus_seconds_to_time($items[$delta]['start_time']) : '',
+    );
+    $tree['start_end_times']['end_time'] = array(
+      '#type' => 'textfield',
+      '#title' => t('End time'),
+      '#description' => t('Please enter the time, in seconds or mm:ss format, that you wish to end display of the media here. Leave blank to end at the end.'),
+      '#default_value' => (isset($items[$delta]['end_time']) && $items[$delta]['end_time']) ? embonus_seconds_to_time($items[$delta]['end_time']) : '',
+    );
+    return $tree;
+  }
+}
+
+/**
+ * Implementation of hook_emfield_field_extra().
+ */
+function embonus_emfield_field_extra($op, &$node, $field, &$items, $teaser, $page, $module) {
+  switch ($op) {
+    case 'validate':
+      // Ensure end > start if present.
+      foreach ($items as $delta => $item) {
+        $start = embonus_convert_to_seconds($items[$delta]['embonus']['start_end_times']['start_time']);
+        $end = embonus_convert_to_seconds($items[$delta]['embonus']['start_end_times']['end_time']);
+        if ($start < 0) {
+          $error_field = $field['field_name'] .']['. $delta .'][embonus][start_end_times][start_time';
+          form_set_error($error_field, t('The start time for this media cannot be less than 0 seconds.'));
+        }
+        if ($end < 0) {
+          $error_field = $field['field_name'] .']['. $delta .'][embonus][start_end_times][end_time';
+          form_set_error($error_field, t('The end time for this media cannot be less than 0 seconds.'));
+        }
+        if ($end && ($end <= $start)) {
+          $error_field = $field['field_name'] .']['. $delta .'][embonus][start_end_times][end_time';
+          form_set_error($error_field, t('The end time for this media, if present, must be greater than the start time.'));
+        }
+      }
+      break;
+    case 'presave':
+      if ($field['widget']['collect_start_end_times']) {
+        foreach ($items as $delta => $item) {
+          $items[$delta]['start_time'] = embonus_convert_to_seconds($items[$delta]['embonus']['start_end_times']['start_time']);
+          $items[$delta]['end_time'] = embonus_convert_to_seconds($items[$delta]['embonus']['start_end_times']['end_time']);
+        }
+      }
+      break;
+  }
+}
+
+/**
+ * Convert time from field into seconds.
+ *
+ * @param $time
+ *    Raw timemarker input from field.
+ */
+function embonus_convert_to_seconds($time) {
+  $time_in_seconds = 0;
+  $time_split = split(':', $time);
+  $count = count($time_split);
+
+  // If it is already in seconds then don't do anything.
+  if ($count == 1) return intval($time);
+
+  foreach ($time_split as $unit) {
+    $count--;
+    // If hours or minutes multiply by appropriate amount.
+    if ($count > 0) {
+      // If it is hours multiply by 36000 if minutes multiply by 60.
+      $time_in_seconds += $unit*(pow(60, $count));
+    }
+    else {
+      // If we are on the seconds unit then we do not need to do anything.
+      $time_in_seconds += $unit;
+    }
+  }
+
+  return $time_in_seconds;
+}
+
+/**
+ *  Display seconds as HH:MM:SS, with leading 0's.
+ *
+ *  @param $seconds
+ *    The number of seconds to display.
+ */
+function embonus_seconds_to_time($seconds) {
+  // Number of seconds in an hour.
+  $unith =3600;
+  // Number of seconds in a minute.
+  $unitm =60;
+
+  // '/' given value by num sec in hour... output = HOURS
+  $hh = intval($seconds / $unith);
+
+  // Multiply number of hours by seconds, then subtract from given value.
+  // Output = REMAINING seconds.
+  $ss_remaining = ($seconds - ($hh * 3600));
+
+  // Take remaining seconds and divide by seconds in a min... output = MINS.
+  $mm = intval($ss_remaining / $unitm);
+  // Multiply number of mins by seconds, then subtract from remaining seconds.
+  // Output = REMAINING seconds.
+  $ss = ($ss_remaining - ($mm * 60));
+
+  $output = '';
+
+  // If we have any hours, then prepend that to our output.
+  if ($hh) {
+    $output .= "$hh:";
+  }
+
+  // Create a safe-for-output MM:SS.
+  $output .= check_plain(sprintf($hh ? "%02d:%02d" : "%d:%02d", $mm, $ss));
+
+  return $output;
+}

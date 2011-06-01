@@ -1,4 +1,3 @@
-// $Id: openlayers_behavior_popup.js,v 1.1.2.4 2010/06/28 17:30:19 tmcw Exp $
 
 /**
  * Global variables to help with scope
@@ -67,15 +66,22 @@ Drupal.behaviors.openlayers_behavior_popup = function(context) {
             null,
             true,
             function (evt) {
-              Drupal.openlayers.popup.popupSelect.unselect(
-                Drupal.openlayers.popup.selectedFeature
-              );
+              var f = Drupal.openlayers.popup.selectedFeature;
+              if (f.layer)
+                Drupal.openlayers.popup.popupSelect.unselect(f);
+              else {
+                // Remove popup if feature was removed in the meantime.
+                f.popup.map.removePopup(f.popup);
+                f.popup.destroy();
+                f.popup = null;
+              }
             }
           );
           
           // Assign popup to feature and map.
           feature.popup = popup;
           feature.layer.map.addPopup(popup);
+          popup.map = feature.layer.map;
           Drupal.openlayers.popup.selectedFeature = feature;
         },
         onUnselect: function (feature) {

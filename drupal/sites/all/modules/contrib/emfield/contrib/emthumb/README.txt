@@ -1,4 +1,3 @@
-// $Id: README.txt,v 1.1.2.1 2009/11/08 13:26:13 aaron Exp $
 
 Embedded Media Thumbnail
 

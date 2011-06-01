@@ -1,5 +1,4 @@
 <?php
-// $Id: emfield.php,v 1.1.2.3 2009/10/29 18:29:43 aaron Exp $
 
 /**
  *  @file

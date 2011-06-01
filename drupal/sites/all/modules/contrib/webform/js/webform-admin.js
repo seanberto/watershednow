@@ -1,4 +1,3 @@
-// $Id: webform-admin.js,v 1.1.2.8 2010/12/30 02:57:20 quicksketch Exp $
 
 /**
  * Webform node form interface enhancments.

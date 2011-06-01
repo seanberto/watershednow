@@ -1,5 +1,4 @@
 <?php
-// $Id: emaudio.theme.inc,v 1.1.2.6 2008/12/19 18:17:14 aaron Exp $
 
 /**
  * @file

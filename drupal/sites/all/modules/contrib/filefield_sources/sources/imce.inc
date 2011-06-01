@@ -1,5 +1,4 @@
 <?php
-// $Id: imce.inc,v 1.6 2010/08/09 05:24:10 quicksketch Exp $
 
 /**
  * @file
@@ -11,7 +10,7 @@
  */
 
 /**
- * Implementation of hook_filefield_source_info().
+ * Implements hook_filefield_source_info().
  */
 function filefield_source_imce_info() {
   $source = array();
@@ -32,7 +31,7 @@ function filefield_source_imce_info() {
 }
 
 /**
- * Implementation of hook_menu().
+ * Implements hook_menu().
  */
 function filefield_source_imce_menu() {
   $items = array();
@@ -48,7 +47,7 @@ function filefield_source_imce_menu() {
 }
 
 /**
- * Implementation of hook_theme().
+ * Implements hook_theme().
  */
 function filefield_source_imce_theme() {
   return array(
@@ -60,7 +59,7 @@ function filefield_source_imce_theme() {
 }
 
 /**
- * Implementation of hook_filefield_source_settings().
+ * Implements hook_filefield_source_settings().
  */
 function filefield_source_imce_settings($op, $field) {
   $return = array();
@@ -79,8 +78,8 @@ function filefield_source_imce_process($element, $edit, &$form_state, $form) {
 
   $element['filefield_imce'] = array(
     '#weight' => 100.5,
-    '#access' => empty($element['fid']['#value']),
     '#theme' => 'filefield_source_imce_element',
+    '#filefield_source' => TRUE, // Required for proper theming.
     '#description' => filefield_sources_element_validation_help($element['#upload_validators']),
   );
 
@@ -103,17 +102,19 @@ function filefield_source_imce_process($element, $edit, &$form_state, $form) {
   );
 
   $element['filefield_imce']['select'] = array(
+    '#name' => implode('_', $element['#array_parents']) . '_imce_select',
     '#type' => 'submit',
     '#value' => t('Select'),
+    '#validate' => array(),
     '#submit' => array('node_form_submit_build_node'),
     '#name' => $element['#name'] . '[filefield_imce][button]',
     '#id' => $select_id,
     '#attributes' => array('style' => 'display: none;'),
     '#ahah' => array(
-       'path' => 'filefield/ahah/'. $element['#type_name'] .'/'. $element['#field_name'] .'/'. $element['#delta'],
-       'wrapper' => $element['#id'] .'-ahah-wrapper',
-       'method' => 'replace',
-       'effect' => 'fade',
+      'path' => 'filefield/ahah/' . $element['#type_name'] . '/' . $element['#field_name'] . '/' . $element['#delta'],
+      'wrapper' => $element['#id'] .'-ahah-wrapper',
+      'method' => 'replace',
+      'effect' => 'fade',
     ),
   );
 

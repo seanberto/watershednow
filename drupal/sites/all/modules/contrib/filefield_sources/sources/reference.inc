@@ -1,5 +1,4 @@
 <?php
-// $Id: reference.inc,v 1.6 2010/08/09 04:11:49 quicksketch Exp $
 
 /**
  * @file
@@ -13,7 +12,7 @@
 define('FILEFIELD_SOURCE_REFERENCE_HINT_TEXT', 'example.png [fid:123]');
 
 /**
- * Implementation of hook_filefield_source_info().
+ * Implements hook_filefield_source_info().
  */
 function filefield_source_reference_info() {
   $source = array();
@@ -29,7 +28,7 @@ function filefield_source_reference_info() {
 }
 
 /**
- * Implementation of hook_menu().
+ * Implements hook_menu().
  */
 function filefield_source_reference_menu() {
   $items = array();
@@ -46,7 +45,7 @@ function filefield_source_reference_menu() {
 }
 
 /**
- * Implementation of hook_theme().
+ * Implements hook_theme().
  */
 function filefield_source_reference_theme() {
   return array(
@@ -62,7 +61,7 @@ function filefield_source_reference_theme() {
 }
 
 /**
- * Implementation of hook_filefield_source_settings().
+ * Implements hook_filefield_source_settings().
  */
 function filefield_source_reference_settings($op, $field) {
   $return = array();
@@ -98,9 +97,9 @@ function filefield_source_reference_settings($op, $field) {
 function filefield_source_reference_process($element, $edit, &$form_state, $form) {
 
   $element['filefield_reference'] = array(
-    '#theme' => 'filefield_source_reference_element',
     '#weight' => 100.5,
-    '#access' => empty($element['fid']['#value']),
+    '#theme' => 'filefield_source_reference_element',
+    '#filefield_source' => TRUE, // Required for proper theming.
     '#filefield_sources_hint_text' => FILEFIELD_SOURCE_REFERENCE_HINT_TEXT,
   );
 
@@ -111,15 +110,17 @@ function filefield_source_reference_process($element, $edit, &$form_state, $form
   );
 
   $element['filefield_reference']['select'] = array(
+    '#name' => implode('_', $element['#array_parents']) . '_autocomplete_select',
     '#type' => 'submit',
     '#value' => t('Select'),
+    '#validate' => array(),
     '#submit' => array('node_form_submit_build_node'),
     '#name' => $element['#name'] . '[filefield_reference][button]',
     '#ahah' => array(
-       'path' => 'filefield/ahah/'. $element['#type_name'] .'/'. $element['#field_name'] .'/'. $element['#delta'],
-       'wrapper' => $element['#id'] .'-ahah-wrapper',
-       'method' => 'replace',
-       'effect' => 'fade',
+      'path' => 'filefield/ahah/' . $element['#type_name'] . '/' . $element['#field_name'] . '/' . $element['#delta'],
+      'wrapper' => $element['#id'] . '-ahah-wrapper',
+      'method' => 'replace',
+      'effect' => 'fade',
     ),
   );
 
@@ -135,6 +136,12 @@ function filefield_source_reference_value($element, &$item) {
     if (preg_match('/\[fid:(\d+)\]/', $item['filefield_reference']['autocomplete'], $matches)) {
       $fid = $matches[1];
       if ($file = field_file_load($fid)) {
+
+        // Run all the normal validations, minus file size restrictions.
+        if (isset($element['#upload_validators']['filefield_validate_size'])) {
+          unset($element['#upload_validators']['filefield_validate_size']);
+        }
+
         if (filefield_sources_element_validate($element, (object) $file)) {
           $item = array_merge($item, $file);
         }

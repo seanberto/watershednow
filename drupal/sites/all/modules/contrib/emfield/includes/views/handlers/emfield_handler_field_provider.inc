@@ -1,5 +1,4 @@
 <?php
-// $Id: emfield_handler_field_provider.inc,v 1.1.2.1 2009/09/30 15:11:01 aaron Exp $
 
 /**
  * @file

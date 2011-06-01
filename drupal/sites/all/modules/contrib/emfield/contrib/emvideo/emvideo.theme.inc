@@ -1,5 +1,4 @@
 <?php
-// $Id: emvideo.theme.inc,v 1.1.2.38.2.11 2010/10/20 20:33:21 aaron Exp $
 
 /**
  * @file
@@ -465,6 +464,9 @@ function _emvideo_seconds_to_time($seconds) {
  *    The output to print directly, including HTML/Head/Body tags.
  */
 function template_preprocess_emvideo_modal_iframe(&$variables) {
+  // Tell admin, admin_menu, etc. to supress their output.
+  module_invoke_all('suppress');
+
   $variables['language']          = $GLOBALS['language'];
   $variables['language']->dir     = $GLOBALS['language']->direction ? 'rtl' : 'ltr';
   // Construct page title

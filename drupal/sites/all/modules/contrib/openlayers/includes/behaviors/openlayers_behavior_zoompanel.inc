@@ -1,5 +1,4 @@
 <?php
-// $Id: openlayers_behavior_zoompanel.inc,v 1.1.2.2 2010/05/28 15:37:30 tmcw Exp $
 
 /**
  * @file

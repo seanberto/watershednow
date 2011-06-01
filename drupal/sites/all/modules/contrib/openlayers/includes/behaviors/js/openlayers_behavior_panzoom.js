@@ -1,4 +1,3 @@
-// $Id: openlayers_behavior_panzoom.js,v 1.1.2.1 2010/01/25 21:24:14 tmcw Exp $
 
 /**
  * @file

@@ -1,4 +1,3 @@
-// $Id: select-admin.js,v 1.1.2.1 2010/04/10 22:02:08 quicksketch Exp $
 
 /**
  * @file

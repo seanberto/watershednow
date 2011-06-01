@@ -1,5 +1,4 @@
 <?php
-// $Id: openlayers_ui.admin.inc,v 1.1.2.4 2010/09/09 20:28:08 strk Exp $
 
 /**
  * @file

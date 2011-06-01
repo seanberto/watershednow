@@ -1,5 +1,4 @@
 <?php
-// $Id: webform.emails.inc,v 1.9.2.13 2011/02/18 17:25:33 quicksketch Exp $
 
 /**
  * @file
@@ -14,11 +13,9 @@
 function webform_emails_form($form_state, $node) {
   module_load_include('inc', 'webform', 'includes/webform.components');
 
-  $form = array(
-    '#tree' => TRUE,
-    '#node' => $node,
-    'components' => array(),
-  );
+  $form['#tree'] = TRUE;
+  $form['#node'] = $node;
+  $form['components'] = array();
 
   $form['nid'] = array(
     '#type' => 'value',
@@ -171,9 +168,7 @@ function webform_emails_form_submit($form, &$form_state) {
 function webform_email_edit_form($form_state, $node, $email = array()) {
   module_load_include('inc', 'webform', 'includes/webform.components');
 
-  $form = array(
-    '#tree' => TRUE,
-  );
+  $form['#tree'] = TRUE;
   $form['node'] = array(
     '#type' => 'value',
     '#value' => $node,
@@ -271,24 +266,25 @@ function webform_email_edit_form($form_state, $node, $email = array()) {
     '#type' => 'textarea',
     '#rows' => max(10, min(20, count(explode("\n", $template)))),
     '#default_value' => $template,
+    '#wysiwyg' => webform_email_html_capable() ? NULL : FALSE,
   );
 
   $form['template']['html'] = array(
     '#type' => 'checkbox',
     '#title' => t('Send e-mail as HTML'),
     '#default_value' => $email['html'],
-    '#access' => module_exists('mimemail') && !variable_get('webform_format_override', 0),
+    '#access' => webform_email_html_capable() && !variable_get('webform_format_override', 0),
   );
 
   $form['template']['attachments'] = array(
     '#type' => 'checkbox',
     '#title' => t('Include files as attachments'),
     '#default_value' => $email['attachments'],
-    '#access' => module_exists('mimemail'),
+    '#access' => webform_email_html_capable(),
   );
 
   $form['template']['tokens'] = array(
-    '#value' => theme('webform_token_help', $node),
+    '#value' => theme('webform_token_help', 'all'),
   );
 
   $form['template']['components'] = array(
@@ -309,6 +305,7 @@ function webform_email_edit_form($form_state, $node, $email = array()) {
     '#value' => $default_template,
     '#resizable' => FALSE,
     '#weight' => 19,
+    '#wysiwyg' => FALSE,
   );
 
   // Add the submit button.

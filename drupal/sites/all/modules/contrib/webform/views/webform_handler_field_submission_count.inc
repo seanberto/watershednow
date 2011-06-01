@@ -1,10 +1,9 @@
 <?php
-// $Id: webform_handler_field_submission_count.inc,v 1.3.2.2 2010/11/18 14:08:49 quicksketch Exp $
 
 /**
-* @file
-* Views handler to display the number of submissions in a webform.
-*/
+ * @file
+ * Views handler to display the number of submissions in a webform.
+ */
 
 /**
  * Field handler to present the submission count of a node to the user.
@@ -16,6 +15,7 @@ class webform_handler_field_submission_count extends views_handler_field {
 
     if ($this->count_type == 'node') {
       $this->additional_fields['nid'] = 'nid';
+      $this->additional_fields['type'] = 'type';
     }
     elseif ($this->count_type == 'users') {
       $this->additional_fields['uid'] = 'uid';
@@ -37,7 +37,7 @@ class webform_handler_field_submission_count extends views_handler_field {
     global $user;
 
     $output = NULL;
-    if ($this->count_type == 'node' && in_array($node->type, webform_variable_get('webform_node_types'))) {
+    if ($this->count_type == 'node' && in_array($values->{$this->aliases['type']}, webform_variable_get('webform_node_types'))) {
       module_load_include('inc', 'webform', 'includes/webform.submissions');
       $node = node_load($values->{$this->aliases['nid']});
       if (webform_results_access($node, $user)) {

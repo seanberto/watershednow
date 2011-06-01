@@ -1,5 +1,4 @@
 <?php
-// $Id: wms.inc,v 1.1.2.18 2010/09/01 18:56:33 tmcw Exp $
 
 /**
  * @file
@@ -20,6 +19,7 @@ class openlayers_layer_type_wms extends openlayers_layer_type {
         $this->data['params']['projection'] = $this->data['options']['srs']; 
         $this->data['params']['maxextent'] =  openlayers_get_extent($pts[1]);
       }
+      $this->data['params']['isBaseLayer'] = (bool) $this->data['params']['isBaseLayer'];
       $this->data['baselayer'] = $this->data['params']['isBaseLayer'];
       $this->data += $this->options_init();
     }
@@ -56,7 +56,7 @@ class openlayers_layer_type_wms extends openlayers_layer_type {
           '#type' => 'checkbox',
           '#default_value' => isset($this->data['params']['isBaseLayer']) ? 
             $this->data['params']['isBaseLayer'] : TRUE,
-          '#return_value' => 'true',
+          '#return_value' => TRUE,
           '#title' => t('BaseLayer'),
           '#description' => t('Uncheck to make this map an overlay')
         ),
@@ -99,7 +99,7 @@ class openlayers_layer_type_wms extends openlayers_layer_type {
           '#type' => 'checkbox',
           '#default_value' => isset($this->data['options']['TRANSPARENT']) ?
             $this->data['options']['TRANSPARENT'] : FALSE,
-          '#return_value' => 'true',
+          '#return_value' => TRUE,
           '#title' => t('Transparent'),
           '#description' => t('When a PNG, make the background color transparent')
         ),

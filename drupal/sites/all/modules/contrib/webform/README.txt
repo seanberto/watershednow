@@ -8,7 +8,7 @@ can optionally be mailed to e-mail addresses upon submission.
 
 Requirements
 ------------
-Drupal 6.x
+Drupal 6.16 or higher
 
 Installation
 ------------
@@ -35,4 +35,3 @@ Support
 Please use the issue queue for filing bugs with this module at
 http://drupal.org/project/issues/webform
 
-$Id: README.txt,v 1.10.2.1 2011/02/23 23:18:44 quicksketch Exp $

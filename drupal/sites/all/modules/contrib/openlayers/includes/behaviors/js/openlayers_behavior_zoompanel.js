@@ -1,4 +1,3 @@
-// $Id: openlayers_behavior_zoompanel.js,v 1.1.2.1 2010/05/24 18:02:48 tmcw Exp $
 
 /**
  * @file

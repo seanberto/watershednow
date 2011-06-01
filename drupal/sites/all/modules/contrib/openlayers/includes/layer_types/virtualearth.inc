@@ -1,5 +1,4 @@
 <?php
-// $Id: virtualearth.inc,v 1.1.2.12 2010/06/07 20:41:40 tmcw Exp $
 
 /**
  * @file

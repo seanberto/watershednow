@@ -1,4 +1,3 @@
-// $Id: openlayers_cck.js,v 1.22.2.3 2010/08/27 11:50:45 zzolo Exp $
 
 /**
  * @file

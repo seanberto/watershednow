@@ -1,5 +1,4 @@
 <?php
-// $Id: openlayers_test.module,v 1.2.2.15 2010/06/27 15:57:01 zzolo Exp $
 
 /**
  * @file
@@ -30,6 +29,16 @@ function openlayers_test_menu() {
 }
 
 /**
+ * Implementation of hook_ctools_plugin_directory
+ */
+function openlayers_test_ctools_plugin_directory($module, $plugin) {
+  if ($module == 'openlayers' && $plugin == 'style_plugin') {
+    return 'plugins/style_plugin';
+  }
+}
+  
+
+/**
  * Implementation of hook_ctools_plugin_api().
  */
 function openlayers_test_ctools_plugin_api($module, $api) {
@@ -37,6 +46,9 @@ function openlayers_test_ctools_plugin_api($module, $api) {
   if ($module == "openlayers") {
     switch ($api) {
       case 'openlayers_presets':
+        return array('version' => 1);
+        
+      case 'openlayers_styles':
         return array('version' => 1);
 
     }

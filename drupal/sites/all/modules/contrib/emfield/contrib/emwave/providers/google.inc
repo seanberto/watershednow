@@ -1,5 +1,4 @@
 <?php
-// $Id: google.inc,v 1.1.2.1 2009/10/13 13:26:44 aaron Exp $
 
 /**
  * @file
