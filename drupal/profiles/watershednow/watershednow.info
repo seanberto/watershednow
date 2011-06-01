@@ -47,6 +47,7 @@ modules[contrib][] = search404
 modules[contrib][] = comment_notify
 modules[contrib][] = role_delegation
 modules[contrib][] = mollom
+modules[contrib][] = page_title
 
 ;Admin
 modules[contrib][] = admin_menu
